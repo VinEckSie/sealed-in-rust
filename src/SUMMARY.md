@@ -131,7 +131,6 @@
 - [Audit checklists]()
 - [Crate publishing & security considerations]()
 
-
 # Appendices
 - [A. Glossary of Terms]()
 - [B. List of Rust Crypto Crates (by category)]()
