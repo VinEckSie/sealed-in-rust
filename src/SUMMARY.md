@@ -9,6 +9,7 @@
 - [Reading Books](guide/reading.md)
 - [Creating a Book](guide/creating.md)
 
+
 ---
 # PART 1 — Foundations
 - [Introduction to Cryptography & Rust]()
