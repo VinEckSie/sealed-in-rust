@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Sealed in Rust</title>
+        <title>Sealed in Rust — Domain-Driven Edition</title>
         <meta name="robots" content="noindex">
 
 
@@ -137,7 +137,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Sealed in Rust</h1>
+                    <h1 class="menu-title">Sealed in Rust — Domain-Driven Edition</h1>
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -173,91 +173,271 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="reading-books"><a class="header" href="#reading-books">Reading Books</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="creating-a-book"><a class="header" href="#creating-a-book">Creating a Book</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="nested-example"><a class="header" href="#nested-example">Nested example</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="sub-chapter"><a class="header" href="#sub-chapter">Sub-chapter</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="a-prefix-chapter"><a class="header" href="#a-prefix-chapter">A Prefix Chapter</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="second-chapter"><a class="header" href="#second-chapter">Second Chapter</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="my-first-chapter"><a class="header" href="#my-first-chapter">My First Chapter</a></h1>
-<p>Fill out your content here.</p>
-<pre><pre class="playground"><code class="language-rust">fn main() {}</code></pre></pre>
-<pre><pre class="playground"><code class="language-rust editable">fn main() {
-    let number = 5;
-    print!("{}", number);
-}</code></pre></pre>
-<p>\( \int x dx = \frac{x^2}{2} + C \)</p>
-<p>\[ \mu = \frac{1}{N} \sum_{i=0} x_i \]</p>
-<pre><code class="language-rust noplayground">let mut name = String::new();
-std::io::stdin().read_line(&amp;mut name).expect("failed to read line");
-println!("Hello {}!", name);</code></pre>
-<pre><code class="language-rust ignore"><span class="boring">This example won't be tested.
-</span>panic!("oops!");</code></pre>
-<p>Here is a component:</p>
-<pre><code class="language-rust no_run noplayground">{{#include test.rs:component}}</code></pre>
-<p>Here is a system:</p>
-<pre><code class="language-rust no_run noplayground">{{#include test.rs:system}}</code></pre>
-<p>This is the full file.</p>
-<pre><code class="language-rust no_run noplayground">{{#include test.rs:all}}</code></pre>
-<h3 id="a-heading"><a class="header" href="#a-heading">A heading</a></h3>
-<p>Some text.</p>
-<h4 id="a-smaller-heading"><a class="header" href="#a-smaller-heading">A smaller heading</a></h4>
-<p>More text.</p>
+<p><strong>Cryptography is everywhere — and yet most of us treat it like magic.</strong></p>
+<p>From encrypted chats and online banking to firmware updates on satellites, the systems we rely on daily are secured (or compromised) by cryptography. And too often, it fails — not because the math was wrong, but because the implementation was.</p>
+<p><strong>This book exists to change that.</strong></p>
+<p>You’re not here to memorize equations. You’re here to understand, implement, and apply cryptographic primitives to real-world systems using a language designed to prevent mistakes before they happen: <strong>Rust</strong>.</p>
+<p>Whether you’re building infrastructure, smart contracts, embedded firmware, or secure APIs, this book gives you the tools to use cryptography safely, idiomatically, and fearlessly — one primitive, one project, one domain at a time.</p>
+<h2 id="who-this-book-is-for"><a class="header" href="#who-this-book-is-for">Who This Book Is For</a></h2>
 <ul>
-<li>milk</li>
-<li>eggs</li>
-<li>butter</li>
+<li>Rust developers who want to understand and apply cryptography</li>
+<li>Security engineers transitioning to Rust</li>
+<li>Curious hackers tired of black-box crypto</li>
+<li>Systems developers who care about safety, correctness, and resilience</li>
 </ul>
-<ol>
-<li>carrots</li>
-<li>celery</li>
-<li>radishes</li>
-</ol>
-<p>Use <a href="https://github.com/rust-lang/mdBook">mdBook</a>.
-Read about <a href="README.html">mdBook</a>.
-A bare url: <a href="https://www.rust-lang.org">https://www.rust-lang.org</a>.</p>
-<p>This is an example of a footnote<sup class="footnote-reference" id="fr-note-1"><a href="#footnote-note">1</a></sup>.</p>
-<p><img src="images/smart1.png" alt="The Rust Logo" /></p>
-<div class="table-wrapper"><table><thead><tr><th>Header1</th><th>Header2</th></tr></thead><tbody>
-<tr><td>abc</td><td>def</td></tr>
+<h2 id="what-youll-learn"><a class="header" href="#what-youll-learn">What You’ll Learn</a></h2>
+<ul>
+<li>The foundations and mental models behind symmetric and asymmetric cryptography</li>
+<li>How to use modern cryptographic crates in Rust safely and idiomatically</li>
+<li>Where cryptographic primitives show up in real-world domains (blockchain, embedded, medical, etc.)</li>
+<li>How to design, test, and publish your own secure Rust crypto crate</li>
+</ul>
+<h2 id="what-this-book-is-not"><a class="header" href="#what-this-book-is-not">What This Book Is Not</a></h2>
+<ul>
+<li>❌ A math-heavy cryptography textbook</li>
+<li>❌ A copy-paste cookbook</li>
+<li>❌ A blockchain hype manual</li>
+</ul>
+<p>We won’t drown you in proofs, but we’ll explain just enough math to build intuition. We’ll write real code — not just use libraries. And we’ll focus on systems-level crypto, not speculative tokens.</p>
+<h2 id="what-youll-need"><a class="header" href="#what-youll-need">What You’ll Need</a></h2>
+<ul>
+<li>✅ Basic experience with Rust (enough to build a CLI or follow <code>cargo run</code>)</li>
+<li>✅ Comfort with reading code, refactoring, and using crates</li>
+<li>✅ Curiosity, and a bias toward safe, practical, applied learning</li>
+</ul>
+<h2 id="lets-begin"><a class="header" href="#lets-begin">Let’s begin</a></h2>
+<p>This book won’t make you a cryptographer in the academic sense — but it will make you something just as rare and valuable:
+A Rust engineer who understands, wields, and applies cryptography with precision, context, and confidence.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="how-to-use-this-book"><a class="header" href="#how-to-use-this-book">How to Use This Book</a></h1>
+<p>This book is designed to be practical, modular, and domain-focused.<br />
+You can read it front to back, or jump directly to the domains and primitives most relevant to your work.</p>
+<h2 id="structure"><a class="header" href="#structure">Structure</a></h2>
+<p>The book is organized into four major parts:</p>
+<p><strong>Foundations</strong> — Why Rust is uniquely suited for secure cryptographic engineering<br />
+<strong>Primitives</strong> — The core building blocks of cryptography, with Rust-focused usage and implementation<br />
+<strong>Applied Domains</strong> — Real-world systems and how they use cryptography in practice (blockchain, defense, aerospace, medical, infrastructure, etc.)<br />
+<strong>Crate Building</strong> — How to architect, test, audit, and publish your own cryptographic crate in Rust</p>
+<h3 id=""><a class="header" href="#"></a></h3>
+<p>Each chapter includes:</p>
+<ul>
+<li>Plain-language explanations</li>
+<li>Rust code examples using community crates</li>
+<li>Security insights and common pitfalls</li>
+<li>Domain-specific applications</li>
+</ul>
+<h2 id="code-and-examples"><a class="header" href="#code-and-examples">Code and Examples</a></h2>
+<p>Most chapters include runnable Rust code to illustrate key concepts.</p>
+<ul>
+<li>You’ll need a working Rust toolchain (<code>rustup</code>, <code>cargo</code>)</li>
+<li>Code examples are written for Rust 2021 edition</li>
+<li>All examples are hosted in <a href="https://github.com/VinEckSie/sealed-in-rust-examples">a separate repository</a></li>
+</ul>
+<p>Each folder in that repo corresponds to a chapter or concept from the book.<br />
+You can clone it, run the examples, and experiment freely without touching production code or complex crates.</p>
+<blockquote>
+<p><strong>Note:</strong> These examples are minimal and didactic. They are not full cryptographic libraries.</p>
+</blockquote>
+<p>If you’re looking for a complete, idiomatic crypto crate, see my separate library: <a href="https://github.com/VinEckSie/cryon">Cryon</a></p>
+<h2 id="non-linear-reading"><a class="header" href="#non-linear-reading">Non-linear Reading</a></h2>
+<p>This book doesn’t assume linear progress.</p>
+<ul>
+<li>Want to build a secure file encryption tool? <strong>Symmetric Ciphers</strong> + <strong>Secure Infrastructure</strong></li>
+<li>Curious about smart contracts? Go directly to <strong>ECC</strong> and <strong>Blockchain &amp; Web3</strong></li>
+<li>Working on embedded firmware? Check out <strong>Ascon</strong>, <strong>PRESENT</strong>, and <strong>Defense &amp; Aerospace</strong></li>
+</ul>
+<p>Each domain chapter reminds you of the necessary primitives — like a map, not a locked path.</p>
+<h2 id="contributing-feedback--issues"><a class="header" href="#contributing-feedback--issues">Contributing, Feedback, &amp; Issues</a></h2>
+<p>This book is a living project.</p>
+<ul>
+<li>Errors? Open an issue or PR on the <a href="https://github.com/VinEckSie/sealed-in-rust">GitHub repo</a></li>
+<li>Suggestions? You’re welcome to share ideas for domains, examples, or improvements</li>
+<li>Contributions to the examples repo are also welcome</li>
+</ul>
+<h2 id="final-note"><a class="header" href="#final-note">Final Note</a></h2>
+<p>This is not a cryptography textbook — it’s a cryptographic engineering manual.<br />
+By the end, you’ll not only understand the primitives, you’ll know how to use them to secure real systems — in Rust, by design, not by accident.</p>
+<p>Let’s begin.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="cryptography-is-a-systems-problem"><a class="header" href="#cryptography-is-a-systems-problem">Cryptography is a Systems Problem</a></h2>
+<p>Cryptography isn’t just about math.</p>
+<p>Yes, it starts with elegant algebra and deep number theory — but where it breaks is almost always <em>in the system</em>. Real-world failures come from poor implementations, leaky abstractions, memory bugs, side channels, or simply misunderstanding what problem crypto is supposed to solve.</p>
+<p>It’s easy to misuse even “secure” primitives. AES in ECB mode is fast — and useless. RSA without padding is a gift to attackers. And a perfectly strong key means nothing if it’s printed to your logs.</p>
+<p>This is why cryptography is a <strong>systems engineering problem</strong> first.</p>
+<p>And it’s why Rust matters.</p>
+<p>Rust doesn’t make crypto correct by default — nothing does — but it gives you tools to <strong>avoid entire classes of catastrophic bugs</strong>.</p>
+<p>Memory safety, explicit ownership, fearless concurrency, and tight control over the machine — these aren’t “nice to have.” They’re security features.</p>
+<h3 id="-1"><a class="header" href="#-1"></a></h3>
+<p>In this book, we’ll treat crypto not as a black box, but as a series of concrete systems problems — and show how Rust lets us solve them with clarity and precision.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="safety-performance-predictability"><a class="header" href="#safety-performance-predictability">Safety, Performance, Predictability</a></h2>
+<p>Rust is often praised for its speed and memory safety, but in the world of cryptographic engineering, these traits aren’t just nice-to-haves — they’re critical.</p>
+<h3 id="safety"><a class="header" href="#safety">Safety</a></h3>
+<p>Bugs in cryptographic code can be catastrophic. Memory corruption, undefined behavior, or uninitialized values can leak secrets or open attack vectors. Rust eliminates entire classes of these bugs at compile time:</p>
+<ul>
+<li>No nulls</li>
+<li>No uninitialized memory</li>
+<li>No data races</li>
+<li>No buffer overflows</li>
+</ul>
+<p>This safety isn’t enforced by a runtime, but by the <strong>borrow checker</strong> at compile time. That makes Rust extremely attractive for writing low-level cryptographic code <strong>without sacrificing control</strong>.</p>
+<h3 id="performance"><a class="header" href="#performance">️Performance</a></h3>
+<p>Rust compiles to fast native code, comparable to C and C++. There’s no garbage collector, and you pay only for what you use. This matters because cryptography is often used in:</p>
+<ul>
+<li>Performance-critical code paths (e.g. TLS handshakes, file encryption)</li>
+<li>Embedded systems where CPU cycles and memory are limited</li>
+</ul>
+<p>Rust lets you stay close to the metal while writing high-level abstractions — it’s a rare balance.</p>
+<h3 id="predictability"><a class="header" href="#predictability">Predictability</a></h3>
+<p>In cryptography, <strong>predictable behavior</strong> is essential. You need fine-grained control over:</p>
+<ul>
+<li><strong>Timing</strong> — Avoid accidental leaks via early-exit comparisons or branching on secrets</li>
+<li><strong>Memory</strong> — Prevent unexpected reallocations or optimization side effects</li>
+<li><strong>Execution</strong> — Ensure constant-time logic without interference from JITs or hidden runtime behavior</li>
+</ul>
+<p>Rust gives you this control by default, making it a strong ally in defending against side-channel attacks.</p>
+<blockquote>
+<p>In short: Rust brings the low-level control of C, the safety of functional languages, and the clarity of modern syntax — all in a single toolchain. That’s why cryptographers and security engineers are increasingly turning to it.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="the-cost-of-unsafety-in-crypto-famous-failures"><a class="header" href="#the-cost-of-unsafety-in-crypto-famous-failures">The Cost of Unsafety in Crypto: Famous Failures</a></h2>
+<p>Cryptography doesn’t fail because math is broken — it fails because <strong>systems leak</strong>, <strong>code panics</strong>, or <strong>side-channels whisper secrets</strong>.<br><br>
+And most of these failures? They stem from unsafety.
+<br><br><br>
+Here are just a few real-world examples of cryptographic disasters caused by unsafe programming, undefined behavior, or lack of control:</p>
+<h4 id="heartbleed-2014"><a class="header" href="#heartbleed-2014">Heartbleed (2014)</a></h4>
+<ul>
+<li><strong>Cause:</strong> Buffer over-read in OpenSSL (written in C)</li>
+<li><strong>Impact:</strong> Leaked private keys, passwords, and session data from millions of servers</li>
+<li><strong>Lesson:</strong> Unsafe memory access can silently expose secrets</li>
+</ul>
+<h4 id="debian-rng-bug-20062008"><a class="header" href="#debian-rng-bug-20062008">Debian RNG Bug (2006–2008)</a></h4>
+<ul>
+<li><strong>Cause:</strong> A developer commented out entropy-gathering code in OpenSSL</li>
+<li><strong>Impact:</strong> Generated only 32,768 possible SSH keys across all Debian systems</li>
+<li><strong>Lesson:</strong> Cryptographic quality often hinges on <strong>deterministic, auditable behavior</strong></li>
+</ul>
+<h4 id="lucky13-attack-2013"><a class="header" href="#lucky13-attack-2013">Lucky13 Attack (2013)</a></h4>
+<ul>
+<li><strong>Cause:</strong> Tiny timing differences in CBC mode padding checks (TLS)</li>
+<li><strong>Impact:</strong> Allowed attackers to decrypt data by measuring how long responses took</li>
+<li><strong>Lesson:</strong> Timing leaks can <strong>invalidate encryption</strong>, even with perfect math</li>
+</ul>
+<h4 id="javascript-crypto-fails"><a class="header" href="#javascript-crypto-fails">JavaScript Crypto Fails</a></h4>
+<ul>
+<li><strong>Cause:</strong> Misuse of <code>Math.random()</code> or insecure key handling in frontend apps</li>
+<li><strong>Impact:</strong> Predictable keys, insecure password storage, and non-constant-time comparisons</li>
+<li><strong>Lesson:</strong> Languages with hidden optimizations make <strong>constant-time logic fragile</strong></li>
+</ul>
+<h3 id="why-rust-helps"><a class="header" href="#why-rust-helps">Why Rust Helps</a></h3>
+<p>Rust’s safety model eliminates whole classes of vulnerabilities:</p>
+<ul>
+<li>No null/dangling pointers</li>
+<li>No uninitialized memory</li>
+<li>Memory-safe concurrency</li>
+<li>Deterministic behavior at runtime (no GC pauses, no JIT surprise)</li>
+</ul>
+<p>You still have to <strong>design crypto carefully</strong>, but with Rust, you’re not building it on quicksand.</p>
+<blockquote>
+<p>Writing secure cryptography in unsafe languages is like writing legal contracts with disappearing ink.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="first-code-a-naive-xor-encryptor"><a class="header" href="#first-code-a-naive-xor-encryptor">First Code: A Naive XOR Encryptor</a></h2>
+<p>Let’s write our first cryptographic algorithm — or at least something that <em>looks</em> like one.</p>
+<p>We’ll implement a simple <strong>XOR cipher</strong>. This method is <em>insecure</em> and should never be used in real applications — but it’s the perfect teaching tool.</p>
+<h3 id="whats-a-cipher"><a class="header" href="#whats-a-cipher">What’s a Cipher?</a></h3>
+<p>A <strong>cipher</strong> is just a method to <strong>transform readable data (plaintext)</strong> into <strong>unreadable data (ciphertext)</strong> using a <strong>key</strong> — and vice versa.</p>
+<blockquote>
+<p>🧭 Word Origin — “Cipher”
+The word comes from the Arabic “ṣifr” (صفر), meaning “zero” or “empty”. It passed through Latin (cifra), then into French and English as cipher.<br><br>
+What started as a symbol for “nothing” evolved into a word for secret writing — and eventually, encryption algorithms.</p>
+</blockquote>
+<h3 id="what-is-xor"><a class="header" href="#what-is-xor">What is XOR?</a></h3>
+<p>XOR stands for <strong>“exclusive or”</strong>, a bitwise operation:</p>
+<div class="table-wrapper"><table><thead><tr><th>A</th><th>B</th><th>A XOR B</th></tr></thead><tbody>
+<tr><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>0</td></tr>
 </tbody></table>
 </div>
+<p>In short: XOR returns 1 if the bits differ, 0 if they’re the same.</p>
+<p>The XOR operation flips bits when they differ:</p>
+<pre><code class="language-text">1 ^ 0 = 1
+1 ^ 1 = 0
+0 ^ 0 = 0
+</code></pre>
+<p>When used for encryption:</p>
+<pre><code class="language-text">cipher = plaintext ^ key
+plaintext = cipher ^ key
+</code></pre>
+<p>That’s why XOR can be used to encrypt and decrypt data — if you XOR something twice with the same key, you get the original back.</p>
+<blockquote>
+<p>✅ Simple, reversible, fast — but also dangerously weak when misused.</p>
+</blockquote>
+<h3 id="xor-bit-by-bit"><a class="header" href="#xor-bit-by-bit">XOR, Bit by Bit</a></h3>
+<p>To truly understand XOR in cryptography, it helps to look at bit-level behavior.</p>
+<p>Let’s say you compute:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>100 ^ 1
+<span class="boring">}</span></code></pre></pre>
+<p>This doesn’t mean 100 to the power of 1. In Rust, ^ is the bitwise XOR operator.</p>
+<p>Step-by-step:</p>
+<pre><code class="language-yaml">100 = 0110 0100
+1   = 0000 0001
+---------------
+XOR = 0110 0101 = 101
+</code></pre>
+<p>✅ Each bit is compared:
+If they’re different → 1
+If they’re the same → 0</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>100 ^ 1 = 101
+<span class="boring">}</span></code></pre></pre>
+<p>This is what makes XOR useful: you can toggle bits with a key, and reverse it by applying the same key again.</p>
+<h3 id="why-this"><a class="header" href="#why-this">Why This?</a></h3>
+<p>This example teaches you:</p>
 <ul>
-<li><input disabled="" type="checkbox" checked=""/>
-Complete task</li>
-<li><input disabled="" type="checkbox"/>
-Incomplete task</li>
+<li>The reversible nature of XOR (<code>a ^ b ^ b == a</code>)</li>
+<li>Handling bytes and slices in Rust</li>
+<li>Thinking about encryption as a transformation</li>
+<li>Why key reuse and simplicity are dangerous</li>
 </ul>
-<hr>
-<ol class="footnote-definition"><li id="footnote-note">
-<p>This text is the contents of the footnote, which will be rendered
-towards the bottom. <a href="#fr-note-1">↩</a></p>
-</li>
-</ol><div style="break-before: page; page-break-before: always;"></div><h1 id="contributors"><a class="header" href="#contributors">Contributors</a></h1>
-<p>Here is a list of the contributors who have helped improving mdBook. Big
-shout-out to them!</p>
-<ul>
-<li><a href="https://github.com/mdinger">mdinger</a></li>
-<li>Kevin (<a href="https://github.com/kbknapp">kbknapp</a>)</li>
-<li>Steve Klabnik (<a href="https://github.com/steveklabnik">steveklabnik</a>)</li>
-<li>Adam Solove (<a href="https://github.com/asolove">asolove</a>)</li>
-<li>Wayne Nilsen (<a href="https://github.com/waynenilsen">waynenilsen</a>)</li>
-<li><a href="https://github.com/funkill">funnkill</a></li>
-<li>Fu Gangqiang (<a href="https://github.com/FuGangqiang">FuGangqiang</a>)</li>
-<li><a href="https://github.com/Michael-F-Bryan">Michael-F-Bryan</a></li>
-<li>Chris Spiegel (<a href="https://github.com/cspiegel">cspiegel</a>)</li>
-<li><a href="https://github.com/projektir">projektir</a></li>
-<li><a href="https://github.com/Phaiax">Phaiax</a></li>
-<li>Matt Ickstadt (<a href="https://github.com/mattico">mattico</a>)</li>
-<li>Weihang Lo (<a href="https://github.com/weihanglo">weihanglo</a>)</li>
-<li>Avision Ho (<a href="https://github.com/avisionh">avisionh</a>)</li>
-<li>Vivek Akupatni (<a href="https://github.com/apatniv">apatniv</a>)</li>
-<li>Eric Huss (<a href="https://github.com/ehuss">ehuss</a>)</li>
-<li>Josh Rotenberg (<a href="https://github.com/joshrotenberg">joshrotenberg</a>)</li>
-</ul>
-<p>If you feel you’re missing from this list, feel free to add yourself in a PR.</p>
+<h3 id="naive-xor-in-rust"><a class="header" href="#naive-xor-in-rust">Naive XOR in Rust</a></h3>
+<p>Here’s how to implement a basic XOR encryptor in Rust: <br></p>
+<p>Filename: src/main.rs</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let message = b"hello world";
+    let key = b"key";
 
+    let encrypted = xor_encrypt(message, key);
+    let decrypted = xor_encrypt(&amp;encrypted, key);
+
+    println!("Encrypted: {:x?}", encrypted);
+    println!("Decrypted: {}", String::from_utf8_lossy(&amp;decrypted));
+}
+
+pub fn xor_encrypt(input: &amp;[u8], key: &amp;[u8]) -&gt; Vec&lt;u8&gt; {
+    input
+        .iter()
+        .enumerate()
+        .map(|(i, &amp;byte)| byte ^ key[i % key.len()])
+        .collect()
+}</code></pre></pre>
+<h3 id="output"><a class="header" href="#output">Output</a></h3>
+<p>The output will show the encrypted bytes (in hex) and the original decrypted message.</p>
+<h3 id="whats-wrong-with-this-cipher"><a class="header" href="#whats-wrong-with-this-cipher">What’s Wrong With This Cipher?</a></h3>
+<ul>
+<li>Key reuse makes patterns obvious</li>
+<li>No randomness or initialization vector (IV)</li>
+<li>Susceptible to frequency analysis attacks</li>
+</ul>
+<br>
+This cipher is insecure — but it demonstrates important cryptographic concepts:
+<ul>
+<li>Reversibility</li>
+<li>Byte-wise transformations</li>
+<li>Why randomness and key handling matter</li>
+</ul>
+<p>You’ll build on this when implementing real-world ciphers like ChaCha20 or AES.</p>
+<div style="break-before: page; page-break-before: always;"></div>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

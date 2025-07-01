@@ -1,5 +1,5 @@
 [book]
-title = "Sealed in Rust"
+title = "Sealed in Rust — Domain-Driven Edition"
 description = "The example book covers examples."
 authors = ["VinEckSie"]
 language = "en"
@@ -12,9 +12,9 @@ preferred-dark-theme = "navy"
 smart-punctuation = true
 mathjax-support = true
 copy-fonts = true
-#additional-css = ["custom.css", "custom2.css"]
+#additional-css = ["css/custom.css"]
 #additional-js = ["custom.js"]
-no-section-label = false
+no-section-label = true
 git-repository-url = "https://github.com/rust-lang/mdBook"
 git-repository-icon = "fa-github"
 edit-url-template = "https://github.com/rust-lang/mdBook/edit/master/guide/{path}"

@@ -1,154 +1,112 @@
-# Summary
+📘 Sealed in Rust — Table of Contents (Domain-Driven Edition)
 
-[Introduction](README.md)
-
----
-# User Guide
-
-- [Installation](guide/installation.md)
-- [Reading Books](guide/reading.md)
-- [Creating a Book](guide/creating.md)
-
+- [Introduction](introduction.md)
+- [How to Use This Book](how-to-use.md)  
 
 ---
-# PART 1 — Foundations
-- [Introduction to Cryptography & Rust]()
-- [What is cryptography?]()
-- [What makes Rust a good fit?]()
-- [The importance of correctness & memory safety]()
-- [The Language of Secrets: Basic Terminology]()
-- [Confidentiality, integrity, authenticity]()
-- [Adversary models, threat models, attacker capabilities]()
-- [Math Primer for Cryptographers]()
-- [Modular arithmetic]()
-- [Prime numbers & GCD]()
-- [Groups, rings, fields (intro only, not academic overkill)]()
 
+# Part 1 — Why Rust Meets Cryptography
+- [1.1. Cryptography is a Systems Problem](01-foundations/01-01-cryptography.md)
+- [1.2. Safety, Performance, Predictability](01-foundations/01-02-rust-offers.md)
+- [1.3. Cost of Unsafety: Famous Failures](01-foundations/01-03-cost-unsafety.md)
+- [1.4. First Code: A Naive XOR Encryptor](01-foundations/01-04-first-code.md)
+- [1.5. Tooling Up](01-foundations/01-05-tooling-up.md)
 
-# PART 2 — Classical Ciphers & First Code
-- [From Caesar to Vigenère: Classical Algorithms]()
-- [Historical context + Rust implementation]()
-- [Frequency analysis]()
-- [Code: cracking Caesar & substitution ciphers]()
-- [Modern Attacks on Classical Ciphers]()
-- [Why these are broken]()
-- [Key reuse, predictability]()
-- [Transition to modern crypto]()
+<!--
+# Part 2 — Core Cryptographic Primitives
+Each chapter includes:
+Intuition & mental models
+Rust crate ecosystem
+Safe APIs and dangerous pitfalls
+- [2.1. Symmetric Ciphers — XOR, AES, ChaCha20]()
+- [2.2. Cryptographic Hashes — SHA-2, BLAKE3]()
+- [2.3. MACs & AEAD — HMAC, Poly1305, AES-GCM]()
+- [2.4. Public-Key Cryptography — DH, RSA, ECC]()
+- [2.5. Digital Signatures — RSA, Ed25519, ECDSA]()
+- [2.6. Key Derivation Functions — Argon2, scrypt]()
+- [2.7. Randomness & Entropy — Nonces, IVs, CSPRNGs]()
+- [2.8. Merkle Trees & Hash Chains — For integrity & proofs]()
+- [2.9. Zero-Knowledge Proofs (ZKPs) — Intros, circuits, tooling]()
+- [2.10. Post-Quantum Crypto — Kyber, Dilithium]()
 
-# PART 3 — Symmetric Cryptography
-- [The Magic of XOR]()
-- [Properties]()
-- [One-Time Pad]()
-- [Rust: custom XOR stream cipher]()
-- [Block Ciphers: Building Blocks]()
-- [Feistel networks, Substitution-Permutation Networks]()
-- [Code: simplified DES / mini-AES for illustration]()
-- [AES and Block Cipher Modes]()
-- [ECB, CBC, CTR, GCM]()
-- [Rust: aes, cipher, block-modes crates]()
-- [Code: encrypt/decrypt with proper mode handling]()
-- [Authenticated Encryption]()
-- [AEAD explained]()
-- [Rust: aes-gcm, chacha20poly1305]()
-- [Code: secure file/message encryption]()
+# Part 3 — Applied Domains for Secure Systems
+[Intro]()
+Each chapter explains:
+Threat model
+Real-world needs
+Rust architecture
+How crypto primitives are applied
 
-# PART 4 — Hashing & Integrity
-- [Cryptographic Hash Functions]()
-- [Properties: preimage, collision resistance]()
-- [Rust: sha2, blake3]()
-- [Code: password hashing, file integrity checker]()
-- [Message Authentication Codes (MACs)]()
-- [HMAC, CMAC]()
-- [Rust: hmac, crypto-mac]()
-- [Code: simple API message verifier]()
+[🔐 Identity & Access Systems]()
+🥇 Most universal, job-relevant, and Rust-friendly.
+Covers passwordless login (WebAuthn), JWTs, OAuth/OIDC, secure tokens, session encryption, and key management.
+📦 Crates: jsonwebtoken, argon2, webpki, ring
 
-# PART 5 — Asymmetric Cryptography
-- [Public Key Cryptography 101]()
-- [Key pairs, trapdoor functions]()
-- [Diffie-Hellman explained visually]()
-- [RSA: Theory and Rust]()
-- [Math background (modular exponentiation, totients)]()
-- [Code: DIY RSA in Rust, then compare to crate]()
-- [Elliptic Curve Cryptography]()
-- [Why ECC? High-level curve intuition]()
-- [Rust: curve25519-dalek, p256]()
-- [Code: generate and exchange keys]()
-- [Digital Signatures]()
-- [RSA & ECDSA signatures]()
-- [Rust: ed25519-dalek, rsa crate]()
-- [Code: verify and sign documents]()
+[🔧 Secure Infrastructure]()
+🥈 High usability, backend dev friendly, broad scope.
+Topics: encrypted storage, password vaults, file integrity, E2E comms, secure CI/CD secrets handling.
+📦 Crates: aes-gcm, blake3, age, secrecy
 
-# PART 6 — Applications & Design
-- [Key Derivation Functions]()
-- [KDFs, PBKDF2, scrypt, Argon2]()
-- [Rust: argon2, ring]()
-- [Code: password-based key generation]()
-- [Randomness & Entropy]()
-- [Secure RNGs, nonces, IVs]()
-- [Rust: rand_core, getrandom, ring]()
-- [Secure Design Principles]()
-- [Don't roll your own crypto]()
-- [Common pitfalls]()
-- [Rust-specific safety techniques]()
-- [18.5 Merkle Trees & Blockchain Primitives]()
-- [Build a Merkle Tree in Rust]()
-- [Use SHA-256, Keccak]()
-- [Explain transaction integrity]()
-- [secp256k1 and Crypto in Blockchain]()
-- [Key generation, message signing]()
-- [Crates: k256, libsecp256k1]()
+[🪙 Blockchain & Web3]()
+🥉 Massive Rust ecosystem (Substrate, ZK), proven job vector.
+Covers wallets, keypairs, Merkle proofs, secp256k1, zk-SNARKs/STARKs, smart contract verification.
+📦 Crates: k256, ed25519-dalek, bellman, halo2
 
-# PART 7 — Advanced Topics
-- [Zero-Knowledge Proofs (Intro)]()
-- [What they are, why they matter]()
-- [Link to zk-SNARKS, but no deep dive]()
-- [Post-Quantum Cryptography]()
-- [Lattices, NTRU, Kyber]()
-- [Rust: reference Kyber implementation overview]()
-- [20. Zero-Knowledge Proofs (Deep Dive)]()
-- [ zk-SNARKs vs zk-STARKs]()
-- [Tools: bellman, circom, halo2]()
-- [21. Post-Quantum Cryptography]()
-- [    Kyber, Dilithium, Falcon]()
-- [    Rust: pqcrypto, kyber crate]()
-- [22. Lightweight Cryptography for Embedded]()
-- [    Ascon, PRESENT]()
-- [    Code: implement toy cipher with embedded constraints]()
-- [23. Side-Channel Attacks & Constant-Time Rust]()
-- [    Code: benchmark constant-time XOR vs unsafe one]()
-- [    Tools: criterion, valgrind]()
-- [24. Cryptography for Secure Boot & Firmware]()
-- [    Overview: signature chains]()
-- [    Code: simulate signed firmware verification]()
+[🚘 Automotive, IoT & Embedded]()
+✅ Rust's sweet spot: low-level + safety-critical.
+Topics: firmware signing, OTA updates, secure ECUs, constrained crypto (PRESENT, Ascon).
+📦 Crates: ascon, p256, tinyvec, heapless
 
-# PART 8 — Your Own Crypto Crate
-- [Designing Your First Crypto Crate]()
-- [Architecture]()
-- [Docs, tests, benchmarks]()
-- [Code: A mini symmetric cipher with Rust idioms]()
-- [Fuzzing, Auditing & Publishing]()
-- [cargo-fuzz, Clippy, criterion]()
-- [Audit checklists]()
-- [Crate publishing & security considerations]()
+[🛰 Defense & Aerospace]()
+✅ Rust is gaining adoption in high-assurance systems.
+Topics: tamper resistance, telemetry integrity, real-time secure comms, supply chain trust.
+📦 Crates: sha2, aes, getrandom, ed25519
+
+[🧾 Government & Voting]()
+⚠️ Niche but high-credibility and technically rich.
+Topics: verifiable elections, end-to-end auditable systems, blind signatures.
+📦 Crates: rsa, ed25519, pairing, zkp toolkits
+
+[🧬 Medical & Health Systems]()
+⚠️ Important for ethics and regulation; often overlooked.
+Topics: EMR encryption, consent proofs, audit logging, HIPAA-aligned storage.
+📦 Crates: aes-gcm, hmac, blake3, secrecy
+
+[🧠 AI & Privacy-preserving ML]()
+🔥 Forward-looking, research-heavy, strong Rust edge.
+Topics: federated learning, ZK-friendly proofs, differential privacy, encrypted inference.
+📦 Crates: snarkvm, prive, circom-rs
+
+[🧪 Offensive Security & Red Team Tooling]()
+🧠 Very technical, niche but high value in devsecops.
+Topics: C2 channels, encrypted payloads, obfuscation, protocol fuzzing.
+📦 Crates: rc4, xor, chacha20, criterion, cargo-fuzz
+
+# Part 4 — Build Your Own Crypto Crate
+Architecting Safe-by-Design APIs
+
+Modular Code for Reuse & Audit
+
+Testing: Unit, Property, Fuzzing
+
+Documentation: From README to doc comments
+
+Publishing & Maintaining a Secure Rust Crate
 
 # Appendices
-- [A. Glossary of Terms]()
-- [B. List of Rust Crypto Crates (by category)]()
-- [C. Suggested Reading & Further Learning]()
-- [D. Crate: rust_crypto_book_code structure]()
+A. Glossary: Rust & Crypto Terminology
 
+B. Crypto Crates by Use Case
 
-- [Nested example](nested/README.md)
-- [Subchapter](nested/sub-chapter.md)
----
-# Summary2
-- [First Chapter](relative/path/to/markdown.md)
-- [Second Chapter](relative/path/to/markdown2.md)
+C. Suggested Books, Papers & Videos
 
-- [Draft Chapter]()
+D. sealed-in-rust Code Repo Map
 
-- [My First Chapter](my-first-chapter.md)
+E. Project Challenges by Difficulty
+
 
 -----------
 
 [Contributors](misc/contributors.md)
+
+-->

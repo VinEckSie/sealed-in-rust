@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - Sealed in Rust</title>
+        <title>Introduction - Sealed in Rust — Domain-Driven Edition</title>
 
 
         <!-- Custom HTML head -->
@@ -136,7 +136,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Sealed in Rust</h1>
+                    <h1 class="menu-title">Sealed in Rust — Domain-Driven Edition</h1>
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -145,7 +145,7 @@
                         <a href="https://github.com/rust-lang/mdBook" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/rust-lang/mdBook/edit/master/guide/src/README.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/rust-lang/mdBook/edit/master/guide/src/introduction.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -175,13 +175,48 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p><strong>Cryptography is everywhere — and yet most of us treat it like magic.</strong></p>
+<p>From encrypted chats and online banking to firmware updates on satellites, the systems we rely on daily are secured (or compromised) by cryptography. And too often, it fails — not because the math was wrong, but because the implementation was.</p>
+<p><strong>This book exists to change that.</strong></p>
+<p>You’re not here to memorize equations. You’re here to understand, implement, and apply cryptographic primitives to real-world systems using a language designed to prevent mistakes before they happen: <strong>Rust</strong>.</p>
+<p>Whether you’re building infrastructure, smart contracts, embedded firmware, or secure APIs, this book gives you the tools to use cryptography safely, idiomatically, and fearlessly — one primitive, one project, one domain at a time.</p>
+<h2 id="who-this-book-is-for"><a class="header" href="#who-this-book-is-for">Who This Book Is For</a></h2>
+<ul>
+<li>Rust developers who want to understand and apply cryptography</li>
+<li>Security engineers transitioning to Rust</li>
+<li>Curious hackers tired of black-box crypto</li>
+<li>Systems developers who care about safety, correctness, and resilience</li>
+</ul>
+<h2 id="what-youll-learn"><a class="header" href="#what-youll-learn">What You’ll Learn</a></h2>
+<ul>
+<li>The foundations and mental models behind symmetric and asymmetric cryptography</li>
+<li>How to use modern cryptographic crates in Rust safely and idiomatically</li>
+<li>Where cryptographic primitives show up in real-world domains (blockchain, embedded, medical, etc.)</li>
+<li>How to design, test, and publish your own secure Rust crypto crate</li>
+</ul>
+<h2 id="what-this-book-is-not"><a class="header" href="#what-this-book-is-not">What This Book Is Not</a></h2>
+<ul>
+<li>❌ A math-heavy cryptography textbook</li>
+<li>❌ A copy-paste cookbook</li>
+<li>❌ A blockchain hype manual</li>
+</ul>
+<p>We won’t drown you in proofs, but we’ll explain just enough math to build intuition. We’ll write real code — not just use libraries. And we’ll focus on systems-level crypto, not speculative tokens.</p>
+<h2 id="what-youll-need"><a class="header" href="#what-youll-need">What You’ll Need</a></h2>
+<ul>
+<li>✅ Basic experience with Rust (enough to build a CLI or follow <code>cargo run</code>)</li>
+<li>✅ Comfort with reading code, refactoring, and using crates</li>
+<li>✅ Curiosity, and a bias toward safe, practical, applied learning</li>
+</ul>
+<h2 id="lets-begin"><a class="header" href="#lets-begin">Let’s begin</a></h2>
+<p>This book won’t make you a cryptographer in the academic sense — but it will make you something just as rare and valuable:
+A Rust engineer who understands, wields, and applies cryptography with precision, context, and confidence.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
 
-                            <a rel="next prefetch" href="guide/installation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="how-to-use.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -192,7 +227,7 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
 
-                    <a rel="next prefetch" href="guide/installation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="how-to-use.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
