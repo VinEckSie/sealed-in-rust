@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Installation - Sealed in Rust</title>
+        <title>1.4. First Code: A Naive XOR Encryptor - Sealed in Rust — Domain-Driven Edition</title>
 
 
         <!-- Custom HTML head -->
@@ -136,7 +136,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Sealed in Rust</h1>
+                    <h1 class="menu-title">Sealed in Rust — Domain-Driven Edition</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -145,7 +145,7 @@
                         <a href="https://github.com/rust-lang/mdBook" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/rust-lang/mdBook/edit/master/guide/src/guide/installation.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/rust-lang/mdBook/edit/master/guide/src/01-foundations/01-04-first-code.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -174,17 +174,116 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
+                        <h2 id="first-code-a-naive-xor-encryptor"><a class="header" href="#first-code-a-naive-xor-encryptor">First Code: A Naive XOR Encryptor</a></h2>
+<p>Let’s write our first cryptographic algorithm — or at least something that <em>looks</em> like one.</p>
+<p>We’ll implement a simple <strong>XOR cipher</strong>. This method is <em>insecure</em> and should never be used in real applications — but it’s the perfect teaching tool.</p>
+<h3 id="whats-a-cipher"><a class="header" href="#whats-a-cipher">What’s a Cipher?</a></h3>
+<p>A <strong>cipher</strong> is just a method to <strong>transform readable data (plaintext)</strong> into <strong>unreadable data (ciphertext)</strong> using a <strong>key</strong> — and vice versa.</p>
+<blockquote>
+<p>🧭 Word Origin — “Cipher”
+The word comes from the Arabic “ṣifr” (صفر), meaning “zero” or “empty”. It passed through Latin (cifra), then into French and English as cipher.<br><br>
+What started as a symbol for “nothing” evolved into a word for secret writing — and eventually, encryption algorithms.</p>
+</blockquote>
+<h3 id="what-is-xor"><a class="header" href="#what-is-xor">What is XOR?</a></h3>
+<p>XOR stands for <strong>“exclusive or”</strong>, a bitwise operation:</p>
+<div class="table-wrapper"><table><thead><tr><th>A</th><th>B</th><th>A XOR B</th></tr></thead><tbody>
+<tr><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>0</td></tr>
+</tbody></table>
+</div>
+<p>In short: XOR returns 1 if the bits differ, 0 if they’re the same.</p>
+<p>The XOR operation flips bits when they differ:</p>
+<pre><code class="language-text">1 ^ 0 = 1
+1 ^ 1 = 0
+0 ^ 0 = 0
+</code></pre>
+<p>When used for encryption:</p>
+<pre><code class="language-text">cipher = plaintext ^ key
+plaintext = cipher ^ key
+</code></pre>
+<p>That’s why XOR can be used to encrypt and decrypt data — if you XOR something twice with the same key, you get the original back.</p>
+<blockquote>
+<p>✅ Simple, reversible, fast — but also dangerously weak when misused.</p>
+</blockquote>
+<h3 id="xor-bit-by-bit"><a class="header" href="#xor-bit-by-bit">XOR, Bit by Bit</a></h3>
+<p>To truly understand XOR in cryptography, it helps to look at bit-level behavior.</p>
+<p>Let’s say you compute:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>100 ^ 1
+<span class="boring">}</span></code></pre></pre>
+<p>This doesn’t mean 100 to the power of 1. In Rust, ^ is the bitwise XOR operator.</p>
+<p>Step-by-step:</p>
+<pre><code class="language-yaml">100 = 0110 0100
+1   = 0000 0001
+---------------
+XOR = 0110 0101 = 101
+</code></pre>
+<p>✅ Each bit is compared:
+If they’re different → 1
+If they’re the same → 0</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>100 ^ 1 = 101
+<span class="boring">}</span></code></pre></pre>
+<p>This is what makes XOR useful: you can toggle bits with a key, and reverse it by applying the same key again.</p>
+<h3 id="why-this"><a class="header" href="#why-this">Why This?</a></h3>
+<p>This example teaches you:</p>
+<ul>
+<li>The reversible nature of XOR (<code>a ^ b ^ b == a</code>)</li>
+<li>Handling bytes and slices in Rust</li>
+<li>Thinking about encryption as a transformation</li>
+<li>Why key reuse and simplicity are dangerous</li>
+</ul>
+<h3 id="naive-xor-in-rust"><a class="header" href="#naive-xor-in-rust">Naive XOR in Rust</a></h3>
+<p>Here’s how to implement a basic XOR encryptor in Rust: <br></p>
+<p>Filename: src/main.rs</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let message = b"hello world";
+    let key = b"key";
+
+    let encrypted = xor_encrypt(message, key);
+    let decrypted = xor_encrypt(&amp;encrypted, key);
+
+    println!("Encrypted: {:x?}", encrypted);
+    println!("Decrypted: {}", String::from_utf8_lossy(&amp;decrypted));
+}
+
+pub fn xor_encrypt(input: &amp;[u8], key: &amp;[u8]) -&gt; Vec&lt;u8&gt; {
+    input
+        .iter()
+        .enumerate()
+        .map(|(i, &amp;byte)| byte ^ key[i % key.len()])
+        .collect()
+}</code></pre></pre>
+<h3 id="output"><a class="header" href="#output">Output</a></h3>
+<p>The output will show the encrypted bytes (in hex) and the original decrypted message.</p>
+<h3 id="whats-wrong-with-this-cipher"><a class="header" href="#whats-wrong-with-this-cipher">What’s Wrong With This Cipher?</a></h3>
+<ul>
+<li>Key reuse makes patterns obvious</li>
+<li>No randomness or initialization vector (IV)</li>
+<li>Susceptible to frequency analysis attacks</li>
+</ul>
+<br>
+This cipher is insecure — but it demonstrates important cryptographic concepts:
+<ul>
+<li>Reversibility</li>
+<li>Byte-wise transformations</li>
+<li>Why randomness and key handling matter</li>
+</ul>
+<p>You’ll build on this when implementing real-world ciphers like ChaCha20 or AES.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../01-foundations/01-03-cost-unsafety.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../guide/reading.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../01-foundations/01-05-tooling-up.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -194,11 +293,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../01-foundations/01-03-cost-unsafety.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../guide/reading.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../01-foundations/01-05-tooling-up.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
