@@ -35,7 +35,7 @@ editable = true         # allows editing the source code
 copyable = true          # include the copy button for copying code snippets
 copy-js = true           # includes the JavaScript for the code editor
 line-numbers = false     # displays line numbers for editable code
-runnable = true          # displays a run button for rust code
+#runnable = true          # displays a run button for rust code
 
 [output.html.search]
 enable = true            # enables the search feature

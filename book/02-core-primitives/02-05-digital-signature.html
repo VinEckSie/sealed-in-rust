@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>1.5. Tooling Up - Sealed in Rust — Domain-Driven Edition</title>
+        <title>2.5. Digital Signatures - Sealed in Rust — Domain-Driven Edition</title>
 
 
         <!-- Custom HTML head -->
@@ -145,7 +145,7 @@
                         <a href="https://github.com/rust-lang/mdBook" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/rust-lang/mdBook/edit/master/guide/src/01-foundations/01-05-tooling-up.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/rust-lang/mdBook/edit/master/guide/src/02-core-primitives/02-05-digital-signature.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -174,64 +174,16 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h2 id="tooling-up"><a class="header" href="#tooling-up">Tooling Up</a></h2>
-<p>Before we dive deeper into cryptographic primitives, let’s set up our toolbox. In Rust, safety begins before you write code — it starts with choosing the right tools.</p>
-<h3 id="compiler-and-toolchain"><a class="header" href="#compiler-and-toolchain">Compiler and Toolchain</a></h3>
-<p>Install Rust via rustup</p>
-<pre><code class="language-bash">curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-</code></pre>
-<br>
-Prefer cargo new --lib for cryptographic crates
-<p>Enable relevant features in Cargo.toml
-Example:</p>
-<pre><code class="language-toml">[dependencies]
-hex = "0.4"
-rand = "0.8"
-</code></pre>
-<h3 id="linting--formatting"><a class="header" href="#linting--formatting">Linting &amp; Formatting</a></h3>
-<p>rustfmt — keep your code idiomatic</p>
-<p>clippy — catch logic errors and subtle anti-patterns</p>
-<p>Useful alias:</p>
-<pre><code class="language-bash">alias checkall="cargo fmt -- --check &amp;&amp; cargo clippy -- -D warnings &amp;&amp; cargo test"
-</code></pre>
-<h3 id="testing--fuzzing"><a class="header" href="#testing--fuzzing">Testing &amp; Fuzzing</a></h3>
-<p>proptest — Generates randomized inputs to test your code against edge cases automatically.</p>
-<p>cargo-fuzz — Finds vulnerabilities by feeding random inputs and monitoring for panics or crashes.</p>
-<p>Write tests early using #[cfg(test)]</p>
-<p>Use property-based testing with proptest:</p>
-<pre><code class="language-toml">[dev-dependencies]
-proptest = "1.4"
-</code></pre>
-<p>Fuzzing with cargo-fuzz</p>
-<pre><code class="language-bash">cargo install cargo-fuzz
-cargo fuzz init
-</code></pre>
-<h3 id="audit--security-tools"><a class="header" href="#audit--security-tools">Audit &amp; Security Tools</a></h3>
-<p>cargo — audit to catch vulnerable dependencies:</p>
-<pre><code class="language-bash">cargo install cargo-audit
-cargo audit
-</code></pre>
-<p>Dependency pinning with Cargo.lock</p>
-<p>Review unsafe blocks early and often</p>
-<h3 id="other-useful-tools"><a class="header" href="#other-useful-tools">Other Useful Tools</a></h3>
-<p>criterion.rs — for benchmarking crypto algorithms</p>
-<p>cargo-expand — view macro-expanded code</p>
-<p>cargo-geiger — scan for unsafe code:</p>
-<pre><code class="language-bash">cargo install cargo-geiger
-cargo geiger
-</code></pre>
-<p><br><br>
-With the right tools in place, you’re ready to build cryptographic systems that are not only secure — but readable, maintainable, and testable. Let’s move from theory to code.</p>
-
+                        
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../01-foundations/01-04-first-code.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../02-core-primitives/02-04-public-key.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../02-core-primitives/02-01-symmetric-ciphers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../02-core-primitives/02-06-key-derivation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -241,11 +193,11 @@ With the right tools in place, you’re ready to build cryptographic systems tha
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../01-foundations/01-04-first-code.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../02-core-primitives/02-04-public-key.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../02-core-primitives/02-01-symmetric-ciphers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../02-core-primitives/02-06-key-derivation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>1.4. First Code: A Naive XOR Encryptor - Sealed in Rust — Domain-Driven Edition</title>
+        <title>2.1. Symmetric Ciphers - Sealed in Rust — Domain-Driven Edition</title>
 
 
         <!-- Custom HTML head -->
@@ -145,7 +145,7 @@
                         <a href="https://github.com/rust-lang/mdBook" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/rust-lang/mdBook/edit/master/guide/src/01-foundations/01-04-first-code.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/rust-lang/mdBook/edit/master/guide/src/02-core-primitives/02-01-symmetric-ciphers.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -174,66 +174,20 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h2 id="first-code-a-naive-xor-encryptor"><a class="header" href="#first-code-a-naive-xor-encryptor">First Code: A Naive XOR Encryptor</a></h2>
-<p>Let’s write our first cryptographic algorithm — or at least something that <em>looks</em> like one.</p>
-<p>We’ll implement a simple <strong>XOR cipher</strong>. This method is <em>insecure</em> and should never be used in real applications — but it’s the perfect teaching tool.</p>
-<h3 id="whats-a-cipher"><a class="header" href="#whats-a-cipher">What’s a Cipher?</a></h3>
-<p>A <strong>cipher</strong> is just a method to <strong>transform readable data (plaintext)</strong> into <strong>unreadable data (ciphertext)</strong> using a <strong>key</strong> — and vice versa.</p>
+                        <h2 id="symmetric-ciphers-xor-aes-chacha20--beyond"><a class="header" href="#symmetric-ciphers-xor-aes-chacha20--beyond">Symmetric Ciphers: XOR, AES, ChaCha20 &amp; Beyond</a></h2>
 <blockquote>
-<p>🧭 Word Origin — “Cipher”
-The word comes from the Arabic “ṣifr” (صفر), meaning “zero” or “empty”. It passed through Latin (cifra), then into French and English as cipher.<br><br>
-What started as a symbol for “nothing” evolved into a word for secret writing — and eventually, encryption algorithms.</p>
+<p>🔐 <strong>Used in:</strong> VPNs, TLS (post-handshake), disk encryption, messaging apps<br />
+✅ Still foundational in modern cryptography.</p>
 </blockquote>
-<h3 id="what-is-xor"><a class="header" href="#what-is-xor">What is XOR?</a></h3>
-<p>XOR stands for <strong>“exclusive or”</strong>, a bitwise operation:</p>
-<div class="table-wrapper"><table><thead><tr><th>A</th><th>B</th><th>A XOR B</th></tr></thead><tbody>
-<tr><td>0</td><td>0</td><td>0</td></tr>
-<tr><td>0</td><td>1</td><td>1</td></tr>
-<tr><td>1</td><td>0</td><td>1</td></tr>
-<tr><td>1</td><td>1</td><td>0</td></tr>
-</tbody></table>
-</div>
-<p>In short: XOR returns 1 if the bits differ, 0 if they’re the same.</p>
-<p>The XOR operation flips bits when they differ:</p>
-<pre><code class="language-text">1 ^ 0 = 1
-1 ^ 1 = 0
-0 ^ 0 = 0
-</code></pre>
-<p>When used for encryption:</p>
-<pre><code class="language-text">cipher = plaintext ^ key
-plaintext = cipher ^ key
-</code></pre>
-<p>That’s why XOR can be used to encrypt and decrypt data — if you XOR something twice with the same key, you get the original back.</p>
+<h3 id="what-are-symmetric-ciphers"><a class="header" href="#what-are-symmetric-ciphers">What Are Symmetric Ciphers?</a></h3>
+<p>Symmetric ciphers use the <strong>same key</strong> for both encryption and decryption. Unlike public-key cryptography, they don’t offer key exchange—but they are <strong>much faster</strong>, making them ideal for bulk data encryption.</p>
+<p>They are used everywhere: encrypted file systems, secure communications, and even inside protocols like TLS (after the handshake).</p>
+<h3 id="xor-cipher--simplicity-that-teaches"><a class="header" href="#xor-cipher--simplicity-that-teaches">XOR Cipher — Simplicity That Teaches</a></h3>
 <blockquote>
-<p>✅ Simple, reversible, fast — but also dangerously weak when misused.</p>
+<p>⚠️ Insecure. Demonstration-only (used in educational demos, malware obfuscation )</p>
 </blockquote>
-<h3 id="xor-bit-by-bit"><a class="header" href="#xor-bit-by-bit">XOR, Bit by Bit</a></h3>
-<p>To truly understand XOR in cryptography, it helps to look at bit-level behavior.</p>
-<p>Let’s say you compute:</p>
-<pre><code class="language-rust noplayground">100 ^ 1</code></pre>
-<p>This doesn’t mean 100 to the power of 1. In Rust, ^ is the bitwise XOR operator.</p>
-<p>Step-by-step:</p>
-<pre><code class="language-yaml">100 = 0110 0100
-1   = 0000 0001
----------------
-XOR = 0110 0101 = 101
-</code></pre>
-<p>✅ Each bit is compared:
-If they’re different → 1
-If they’re the same → 0</p>
-<pre><code class="language-rust noplayground">100 ^ 1 = 101</code></pre>
-<p>This is what makes XOR useful: you can toggle bits with a key, and reverse it by applying the same key again.</p>
-<h3 id="why-this"><a class="header" href="#why-this">Why This?</a></h3>
-<p>This example teaches you:</p>
-<ul>
-<li>The reversible nature of XOR (<code>a ^ b ^ b == a</code>)</li>
-<li>Handling bytes and slices in Rust</li>
-<li>Thinking about encryption as a transformation</li>
-<li>Why key reuse and simplicity are dangerous</li>
-</ul>
-<h3 id="naive-xor-in-rust"><a class="header" href="#naive-xor-in-rust">Naive XOR in Rust</a></h3>
-<p>Here’s how to implement a basic XOR encryptor in Rust: <br></p>
-<p>Filename: src/main.rs</p>
+<p>XOR is the simplest symmetric cipher: each byte of the message is XORed with a repeating key.
+Reversibility is built-in — XORing twice with the same key restores the original.</p>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let message = b"hello world";
     let key = b"key";
@@ -252,32 +206,178 @@ pub fn xor_encrypt(input: &amp;[u8], key: &amp;[u8]) -&gt; Vec&lt;u8&gt; {
         .map(|(i, &amp;byte)| byte ^ key[i % key.len()])
         .collect()
 }</code></pre></pre>
-<h3 id="output"><a class="header" href="#output">Output</a></h3>
-<p>The output will show the encrypted bytes (in hex) and the original decrypted message.</p>
-<h3 id="whats-wrong-with-this-cipher"><a class="header" href="#whats-wrong-with-this-cipher">What’s Wrong With This Cipher?</a></h3>
-<ul>
-<li>Key reuse makes patterns obvious</li>
-<li>No randomness or initialization vector (IV)</li>
-<li>Susceptible to frequency analysis attacks</li>
-</ul>
+<p>The symmetric encryption can be reversible without storing state — but XOR lacks confusion, diffusion, and resists no attacks.</p>
+<h3 id="feistel-networks--foundation-of-classic-block-ciphers"><a class="header" href="#feistel-networks--foundation-of-classic-block-ciphers">Feistel Networks — Foundation of Classic Block Ciphers</a></h3>
+<blockquote>
+<p>⚠️ Cryptographically obsolete, but conceptually important (used in DES, 3DES)</p>
+</blockquote>
+<p>Feistel networks are a clever way to build reversible encryption using any basic function—even if that function itself can’t be reversed. That’s the key idea.</p>
+<p>Each round:
+Takes two halves: Left (L) and Right (R)
+Computes a function f(R, key)
+Updates the pair as:</p>
+<pre><code class="language-vbnet">L₂ = R
+R₂ = L ⊕ f(R, key)
+</code></pre>
+<p>To encrypt, let’s see it in Rust:</p>
+<pre><pre class="playground"><code class="language-rust">fn feistel_round(l: u8, r: u8, k: u8) -&gt; (u8, u8) {
+    let f = r ^ k;
+    (r, l ^ f)
+}
+
+fn main() {
+    let left: u8 = 0b1010_1010;  // 170
+    let right: u8 = 0b0101_0101; // 85
+    let key: u8 = 0b1111_0000;   // 240
+
+    let (new_left, new_right) = feistel_round(left, right, key);
+    println!("Encrypted: ({}, {})", new_left, new_right);
+}</code></pre></pre>
+<p>To decrypt, use the same function f, but rearranged:</p>
+<pre><pre class="playground"><code class="language-rust">fn feistel_round(l: u8, r: u8, k: u8) -&gt; (u8, u8) {
+    let f = r ^ k;
+    (r, l ^ f)
+}
+
+fn feistel_decrypt(nl: u8, nr: u8, k: u8) -&gt; (u8, u8) {
+    let f = nl ^ k;
+    let l = nr ^ f;
+    (l, nl)
+}
+
+fn main() {
+    let left: u8 = 0b1010_1010;  // 170
+    let right: u8 = 0b0101_0101; // 85
+    let key: u8 = 0b1111_0000;   // 240
+
+    let (new_left, new_right) = feistel_round(left, right, key);
+    println!("Encrypted: ({}, {})", new_left, new_right);
+
+    let (left_orig, right_orig) = feistel_decrypt(new_left, new_right, key);
+    println!("Decrypted: ({}, {})", left_orig, right_orig);
+}</code></pre></pre>
+<p>Because we know:</p>
+<pre><code class="language-pgsql">Encrypted → (R, L ⊕ f(R, k))
+Decryption → L = NewRight ⊕ f(NewLeft, k)
+</code></pre>
 <br>
-This cipher is insecure — but it demonstrates important cryptographic concepts:
-<ul>
-<li>Reversibility</li>
-<li>Byte-wise transformations</li>
-<li>Why randomness and key handling matter</li>
-</ul>
-<p>You’ll build on this when implementing real-world ciphers like ChaCha20 or AES.</p>
+<p>Reversibility comes from XOR being reversible and Swapping the halves.</p>
+<p>Feistel networks let you build reversible encryption even with non-invertible functions.
+This idea shaped DES and similar ciphers.
+Not used today due to known vulnerabilities, but conceptually essential.</p>
+<h3 id="substitutionpermutation-networks-spn"><a class="header" href="#substitutionpermutation-networks-spn">Substitution–Permutation Networks (SPN)</a></h3>
+<p>🧠 Used in AES, Camellia, and modern block ciphers
+✅ Still dominant in current cipher architectures</p>
+<p>SPNs apply:</p>
+<p>Substitution: introduce non-linearity via S-boxes</p>
+<p>Permutation: shuffle bits or bytes to spread influence</p>
+<p>Example (simplified S-box substitution):</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let input: u8 = 0x53;
+let s_box = [/* 256-byte S-box values */];
+let output = s_box[input as usize];
+<span class="boring">}</span></code></pre></pre>
+<p>✅ SPNs offer confusion and diffusion, the two critical pillars for strong symmetric ciphers, as defined by Shannon.</p>
+<h3 id="aes--the-global-symmetric-standard"><a class="header" href="#aes--the-global-symmetric-standard">AES — The Global Symmetric Standard</a></h3>
+<p>🧠 Used in TLS, LUKS, SSH, mobile apps, and FIPS-certified systems
+✅ Secure, fast, and hardware-accelerated</p>
+<p>AES (Advanced Encryption Standard) is a block cipher:</p>
+<p>Block size: 128 bits</p>
+<p>Key sizes: 128, 192, or 256 bits</p>
+<p>Based on SPN design with 10–14 rounds</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use aes::Aes128;
+use block_modes::{BlockMode, Cbc};
+use block_modes::block_padding::Pkcs7;
+
+type Aes128Cbc = Cbc&lt;Aes128, Pkcs7&gt;;
+let cipher = Aes128Cbc::new_from_slices(key, iv).unwrap();
+let ciphertext = cipher.encrypt_vec(plaintext);
+<span class="boring">}</span></code></pre></pre>
+<p>✅ Strong against known attacks when used with a secure mode (not ECB), unique IVs, and good key hygiene.</p>
+<h3 id="chacha20--modern-stream-cipher"><a class="header" href="#chacha20--modern-stream-cipher">ChaCha20 — Modern Stream Cipher</a></h3>
+<p>🧠 Used in WireGuard, mobile apps, TLS (non-AES platforms)
+✅ Fast, simple, and side-channel resistant</p>
+<p>ChaCha20 is a stream cipher:</p>
+<p>Converts key + nonce into a pseudorandom keystream</p>
+<p>XORs that keystream with plaintext</p>
+<p>No padding or block alignment required</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use chacha20::cipher::{KeyIvInit, StreamCipher};
+
+let mut cipher = chacha20::ChaCha20::new(key.into(), nonce.into());
+let mut buffer = plaintext.to_vec();
+cipher.apply_keystream(&amp;mut buffer);
+<span class="boring">}</span></code></pre></pre>
+<p>✅ Safe by default, especially against timing attacks.
+🚨 Like all stream ciphers, never reuse a (key, nonce) pair.</p>
+<h3 id="modes-of-operation"><a class="header" href="#modes-of-operation">Modes of Operation</a></h3>
+<p>🧠 Used to extend block ciphers to arbitrary-length messages
+✅ Secure when correctly applied; required for real-world encryption</p>
+<p>Block ciphers like AES only process fixed-size blocks. Modes of operation define how to apply them to arbitrary-length messages.</p>
+<p>Mode	Secure?	Use Case	Notes
+ECB	❌ No	Educational only	Reveals structure (e.g. “Tux”)
+CBC	⚠️ Risky	Legacy systems	Needs random IV, padding errors
+CTR	✅ Yes	Streaming / fast I/O	Turns AES into stream cipher
+XTS	✅ Yes	Disk encryption	Sector-specific, not general use</p>
+<p>CTR example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use ctr::cipher::{KeyIvInit, StreamCipher};
+let mut cipher = ctr::Ctr128BE::&lt;Aes128&gt;::new(key.into(), nonce.into());
+cipher.apply_keystream(&amp;mut buffer);
+<span class="boring">}</span></code></pre></pre>
+<p>✅ Modes are not optional—they define the cipher’s real-world safety.</p>
+<h3 id="aes-vs-chacha20--which-to-choose"><a class="header" href="#aes-vs-chacha20--which-to-choose">AES vs. ChaCha20 — Which to Choose?</a></h3>
+<p>🧠 Used in virtually all secure communications
+✅ Choice depends on platform, speed, and implementation safety</p>
+<p>Feature	AES (with mode)	ChaCha20
+Type	Block cipher	Stream cipher
+Speed	Hardware-accelerated	Fast on all CPUs
+Complexity	Higher	Lower
+Side-channel	Depends on impl	Timing-safe by design
+Use Cases	File encryption, TLS	VPNs, mobile, embedded</p>
+<p>✅ Both are safe when used correctly. ChaCha20 is often the default when simplicity or portability is needed.</p>
+<h3 id="a-glimpse-at-key-derivation"><a class="header" href="#a-glimpse-at-key-derivation">A Glimpse at Key Derivation</a></h3>
+<p>🧠 Used in password-based encryption and key expansion
+✅ Absolutely required in practice. Included here for context.</p>
+<p>Users don’t enter 256-bit keys—they type passwords. These must be turned into cryptographic keys with KDFs like:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use hkdf::Hkdf;
+use sha2::Sha256;
+
+let hk = Hkdf::&lt;Sha256&gt;::new(Some(salt), ikm);
+let mut okm = [0u8; 32];
+hk.expand(b"info", &amp;mut okm).unwrap();
+<span class="boring">}</span></code></pre></pre>
+<p>✅ You’ll revisit this in depth later. For now, remember: never use raw passwords as encryption keys.</p>
+<h3 id="summary"><a class="header" href="#summary">Summary</a></h3>
+<p>🧠 Symmetric ciphers are the engine room of practical cryptography
+✅ This chapter builds your foundation for all applied encryption</p>
+<p>You now understand:</p>
+<p>Why symmetric encryption matters</p>
+<p>How XOR, Feistel, and SPNs evolved into AES</p>
+<p>When and how to use AES or ChaCha20</p>
+<p>Why modes are critical—and where they fail</p>
+<p>That encryption alone isn’t enough (spoiler: integrity comes next)</p>
+<p>``yaml</p>
+<hr />
+<p>Ready to paste into your book repo. Let me know when you’re ready to move on to the <strong>next chapter: MACs and AEAD</strong>, or if you want me to generate <code>.md</code> files for past/future chapters too.</p>
+<pre><code></code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../01-foundations/01-03-cost-unsafety.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../01-foundations/01-05-tooling-up.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../01-foundations/01-05-tooling-up.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../02-core-primitives/02-02-crypto-hashes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -287,11 +387,11 @@ This cipher is insecure — but it demonstrates important cryptographic concepts
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../01-foundations/01-03-cost-unsafety.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../01-foundations/01-05-tooling-up.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../01-foundations/01-05-tooling-up.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../02-core-primitives/02-02-crypto-hashes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

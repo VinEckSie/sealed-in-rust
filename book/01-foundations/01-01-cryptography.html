@@ -177,14 +177,27 @@
                         <h2 id="cryptography-is-a-systems-problem"><a class="header" href="#cryptography-is-a-systems-problem">Cryptography is a Systems Problem</a></h2>
 <p>Cryptography isn’t just about math.</p>
 <p>Yes, it starts with elegant algebra and deep number theory — but where it breaks is almost always <em>in the system</em>. Real-world failures come from poor implementations, leaky abstractions, memory bugs, side channels, or simply misunderstanding what problem crypto is supposed to solve.</p>
-<p>It’s easy to misuse even “secure” primitives. AES in ECB mode is fast — and useless. RSA without padding is a gift to attackers. And a perfectly strong key means nothing if it’s printed to your logs.</p>
+<p>It’s easy to misuse even “secure” primitives. AES<sup class="footnote-reference" id="fr-aes-1"><a href="#footnote-aes">1</a></sup> in ECB mode<sup class="footnote-reference" id="fr-ecb-1"><a href="#footnote-ecb">2</a></sup> is fast — and useless. RSA<sup class="footnote-reference" id="fr-rsa-1"><a href="#footnote-rsa">3</a></sup> without padding<sup class="footnote-reference" id="fr-padding-1"><a href="#footnote-padding">4</a></sup> is a gift to attackers. And a perfectly strong key means nothing if it’s printed to your logs.</p>
 <p>This is why cryptography is a <strong>systems engineering problem</strong> first.</p>
 <p>And it’s why Rust matters.</p>
 <p>Rust doesn’t make crypto correct by default — nothing does — but it gives you tools to <strong>avoid entire classes of catastrophic bugs</strong>.</p>
 <p>Memory safety, explicit ownership, fearless concurrency, and tight control over the machine — these aren’t “nice to have.” They’re security features.</p>
 <h3 id=""><a class="header" href="#"></a></h3>
 <p>In this book, we’ll treat crypto not as a black box, but as a series of concrete systems problems — and show how Rust lets us solve them with clarity and precision.</p>
-
+<hr>
+<ol class="footnote-definition"><li id="footnote-aes">
+<p>AES (Advanced Encryption Standard) is a widely used symmetric cipher known for its performance and strong security — when used correctly. <a href="#fr-aes-1">↩</a></p>
+</li>
+<li id="footnote-ecb">
+<p>ECB (Electronic Code Book) mode encrypts each block independently, revealing patterns in the plaintext and making it insecure for most purposes. <a href="#fr-ecb-1">↩</a></p>
+</li>
+<li id="footnote-rsa">
+<p>RSA (Rivest–Shamir–Adleman) is a public-key cryptosystem used for encryption and digital signatures. It relies on the difficulty of factoring large integers. <a href="#fr-rsa-1">↩</a></p>
+</li>
+<li id="footnote-padding">
+<p>Padding in RSA adds randomness or structure to the plaintext before encryption, preventing deterministic outputs. Without it, attackers can guess messages, detect patterns, or exploit mathematical properties to break the cipher. <a href="#fr-padding-1">↩</a></p>
+</li>
+</ol>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

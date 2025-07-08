@@ -48,7 +48,7 @@ That’s why XOR can be used to encrypt and decrypt data — if you XOR somethin
 To truly understand XOR in cryptography, it helps to look at bit-level behavior.
 
 Let’s say you compute:
-```rust
+```rust,noplayground
 100 ^ 1
 ```
 
@@ -66,7 +66,7 @@ XOR = 0110 0101 = 101
 If they’re different → 1
 If they’re the same → 0
 
-```rust
+```rust,noplayground
 100 ^ 1 = 101
 ```
 

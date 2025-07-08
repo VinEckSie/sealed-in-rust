@@ -12,23 +12,26 @@
 - [1.4. First Code: A Naive XOR Encryptor](01-foundations/01-04-first-code.md)
 - [1.5. Tooling Up](01-foundations/01-05-tooling-up.md)
 
-<!--
+
 # Part 2 — Core Cryptographic Primitives
+<!--
 Each chapter includes:
 Intuition & mental models
 Rust crate ecosystem
 Safe APIs and dangerous pitfalls
-- [2.1. Symmetric Ciphers — XOR, AES, ChaCha20]()
-- [2.2. Cryptographic Hashes — SHA-2, BLAKE3]()
-- [2.3. MACs & AEAD — HMAC, Poly1305, AES-GCM]()
-- [2.4. Public-Key Cryptography — DH, RSA, ECC]()
-- [2.5. Digital Signatures — RSA, Ed25519, ECDSA]()
-- [2.6. Key Derivation Functions — Argon2, scrypt]()
-- [2.7. Randomness & Entropy — Nonces, IVs, CSPRNGs]()
-- [2.8. Merkle Trees & Hash Chains — For integrity & proofs]()
-- [2.9. Zero-Knowledge Proofs (ZKPs) — Intros, circuits, tooling]()
-- [2.10. Post-Quantum Crypto — Kyber, Dilithium]()
+-->
+- [2.1. Symmetric Ciphers](02-core-primitives/02-01-symmetric-ciphers.md)#Symmetric Ciphers — XOR, AES, ChaCha20]
+- [2.2. Cryptographic Hashes](02-core-primitives/02-02-crypto-hashes.md)#Cryptographic Hashes — SHA-2, BLAKE3
+- [2.3. MACs & AEAD](02-core-primitives/02-03-mac-aead.md)#MACs & AEAD — HMAC, Poly1305, AES-GCM
+- [2.4. Public-Key Cryptography](02-core-primitives/02-04-public-key.md)#Public-Key Cryptography — DH, RSA, ECC
+- [2.5. Digital Signatures](02-core-primitives/02-05-digital-signature.md)#Digital Signatures — RSA, Ed25519, ECDSA
+- [2.6. Key Derivation Functions](02-core-primitives/02-06-key-derivation.md)#Key Derivation Functions — Argon2, scrypt
+- [2.7. Randomness & Entropy](02-core-primitives/02-07-randomness-entropy.md)#Randomness & Entropy — Nonces, IVs, CSPRNGs
+- [2.8. Merkle Trees & Hash Chains](02-core-primitives/02-08-merkle-tree.md)#Merkle Trees & Hash Chains — For integrity & proofs
+- [2.9. Zero-Knowledge Proofs (ZKPs)](02-core-primitives/02-09-zkp.md)#Zero-Knowledge Proofs (ZKPs) — Intros, circuits, tooling
+- [2.10. Post-Quantum Crypto](02-core-primitives/02-10-post-quantum.md)#Post-Quantum Crypto — Kyber, Dilithium
 
+<!--
 # Part 3 — Applied Domains for Secure Systems
 [Intro]()
 Each chapter explains:
