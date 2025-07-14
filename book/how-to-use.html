@@ -196,14 +196,14 @@ You can read it front to back, or jump directly to the domains and primitives mo
 <ul>
 <li>You’ll need a working Rust toolchain (<code>rustup</code>, <code>cargo</code>)</li>
 <li>Code examples are written for Rust 2021 edition</li>
-<li>All examples are hosted in <a href="https://github.com/VinEckSie/sealed-in-rust-examples">a separate repository</a></li>
 </ul>
+<!--- All examples are hosted in [a separate repository](https://github.com/VinEckSie/sealed-in-rust-examples)-->
 <p>Each folder in that repo corresponds to a chapter or concept from the book.<br />
 You can clone it, run the examples, and experiment freely without touching production code or complex crates.</p>
 <blockquote>
 <p><strong>Note:</strong> These examples are minimal and didactic. They are not full cryptographic libraries.</p>
 </blockquote>
-<p>If you’re looking for a complete, idiomatic crypto crate, see my separate library: <a href="https://github.com/VinEckSie/cryon">Cryon</a></p>
+<!--If you're looking for a complete, idiomatic crypto crate, see my separate library: [Cryon](https://github.com/VinEckSie/cryon)-->
 <h2 id="non-linear-reading"><a class="header" href="#non-linear-reading">Non-linear Reading</a></h2>
 <p>This book doesn’t assume linear progress.</p>
 <ul>
@@ -253,22 +253,6 @@ By the end, you’ll not only understand the primitives, you’ll know how to us
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

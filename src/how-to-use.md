@@ -27,14 +27,14 @@ Most chapters include runnable Rust code to illustrate key concepts.
 
 - You’ll need a working Rust toolchain (`rustup`, `cargo`)
 - Code examples are written for Rust 2021 edition
-- All examples are hosted in [a separate repository](https://github.com/VinEckSie/sealed-in-rust-examples)
+<!--- All examples are hosted in [a separate repository](https://github.com/VinEckSie/sealed-in-rust-examples)-->
 
 Each folder in that repo corresponds to a chapter or concept from the book.  
 You can clone it, run the examples, and experiment freely without touching production code or complex crates.
 
 > **Note:** These examples are minimal and didactic. They are not full cryptographic libraries.
 
-If you're looking for a complete, idiomatic crypto crate, see my separate library: [Cryon](https://github.com/VinEckSie/cryon)
+<!--If you're looking for a complete, idiomatic crypto crate, see my separate library: [Cryon](https://github.com/VinEckSie/cryon)-->
 
 
 ## Non-linear Reading

@@ -6,14 +6,12 @@ language = "en"
 src = "src"
 
 [output.html]
-#theme = "my-theme"
 default-theme = "light"
 preferred-dark-theme = "navy"
+preferred-light-theme = "rust"
 smart-punctuation = true
 mathjax-support = true
 copy-fonts = true
-#additional-css = ["css/custom.css"]
-#additional-js = ["custom.js"]
 no-section-label = true
 git-repository-url = "https://github.com/rust-lang/mdBook"
 git-repository-icon = "fa-github"
@@ -21,6 +19,9 @@ edit-url-template = "https://github.com/rust-lang/mdBook/edit/master/guide/{path
 #site-url = "/example-book/"
 #cname = "myproject.rs"
 #input-404 = "not-found.md"
+#theme = "my-theme"
+#additional-css = ["css/custom.css"]
+#additional-js = ["custom.js"]
 
 [output.html.print]
 enable = true    # include support for printable output
