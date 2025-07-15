@@ -22,7 +22,7 @@ rand = "0.8"
 ```
 
 ### Linting & Formatting
-rustfmt — keep your code idiomatic
+rustfmt keep your code idiomatic
 
 clippy — catch logic errors and subtle anti-patterns
 
