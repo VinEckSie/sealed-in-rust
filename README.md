@@ -1,5 +1,5 @@
 # 🔐 Sealed in Rust
-<img width="1024" height="1024" alt="ChatGPT Image Jun 23, 2025, 11_13_41 PM" src="https://github.com/user-attachments/assets/13d63f9b-903d-439f-a92d-2095dbd66763" />
+<img width="400" height="400" alt="ChatGPT Image Jun 23, 2025, 11_13_41 PM" src="https://github.com/user-attachments/assets/13d63f9b-903d-439f-a92d-2095dbd66763" />
 
 
 A fearless journey into cryptography — written in Rust.
