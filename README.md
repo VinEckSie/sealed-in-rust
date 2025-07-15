@@ -10,29 +10,6 @@ This book explores how real-world systems use cryptographic primitives to solve 
 - Practical.  
 - Defense-grade where it counts.
 
-# 🔐 Sealed in Rust
-
-<table>
-<tr>
-<td>
-
-A fearless journey into cryptography — written in Rust.
-
-This book explores how real-world systems use cryptographic primitives to solve serious problems.  
-Each chapter links code to purpose: not just how cryptography works, but **why it matters** — from secure login flows to zero-knowledge proofs.
-
-- Domain-driven  
-- Practical  
-- Defense-grade where it counts  
-
-</td>
-<td>
-<img src="https://github.com/user-attachments/assets/13d63f9b-903d-439f-a92d-2095dbd66763" width="420" />
-</td>
-</tr>
-</table>
-
-
 ## 📦 What to Expect
 
 - Mental models and safe APIs  
