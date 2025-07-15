@@ -1,6 +1,11 @@
 # 🔐 Sealed in Rust
-<img width="400" height="400" alt="ChatGPT Image Jun 23, 2025, 11_13_41 PM" src="https://github.com/user-attachments/assets/13d63f9b-903d-439f-a92d-2095dbd66763" />
 
+
+<a href="https://vinecksie.github.io/sealed-in-rust">
+  <img src="https://github.com/user-attachments/assets/13d63f9b-903d-439f-a92d-2095dbd66763" width="420" />
+</a>
+
+📘 **Read the book here** → [Sealed in Rust](https://vinecksie.github.io/sealed-in-rust)
 
 A fearless journey into cryptography — written in Rust.
 
