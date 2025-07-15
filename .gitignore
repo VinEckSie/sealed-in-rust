@@ -1,2 +1,10 @@
-../book
+# mdBook output
+book/
+# Rust stuff (in case you add code later)
+target/
+*.rs.bk
+*.swp
+# macOS cruft
+.DS_Store
+# chapters skeleton
 /src/SUMMARY-dev.md

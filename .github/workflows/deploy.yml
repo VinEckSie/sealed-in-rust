@@ -2,24 +2,30 @@ name: Deploy mdBook to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+
+permissions:
+  contents: write  # Needed for gh-pages push
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout source
-      uses: actions/checkout@v4
+      - name: Checkout source
+        uses: actions/checkout@v4
 
-    - name: Install mdbook
-      run: cargo install mdbook
+      - name: Install mdBook
+        run: cargo install mdbook
 
-    - name: Build the book
-      run: mdbook build
+      - name: Build the book
+        run: mdbook build
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./book
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./book
+          publish_branch: gh-pages  # 🔥 this tells it *exactly* where to deploy
+          keep_files: false         # ensures clean overwrite each time

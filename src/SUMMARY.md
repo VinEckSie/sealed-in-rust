@@ -1,7 +1,7 @@
 📘 Sealed in Rust — Table of Contents (Domain-Driven Edition)
 
-- [Introduction](introduction.md)
-- [How to Use This Book](how-to-use.md)  
+- [Introduction](00-Intro/introduction.md)
+- [How to Use This Book](00-Intro/how-to-use.md)  
 
 ---
 
