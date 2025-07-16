@@ -7,7 +7,7 @@
 
 [📘 **Read the book**](https://vinecksie.github.io/sealed-in-rust)
 
-[📘 **Explore the Book Overview & Roadmap**](https://vinecksie.github.io/sealed-in-rust)
+[📘 **Explore the Book Overview & Roadmap**](https://sealedinrust.super.site)
 
 A fearless journey into cryptography — written in Rust.
 
