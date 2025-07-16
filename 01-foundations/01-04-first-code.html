@@ -1,0 +1,327 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>1.4. First Code: A Naive XOR Encryptor - Sealed in Rust — Domain-Driven Edition</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="The example book covers examples.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Sealed in Rust — Domain-Driven Edition</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/mdBook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/mdBook/edit/master/guide/src/01-foundations/01-04-first-code.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="first-code-a-naive-xor-encryptor"><a class="header" href="#first-code-a-naive-xor-encryptor">First Code: A Naive XOR Encryptor</a></h2>
+<p>Let’s write our first cryptographic algorithm — or at least something that <em>looks</em> like one.</p>
+<p>We’ll implement a simple <strong>XOR cipher</strong>. This method is <em>insecure</em> and should never be used in real applications — but it’s the perfect teaching tool.</p>
+<h3 id="whats-a-cipher"><a class="header" href="#whats-a-cipher">What’s a Cipher?</a></h3>
+<p>A <strong>cipher</strong> is just a method to <strong>transform readable data (plaintext)</strong> into <strong>unreadable data (ciphertext)</strong> using a <strong>key</strong> — and vice versa.</p>
+<blockquote>
+<p>🧭 Word Origin — “Cipher”
+The word comes from the Arabic “ṣifr” (صفر), meaning “zero” or “empty”. It passed through Latin (cifra), then into French and English as cipher.<br><br>
+What started as a symbol for “nothing” evolved into a word for secret writing — and eventually, encryption algorithms.</p>
+</blockquote>
+<h3 id="what-is-xor"><a class="header" href="#what-is-xor">What is XOR?</a></h3>
+<p>XOR stands for <strong>“exclusive or”</strong>, a bitwise operation:</p>
+<div class="table-wrapper"><table><thead><tr><th>A</th><th>B</th><th>A XOR B</th></tr></thead><tbody>
+<tr><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>0</td></tr>
+</tbody></table>
+</div>
+<p>In short: XOR returns 1 if the bits differ, 0 if they’re the same.</p>
+<p>The XOR operation flips bits when they differ:</p>
+<pre><code class="language-text">1 ^ 0 = 1
+1 ^ 1 = 0
+0 ^ 0 = 0
+</code></pre>
+<p>When used for encryption:</p>
+<pre><code class="language-text">cipher = plaintext ^ key
+plaintext = cipher ^ key
+</code></pre>
+<p>That’s why XOR can be used to encrypt and decrypt data — if you XOR something twice with the same key, you get the original back.</p>
+<blockquote>
+<p>✅ Simple, reversible, fast — but also dangerously weak when misused.</p>
+</blockquote>
+<h3 id="xor-bit-by-bit"><a class="header" href="#xor-bit-by-bit">XOR, Bit by Bit</a></h3>
+<p>To truly understand XOR in cryptography, it helps to look at bit-level behavior.</p>
+<p>Let’s say you compute:</p>
+<pre><code class="language-rust noplayground">100 ^ 1</code></pre>
+<p>This doesn’t mean 100 to the power of 1. In Rust, ^ is the bitwise XOR operator.</p>
+<p>Step-by-step:</p>
+<pre><code class="language-yaml">100 = 0110 0100
+1   = 0000 0001
+---------------
+XOR = 0110 0101 = 101
+</code></pre>
+<p>✅ Each bit is compared:
+If they’re different → 1
+If they’re the same → 0</p>
+<pre><code class="language-rust noplayground">100 ^ 1 = 101</code></pre>
+<p>This is what makes XOR useful: you can toggle bits with a key, and reverse it by applying the same key again.</p>
+<h3 id="why-this"><a class="header" href="#why-this">Why This?</a></h3>
+<p>This example teaches you:</p>
+<ul>
+<li>The reversible nature of XOR (<code>a ^ b ^ b == a</code>)</li>
+<li>Handling bytes and slices in Rust</li>
+<li>Thinking about encryption as a transformation</li>
+<li>Why key reuse and simplicity are dangerous</li>
+</ul>
+<h3 id="naive-xor-in-rust"><a class="header" href="#naive-xor-in-rust">Naive XOR in Rust</a></h3>
+<p>Here’s how to implement a basic XOR encryptor in Rust: <br></p>
+<p>Filename: src/main.rs</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let message = b"hello world";
+    let key = b"key";
+
+    let encrypted = xor_encrypt(message, key);
+    let decrypted = xor_encrypt(&amp;encrypted, key);
+
+    println!("Encrypted: {:x?}", encrypted);
+    println!("Decrypted: {}", String::from_utf8_lossy(&amp;decrypted));
+}
+
+pub fn xor_encrypt(input: &amp;[u8], key: &amp;[u8]) -&gt; Vec&lt;u8&gt; {
+    input
+        .iter()
+        .enumerate()
+        .map(|(i, &amp;byte)| byte ^ key[i % key.len()])
+        .collect()
+}</code></pre></pre>
+<h3 id="output"><a class="header" href="#output">Output</a></h3>
+<p>The output will show the encrypted bytes (in hex) and the original decrypted message.</p>
+<h3 id="whats-wrong-with-this-cipher"><a class="header" href="#whats-wrong-with-this-cipher">What’s Wrong With This Cipher?</a></h3>
+<ul>
+<li>Key reuse makes patterns obvious</li>
+<li>No randomness or initialization vector (IV)</li>
+<li>Susceptible to frequency analysis attacks</li>
+</ul>
+<br>
+This cipher is insecure — but it demonstrates important cryptographic concepts:
+<ul>
+<li>Reversibility</li>
+<li>Byte-wise transformations</li>
+<li>Why randomness and key handling matter</li>
+</ul>
+<p>You’ll build on this when implementing real-world ciphers like ChaCha20 or AES.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../01-foundations/01-03-cost-unsafety.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../01-foundations/01-05-tooling-up.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../01-foundations/01-03-cost-unsafety.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../01-foundations/01-05-tooling-up.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
