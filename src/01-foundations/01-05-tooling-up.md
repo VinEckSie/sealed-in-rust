@@ -1,83 +1,40 @@
 ## Tooling Up
 
-Before we dive deeper into cryptographic primitives, let's set up our toolbox. In Rust, safety begins before you write code — it starts with choosing the right tools.
+Before we dive into cryptographic primitives, here’s a quick look at tools that can support your Rust development journey — especially if you plan to write your own crypto libraries.
 
-### Compiler and Toolchain
-Install Rust via rustup
+> None of these tools are required to read or complete the following chapters.  
+> If you already have `cargo` installed, you're good to go!
 
-```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
+That said, for readers who want to build clean, secure, and testable codebases, these tools are worth bookmarking:
 
-<br>
-Prefer cargo new --lib for cryptographic crates
-
-Enable relevant features in Cargo.toml
-Example:
-
-```toml
-[dependencies]
-hex = "0.4"
-rand = "0.8"
-```
-
-### Linting & Formatting
-rustfmt keep your code idiomatic
-
-clippy — catch logic errors and subtle anti-patterns
-
-Useful alias:
-
-```bash
-alias checkall="cargo fmt -- --check && cargo clippy -- -D warnings && cargo test"
-```
+### Code Quality
+- **[rustfmt](https://github.com/rust-lang/rustfmt)** — auto-formats code to keep it idiomatic
+- **[clippy](https://github.com/rust-lang/rust-clippy)** — catches common pitfalls and non-idiomatic patterns
 
 ### Testing & Fuzzing
+- **[proptest](https://docs.rs/proptest)** — property-based testing for edge case discovery
+- **[cargo-fuzz](https://rust-fuzz.github.io/book/)** — fuzz testing to uncover panics and vulnerabilities
 
-proptest --- Generates randomized inputs to test your code against edge cases automatically.
+### Security & Auditing
+- **[cargo-audit](https://github.com/RustSec/rustsec/tree/main/cargo-audit)** — alerts you to vulnerable crates
+- **[cargo-geiger](https://github.com/rust-secure-code/cargo-geiger)** — scans for `unsafe` code
 
-cargo-fuzz --- Finds vulnerabilities by feeding random inputs and monitoring for panics or crashes.
+### Benchmarking & Debugging
+- **[Criterion.rs](https://bheisler.github.io/criterion.rs/book/)** — precise performance benchmarks
+- **[cargo-expand](https://github.com/dtolnay/cargo-expand)** — view macro-expanded code (useful when using `#[derive(...)]`)
 
-Write tests early using #[cfg(test)]
+As you gain experience, integrating these tools will help ensure your cryptographic code is not only correct — but robust, maintainable, and audit-friendly.
 
-Use property-based testing with proptest:
+### Try It Yourself
 
-```toml
-[dev-dependencies]
-proptest = "1.4"
-```
+Want to skip the setup and jump right into coding?
 
-Fuzzing with cargo-fuzz
-
-```bash
-cargo install cargo-fuzz
-cargo fuzz init
-```
-
-### Audit & Security Tools
-cargo --- audit to catch vulnerable dependencies:
+👉 Use the [Sealed in Rust Starter Template](https://github.com/vinecksie/sealed-starter) — a minimal Rust project preconfigured with the tools mentioned above.
 
 ```bash
-cargo install cargo-audit
-cargo audit
+git clone https://github.com/vinecksie/sealed-starter.git
+cd sealed-starter
+cargo test
 ```
 
-Dependency pinning with Cargo.lock
-
-Review unsafe blocks early and often
-
-### Other Useful Tools
-criterion.rs — for benchmarking crypto algorithms
-
-cargo-expand --- view macro-expanded code
-
-cargo-geiger --- scan for unsafe code:
-
-```bash
-cargo install cargo-geiger
-cargo geiger
-```
-
-<br><br>
-With the right tools in place, you're ready to build cryptographic systems that are not only secure — but readable, maintainable, and testable. Let’s move from theory to code.
-
+<!--This project will evolve with the book and include examples, tests, and benchmarking code as you progress.-->

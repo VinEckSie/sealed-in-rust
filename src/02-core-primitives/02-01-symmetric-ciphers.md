@@ -3,6 +3,7 @@
 > 🔐 **Used in:** VPNs, TLS (post-handshake), disk encryption, messaging apps  
 > ✅ Still foundational in modern cryptography.
 
+
 ### What Are Symmetric Ciphers?
 
 Symmetric ciphers use the **same key** for both encryption and decryption. Unlike public-key cryptography, they don’t offer key exchange—but they are **much faster**, making them ideal for bulk data encryption.
@@ -12,6 +13,7 @@ They are used everywhere: encrypted file systems, secure communications, and eve
 
 ### XOR Cipher — Simplicity That Teaches
 > ⚠️ Insecure. Demonstration-only (used in educational demos, malware obfuscation )
+> > ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ Annotate if a Rust crate exists + maturity level
 
 XOR is the simplest symmetric cipher: each byte of the message is XORed with a repeating key.
 Reversibility is built-in — XORing twice with the same key restores the original.
@@ -41,6 +43,7 @@ The symmetric encryption can be reversible without storing state — but XOR lac
 
 ### Feistel Networks — Foundation of Classic Block Ciphers
 > ⚠️ Cryptographically obsolete, but conceptually important (used in DES, 3DES)
+> > ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ Annotate if a Rust crate exists + maturity level
 
 Feistel networks are a clever way to build reversible encryption using any basic function—even if that function itself can’t be reversed. That’s the key idea.
 
@@ -114,6 +117,7 @@ Not used today due to known vulnerabilities, but conceptually essential.
 ### Substitution–Permutation Networks (SPN)
 🧠 Used in AES, Camellia, and modern block ciphers
 ✅ Still dominant in current cipher architectures
+> ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ Annotate if a Rust crate exists + maturity level
 
 SPNs apply:
 
