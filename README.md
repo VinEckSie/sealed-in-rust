@@ -5,7 +5,9 @@
   <img src="https://github.com/user-attachments/assets/13d63f9b-903d-439f-a92d-2095dbd66763" width="420" />
 </a>
 
-📘 **Read the book here** → [Sealed in Rust](https://vinecksie.github.io/sealed-in-rust)
+[📘 **Read the book**](https://vinecksie.github.io/sealed-in-rust)
+
+[📘 **Explore the Book Overview & Roadmap**](https://vinecksie.github.io/sealed-in-rust)
 
 A fearless journey into cryptography — written in Rust.
 
