@@ -11,3 +11,6 @@
 - [1.3. Cost of Unsafety: Famous Failures](01-foundations/01-03-cost-unsafety.md)
 - [1.4. First Code: A Naive XOR Encryptor](01-foundations/01-04-first-code.md)
 - [1.5. Tooling Up](01-foundations/01-05-tooling-up.md)
+
+# Part 2 — Core Cryptographic Primitives
+- [2.1. Symmetric Ciphers — XOR, AES, ChaCha20](02-core-primitives/02-01-symmetric-ciphers.md)

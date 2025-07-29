@@ -13,14 +13,22 @@ They are used everywhere: encrypted file systems, secure communications, and eve
 
 ### XOR Cipher — Simplicity That Teaches
 > ⚠️ Insecure. Demonstration-only (used in educational demos, malware obfuscation )
-> > ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ Annotate if a Rust crate exists + maturity level
+<!--
+> > ![youtube](https://github.com/user-attachments/assets/e6eeacfc-ba92-4ecf-bb7b-48ad2384c1ae)   Watch it on my *Fearless in Rust* channel:  [XOR Cipher in Rust - Step by Step](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+>⚠️ Annotate if a Rust crate exists + maturity level
+-->
+We first explored XOR encryption in [Section 1.4: First Code — A Naive XOR Encryptor](../01-foundations/01-04-first-code.md), where we built a full working example from scratch.
+
+
+
+
 
 XOR is the simplest symmetric cipher: each byte of the message is XORed with a repeating key.
 Reversibility is built-in — XORing twice with the same key restores the original.
 
 ```rust
 fn main() {
-    let message = b"hello world";
+    let message = b"Hi, Rust!";
     let key = b"key";
 
     let encrypted = xor_encrypt(message, key);
@@ -38,22 +46,25 @@ pub fn xor_encrypt(input: &[u8], key: &[u8]) -> Vec<u8> {
         .collect()
 }
 ```
-
-The symmetric encryption can be reversible without storing state — but XOR lacks confusion, diffusion, and resists no attacks.
+> **🟢 Conclusion**
+> XOR encryption is reversible and stateless, which makes it simple and fast. But it lacks confusion and diffusion, so patterns in the input remain visible — offering no real resistance to cryptanalysis.
 
 ### Feistel Networks — Foundation of Classic Block Ciphers
 > ⚠️ Cryptographically obsolete, but conceptually important (used in DES, 3DES)
-> > ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ Annotate if a Rust crate exists + maturity level
-
+<!--
+> ⚠️️ Annotate if a Rust crate exists + maturity level
+-->
 Feistel networks are a clever way to build reversible encryption using any basic function—even if that function itself can’t be reversed. That’s the key idea.
 
-Each round:
-Takes two halves: Left (L) and Right (R)
-Computes a function f(R, key)
-Updates the pair as:
+Each round applies a transformation to the data. Multiple rounds are chained to strengthen security.
+
+Each round does the following:
+1. Takes two halves: Left (L) and Right (R)
+2. Computes a function f(R, key)
+3. Updates the pair as:
 ```vbnet
-L₂ = R
-R₂ = L ⊕ f(R, key)
+L₂ = R₁
+R₂ = L₁ ⊕ f(R₁, key)
 ```
 
 To encrypt, let’s see it in Rust:
@@ -64,195 +75,210 @@ fn feistel_round(l: u8, r: u8, k: u8) -> (u8, u8) {
 }
 
 fn main() {
-    let left: u8 = 0b1010_1010;  // 170
-    let right: u8 = 0b0101_0101; // 85
+    let left1: u8 = 0b1010_1010;  // 170
+    let right1: u8 = 0b0101_0101; // 85
     let key: u8 = 0b1111_0000;   // 240
 
-    let (new_left, new_right) = feistel_round(left, right, key);
-    println!("Encrypted: ({}, {})", new_left, new_right);
+    let (left2, right2) = feistel_round(left1, right1, key);
+    println!("Encrypted: ({}, {})", left2, right2);
 }
 ```
 
-To decrypt, use the same function f, but rearranged:
+Decryption reuses the same function f, simply reversing the round transformation:
 
 ```rust
-fn feistel_round(l: u8, r: u8, k: u8) -> (u8, u8) {
-    let f = r ^ k;
-    (r, l ^ f)
+fn feistel_round(l1: u8, r1: u8, k: u8) -> (u8, u8) {
+    let f = r1 ^ k;
+    (r1, l1 ^ f)
 }
 
-fn feistel_decrypt(nl: u8, nr: u8, k: u8) -> (u8, u8) {
-    let f = nl ^ k;
-    let l = nr ^ f;
-    (l, nl)
+fn feistel_decrypt(l2: u8, r2: u8, k: u8) -> (u8, u8) {
+    let f = l2 ^ k;
+    let l1 = r2 ^ f;
+    (l1, l2)
 }
 
 fn main() {
-    let left: u8 = 0b1010_1010;  // 170
-    let right: u8 = 0b0101_0101; // 85
+    let left1: u8 = 0b1010_1010;  // 170
+    let right1: u8 = 0b0101_0101; // 85
     let key: u8 = 0b1111_0000;   // 240
 
-    let (new_left, new_right) = feistel_round(left, right, key);
-    println!("Encrypted: ({}, {})", new_left, new_right);
+    let (left2, right2) = feistel_round(left1, right1, key);
+    println!("Encrypted: ({}, {})", left2, right2);
 
-    let (left_orig, right_orig) = feistel_decrypt(new_left, new_right, key);
+    let (left_orig, right_orig) = feistel_decrypt(left2, right2, key);
     println!("Decrypted: ({}, {})", left_orig, right_orig);
 }
 ```
+<br>
+Because encryption produces :
 
-Because we know:
 ```pgsql
 Encrypted → (R, L ⊕ f(R, k))
-Decryption → L = NewRight ⊕ f(NewLeft, k)
 ```
+
+Let’s define:
+- L₁ and R₁ = original input
+- L₂ = R₁ and R₂ = L₁ ⊕ f(R₁, k)
+
+
+We receive (L₂, R₂) and want to recover (L₁, R₁):
+1. From encryption, we know L₂ = R₁
+   - So: R₁ = L₂
+
+2. And: R₂ = L₁ ⊕ f(R₁, k)
+   - Replace R₁ with L₂
+   - R₂ = L₁ ⊕ f(L₂, k)
+
+3. Rearranging to get L₁:
+   - L₁ = R₂ ⊕ f(L₂, k)
 
 <br>
+So, decryption is
 
-Reversibility comes from XOR being reversible and Swapping the halves.
+```pgsql
+L₁ = R₂ ⊕ f(L₂, k)
+R₁ = L₂
+```
 
+> **🟢 Conclusion**  
+> Reversibility comes from XOR being reversible and swapping the halves.
 Feistel networks let you build reversible encryption even with non-invertible functions.
 This idea shaped DES and similar ciphers. 
-Not used today due to known vulnerabilities, but conceptually essential.
+> 
+> Not used today due to known vulnerabilities, but conceptually essential.
 
 ### Substitution–Permutation Networks (SPN)
-🧠 Used in AES, Camellia, and modern block ciphers
-✅ Still dominant in current cipher architectures
-> ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ Annotate if a Rust crate exists + maturity level
+>  ⚠️ Used in AES, Camellia, and modern block ciphers.
+> Still dominant in current cipher architectures
+<!--
+> ⚠️ Annotate if a Rust crate exists + maturity level
+-->
+Substitution-Permutation Networks (SPNs) are a powerful way to build secure block ciphers by layering simple operations repeated across multiple rounds to build a secure cipher. 
 
-SPNs apply:
+Each round does the following:
+1. Substitution – replace each byte using an S-box (non-linear mapping)
+2. Permutation – reorder bits or bytes to spread influence
+3. Key mixing – XOR the block with a round key
 
-Substitution: introduce non-linearity via S-boxes
+Decryption reverses these steps in reverse order.
 
-Permutation: shuffle bits or bytes to spread influence
 
-Example (simplified S-box substitution):
+> 💡 An S-box (substitution box) is a predefined table that maps each input byte to a new output byte. 
+> Its goal is to introduce non-linearity — meaning the output doesn't follow any simple, predictable rule based on the input. 
+> <br><br>
+> This non-linear mapping ensures that small changes in the input produce unpredictable changes in the output, making it impossible to reverse or model with linear equations — a key requirement for secure encryption.
 
-```rust
-let input: u8 = 0x53;
-let s_box = [/* 256-byte S-box values */];
-let output = s_box[input as usize];
-```
-
-✅ SPNs offer confusion and diffusion, the two critical pillars for strong symmetric ciphers, as defined by Shannon.
-
-### AES — The Global Symmetric Standard
-🧠 Used in TLS, LUKS, SSH, mobile apps, and FIPS-certified systems
-✅ Secure, fast, and hardware-accelerated
-
-AES (Advanced Encryption Standard) is a block cipher:
-
-Block size: 128 bits
-
-Key sizes: 128, 192, or 256 bits
-
-Based on SPN design with 10–14 rounds
+<br>
+Let’s walk through a simple encryption of a 4-byte block.
 
 ```rust
-use aes::Aes128;
-use block_modes::{BlockMode, Cbc};
-use block_modes::block_padding::Pkcs7;
+use std::convert::TryInto;
 
-type Aes128Cbc = Cbc<Aes128, Pkcs7>;
-let cipher = Aes128Cbc::new_from_slices(key, iv).unwrap();
-let ciphertext = cipher.encrypt_vec(plaintext);
+// Manually defined "shuffled" S-box (shortened for demo)
+let s_box: [u8; 16] = [
+   0x63, 0x7C, 0x77, 0x7B,
+   0xF2, 0x6B, 0x6F, 0xC5,
+   0x30, 0x01, 0x67, 0x2B,
+   0xFE, 0xD7, 0xAB, 0x76,
+];
+
+// Step 1: Substitution with S-box
+// ⚠️ input and output (substituted) must have the same size
+// Otherwise, map() or indexing will panic at runtime
+let input: [u8; 4] = [0x00, 0x03, 0x07, 0x0F];
+let substituted: [u8; 4] = input.map(|b| s_box[b as usize]);
+
+// Step 2: Permutation (custom byte reordering)
+let permuted: [u8; 4] = [
+   substituted[2], // byte 2 moves to pos 0
+   substituted[0], // byte 0 → pos 1
+   substituted[3], // byte 3 → pos 2
+   substituted[1], // byte 1 → pos 3
+];
+
+// Step 3: XOR with round key
+let round_key: [u8; 4] = [0xF0, 0x0F, 0xAA, 0x55];
+let encrypted: [u8; 4] = permuted
+   .iter()
+   .zip(round_key.iter())
+   .map(|(a, b)| a ^ b)
+   .collect::<Vec<u8>>()
+   .try_into()
+   .unwrap();
+
+
+println!("Step        | Byte 0 | Byte 1 | Byte 2 | Byte 3");
+println!("------------|--------|--------|--------|--------");
+println!("Input       | {:02X}     | {:02X}     | {:02X}     | {:02X}", input[0], input[1], input[2], input[3]);
+println!("Substituted | {:02X}     | {:02X}     | {:02X}     | {:02X}", substituted[0], substituted[1], substituted[2], substituted[3]);
+println!("Permuted    | {:02X}     | {:02X}     | {:02X}     | {:02X}", permuted[0], permuted[1], permuted[2], permuted[3]);
+println!("Encrypted   | {:02X}     | {:02X}     | {:02X}     | {:02X}", encrypted[0], encrypted[1], encrypted[2], encrypted[3]);
 ```
-
-✅ Strong against known attacks when used with a secure mode (not ECB), unique IVs, and good key hygiene.
-
-### ChaCha20 — Modern Stream Cipher
-🧠 Used in WireGuard, mobile apps, TLS (non-AES platforms)
-✅ Fast, simple, and side-channel resistant
-
-ChaCha20 is a stream cipher:
-
-Converts key + nonce into a pseudorandom keystream
-
-XORs that keystream with plaintext
-
-No padding or block alignment required
+<br>
+To decrypt, reverse the steps in reverse order:
 
 ```rust
-use chacha20::cipher::{KeyIvInit, StreamCipher};
+use std::convert::TryInto;
 
-let mut cipher = chacha20::ChaCha20::new(key.into(), nonce.into());
-let mut buffer = plaintext.to_vec();
-cipher.apply_keystream(&mut buffer);
+// Same S-box used for encryption
+let s_box: [u8; 16] = [
+   0x63, 0x7C, 0x77, 0x7B,
+   0xF2, 0x6B, 0x6F, 0xC5,
+   0x30, 0x01, 0x67, 0x2B,
+   0xFE, 0xD7, 0xAB, 0x76,
+];
+
+// Generate inverse S-box
+let mut inverse_s_box = [0u8; 256];
+for (i, &val) in s_box.iter().enumerate() {
+   inverse_s_box[val as usize] = i as u8;
+}
+
+// Encrypted block from the previous encryption output
+let encrypted: [u8; 4] = [0x35, 0x6C, 0xDC, 0x2E];
+let round_key: [u8; 4] = [0xF0, 0x0F, 0xAA, 0x55];
+
+// Step 1: Undo XOR with round key
+let xor_reversed: [u8; 4] = encrypted
+        .iter()
+        .zip(round_key.iter())
+        .map(|(a, b)| a ^ b)
+        .collect::<Vec<u8>>()
+        .try_into()
+        .unwrap();
+
+// Step 2:  Reverse permutation
+// Remember: original permutation was [2, 0, 3, 1]
+// So now we must do: [1, 3, 0, 2]
+let permuted_reversed: [u8; 4] = [
+   xor_reversed[1], // was originally at index 0
+   xor_reversed[3], // was at index 1
+   xor_reversed[0], // was at index 2
+   xor_reversed[2], // was at index 3
+];
+
+// Step 3: Inverse substitution using inverse_s_box
+let decrypted: [u8; 4] = permuted_reversed.map(|b| inverse_s_box[b as usize]);
+
+
+println!("Step        | Byte 0 | Byte 1 | Byte 2 | Byte 3");
+println!("------------|--------|--------|--------|--------");
+println!("Encrypted   | {:02X}     | {:02X}     | {:02X}     | {:02X}", encrypted[0], encrypted[1], encrypted[2], encrypted[3]);
+println!("XOR Rev     | {:02X}     | {:02X}     | {:02X}     | {:02X}", xor_reversed[0], xor_reversed[1], xor_reversed[2], xor_reversed[3]);
+println!("Perm Rev    | {:02X}     | {:02X}     | {:02X}     | {:02X}", permuted_reversed[0], permuted_reversed[1], permuted_reversed[2], permuted_reversed[3]);
+println!("Decrypted   | {:02X}     | {:02X}     | {:02X}     | {:02X}", decrypted[0], decrypted[1], decrypted[2], decrypted[3]);
 ```
 
-✅ Safe by default, especially against timing attacks.
-🚨 Like all stream ciphers, never reuse a (key, nonce) pair.
+Why it works
 
-### Modes of Operation
-🧠 Used to extend block ciphers to arbitrary-length messages
-✅ Secure when correctly applied; required for real-world encryption
+- Substitution = confusion → Hide relationships between plaintext and ciphertext
+- Permutation = diffusion → Spread input influence across the block
 
-Block ciphers like AES only process fixed-size blocks. Modes of operation define how to apply them to arbitrary-length messages.
+These are Shannon’s two pillars of secure ciphers.
 
-Mode	Secure?	Use Case	Notes
-ECB	❌ No	Educational only	Reveals structure (e.g. "Tux")
-CBC	⚠️ Risky	Legacy systems	Needs random IV, padding errors
-CTR	✅ Yes	Streaming / fast I/O	Turns AES into stream cipher
-XTS	✅ Yes	Disk encryption	Sector-specific, not general use
+> 💡 Claude Shannon, widely considered the father of modern cryptography, introduced the concepts of confusion and diffusion in 1949 as the foundation of secure cipher design.
 
-CTR example:
+> **🟢 Conclusion**  
+> Substitution-Permutation Networks provide a simple yet powerful structure for building symmetric ciphers. They deliver the critical properties of confusion and diffusion, as first formalized by Claude Shannon in his foundational work on cryptographic security.
 
-```rust
-use ctr::cipher::{KeyIvInit, StreamCipher};
-let mut cipher = ctr::Ctr128BE::<Aes128>::new(key.into(), nonce.into());
-cipher.apply_keystream(&mut buffer);
-```
-
-✅ Modes are not optional—they define the cipher’s real-world safety.
-
-### AES vs. ChaCha20 — Which to Choose?
-🧠 Used in virtually all secure communications
-✅ Choice depends on platform, speed, and implementation safety
-
-Feature	AES (with mode)	ChaCha20
-Type	Block cipher	Stream cipher
-Speed	Hardware-accelerated	Fast on all CPUs
-Complexity	Higher	Lower
-Side-channel	Depends on impl	Timing-safe by design
-Use Cases	File encryption, TLS	VPNs, mobile, embedded
-
-✅ Both are safe when used correctly. ChaCha20 is often the default when simplicity or portability is needed.
-
-### A Glimpse at Key Derivation
-🧠 Used in password-based encryption and key expansion
-✅ Absolutely required in practice. Included here for context.
-
-Users don’t enter 256-bit keys—they type passwords. These must be turned into cryptographic keys with KDFs like:
-
-```rust
-use hkdf::Hkdf;
-use sha2::Sha256;
-
-let hk = Hkdf::<Sha256>::new(Some(salt), ikm);
-let mut okm = [0u8; 32];
-hk.expand(b"info", &mut okm).unwrap();
-```
-
-✅ You'll revisit this in depth later. For now, remember: never use raw passwords as encryption keys.
-
-### Summary
-🧠 Symmetric ciphers are the engine room of practical cryptography
-✅ This chapter builds your foundation for all applied encryption
-
-You now understand:
-
-Why symmetric encryption matters
-
-How XOR, Feistel, and SPNs evolved into AES
-
-When and how to use AES or ChaCha20
-
-Why modes are critical—and where they fail
-
-That encryption alone isn’t enough (spoiler: integrity comes next)
-
-``yaml
-
----
-
-Ready to paste into your book repo. Let me know when you're ready to move on to the **next chapter: MACs and AEAD**, or if you want me to generate `.md` files for past/future chapters too.
-```
