@@ -19,7 +19,7 @@ edit-url-template = "https://github.com/rust-lang/mdBook/edit/master/guide/{path
 #site-url = "/example-book/"
 #cname = "myproject.rs"
 #input-404 = "not-found.md"
-#theme = "my-theme"
+theme = "src/theme"
 #additional-css = ["css/custom.css"]
 #additional-js = ["custom.js"]
 

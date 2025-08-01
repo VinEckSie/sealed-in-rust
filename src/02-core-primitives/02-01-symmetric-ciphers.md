@@ -13,8 +13,11 @@ They are used everywhere: encrypted file systems, secure communications, and eve
 
 ### XOR Cipher — Simplicity That Teaches
 > ⚠️ Insecure. Demonstration-only (used in educational demos, malware obfuscation )
+
+
+![youtube](https://github.com/user-attachments/assets/e6eeacfc-ba92-4ecf-bb7b-48ad2384c1ae)   Watch it on my *Fearless in Rust* channel:  [XOR Cipher in Rust - Step by Step](https://www.youtube.com/watch?v=wA-p_c19ZFw&t=326s)
+
 <!--
-> > ![youtube](https://github.com/user-attachments/assets/e6eeacfc-ba92-4ecf-bb7b-48ad2384c1ae)   Watch it on my *Fearless in Rust* channel:  [XOR Cipher in Rust - Step by Step](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
 >⚠️ Annotate if a Rust crate exists + maturity level
 -->
 We first explored XOR encryption in [Section 1.4: First Code — A Naive XOR Encryptor](../01-foundations/01-04-first-code.md), where we built a full working example from scratch.
