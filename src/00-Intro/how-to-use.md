@@ -40,8 +40,7 @@ You can clone it, run the examples, and experiment freely without touching produ
 New! Want hands-on exercises for each chapter?
 
 Check out the companion repository:
-[sealed-in-rust-book-code repo](https://github.com/VinEckSie/sealed-in-rust-book-code) 
-
+[sealed-in-rust-book-code repo](https://github.com/VinEckSie/sealed-in-rust-book-code)
 
 ## Non-linear Reading
 
