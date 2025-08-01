@@ -42,6 +42,5 @@ We won’t drown you in proofs, but we’ll explain just enough math to build in
 This book won’t make you a cryptographer in the academic sense — but it will make you something just as rare and valuable:
 A Rust engineer who understands, wields, and applies cryptography with precision, context, and confidence.
 
-
 You won’t just read — you’ll build.
 [Focused implementations and applied examples](https://github.com/VinEckSie/sealed-in-rust-book-code) are available here and updated weekly.
