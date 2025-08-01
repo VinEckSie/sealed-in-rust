@@ -36,6 +36,12 @@ You can clone it, run the examples, and experiment freely without touching produ
 
 <!--If you're looking for a complete, idiomatic crypto crate, see my separate library: [Cryon](https://github.com/VinEckSie/cryon)-->
 
+## Where to Find the Code
+New! Want hands-on exercises for each chapter?
+
+Check out the companion repository:
+[sealed-in-rust-book-code repo](https://github.com/VinEckSie/sealed-in-rust-book-code) 
+
 
 ## Non-linear Reading
 
