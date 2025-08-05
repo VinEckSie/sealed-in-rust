@@ -53,7 +53,7 @@ pub fn xor_encrypt(input: &[u8], key: &[u8]) -> Vec<u8> {
 > XOR encryption is reversible and stateless, which makes it simple and fast. But it lacks confusion and diffusion, so patterns in the input remain visible — offering no real resistance to cryptanalysis.
 
 ### Feistel Networks — Foundation of Classic Block Ciphers
-> ⚠️ Cryptographically obsolete, but conceptually important (used in DES, 3DES)
+> ⚠️ Cryptographically obsolete, but conceptually important (used in DES[^DES], 3DES[^3DES])
 <!--
 > ⚠️️ Annotate if a Rust crate exists + maturity level
 -->
@@ -152,7 +152,7 @@ This idea shaped DES and similar ciphers.
 > Not used today due to known vulnerabilities, but conceptually essential.
 
 ### Substitution–Permutation Networks (SPN)
->  ⚠️ Used in AES, Camellia, and modern block ciphers.
+>  ⚠️ Used in AES[^AES], Camellia[^Camellia], and modern block ciphers.
 > Still dominant in current cipher architectures
 <!--
 > ⚠️ Annotate if a Rust crate exists + maturity level
@@ -285,3 +285,50 @@ These are Shannon’s two pillars of secure ciphers.
 > **🟢 Conclusion**  
 > Substitution-Permutation Networks provide a simple yet powerful structure for building symmetric ciphers. They deliver the critical properties of confusion and diffusion, as first formalized by Claude Shannon in his foundational work on cryptographic security.
 
+
+### AES (Advanced Encryption Standard)  — The Global Symmetric Standard
+> 💡 Used in TLS[^TLS], LUKS[^LUKS], SSH[^SSH], mobile apps, and FIPS-certified systems[^FIPS]. Secure, fast, and hardware-accelerated
+
+> <img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: [aes](https://crates.io/crates/aes), [block_modes](https://github.com/RustCrypto/block-modes)
+
+AES is a symmetric-key block cipher developed by Belgian cryptographers Vincent Rijmen and Joan Daemen. It was selected by NIST in 2001 as the successor to DES and 3DES.
+
+AES operates on 128-bit blocks and supports key sizes of 128, 192, or 256 bits. It is based on a Substitution–Permutation Network (SPN) and runs 10, 12, or 14 rounds depending on the key length.
+
+It is standardized by FIPS-197, ISO/IEC[^ISOIEC], and widely adopted in security protocols such as TLS, SSH, and IPsec[^IPSec]. AES is available in hardware on most modern CPUs, making it both fast and energy-efficient.
+
+<br>
+
+We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode[^CBC] with PKCS7[^PKCS7] padding.
+
+🧪 Code Example: AES-128-CBC Encryption & Decryption in Rust
+We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode with PKCS7 padding.
+
+
+📂 [Full source code on GitHub](https://github.com/youruser/rust_crypto_book_code/blob/main/src/aes_cbc.rs)
+
+
+```rust,no_run
+{{#include ../../rust_crypto_book_code/src/aes_cbc.rs}}
+```
+
+✅ Use a unique IV for every encryption, and never reuse a key/IV pair. Avoid ECB mode entirely, and prefer AEAD modes (e.g., AES-GCM) when available.
+
+> **🟢 Conclusion**
+> AES is the modern standard for symmetric encryption. It is fast, secure, and hardware-accelerated — making it ideal for both embedded systems and high-throughput servers. When used correctly with a secure mode like CBC or GCM and proper key/IV management, AES provides strong resistance against all known practical attacks.
+
+
+Used in [TLS](../99-appendices/99-01-glossary.md#tls-transport-layer-security), LUKS, SSH, and FIPS-certified systems.
+
+[^DES]: DES (Data Encryption Standard) is an early symmetric-key algorithm standardized in the 1970s. It uses a 56-bit key and is now considered insecure due to its short key length, making it vulnerable to brute-force attacks.
+[^3DES]: 3DES (Triple DES) is an extension of DES that applies the DES algorithm three times with either two or three different keys, increasing the effective key length to 112 or 168 bits. It offers better security than DES, but is now deprecated due to performance issues and known vulnerabilities.
+[^AES]: AES (Advanced Encryption Standard) is a widely used symmetric cipher known for its performance and strong security — when used correctly.
+[^Camellia]: Camellia is a modern symmetric-key block cipher developed in Japan by Mitsubishi Electric and NTT. It offers security and performance comparable to AES, supports 128-, 192-, and 256-bit keys, and is standardized by ISO/IEC and NESSIE. Although less commonly used than AES, it is widely considered secure and suitable for both software and hardware implementations.
+[^TLS]: TLS (Transport Layer Security) is a protocol created by the IETF to secure data during transmission (like in HTTPS). It uses asymmetric encryption to establish a secure connection, then switches to symmetric encryption for fast, private communication.
+[^LUKS]: LUKS (Linux Unified Key Setup) is a Linux standard for encrypting disks, designed by Clemens Fruhwirth. It protects data at rest using strong symmetric encryption and supports managing multiple passwords or keys.
+[^SSH]: SSH (Secure Shell) is a secure remote access protocol invented by Tatu Ylönen. SSH uses asymmetric encryption to authenticate users and symmetric encryption to secure the session once connected.
+[^FIPS]: FIPS-certified systems (Federal Information Processing Standards) are standards defined by NIST (U.S. National Institute of Standards and Technology) to ensure cryptographic tools meet strict security requirements. FIPS certification is often required in government, healthcare, or finance to guarantee the use of approved algorithms and secure implementations.
+[^ISOIEC]: definition
+[^IPSec]: definition
+[^CBC]: definition
+[^PKCS7]: definition

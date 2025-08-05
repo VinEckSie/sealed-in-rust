@@ -14,3 +14,6 @@
 
 # Part 2 — Core Cryptographic Primitives
 - [2.1. Symmetric Ciphers — XOR, AES, ChaCha20](02-core-primitives/02-01-symmetric-ciphers.md)
+
+# Appendices
+- [A. Glossary of Terms](99-appendices/99-01-glossary.md)
