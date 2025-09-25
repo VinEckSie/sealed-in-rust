@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>1.1. Cryptography is a Systems Problem - Sealed in Rust — Domain-Driven Edition</title>
+        <title>A. Glossary of Terms - Sealed in Rust — Domain-Driven Edition</title>
 
 
         <!-- Custom HTML head -->
@@ -149,7 +149,7 @@
                         <a href="https://github.com/rust-lang/mdBook" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/rust-lang/mdBook/edit/master/guide/src/01-foundations/01-01-cryptography.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/rust-lang/mdBook/edit/master/guide/src/99-appendices/99-01-glossary.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -183,42 +183,95 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h2 id="cryptography-is-a-systems-problem"><a class="header" href="#cryptography-is-a-systems-problem">Cryptography is a Systems Problem</a></h2>
-<p>Cryptography isn’t just about math.</p>
-<p>Yes, it starts with elegant algebra and deep number theory — but where it breaks is almost always <em>in the system</em>. Real-world failures come from poor implementations, leaky abstractions, memory bugs, side channels, or simply misunderstanding what problem crypto is supposed to solve.</p>
-<p>It’s easy to misuse even “secure” primitives. AES<sup class="footnote-reference" id="fr-aes-1"><a href="#footnote-aes">1</a></sup> in ECB mode<sup class="footnote-reference" id="fr-ecb-1"><a href="#footnote-ecb">2</a></sup> is fast — and useless. RSA<sup class="footnote-reference" id="fr-rsa-1"><a href="#footnote-rsa">3</a></sup> without padding<sup class="footnote-reference" id="fr-padding-1"><a href="#footnote-padding">4</a></sup> is a gift to attackers. And a perfectly strong key means nothing if it’s printed to your logs.</p>
-<p>This is why cryptography is a <strong>systems engineering problem</strong> first.</p>
-<p>And it’s why Rust matters.</p>
-<p>Rust doesn’t make crypto correct by default — nothing does — but it gives you tools to <strong>avoid entire classes of catastrophic bugs</strong>.</p>
-<p>Memory safety, explicit ownership, fearless concurrency, and tight control over the machine — these aren’t “nice to have.” They’re security features.</p>
-<h3 id=""><a class="header" href="#"></a></h3>
-<p>In this book, we’ll treat crypto not as a black box, but as a series of concrete systems problems — and show how Rust lets us solve them with clarity and precision.</p>
+                        <h1 id="glossary-of-terms"><a class="header" href="#glossary-of-terms">Glossary of Terms</a></h1>
+<h2 id="aes-advanced-encryption-standard"><a class="header" href="#aes-advanced-encryption-standard">AES (Advanced Encryption Standard)</a></h2>
+<p>AES is a symmetric-key block cipher standardized by NIST in 2001, designed by Vincent Rijmen and Joan Daemen.<br />
+It operates on 128-bit blocks with keys of 128, 192, or 256 bits, and is based on a Substitution–Permutation Network.<br />
+AES is fast, secure, and widely implemented in both software and hardware (including CPU instructions).<br />
+It remains the global standard for symmetric encryption, used in TLS, SSH, disk encryption, and countless applications.</p>
 <hr />
-<hr>
-<ol class="footnote-definition"><li id="footnote-aes">
-<p>AES. Modern symmetric cipher, fast &amp; secure. <a href="../99-appendices/99-01-glossary.html#aes-advanced-encryption-standard">More</a> <a href="#fr-aes-1">↩</a></p>
-</li>
-<li id="footnote-ecb">
-<p>ECB Mode. Simple block mode, insecure due to patterns. <a href="../99-appendices/99-01-glossary.html#ecb-electronic-code-book">More</a> <a href="#fr-ecb-1">↩</a></p>
-</li>
-<li id="footnote-rsa">
-<p>RSA. Public-key system for encryption &amp; signatures. <a href="../99-appendices/99-01-glossary.html#rsa-rivestshamiradleman">More</a> <a href="#fr-rsa-1">↩</a></p>
-</li>
-<li id="footnote-padding">
-<p>Padding. Adds randomness/structure to secure RSA encryption. <a href="../99-appendices/99-01-glossary.html#padding-in-rsa">More</a> <a href="#fr-padding-1">↩</a></p>
-</li>
-</ol>
+<h2 id="ecb-electronic-code-book"><a class="header" href="#ecb-electronic-code-book">ECB (Electronic Code Book)</a></h2>
+<p>ECB is the simplest block cipher mode of operation: it encrypts each block independently with the same key.<br />
+While easy to implement, it is insecure because identical plaintext blocks produce identical ciphertext blocks.<br />
+This leaks patterns in the input (e.g., images encrypted with ECB visibly preserve outlines).<br />
+Because of this, ECB is almost never used in practice and is considered unsafe.</p>
+<hr />
+<h2 id="rsa-rivestshamiradleman"><a class="header" href="#rsa-rivestshamiradleman">RSA (Rivest–Shamir–Adleman)</a></h2>
+<p>RSA is one of the first public-key cryptosystems, invented in 1977 by Ron Rivest, Adi Shamir, and Leonard Adleman.<br />
+It allows secure key exchange, encryption, and digital signatures by relying on the mathematical difficulty of factoring large integers.<br />
+RSA keys are typically 2048 or 3072 bits today. While still widely used, modern protocols increasingly migrate to elliptic-curve cryptography (ECC) for better performance and smaller key sizes.</p>
+<hr />
+<h2 id="padding-in-rsa"><a class="header" href="#padding-in-rsa">Padding in RSA</a></h2>
+<p>RSA encryption without padding is deterministic: encrypting the same message always produces the same ciphertext.<br />
+This makes it insecure, as attackers can guess messages or exploit mathematical properties of RSA.<br />
+Padding schemes (e.g., PKCS#1 v1.5 or OAEP) add randomness or structured bytes before encryption.<br />
+This ensures different ciphertexts for the same plaintext and provides protection against chosen-plaintext or chosen-ciphertext attacks.<br />
+Proper padding is essential for RSA’s security in practice.</p>
+<hr />
+<h2 id="des-data-encryption-standard"><a class="header" href="#des-data-encryption-standard">DES (Data Encryption Standard)</a></h2>
+<p>DES is a symmetric-key block cipher standardized in the 1970s by NIST.<br />
+It uses a 56-bit key and operates on 64-bit blocks.<br />
+Once a global standard, DES is now considered insecure due to its short key length, which makes it vulnerable to brute-force attacks.</p>
+<hr />
+<h2 id="3des-triple-des"><a class="header" href="#3des-triple-des">3DES (Triple DES)</a></h2>
+<p>Triple DES (3DES) is an extension of DES that applies the DES algorithm three times with either two or three different keys.<br />
+This increases the effective key length to 112 or 168 bits.<br />
+It offered better security than DES but is now deprecated due to its slow performance and known cryptographic weaknesses.</p>
+<hr />
+<h2 id="camellia"><a class="header" href="#camellia">Camellia</a></h2>
+<p>Camellia is a modern symmetric-key block cipher developed in Japan by Mitsubishi Electric and NTT.<br />
+It offers security and performance comparable to AES, supporting key sizes of 128, 192, and 256 bits.<br />
+Camellia is standardized by ISO/IEC and the NESSIE project.<br />
+Though less widely used than AES, it is considered secure and suitable for both software and hardware implementations.</p>
+<hr />
+<h2 id="tls-transport-layer-security"><a class="header" href="#tls-transport-layer-security">TLS (Transport Layer Security)</a></h2>
+<p>TLS is a protocol defined by the IETF to secure data during transmission, most notably in HTTPS.<br />
+It uses asymmetric encryption for the handshake and key exchange, then switches to symmetric encryption for efficient bulk data encryption.<br />
+TLS provides confidentiality, integrity, and authentication for internet communications.</p>
+<hr />
+<h2 id="luks-linux-unified-key-setup"><a class="header" href="#luks-linux-unified-key-setup">LUKS (Linux Unified Key Setup)</a></h2>
+<p>LUKS is the standard format for full disk encryption on Linux, designed by Clemens Fruhwirth.<br />
+It provides strong symmetric encryption for protecting data at rest and supports multiple key slots, allowing different passphrases or keys to unlock the same volume.</p>
+<hr />
+<h2 id="ssh-secure-shell"><a class="header" href="#ssh-secure-shell">SSH (Secure Shell)</a></h2>
+<p>SSH is a secure remote access protocol invented by Tatu Ylönen in 1995.<br />
+It uses asymmetric encryption to authenticate users and symmetric encryption to secure the session once established.<br />
+SSH replaced insecure protocols such as Telnet and rlogin and is now the standard for secure remote administration.</p>
+<hr />
+<h2 id="fips-federal-information-processing-standards"><a class="header" href="#fips-federal-information-processing-standards">FIPS (Federal Information Processing Standards)</a></h2>
+<p>FIPS are cryptographic standards defined by NIST for use in U.S. government systems.<br />
+FIPS certification ensures that cryptographic algorithms and implementations meet strict security requirements.<br />
+It is often required in government, healthcare, and financial sectors to guarantee compliance and trust.</p>
+<hr />
+<h2 id="isoiec"><a class="header" href="#isoiec">ISO/IEC</a></h2>
+<p>ISO (International Organization for Standardization) and IEC (International Electrotechnical Commission) jointly publish international standards for information technology, including cryptography.<br />
+These standards ensure interoperability and security across implementations worldwide.</p>
+<hr />
+<h2 id="ipsec"><a class="header" href="#ipsec">IPSec</a></h2>
+<p>IPSec (Internet Protocol Security) is a suite of protocols designed to secure IP communications.<br />
+It operates at the network layer, providing encryption, integrity, and authentication for IP packets.<br />
+IPSec is widely used for VPNs and site-to-site secure tunnels.</p>
+<hr />
+<h2 id="cbc-cipher-block-chaining"><a class="header" href="#cbc-cipher-block-chaining">CBC (Cipher Block Chaining)</a></h2>
+<p>CBC is a block cipher mode of operation that chains blocks together for added security.<br />
+Each plaintext block is XORed with the previous ciphertext block before encryption, preventing identical plaintexts from producing identical ciphertexts.<br />
+An Initialization Vector (IV) is required for the first block to ensure uniqueness.<br />
+While stronger than ECB, CBC has weaknesses and should be used with caution.</p>
+<hr />
+<h2 id="pkcs7"><a class="header" href="#pkcs7">PKCS7</a></h2>
+<p>PKCS7 is a padding scheme used in block cipher encryption.<br />
+It fills up the last block of plaintext with bytes all set to the value of the number of padding bytes added.<br />
+For example, if 4 bytes of padding are needed, the block is filled with <code>04 04 04 04</code>.<br />
+PKCS7 ensures that plaintext lengths align with the cipher’s block size, but improper validation of padding can lead to padding oracle attacks.</p>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../00-Intro/how-to-use.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../02-core-primitives/02-01-symmetric-ciphers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../01-foundations/01-02-rust-offers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -226,13 +279,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../00-Intro/how-to-use.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../02-core-primitives/02-01-symmetric-ciphers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../01-foundations/01-02-rust-offers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

@@ -200,23 +200,29 @@ You can read it front to back, or jump directly to the domains and primitives mo
 <li>Security insights and common pitfalls</li>
 <li>Domain-specific applications</li>
 </ul>
-<h2 id="code-and-examples"><a class="header" href="#code-and-examples">Code and Examples</a></h2>
-<p>Most chapters include runnable Rust code to illustrate key concepts.</p>
+<h2 id="code--examples"><a class="header" href="#code--examples">Code &amp; Examples</a></h2>
+<p>This book includes real, runnable Rust code for nearly every chapter.</p>
 <ul>
+<li>All examples are written for <strong>Rust 2024</strong></li>
 <li>You’ll need a working Rust toolchain (<code>rustup</code>, <code>cargo</code>)</li>
-<li>Code examples are written for Rust 2021 edition</li>
+<li>Each chapter’s code is provided as a separate <strong>Cargo example</strong>.</li>
+<li>Examples live inside the companion repository: <a href="https://github.com/VinEckSie/sealed-in-rust/tree/main/rust_crypto_book_code">sealed-in-rust</a></li>
 </ul>
-<!--- All examples are hosted in [a separate repository](https://github.com/VinEckSie/sealed-in-rust-examples)-->
-<p>Each folder in that repo corresponds to a chapter or concept from the book.<br />
-You can clone it, run the examples, and experiment freely without touching production code or complex crates.</p>
+<p>You can run them locally without touching production crates or complex setups:</p>
+<pre><code class="language-bash">git clone https://github.com/VinEckSie/sealed-in-rust.git
+cd sealed-in-rust/rust_crypto_book_code
+cargo run --example aes_cbc //Replace aes_cbc with any chapter example you want to try
+</code></pre>
 <blockquote>
-<p><strong>Note:</strong> These examples are minimal and didactic. They are not full cryptographic libraries.</p>
+<p>⚠️ <strong>Note on Playground Limitations:</strong><br />
+Some examples in this book use no_run or ignore markers when rendered online, because external crates like aes, cbc, or rsa cannot be compiled in-browser.
+All examples work locally, and full source code is always included.</p>
 </blockquote>
-<!--If you're looking for a complete, idiomatic crypto crate, see my separate library: [Cryon](https://github.com/VinEckSie/cryon)-->
-<h2 id="where-to-find-the-code"><a class="header" href="#where-to-find-the-code">Where to Find the Code</a></h2>
-<p>New! Want hands-on exercises for each chapter?</p>
-<p>Check out the companion repository:
-<a href="https://github.com/VinEckSie/sealed-in-rust-book-code">sealed-in-rust-book-code repo</a></p>
+<blockquote>
+<p>💡 These examples are didactic and minimal by design.
+They illustrate cryptographic concepts — not replace mature, production-ready libraries.</p>
+</blockquote>
+<hr />
 <h2 id="non-linear-reading"><a class="header" href="#non-linear-reading">Non-linear Reading</a></h2>
 <p>This book doesn’t assume linear progress.</p>
 <ul>

@@ -226,7 +226,7 @@ XOR encryption is reversible and stateless, which makes it simple and fast. But 
 </blockquote>
 <h3 id="feistel-networks--foundation-of-classic-block-ciphers"><a class="header" href="#feistel-networks--foundation-of-classic-block-ciphers">Feistel Networks — Foundation of Classic Block Ciphers</a></h3>
 <blockquote>
-<p>⚠️ Cryptographically obsolete, but conceptually important (used in DES, 3DES)</p>
+<p>⚠️ Cryptographically obsolete, but conceptually important (used in DES<sup class="footnote-reference" id="fr-DES-1"><a href="#footnote-DES">1</a></sup>, 3DES<sup class="footnote-reference" id="fr-3DES-1"><a href="#footnote-3DES">2</a></sup>)</p>
 </blockquote>
 <!--
 > ⚠️️ Annotate if a Rust crate exists + maturity level
@@ -324,7 +324,7 @@ This idea shaped DES and similar ciphers.</p>
 </blockquote>
 <h3 id="substitutionpermutation-networks-spn"><a class="header" href="#substitutionpermutation-networks-spn">Substitution–Permutation Networks (SPN)</a></h3>
 <blockquote>
-<p>⚠️ Used in AES, Camellia, and modern block ciphers.
+<p>⚠️ Used in AES[^AES], Camellia<sup class="footnote-reference" id="fr-Camellia-1"><a href="#footnote-Camellia">3</a></sup>, and modern block ciphers.
 Still dominant in current cipher architectures</p>
 </blockquote>
 <!--
@@ -457,7 +457,102 @@ println!("Decrypted   | {:02X}     | {:02X}     | {:02X}     | {:02X}", decrypte
 <p><strong>🟢 Conclusion</strong><br />
 Substitution-Permutation Networks provide a simple yet powerful structure for building symmetric ciphers. They deliver the critical properties of confusion and diffusion, as first formalized by Claude Shannon in his foundational work on cryptographic security.</p>
 </blockquote>
+<h3 id="aes-advanced-encryption-standard---the-global-symmetric-standard"><a class="header" href="#aes-advanced-encryption-standard---the-global-symmetric-standard">AES (Advanced Encryption Standard)  — The Global Symmetric Standard</a></h3>
+<blockquote>
+<p>💡 Used in TLS<sup class="footnote-reference" id="fr-TLS-1"><a href="#footnote-TLS">4</a></sup>, LUKS<sup class="footnote-reference" id="fr-LUKS-1"><a href="#footnote-LUKS">5</a></sup>, SSH<sup class="footnote-reference" id="fr-SSH-1"><a href="#footnote-SSH">6</a></sup>, mobile apps, and FIPS-certified systems<sup class="footnote-reference" id="fr-FIPS-1"><a href="#footnote-FIPS">7</a></sup>.<br />
+Secure, fast, and hardware-accelerated</p>
+</blockquote>
+<blockquote>
+<p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: <a href="https://crates.io/crates/aes">aes</a>, <a href="https://github.com/RustCrypto/block-modes">block_modes</a></p>
+</blockquote>
+<p>AES is a symmetric-key block cipher developed by Belgian cryptographers Vincent Rijmen and Joan Daemen. It was selected by NIST in 2001 as the successor to DES and 3DES.</p>
+<p>AES operates on 128-bit blocks and supports key sizes of 128, 192, or 256 bits. It is based on a Substitution–Permutation Network (SPN) and runs 10, 12, or 14 rounds depending on the key length.</p>
+<p>It is standardized by FIPS-197, ISO/IEC<sup class="footnote-reference" id="fr-ISOIEC-1"><a href="#footnote-ISOIEC">8</a></sup>, and widely adopted in security protocols such as TLS, SSH, and IPsec<sup class="footnote-reference" id="fr-IPSec-1"><a href="#footnote-IPSec">9</a></sup>. AES is available in hardware on most modern CPUs, making it both fast and energy-efficient.</p>
+<br>
+<p>🧪 <strong>Code Example: AES-128-CBC Encryption &amp; Decryption in Rust</strong>  (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)<br />
+We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-CBC-1"><a href="#footnote-CBC">10</a></sup> with PKCS7<sup class="footnote-reference" id="fr-PKCS7-1"><a href="#footnote-PKCS7">11</a></sup> padding.</p>
+<pre><pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use aes::Aes128;
+use block_padding::Pkcs7;
+use cbc::{Encryptor, Decryptor};
+use cipher::{BlockEncryptMut, BlockDecryptMut, KeyIvInit};
 
+
+pub fn run_aes_example() {
+
+    let key = b"verysecretkey123";
+    let iv = b"uniqueinitvector";
+    let plaintext = b"Attack at dawn!";
+
+    let mut buffer = plaintext.to_vec();
+    let pos = buffer.len();
+    buffer.resize(pos + 16, 0u8);
+
+    let mut encryptor = Encryptor::&lt;Aes128&gt;::new(key.into(), iv.into());
+    let ciphertext = encryptor
+        .encrypt_padded_mut::&lt;Pkcs7&gt;(&amp;mut buffer, pos)
+        .expect("encryption failure");
+
+    println!("Ciphertext (hex): {}", hex::encode(ciphertext));
+
+    let mut decryptor = Decryptor::&lt;Aes128&gt;::new(key.into(), iv.into());
+
+    let mut ciphertext_buffer = ciphertext.to_vec(); // make it mutable
+    let decrypted = decryptor
+        .decrypt_padded_mut::&lt;Pkcs7&gt;(&amp;mut ciphertext_buffer)
+        .expect("decryption failure");
+
+
+    println!("Decrypted text: {}", String::from_utf8_lossy(decrypted));
+    assert_eq!(plaintext.to_vec(), decrypted);
+}
+<span class="boring">}</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>Ciphertext (hex): 61b05644915a98fbd515e31b3a4e6d88
+Decrypted text: Attack at dawn!
+<span class="boring">}</span></code></pre></pre>
+<p>✅ Use a unique IV (Initialization Vector) for every encryption, and never reuse a key/IV pair. Avoid ECB mode entirely, and prefer AEAD modes (e.g., AES-GCM) when available.</p>
+<blockquote>
+<p><strong>🟢 Conclusion</strong>
+AES is the modern standard for symmetric encryption. It is fast, secure, and hardware-accelerated — making it ideal for both embedded systems and high-throughput servers. When used correctly with a secure mode like CBC or GCM and proper key/IV management, AES provides strong resistance against all known practical attacks.</p>
+</blockquote>
+<hr>
+<ol class="footnote-definition"><li id="footnote-DES">
+<p>DES — early symmetric cipher (56-bit), now insecure. <a href="../99-appendices/99-01-glossary.html#des-data-encryption-standard">More</a> <a href="#fr-DES-1">↩</a></p>
+</li>
+<li id="footnote-3DES">
+<p>3DES — DES applied three times, better than DES but now deprecated. <a href="../99-appendices/99-01-glossary.html#3des-triple-des">More</a> <a href="#fr-3DES-1">↩</a></p>
+</li>
+<li id="footnote-Camellia">
+<p>Camellia — Japanese block cipher, secure &amp; AES-comparable. <a href="../99-appendices/99-01-glossary.html#camellia">More</a> <a href="#fr-Camellia-1">↩</a></p>
+</li>
+<li id="footnote-TLS">
+<p>TLS — protocol securing data in transit (HTTPS, etc.). <a href="../99-appendices/99-01-glossary.html#tls-transport-layer-security">More</a> <a href="#fr-TLS-1">↩</a></p>
+</li>
+<li id="footnote-LUKS">
+<p>LUKS — Linux standard for full disk encryption. <a href="../99-appendices/99-01-glossary.html#luks-linux-unified-key-setup">More</a> <a href="#fr-LUKS-1">↩</a></p>
+</li>
+<li id="footnote-SSH">
+<p>SSH — secure remote access protocol. <a href="../99-appendices/99-01-glossary.html#ssh-secure-shell">More</a> <a href="#fr-SSH-1">↩</a></p>
+</li>
+<li id="footnote-FIPS">
+<p>FIPS — U.S. cryptographic standards for government/finance. <a href="../99-appendices/99-01-glossary.html#fips-federal-information-processing-standards">More</a> <a href="#fr-FIPS-1">↩</a></p>
+</li>
+<li id="footnote-ISOIEC">
+<p>ISO/IEC — international standards for IT/crypto. <a href="../99-appendices/99-01-glossary.html#isoiec">More</a> <a href="#fr-ISOIEC-1">↩</a></p>
+</li>
+<li id="footnote-IPSec">
+<p>IPSec — protocol suite for securing IP communications. <a href="../99-appendices/99-01-glossary.html#ipsec">More</a> <a href="#fr-IPSec-1">↩</a></p>
+</li>
+<li id="footnote-CBC">
+<p>CBC — block cipher mode, chains blocks for security. <a href="../99-appendices/99-01-glossary.html#cbc-cipher-block-chaining">More</a> <a href="#fr-CBC-1">↩</a></p>
+</li>
+<li id="footnote-PKCS7">
+<p>PKCS7 — padding scheme for block ciphers. <a href="../99-appendices/99-01-glossary.html#pkcs7">More</a> <a href="#fr-PKCS7-1">↩</a></p>
+</li>
+</ol>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
@@ -466,6 +561,9 @@ Substitution-Permutation Networks provide a simple yet powerful structure for bu
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next prefetch" href="../99-appendices/99-01-glossary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -477,6 +575,9 @@ Substitution-Permutation Networks provide a simple yet powerful structure for bu
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next prefetch" href="../99-appendices/99-01-glossary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>

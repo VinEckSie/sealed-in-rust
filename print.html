@@ -236,23 +236,29 @@ You can read it front to back, or jump directly to the domains and primitives mo
 <li>Security insights and common pitfalls</li>
 <li>Domain-specific applications</li>
 </ul>
-<h2 id="code-and-examples"><a class="header" href="#code-and-examples">Code and Examples</a></h2>
-<p>Most chapters include runnable Rust code to illustrate key concepts.</p>
+<h2 id="code--examples"><a class="header" href="#code--examples">Code &amp; Examples</a></h2>
+<p>This book includes real, runnable Rust code for nearly every chapter.</p>
 <ul>
+<li>All examples are written for <strong>Rust 2024</strong></li>
 <li>You’ll need a working Rust toolchain (<code>rustup</code>, <code>cargo</code>)</li>
-<li>Code examples are written for Rust 2021 edition</li>
+<li>Each chapter’s code is provided as a separate <strong>Cargo example</strong>.</li>
+<li>Examples live inside the companion repository: <a href="https://github.com/VinEckSie/sealed-in-rust/tree/main/rust_crypto_book_code">sealed-in-rust</a></li>
 </ul>
-<!--- All examples are hosted in [a separate repository](https://github.com/VinEckSie/sealed-in-rust-examples)-->
-<p>Each folder in that repo corresponds to a chapter or concept from the book.<br />
-You can clone it, run the examples, and experiment freely without touching production code or complex crates.</p>
+<p>You can run them locally without touching production crates or complex setups:</p>
+<pre><code class="language-bash">git clone https://github.com/VinEckSie/sealed-in-rust.git
+cd sealed-in-rust/rust_crypto_book_code
+cargo run --example aes_cbc //Replace aes_cbc with any chapter example you want to try
+</code></pre>
 <blockquote>
-<p><strong>Note:</strong> These examples are minimal and didactic. They are not full cryptographic libraries.</p>
+<p>⚠️ <strong>Note on Playground Limitations:</strong><br />
+Some examples in this book use no_run or ignore markers when rendered online, because external crates like aes, cbc, or rsa cannot be compiled in-browser.
+All examples work locally, and full source code is always included.</p>
 </blockquote>
-<!--If you're looking for a complete, idiomatic crypto crate, see my separate library: [Cryon](https://github.com/VinEckSie/cryon)-->
-<h2 id="where-to-find-the-code"><a class="header" href="#where-to-find-the-code">Where to Find the Code</a></h2>
-<p>New! Want hands-on exercises for each chapter?</p>
-<p>Check out the companion repository:
-<a href="https://github.com/VinEckSie/sealed-in-rust-book-code">sealed-in-rust-book-code repo</a></p>
+<blockquote>
+<p>💡 These examples are didactic and minimal by design.
+They illustrate cryptographic concepts — not replace mature, production-ready libraries.</p>
+</blockquote>
+<hr />
 <h2 id="non-linear-reading"><a class="header" href="#non-linear-reading">Non-linear Reading</a></h2>
 <p>This book doesn’t assume linear progress.</p>
 <ul>
@@ -282,18 +288,19 @@ By the end, you’ll not only understand the primitives, you’ll know how to us
 <p>Memory safety, explicit ownership, fearless concurrency, and tight control over the machine — these aren’t “nice to have.” They’re security features.</p>
 <h3 id="-1"><a class="header" href="#-1"></a></h3>
 <p>In this book, we’ll treat crypto not as a black box, but as a series of concrete systems problems — and show how Rust lets us solve them with clarity and precision.</p>
+<hr />
 <hr>
 <ol class="footnote-definition"><li id="footnote-aes">
-<p>AES (Advanced Encryption Standard) is a widely used symmetric cipher known for its performance and strong security — when used correctly. <a href="#fr-aes-1">↩</a></p>
+<p>AES. Modern symmetric cipher, fast &amp; secure. <a href="01-foundations/../99-appendices/99-01-glossary.html#aes-advanced-encryption-standard">More</a> <a href="#fr-aes-1">↩</a></p>
 </li>
 <li id="footnote-ecb">
-<p>ECB (Electronic Code Book) mode encrypts each block independently, revealing patterns in the plaintext and making it insecure for most purposes. <a href="#fr-ecb-1">↩</a></p>
+<p>ECB Mode. Simple block mode, insecure due to patterns. <a href="01-foundations/../99-appendices/99-01-glossary.html#ecb-electronic-code-book">More</a> <a href="#fr-ecb-1">↩</a></p>
 </li>
 <li id="footnote-rsa">
-<p>RSA (Rivest–Shamir–Adleman) is a public-key cryptosystem used for encryption and digital signatures. It relies on the difficulty of factoring large integers. <a href="#fr-rsa-1">↩</a></p>
+<p>RSA. Public-key system for encryption &amp; signatures. <a href="01-foundations/../99-appendices/99-01-glossary.html#rsa-rivestshamiradleman">More</a> <a href="#fr-rsa-1">↩</a></p>
 </li>
 <li id="footnote-padding">
-<p>Padding in RSA adds randomness or structure to the plaintext before encryption, preventing deterministic outputs. Without it, attackers can guess messages, detect patterns, or exploit mathematical properties to break the cipher. <a href="#fr-padding-1">↩</a></p>
+<p>Padding. Adds randomness/structure to secure RSA encryption. <a href="01-foundations/../99-appendices/99-01-glossary.html#padding-in-rsa">More</a> <a href="#fr-padding-1">↩</a></p>
 </li>
 </ol><div style="break-before: page; page-break-before: always;"></div><h2 id="safety-performance-predictability"><a class="header" href="#safety-performance-predictability">Safety, Performance, Predictability</a></h2>
 <p>Rust is often praised for its speed and memory safety, but in the world of cryptographic engineering, these traits aren’t just nice-to-haves — they’re critical.</p>
@@ -537,7 +544,7 @@ XOR encryption is reversible and stateless, which makes it simple and fast. But 
 </blockquote>
 <h3 id="feistel-networks--foundation-of-classic-block-ciphers"><a class="header" href="#feistel-networks--foundation-of-classic-block-ciphers">Feistel Networks — Foundation of Classic Block Ciphers</a></h3>
 <blockquote>
-<p>⚠️ Cryptographically obsolete, but conceptually important (used in DES, 3DES)</p>
+<p>⚠️ Cryptographically obsolete, but conceptually important (used in DES<sup class="footnote-reference" id="fr-DES-1"><a href="#footnote-DES">1</a></sup>, 3DES<sup class="footnote-reference" id="fr-3DES-1"><a href="#footnote-3DES">2</a></sup>)</p>
 </blockquote>
 <!--
 > ⚠️️ Annotate if a Rust crate exists + maturity level
@@ -635,7 +642,7 @@ This idea shaped DES and similar ciphers.</p>
 </blockquote>
 <h3 id="substitutionpermutation-networks-spn"><a class="header" href="#substitutionpermutation-networks-spn">Substitution–Permutation Networks (SPN)</a></h3>
 <blockquote>
-<p>⚠️ Used in AES, Camellia, and modern block ciphers.
+<p>⚠️ Used in AES[^AES], Camellia<sup class="footnote-reference" id="fr-Camellia-1"><a href="#footnote-Camellia">3</a></sup>, and modern block ciphers.
 Still dominant in current cipher architectures</p>
 </blockquote>
 <!--
@@ -768,6 +775,181 @@ println!("Decrypted   | {:02X}     | {:02X}     | {:02X}     | {:02X}", decrypte
 <p><strong>🟢 Conclusion</strong><br />
 Substitution-Permutation Networks provide a simple yet powerful structure for building symmetric ciphers. They deliver the critical properties of confusion and diffusion, as first formalized by Claude Shannon in his foundational work on cryptographic security.</p>
 </blockquote>
+<h3 id="aes-advanced-encryption-standard---the-global-symmetric-standard"><a class="header" href="#aes-advanced-encryption-standard---the-global-symmetric-standard">AES (Advanced Encryption Standard)  — The Global Symmetric Standard</a></h3>
+<blockquote>
+<p>💡 Used in TLS<sup class="footnote-reference" id="fr-TLS-1"><a href="#footnote-TLS">4</a></sup>, LUKS<sup class="footnote-reference" id="fr-LUKS-1"><a href="#footnote-LUKS">5</a></sup>, SSH<sup class="footnote-reference" id="fr-SSH-1"><a href="#footnote-SSH">6</a></sup>, mobile apps, and FIPS-certified systems<sup class="footnote-reference" id="fr-FIPS-1"><a href="#footnote-FIPS">7</a></sup>.<br />
+Secure, fast, and hardware-accelerated</p>
+</blockquote>
+<blockquote>
+<p><img src="02-core-primitives/../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: <a href="https://crates.io/crates/aes">aes</a>, <a href="https://github.com/RustCrypto/block-modes">block_modes</a></p>
+</blockquote>
+<p>AES is a symmetric-key block cipher developed by Belgian cryptographers Vincent Rijmen and Joan Daemen. It was selected by NIST in 2001 as the successor to DES and 3DES.</p>
+<p>AES operates on 128-bit blocks and supports key sizes of 128, 192, or 256 bits. It is based on a Substitution–Permutation Network (SPN) and runs 10, 12, or 14 rounds depending on the key length.</p>
+<p>It is standardized by FIPS-197, ISO/IEC<sup class="footnote-reference" id="fr-ISOIEC-1"><a href="#footnote-ISOIEC">8</a></sup>, and widely adopted in security protocols such as TLS, SSH, and IPsec<sup class="footnote-reference" id="fr-IPSec-1"><a href="#footnote-IPSec">9</a></sup>. AES is available in hardware on most modern CPUs, making it both fast and energy-efficient.</p>
+<br>
+<p>🧪 <strong>Code Example: AES-128-CBC Encryption &amp; Decryption in Rust</strong>  (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)<br />
+We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-CBC-1"><a href="#footnote-CBC">10</a></sup> with PKCS7<sup class="footnote-reference" id="fr-PKCS7-1"><a href="#footnote-PKCS7">11</a></sup> padding.</p>
+<pre><pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use aes::Aes128;
+use block_padding::Pkcs7;
+use cbc::{Encryptor, Decryptor};
+use cipher::{BlockEncryptMut, BlockDecryptMut, KeyIvInit};
+
+
+pub fn run_aes_example() {
+
+    let key = b"verysecretkey123";
+    let iv = b"uniqueinitvector";
+    let plaintext = b"Attack at dawn!";
+
+    let mut buffer = plaintext.to_vec();
+    let pos = buffer.len();
+    buffer.resize(pos + 16, 0u8);
+
+    let mut encryptor = Encryptor::&lt;Aes128&gt;::new(key.into(), iv.into());
+    let ciphertext = encryptor
+        .encrypt_padded_mut::&lt;Pkcs7&gt;(&amp;mut buffer, pos)
+        .expect("encryption failure");
+
+    println!("Ciphertext (hex): {}", hex::encode(ciphertext));
+
+    let mut decryptor = Decryptor::&lt;Aes128&gt;::new(key.into(), iv.into());
+
+    let mut ciphertext_buffer = ciphertext.to_vec(); // make it mutable
+    let decrypted = decryptor
+        .decrypt_padded_mut::&lt;Pkcs7&gt;(&amp;mut ciphertext_buffer)
+        .expect("decryption failure");
+
+
+    println!("Decrypted text: {}", String::from_utf8_lossy(decrypted));
+    assert_eq!(plaintext.to_vec(), decrypted);
+}
+<span class="boring">}</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>Ciphertext (hex): 61b05644915a98fbd515e31b3a4e6d88
+Decrypted text: Attack at dawn!
+<span class="boring">}</span></code></pre></pre>
+<p>✅ Use a unique IV (Initialization Vector) for every encryption, and never reuse a key/IV pair. Avoid ECB mode entirely, and prefer AEAD modes (e.g., AES-GCM) when available.</p>
+<blockquote>
+<p><strong>🟢 Conclusion</strong>
+AES is the modern standard for symmetric encryption. It is fast, secure, and hardware-accelerated — making it ideal for both embedded systems and high-throughput servers. When used correctly with a secure mode like CBC or GCM and proper key/IV management, AES provides strong resistance against all known practical attacks.</p>
+</blockquote>
+<hr>
+<ol class="footnote-definition"><li id="footnote-DES">
+<p>DES — early symmetric cipher (56-bit), now insecure. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#des-data-encryption-standard">More</a> <a href="#fr-DES-1">↩</a></p>
+</li>
+<li id="footnote-3DES">
+<p>3DES — DES applied three times, better than DES but now deprecated. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#3des-triple-des">More</a> <a href="#fr-3DES-1">↩</a></p>
+</li>
+<li id="footnote-Camellia">
+<p>Camellia — Japanese block cipher, secure &amp; AES-comparable. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#camellia">More</a> <a href="#fr-Camellia-1">↩</a></p>
+</li>
+<li id="footnote-TLS">
+<p>TLS — protocol securing data in transit (HTTPS, etc.). <a href="02-core-primitives/../99-appendices/99-01-glossary.html#tls-transport-layer-security">More</a> <a href="#fr-TLS-1">↩</a></p>
+</li>
+<li id="footnote-LUKS">
+<p>LUKS — Linux standard for full disk encryption. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#luks-linux-unified-key-setup">More</a> <a href="#fr-LUKS-1">↩</a></p>
+</li>
+<li id="footnote-SSH">
+<p>SSH — secure remote access protocol. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#ssh-secure-shell">More</a> <a href="#fr-SSH-1">↩</a></p>
+</li>
+<li id="footnote-FIPS">
+<p>FIPS — U.S. cryptographic standards for government/finance. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#fips-federal-information-processing-standards">More</a> <a href="#fr-FIPS-1">↩</a></p>
+</li>
+<li id="footnote-ISOIEC">
+<p>ISO/IEC — international standards for IT/crypto. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#isoiec">More</a> <a href="#fr-ISOIEC-1">↩</a></p>
+</li>
+<li id="footnote-IPSec">
+<p>IPSec — protocol suite for securing IP communications. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#ipsec">More</a> <a href="#fr-IPSec-1">↩</a></p>
+</li>
+<li id="footnote-CBC">
+<p>CBC — block cipher mode, chains blocks for security. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#cbc-cipher-block-chaining">More</a> <a href="#fr-CBC-1">↩</a></p>
+</li>
+<li id="footnote-PKCS7">
+<p>PKCS7 — padding scheme for block ciphers. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#pkcs7">More</a> <a href="#fr-PKCS7-1">↩</a></p>
+</li>
+</ol><div style="break-before: page; page-break-before: always;"></div><h1 id="glossary-of-terms"><a class="header" href="#glossary-of-terms">Glossary of Terms</a></h1>
+<h2 id="aes-advanced-encryption-standard"><a class="header" href="#aes-advanced-encryption-standard">AES (Advanced Encryption Standard)</a></h2>
+<p>AES is a symmetric-key block cipher standardized by NIST in 2001, designed by Vincent Rijmen and Joan Daemen.<br />
+It operates on 128-bit blocks with keys of 128, 192, or 256 bits, and is based on a Substitution–Permutation Network.<br />
+AES is fast, secure, and widely implemented in both software and hardware (including CPU instructions).<br />
+It remains the global standard for symmetric encryption, used in TLS, SSH, disk encryption, and countless applications.</p>
+<hr />
+<h2 id="ecb-electronic-code-book"><a class="header" href="#ecb-electronic-code-book">ECB (Electronic Code Book)</a></h2>
+<p>ECB is the simplest block cipher mode of operation: it encrypts each block independently with the same key.<br />
+While easy to implement, it is insecure because identical plaintext blocks produce identical ciphertext blocks.<br />
+This leaks patterns in the input (e.g., images encrypted with ECB visibly preserve outlines).<br />
+Because of this, ECB is almost never used in practice and is considered unsafe.</p>
+<hr />
+<h2 id="rsa-rivestshamiradleman"><a class="header" href="#rsa-rivestshamiradleman">RSA (Rivest–Shamir–Adleman)</a></h2>
+<p>RSA is one of the first public-key cryptosystems, invented in 1977 by Ron Rivest, Adi Shamir, and Leonard Adleman.<br />
+It allows secure key exchange, encryption, and digital signatures by relying on the mathematical difficulty of factoring large integers.<br />
+RSA keys are typically 2048 or 3072 bits today. While still widely used, modern protocols increasingly migrate to elliptic-curve cryptography (ECC) for better performance and smaller key sizes.</p>
+<hr />
+<h2 id="padding-in-rsa"><a class="header" href="#padding-in-rsa">Padding in RSA</a></h2>
+<p>RSA encryption without padding is deterministic: encrypting the same message always produces the same ciphertext.<br />
+This makes it insecure, as attackers can guess messages or exploit mathematical properties of RSA.<br />
+Padding schemes (e.g., PKCS#1 v1.5 or OAEP) add randomness or structured bytes before encryption.<br />
+This ensures different ciphertexts for the same plaintext and provides protection against chosen-plaintext or chosen-ciphertext attacks.<br />
+Proper padding is essential for RSA’s security in practice.</p>
+<hr />
+<h2 id="des-data-encryption-standard"><a class="header" href="#des-data-encryption-standard">DES (Data Encryption Standard)</a></h2>
+<p>DES is a symmetric-key block cipher standardized in the 1970s by NIST.<br />
+It uses a 56-bit key and operates on 64-bit blocks.<br />
+Once a global standard, DES is now considered insecure due to its short key length, which makes it vulnerable to brute-force attacks.</p>
+<hr />
+<h2 id="3des-triple-des"><a class="header" href="#3des-triple-des">3DES (Triple DES)</a></h2>
+<p>Triple DES (3DES) is an extension of DES that applies the DES algorithm three times with either two or three different keys.<br />
+This increases the effective key length to 112 or 168 bits.<br />
+It offered better security than DES but is now deprecated due to its slow performance and known cryptographic weaknesses.</p>
+<hr />
+<h2 id="camellia"><a class="header" href="#camellia">Camellia</a></h2>
+<p>Camellia is a modern symmetric-key block cipher developed in Japan by Mitsubishi Electric and NTT.<br />
+It offers security and performance comparable to AES, supporting key sizes of 128, 192, and 256 bits.<br />
+Camellia is standardized by ISO/IEC and the NESSIE project.<br />
+Though less widely used than AES, it is considered secure and suitable for both software and hardware implementations.</p>
+<hr />
+<h2 id="tls-transport-layer-security"><a class="header" href="#tls-transport-layer-security">TLS (Transport Layer Security)</a></h2>
+<p>TLS is a protocol defined by the IETF to secure data during transmission, most notably in HTTPS.<br />
+It uses asymmetric encryption for the handshake and key exchange, then switches to symmetric encryption for efficient bulk data encryption.<br />
+TLS provides confidentiality, integrity, and authentication for internet communications.</p>
+<hr />
+<h2 id="luks-linux-unified-key-setup"><a class="header" href="#luks-linux-unified-key-setup">LUKS (Linux Unified Key Setup)</a></h2>
+<p>LUKS is the standard format for full disk encryption on Linux, designed by Clemens Fruhwirth.<br />
+It provides strong symmetric encryption for protecting data at rest and supports multiple key slots, allowing different passphrases or keys to unlock the same volume.</p>
+<hr />
+<h2 id="ssh-secure-shell"><a class="header" href="#ssh-secure-shell">SSH (Secure Shell)</a></h2>
+<p>SSH is a secure remote access protocol invented by Tatu Ylönen in 1995.<br />
+It uses asymmetric encryption to authenticate users and symmetric encryption to secure the session once established.<br />
+SSH replaced insecure protocols such as Telnet and rlogin and is now the standard for secure remote administration.</p>
+<hr />
+<h2 id="fips-federal-information-processing-standards"><a class="header" href="#fips-federal-information-processing-standards">FIPS (Federal Information Processing Standards)</a></h2>
+<p>FIPS are cryptographic standards defined by NIST for use in U.S. government systems.<br />
+FIPS certification ensures that cryptographic algorithms and implementations meet strict security requirements.<br />
+It is often required in government, healthcare, and financial sectors to guarantee compliance and trust.</p>
+<hr />
+<h2 id="isoiec"><a class="header" href="#isoiec">ISO/IEC</a></h2>
+<p>ISO (International Organization for Standardization) and IEC (International Electrotechnical Commission) jointly publish international standards for information technology, including cryptography.<br />
+These standards ensure interoperability and security across implementations worldwide.</p>
+<hr />
+<h2 id="ipsec"><a class="header" href="#ipsec">IPSec</a></h2>
+<p>IPSec (Internet Protocol Security) is a suite of protocols designed to secure IP communications.<br />
+It operates at the network layer, providing encryption, integrity, and authentication for IP packets.<br />
+IPSec is widely used for VPNs and site-to-site secure tunnels.</p>
+<hr />
+<h2 id="cbc-cipher-block-chaining"><a class="header" href="#cbc-cipher-block-chaining">CBC (Cipher Block Chaining)</a></h2>
+<p>CBC is a block cipher mode of operation that chains blocks together for added security.<br />
+Each plaintext block is XORed with the previous ciphertext block before encryption, preventing identical plaintexts from producing identical ciphertexts.<br />
+An Initialization Vector (IV) is required for the first block to ensure uniqueness.<br />
+While stronger than ECB, CBC has weaknesses and should be used with caution.</p>
+<hr />
+<h2 id="pkcs7"><a class="header" href="#pkcs7">PKCS7</a></h2>
+<p>PKCS7 is a padding scheme used in block cipher encryption.<br />
+It fills up the last block of plaintext with bytes all set to the value of the number of padding bytes added.<br />
+For example, if 4 bytes of padding are needed, the block is filled with <code>04 04 04 04</code>.<br />
+PKCS7 ensures that plaintext lengths align with the cipher’s block size, but improper validation of padding can lead to padding oracle attacks.</p>
 
                     </main>
 
