@@ -20,27 +20,31 @@ Each chapter includes:
 - Security insights and common pitfalls
 - Domain-specific applications
 
+## Code & Examples
 
-## Code and Examples
+This book includes real, runnable Rust code for nearly every chapter.
 
-Most chapters include runnable Rust code to illustrate key concepts.
-
+- All examples are written for **Rust 2024**
 - You’ll need a working Rust toolchain (`rustup`, `cargo`)
-- Code examples are written for Rust 2021 edition
-<!--- All examples are hosted in [a separate repository](https://github.com/VinEckSie/sealed-in-rust-examples)-->
+- Each chapter’s code is provided as a separate **Cargo example**.
+- Examples live inside the companion repository: [sealed-in-rust](https://github.com/VinEckSie/sealed-in-rust/tree/main/rust_crypto_book_code)
 
-Each folder in that repo corresponds to a chapter or concept from the book.  
-You can clone it, run the examples, and experiment freely without touching production code or complex crates.
+You can run them locally without touching production crates or complex setups:
 
-> **Note:** These examples are minimal and didactic. They are not full cryptographic libraries.
+```bash
+git clone https://github.com/VinEckSie/sealed-in-rust.git
+cd sealed-in-rust/rust_crypto_book_code
+cargo run --example aes_cbc //Replace aes_cbc with any chapter example you want to try
+```
 
-<!--If you're looking for a complete, idiomatic crypto crate, see my separate library: [Cryon](https://github.com/VinEckSie/cryon)-->
+> ⚠️ **Note on Playground Limitations:**  
+> Some examples in this book use no_run or ignore markers when rendered online, because external crates like aes, cbc, or rsa cannot be compiled in-browser.
+> All examples work locally, and full source code is always included.
 
-## Where to Find the Code
-New! Want hands-on exercises for each chapter?
+> 💡 These examples are didactic and minimal by design.
+> They illustrate cryptographic concepts — not replace mature, production-ready libraries.
 
-Check out the companion repository:
-[sealed-in-rust-book-code repo](https://github.com/VinEckSie/sealed-in-rust-book-code)
+---
 
 ## Non-linear Reading
 

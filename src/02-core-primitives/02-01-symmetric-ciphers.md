@@ -287,7 +287,8 @@ These are Shannon’s two pillars of secure ciphers.
 
 
 ### AES (Advanced Encryption Standard)  — The Global Symmetric Standard
-> 💡 Used in TLS[^TLS], LUKS[^LUKS], SSH[^SSH], mobile apps, and FIPS-certified systems[^FIPS]. Secure, fast, and hardware-accelerated
+> 💡 Used in TLS[^TLS], LUKS[^LUKS], SSH[^SSH], mobile apps, and FIPS-certified systems[^FIPS].  
+> Secure, fast, and hardware-accelerated
 
 > <img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: [aes](https://crates.io/crates/aes), [block_modes](https://github.com/RustCrypto/block-modes)
 
@@ -299,36 +300,31 @@ It is standardized by FIPS-197, ISO/IEC[^ISOIEC], and widely adopted in security
 
 <br>
 
+🧪 **Code Example: AES-128-CBC Encryption & Decryption in Rust**  ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))  
 We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode[^CBC] with PKCS7[^PKCS7] padding.
 
-🧪 Code Example: AES-128-CBC Encryption & Decryption in Rust
-We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode with PKCS7 padding.
-
-
-📂 [Full source code on GitHub](https://github.com/youruser/rust_crypto_book_code/blob/main/src/aes_cbc.rs)
-
-
 ```rust,no_run
-{{#include ../../rust_crypto_book_code/src/aes_cbc.rs}}
+{{#include ../../rust_crypto_book_code/src/lib.rs:aes}}
 ```
 
-✅ Use a unique IV for every encryption, and never reuse a key/IV pair. Avoid ECB mode entirely, and prefer AEAD modes (e.g., AES-GCM) when available.
+```rust,no_run
+Ciphertext (hex): 61b05644915a98fbd515e31b3a4e6d88
+Decrypted text: Attack at dawn!
+```
+✅ Use a unique IV (Initialization Vector) for every encryption, and never reuse a key/IV pair. Avoid ECB mode entirely, and prefer AEAD modes (e.g., AES-GCM) when available.
 
 > **🟢 Conclusion**
 > AES is the modern standard for symmetric encryption. It is fast, secure, and hardware-accelerated — making it ideal for both embedded systems and high-throughput servers. When used correctly with a secure mode like CBC or GCM and proper key/IV management, AES provides strong resistance against all known practical attacks.
 
 
-Used in [TLS](../99-appendices/99-01-glossary.md#tls-transport-layer-security), LUKS, SSH, and FIPS-certified systems.
-
-[^DES]: DES (Data Encryption Standard) is an early symmetric-key algorithm standardized in the 1970s. It uses a 56-bit key and is now considered insecure due to its short key length, making it vulnerable to brute-force attacks.
-[^3DES]: 3DES (Triple DES) is an extension of DES that applies the DES algorithm three times with either two or three different keys, increasing the effective key length to 112 or 168 bits. It offers better security than DES, but is now deprecated due to performance issues and known vulnerabilities.
-[^AES]: AES (Advanced Encryption Standard) is a widely used symmetric cipher known for its performance and strong security — when used correctly.
-[^Camellia]: Camellia is a modern symmetric-key block cipher developed in Japan by Mitsubishi Electric and NTT. It offers security and performance comparable to AES, supports 128-, 192-, and 256-bit keys, and is standardized by ISO/IEC and NESSIE. Although less commonly used than AES, it is widely considered secure and suitable for both software and hardware implementations.
-[^TLS]: TLS (Transport Layer Security) is a protocol created by the IETF to secure data during transmission (like in HTTPS). It uses asymmetric encryption to establish a secure connection, then switches to symmetric encryption for fast, private communication.
-[^LUKS]: LUKS (Linux Unified Key Setup) is a Linux standard for encrypting disks, designed by Clemens Fruhwirth. It protects data at rest using strong symmetric encryption and supports managing multiple passwords or keys.
-[^SSH]: SSH (Secure Shell) is a secure remote access protocol invented by Tatu Ylönen. SSH uses asymmetric encryption to authenticate users and symmetric encryption to secure the session once connected.
-[^FIPS]: FIPS-certified systems (Federal Information Processing Standards) are standards defined by NIST (U.S. National Institute of Standards and Technology) to ensure cryptographic tools meet strict security requirements. FIPS certification is often required in government, healthcare, or finance to guarantee the use of approved algorithms and secure implementations.
-[^ISOIEC]: definition
-[^IPSec]: definition
-[^CBC]: definition
-[^PKCS7]: definition
+[^DES]: DES — early symmetric cipher (56-bit), now insecure. [More](../99-appendices/99-01-glossary.md#des-data-encryption-standard)  
+[^3DES]: 3DES — DES applied three times, better than DES but now deprecated. [More](../99-appendices/99-01-glossary.md#3des-triple-des)  
+[^Camellia]: Camellia — Japanese block cipher, secure & AES-comparable. [More](../99-appendices/99-01-glossary.md#camellia)
+[^TLS]: TLS — protocol securing data in transit (HTTPS, etc.). [More](../99-appendices/99-01-glossary.md#tls-transport-layer-security)  
+[^LUKS]: LUKS — Linux standard for full disk encryption. [More](../99-appendices/99-01-glossary.md#luks-linux-unified-key-setup)  
+[^SSH]: SSH — secure remote access protocol. [More](../99-appendices/99-01-glossary.md#ssh-secure-shell)  
+[^FIPS]: FIPS — U.S. cryptographic standards for government/finance. [More](../99-appendices/99-01-glossary.md#fips-federal-information-processing-standards)  
+[^ISOIEC]: ISO/IEC — international standards for IT/crypto. [More](../99-appendices/99-01-glossary.md#isoiec)  
+[^IPSec]: IPSec — protocol suite for securing IP communications. [More](../99-appendices/99-01-glossary.md#ipsec)  
+[^CBC]: CBC — block cipher mode, chains blocks for security. [More](../99-appendices/99-01-glossary.md#cbc-cipher-block-chaining)  
+[^PKCS7]: PKCS7 — padding scheme for block ciphers. [More](../99-appendices/99-01-glossary.md#pkcs7)

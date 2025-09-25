@@ -17,7 +17,8 @@ Memory safety, explicit ownership, fearless concurrency, and tight control over 
 In this book, we’ll treat crypto not as a black box, but as a series of concrete systems problems — and show how Rust lets us solve them with clarity and precision.
 
 
-[^aes]: AES (Advanced Encryption Standard) is a widely used symmetric cipher known for its performance and strong security — when used correctly.
-[^ecb]: ECB (Electronic Code Book) mode encrypts each block independently, revealing patterns in the plaintext and making it insecure for most purposes.
-[^rsa]: RSA (Rivest–Shamir–Adleman) is a public-key cryptosystem used for encryption and digital signatures. It relies on the difficulty of factoring large integers.
-[^padding]: Padding in RSA adds randomness or structure to the plaintext before encryption, preventing deterministic outputs. Without it, attackers can guess messages, detect patterns, or exploit mathematical properties to break the cipher.
+[^aes]: AES. Modern symmetric cipher, fast & secure. [More](../99-appendices/99-01-glossary.md#aes-advanced-encryption-standard)
+[^ecb]: ECB Mode. Simple block mode, insecure due to patterns. [More](../99-appendices/99-01-glossary.md#ecb-electronic-code-book)
+[^rsa]: RSA. Public-key system for encryption & signatures. [More](../99-appendices/99-01-glossary.md#rsa-rivestshamiradleman)
+[^padding]: Padding. Adds randomness/structure to secure RSA encryption. [More](../99-appendices/99-01-glossary.md#padding-in-rsa)
+---

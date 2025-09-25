@@ -1,9 +1,12 @@
+// ANCHOR: aes
 use aes::Aes128;
 use block_padding::Pkcs7;
 use cbc::{Encryptor, Decryptor};
 use cipher::{BlockEncryptMut, BlockDecryptMut, KeyIvInit};
 
+
 pub fn run_aes_example() {
+
     let key = b"verysecretkey123";
     let iv = b"uniqueinitvector";
     let plaintext = b"Attack at dawn!";
@@ -30,3 +33,5 @@ pub fn run_aes_example() {
     println!("Decrypted text: {}", String::from_utf8_lossy(decrypted));
     assert_eq!(plaintext.to_vec(), decrypted);
 }
+// ANCHOR_END: aes
+
