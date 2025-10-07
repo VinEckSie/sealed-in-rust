@@ -7,7 +7,7 @@
 
 [📘 **Read the book**](https://vinecksie.github.io/sealed-in-rust)
 
-[📘 **Explore the Book Overview & Roadmap**](https://sealedinrust.super.site)
+[📘 **Explore the Book Overview & Roadmap**](https://vinecksie.super.site/sealed-in-rust)
 
 A fearless journey into cryptography — written in Rust.
 
@@ -25,7 +25,7 @@ This book explores how real-world systems use cryptographic primitives to solve 
 - Modular, testable, auditable code
 
 > Chapters are released progressively.  
-> Follow the repo to stay updated — or build alongside using the [sealed-starter](https://github.com/VinEckSie/sealed-starter) template.
+> Follow the repo to stay updated about code examples — [sealed_book_code](https://github.com/VinEckSie/sealed-in-rust-book-code)
 
 
 ## 🚀 Built With
