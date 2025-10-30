@@ -195,7 +195,7 @@
 <blockquote>
 <p>⚠️ Insecure. Demonstration-only (used in educational demos, malware obfuscation )</p>
 </blockquote>
-<p><img src="https://github.com/user-attachments/assets/e6eeacfc-ba92-4ecf-bb7b-48ad2384c1ae" alt="youtube" />   Watch it on my <em>Fearless in Rust</em> channel:  <a href="https://www.youtube.com/watch?v=wA-p_c19ZFw&amp;t=326s">XOR Cipher in Rust - Step by Step</a></p>
+<p>Watch it on my <em>Fearless in Rust</em> channel: <a href="https://www.youtube.com/watch?v=wA-p_c19ZFw&amp;t=326s">XOR Cipher in Rust - Step by Step</a></p>
 <!--
 >⚠️ Annotate if a Rust crate exists + maturity level
 -->
@@ -324,7 +324,10 @@ This idea shaped DES and similar ciphers.</p>
 </blockquote>
 <h3 id="substitutionpermutation-networks-spn"><a class="header" href="#substitutionpermutation-networks-spn">Substitution–Permutation Networks (SPN)</a></h3>
 <blockquote>
-<p>⚠️ Used in AES[^AES], Camellia<sup class="footnote-reference" id="fr-Camellia-1"><a href="#footnote-Camellia">3</a></sup>, and modern block ciphers.
+<p>⚠️ Software-only S-box implementations can leak secrets through cache timing. Modern AES implementations use hardware instructions (AES-NI) or constant-time software libraries.</p>
+</blockquote>
+<blockquote>
+<p>⚠️ Used in AES<sup class="footnote-reference" id="fr-AES-1"><a href="#footnote-AES">3</a></sup>, Camellia<sup class="footnote-reference" id="fr-Camellia-1"><a href="#footnote-Camellia">4</a></sup>, and modern block ciphers.
 Still dominant in current cipher architectures</p>
 </blockquote>
 <!--
@@ -459,7 +462,7 @@ Substitution-Permutation Networks provide a simple yet powerful structure for bu
 </blockquote>
 <h3 id="aes-advanced-encryption-standard---the-global-symmetric-standard"><a class="header" href="#aes-advanced-encryption-standard---the-global-symmetric-standard">AES (Advanced Encryption Standard)  — The Global Symmetric Standard</a></h3>
 <blockquote>
-<p>💡 Used in TLS<sup class="footnote-reference" id="fr-TLS-1"><a href="#footnote-TLS">4</a></sup>, LUKS<sup class="footnote-reference" id="fr-LUKS-1"><a href="#footnote-LUKS">5</a></sup>, SSH<sup class="footnote-reference" id="fr-SSH-1"><a href="#footnote-SSH">6</a></sup>, mobile apps, and FIPS-certified systems<sup class="footnote-reference" id="fr-FIPS-1"><a href="#footnote-FIPS">7</a></sup>.<br />
+<p>💡 Used in TLS<sup class="footnote-reference" id="fr-TLS-1"><a href="#footnote-TLS">5</a></sup>, LUKS<sup class="footnote-reference" id="fr-LUKS-1"><a href="#footnote-LUKS">6</a></sup>, SSH<sup class="footnote-reference" id="fr-SSH-1"><a href="#footnote-SSH">7</a></sup>, mobile apps, and FIPS-certified systems<sup class="footnote-reference" id="fr-FIPS-1"><a href="#footnote-FIPS">8</a></sup>.<br />
 Secure, fast, and hardware-accelerated</p>
 </blockquote>
 <blockquote>
@@ -467,10 +470,10 @@ Secure, fast, and hardware-accelerated</p>
 </blockquote>
 <p>AES is a symmetric-key block cipher developed by Belgian cryptographers Vincent Rijmen and Joan Daemen. It was selected by NIST in 2001 as the successor to DES and 3DES.</p>
 <p>AES operates on 128-bit blocks and supports key sizes of 128, 192, or 256 bits. It is based on a Substitution–Permutation Network (SPN) and runs 10, 12, or 14 rounds depending on the key length.</p>
-<p>It is standardized by FIPS-197, ISO/IEC<sup class="footnote-reference" id="fr-ISOIEC-1"><a href="#footnote-ISOIEC">8</a></sup>, and widely adopted in security protocols such as TLS, SSH, and IPsec<sup class="footnote-reference" id="fr-IPSec-1"><a href="#footnote-IPSec">9</a></sup>. AES is available in hardware on most modern CPUs, making it both fast and energy-efficient.</p>
+<p>It is standardized by FIPS-197, ISO/IEC<sup class="footnote-reference" id="fr-ISOIEC-1"><a href="#footnote-ISOIEC">9</a></sup>, and widely adopted in security protocols such as TLS, SSH, and IPsec<sup class="footnote-reference" id="fr-IPSec-1"><a href="#footnote-IPSec">10</a></sup>. AES is available in hardware on most modern CPUs, making it both fast and energy-efficient.</p>
 <br>
 <p>🧪 <strong>Code Example: AES-128-CBC Encryption &amp; Decryption in Rust</strong>  (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)<br />
-We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-CBC-1"><a href="#footnote-CBC">10</a></sup> with PKCS7<sup class="footnote-reference" id="fr-PKCS7-1"><a href="#footnote-PKCS7">11</a></sup> padding.</p>
+We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-CBC-1"><a href="#footnote-CBC">11</a></sup> with PKCS7<sup class="footnote-reference" id="fr-PKCS7-1"><a href="#footnote-PKCS7">12</a></sup> padding.</p>
 <pre><pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use aes::Aes128;
@@ -524,6 +527,9 @@ AES is the modern standard for symmetric encryption. It is fast, secure, and har
 </li>
 <li id="footnote-3DES">
 <p>3DES — DES applied three times, better than DES but now deprecated. <a href="../99-appendices/99-01-glossary.html#3des-triple-des">More</a> <a href="#fr-3DES-1">↩</a></p>
+</li>
+<li id="footnote-AES">
+<p>AES — The modern global standard, fast, secure, and hardware-accelerated. <a href="../99-appendices/99-01-glossary.html#aes-advanced-encryption-standard">More</a> <a href="#fr-AES-1">↩</a></p>
 </li>
 <li id="footnote-Camellia">
 <p>Camellia — Japanese block cipher, secure &amp; AES-comparable. <a href="../99-appendices/99-01-glossary.html#camellia">More</a> <a href="#fr-Camellia-1">↩</a></p>

@@ -189,6 +189,21 @@
 <p><strong>This book exists to change that.</strong></p>
 <p>You’re not here to memorize equations. You’re here to understand, implement, and apply cryptographic primitives to real-world systems using a language designed to prevent mistakes before they happen: <strong>Rust</strong>.</p>
 <p>Whether you’re building infrastructure, smart contracts, embedded firmware, or secure APIs, this book gives you the tools to use cryptography safely, idiomatically, and fearlessly — one primitive, one project, one domain at a time.</p>
+<h2 id="-important-note-on-scope"><a class="header" href="#-important-note-on-scope">⚠️ Important Note on Scope</a></h2>
+<p>This book takes a two-layered approach:</p>
+<p><strong>Learning the Primitives</strong></p>
+<ul>
+<li>We begin with fundamental building blocks (XOR, AES, ChaCha20, Feistel, SPN) to teach how cryptography works under the hood.</li>
+<li>These examples are simplified, sometimes insecure by design, and are provided for educational clarity.</li>
+</ul>
+<p><strong>Applying Secure Constructions</strong></p>
+<ul>
+<li>For every primitive introduced, we also demonstrate how it is used safely in practice — with production-ready Rust code and well-reviewed crates.</li>
+<li>In modern systems, raw primitives are never used alone. Instead, we rely on AEAD (Authenticated Encryption with Associated Data) modes such as AES-GCM or ChaCha20-Poly1305, which provide both confidentiality and integrity/authentication.</li>
+<li>Each chapter connects the primitive to its real-world domains (e.g., AES-GCM in TLS, ChaCha20-Poly1305 in VPNs and mobile messaging, AES-XTS in disk encryption).</li>
+</ul>
+<p><strong>💡 Bottom line:</strong>
+You’ll gain an understanding of the core mechanics of symmetric ciphers, and also learn how to apply them correctly with Rust in production scenarios. By the end, you’ll not only know what’s inside the black box, but also how to choose and use the right construction for your specific domain.</p>
 <h2 id="who-this-book-is-for"><a class="header" href="#who-this-book-is-for">Who This Book Is For</a></h2>
 <ul>
 <li>Rust developers who want to understand and apply cryptography</li>
