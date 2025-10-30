@@ -17,3 +17,4 @@
 
 # Appendices
 - [A. Glossary of Terms](99-appendices/99-01-glossary.md)
+- [B. Cryptographic Concepts Cheatsheet](99-appendices/99-02-cheatsheet.md)

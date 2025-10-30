@@ -15,15 +15,12 @@ They are used everywhere: encrypted file systems, secure communications, and eve
 > ⚠️ Insecure. Demonstration-only (used in educational demos, malware obfuscation )
 
 
-![youtube](https://github.com/user-attachments/assets/e6eeacfc-ba92-4ecf-bb7b-48ad2384c1ae)   Watch it on my *Fearless in Rust* channel:  [XOR Cipher in Rust - Step by Step](https://www.youtube.com/watch?v=wA-p_c19ZFw&t=326s)
+Watch it on my *Fearless in Rust* channel: [XOR Cipher in Rust - Step by Step](https://www.youtube.com/watch?v=wA-p_c19ZFw&t=326s)
 
 <!--
 >⚠️ Annotate if a Rust crate exists + maturity level
 -->
 We first explored XOR encryption in [Section 1.4: First Code — A Naive XOR Encryptor](../01-foundations/01-04-first-code.md), where we built a full working example from scratch.
-
-
-
 
 
 XOR is the simplest symmetric cipher: each byte of the message is XORed with a repeating key.
@@ -152,8 +149,11 @@ This idea shaped DES and similar ciphers.
 > Not used today due to known vulnerabilities, but conceptually essential.
 
 ### Substitution–Permutation Networks (SPN)
+> ⚠️ Software-only S-box implementations can leak secrets through cache timing. Modern AES implementations use hardware instructions (AES-NI) or constant-time software libraries.
+
 >  ⚠️ Used in AES[^AES], Camellia[^Camellia], and modern block ciphers.
 > Still dominant in current cipher architectures
+
 <!--
 > ⚠️ Annotate if a Rust crate exists + maturity level
 -->
@@ -319,6 +319,7 @@ Decrypted text: Attack at dawn!
 
 [^DES]: DES — early symmetric cipher (56-bit), now insecure. [More](../99-appendices/99-01-glossary.md#des-data-encryption-standard)  
 [^3DES]: 3DES — DES applied three times, better than DES but now deprecated. [More](../99-appendices/99-01-glossary.md#3des-triple-des)  
+[^AES]: AES — The modern global standard, fast, secure, and hardware-accelerated. [More](../99-appendices/99-01-glossary.md#aes-advanced-encryption-standard)
 [^Camellia]: Camellia — Japanese block cipher, secure & AES-comparable. [More](../99-appendices/99-01-glossary.md#camellia)
 [^TLS]: TLS — protocol securing data in transit (HTTPS, etc.). [More](../99-appendices/99-01-glossary.md#tls-transport-layer-security)  
 [^LUKS]: LUKS — Linux standard for full disk encryption. [More](../99-appendices/99-01-glossary.md#luks-linux-unified-key-setup)  

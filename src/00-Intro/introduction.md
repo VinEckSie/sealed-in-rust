@@ -10,6 +10,22 @@ You’re not here to memorize equations. You’re here to understand, implement,
 
 Whether you're building infrastructure, smart contracts, embedded firmware, or secure APIs, this book gives you the tools to use cryptography safely, idiomatically, and fearlessly — one primitive, one project, one domain at a time.
 
+## ⚠️ Important Note on Scope
+
+This book takes a two-layered approach:
+
+**Learning the Primitives**
+- We begin with fundamental building blocks (XOR, AES, ChaCha20, Feistel, SPN) to teach how cryptography works under the hood.
+- These examples are simplified, sometimes insecure by design, and are provided for educational clarity. 
+
+**Applying Secure Constructions**
+- For every primitive introduced, we also demonstrate how it is used safely in practice — with production-ready Rust code and well-reviewed crates.
+- In modern systems, raw primitives are never used alone. Instead, we rely on AEAD (Authenticated Encryption with Associated Data) modes such as AES-GCM or ChaCha20-Poly1305, which provide both confidentiality and integrity/authentication.
+- Each chapter connects the primitive to its real-world domains (e.g., AES-GCM in TLS, ChaCha20-Poly1305 in VPNs and mobile messaging, AES-XTS in disk encryption).
+
+**💡 Bottom line:**
+You’ll gain an understanding of the core mechanics of symmetric ciphers, and also learn how to apply them correctly with Rust in production scenarios. By the end, you’ll not only know what’s inside the black box, but also how to choose and use the right construction for your specific domain.
+
 ## Who This Book Is For
 
 - Rust developers who want to understand and apply cryptography
