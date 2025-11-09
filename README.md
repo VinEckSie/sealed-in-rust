@@ -3,7 +3,7 @@
 [![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue)](./LICENSE)
 [![Rust](https://img.shields.io/badge/rust-stable-orange)](https://www.rust-lang.org/)
 [![Book](https://img.shields.io/badge/docs-mdBook-lightgrey.svg)](https://vinecksie.github.io/sealed-in-rust/)
-[![Last commit](https://img.shields.io/github/last-commit/VinEckSie/sealed_in_rust)](https://github.com/VinEckSie/sealed-in-rust)
+[![Last commit](https://img.shields.io/github/last-commit/VinEckSie/sealed-in-rust)](https://github.com/VinEckSie/sealed-in-rust)
 
 Learn cryptography by coding it in Rust — from **XOR** to **Ed25519**, one primitive at a time.  
 No fluff. No math-heavy jargon. Just Rust and security.
