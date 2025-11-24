@@ -107,3 +107,30 @@ PKCS7 is a padding scheme used in block cipher encryption.
 It fills up the last block of plaintext with bytes all set to the value of the number of padding bytes added.  
 For example, if 4 bytes of padding are needed, the block is filled with `04 04 04 04`.  
 PKCS7 ensures that plaintext lengths align with the cipher’s block size, but improper validation of padding can lead to padding oracle attacks.  
+
+## Wireguard
+WireGuard is a modern VPN protocol and implementation designed by Jason A. Donenfeld.  
+It focuses on simplicity, performance, and a small codebase, in contrast to traditional VPN stacks like IPsec and OpenVPN.  
+WireGuard uses a fixed, opinionated set of strong primitives (e.g., Curve25519, ChaCha20-Poly1305, BLAKE2s, and HKDF) arranged in a Noise-based handshake pattern.  
+It is now integrated into the Linux kernel and widely deployed for site-to-site VPNs, remote access, and privacy-focused applications.
+
+## Non-AES Hardware
+“Non-AES hardware” refers to CPUs and devices that do not provide hardware acceleration for AES (such as Intel’s AES-NI instructions).  
+On these platforms, software-only AES can be relatively slow and sometimes harder to implement in a constant-time way.  
+Stream ciphers like ChaCha20, which use simple add-rotate-xor operations, tend to be faster and easier to harden against timing attacks on such hardware.  
+Modern protocols therefore often select ChaCha20-Poly1305 as a preferred or fallback cipher suite for clients without efficient AES support.
+
+## Salsa20
+Salsa20 is a stream cipher designed by Daniel J. Bernstein as part of the eSTREAM project.  
+It uses simple add-rotate-xor (ARX) operations to generate a pseudorandom keystream from a key, nonce, and counter, making it fast and easy to implement on a wide range of hardware.  
+Salsa20 was extensively analyzed and gained a strong security reputation, and its design directly inspired ChaCha20, which refines the permutation for better diffusion and performance on modern CPUs.
+
+## Pseudorandom Keystream
+A pseudorandom keystream is a sequence of bits or bytes that appears random but is generated deterministically from a secret key (and often a nonce/counter).  
+In a secure stream cipher, this keystream should be computationally indistinguishable from true randomness to anyone who does not know the key.  
+When the keystream is XORed with plaintext (and never reused with the same key/nonce), it hides the original data while still allowing the receiver, who can regenerate the same keystream, to decrypt it.
+
+## ChaCha20-Poly1305
+ChaCha20-Poly1305 is an AEAD (Authenticated Encryption with Associated Data) construction that combines the ChaCha20 stream cipher with the Poly1305 message authentication code.  
+ChaCha20 provides fast, software-friendly encryption using add-rotate-xor operations, while Poly1305 computes a strong one-time MAC over the ciphertext and associated data.  
+Together, they provide confidentiality, integrity, and authenticity in a single primitive, widely deployed in TLS 1.3, WireGuard, and many modern protocols, especially on devices without AES hardware acceleration.

@@ -4,11 +4,15 @@
 > ✅ Still foundational in modern cryptography.
 
 
+
+
 ### What Are Symmetric Ciphers?
 
 Symmetric ciphers use the **same key** for both encryption and decryption. Unlike public-key cryptography, they don’t offer key exchange—but they are **much faster**, making them ideal for bulk data encryption.
 
 They are used everywhere: encrypted file systems, secure communications, and even inside protocols like TLS (after the handshake).
+
+
 
 
 ### XOR Cipher — Simplicity That Teaches
@@ -48,6 +52,9 @@ pub fn xor_encrypt(input: &[u8], key: &[u8]) -> Vec<u8> {
 ```
 > **🟢 Conclusion**
 > XOR encryption is reversible and stateless, which makes it simple and fast. But it lacks confusion and diffusion, so patterns in the input remain visible — offering no real resistance to cryptanalysis.
+
+
+
 
 ### Feistel Networks — Foundation of Classic Block Ciphers
 > ⚠️ Cryptographically obsolete, but conceptually important (used in DES[^DES], 3DES[^3DES])
@@ -147,6 +154,9 @@ Feistel networks let you build reversible encryption even with non-invertible fu
 This idea shaped DES and similar ciphers. 
 > 
 > Not used today due to known vulnerabilities, but conceptually essential.
+
+
+
 
 ### Substitution–Permutation Networks (SPN)
 > ⚠️ Software-only S-box implementations can leak secrets through cache timing. Modern AES implementations use hardware instructions (AES-NI) or constant-time software libraries.
@@ -286,6 +296,8 @@ These are Shannon’s two pillars of secure ciphers.
 > Substitution-Permutation Networks provide a simple yet powerful structure for building symmetric ciphers. They deliver the critical properties of confusion and diffusion, as first formalized by Claude Shannon in his foundational work on cryptographic security.
 
 
+
+
 ### AES (Advanced Encryption Standard)  — The Global Symmetric Standard
 > 💡 Used in TLS[^TLS], LUKS[^LUKS], SSH[^SSH], mobile apps, and FIPS-certified systems[^FIPS].  
 > Secure, fast, and hardware-accelerated
@@ -300,21 +312,187 @@ It is standardized by FIPS-197, ISO/IEC[^ISOIEC], and widely adopted in security
 
 <br>
 
-🧪 **Code Example: AES-128-CBC Encryption & Decryption in Rust**  ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))  
+🧪 **Code Example: AES-128-CBC Encryption & Decryption in Rust** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))  
 We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode[^CBC] with PKCS7[^PKCS7] padding.
 
 ```rust,no_run
 {{#include ../../rust_crypto_book_code/src/lib.rs:aes}}
 ```
 
+Output:
 ```rust,no_run
-Ciphertext (hex): 61b05644915a98fbd515e31b3a4e6d88
+Ciphertext (hex): a2ae0699ff0bc71e6ff43a32531d88
 Decrypted text: Attack at dawn!
 ```
 ✅ Use a unique IV (Initialization Vector) for every encryption, and never reuse a key/IV pair. Avoid ECB mode entirely, and prefer AEAD modes (e.g., AES-GCM) when available.
 
 > **🟢 Conclusion**
-> AES is the modern standard for symmetric encryption. It is fast, secure, and hardware-accelerated — making it ideal for both embedded systems and high-throughput servers. When used correctly with a secure mode like CBC or GCM and proper key/IV management, AES provides strong resistance against all known practical attacks.
+>
+> AES is the modern standard for symmetric encryption. 
+>
+> It is fast, secure, and hardware-accelerated — making it ideal for both embedded systems and high-throughput servers. 
+>
+> When used correctly with a secure mode like CBC or GCM and proper key/IV management, AES provides strong resistance against all known practical attacks.
+
+
+
+
+
+### ChaCha20 — Modern Stream Cipher  
+
+> 💡 A stream cipher encrypts data one bit or byte at a time by XORing it with a pseudorandom keystream, instead of encrypting fixed-size blocks like a block cipher.
+
+> 💡 Used in WireGuard[^WIREGUARD], TLS (on non-AES hardware[^NONAES]), mobile apps, messaging protocols, and security libraries.  
+> Fast, simple, and naturally resistant to timing attacks.
+
+> <img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: [chacha20](https://crates.io/crates/chacha20)
+
+
+ChaCha20 is a modern stream cipher designed by Daniel J. Bernstein.  
+
+It is the streamlined successor to Salsa20[^SALSA20], offering improved diffusion and exceptional performance on all platforms — especially devices without AES hardware.
+
+Unlike block ciphers, ChaCha20 does not process data in fixed-size blocks. Instead, it transforms a key + nonce + counter into a pseudorandom keystream[^PSEUDOKEY]. 
+
+Encryption is simply: ciphertext = plaintext XOR keystream
+
+No padding. No block alignment. Just pure stream encryption.
+
+ChaCha20 is now a fundamental primitive across modern cryptography:  
+WireGuard, OpenSSH (for session keys), TLS 1.3 fallback ciphers, mobile operating systems, and many authenticated encryption schemes like ChaCha20-Poly1305[^POLY1305].
+
+🧪 **Code Example: ChaCha20 Encryption** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))
+
+We’ll generate a ChaCha20 keystream and XOR it with a plaintext message.  
+The API is extremely simple — you create a cipher and stream through it.
+
+```rust,no_run
+{{#include ../../rust_crypto_book_code/src/lib.rs:chacha20}}
+```
+
+Output:
+```rust,no_run
+Ciphertext (hex): b0bf118af914c7127eb12a3a4a1489c262dcdd53e9563bfaf652
+Decrypted text: Secret meeting at midnight
+```
+
+> 🚨 **Security rule** 🚨
+>
+> **Never reuse the same (key, nonce) pair. Doing so reveals keystream reuse → instant compromise.**
+> **ChaCha20 itself is secure, but it becomes unsafe if you repeat a nonce.**
+
+> **🟢 Conclusion**
+>
+>ChaCha20 is the modern workhorse of stream ciphers: fast, extremely simple to implement correctly, and designed to avoid timing leaks by construction. 
+>
+> It performs brilliantly on laptops, phones, microcontrollers, and any platform lacking AES acceleration. 
+>
+> Use a fresh nonce for every encryption, treat keystreams as one-time pads, and avoid reuse. When authenticated encryption is needed, pair ChaCha20 with Poly1305 (ChaCha20-Poly1305).
+>
+>ChaCha20 combines security, clarity, and performance — a perfect fit for modern Rust systems, network protocols, and embedded environments.
+
+### Modes of Operation
+
+Modern cryptography doesn’t encrypt “messages.” It encrypts *blocks*.  
+AES, for example, works on 128-bit chunks and nothing else.  
+So to handle real-world data—files, network packets, logs, telemetry—we need a strategy to link those fixed-size blocks together safely.
+
+That strategy is a mode of operation.
+
+Modes are not decorative. They don’t sit on top of AES; they *define* its security. Pick the wrong one and your encryption leaks patterns. Pick the right one and you get confidentiality at scale.
+
+
+**Why Modes Exist**
+
+A block cipher is deterministic: same key + same block = same output.  
+That predictability is deadly when encrypting long messages.
+
+Modes solve four problems:
+
+1. Randomness — injecting unpredictability so repeated blocks don’t look the same.  
+2. Chaining — connecting blocks so tampering affects more than one piece.  
+3. Streaming — letting you encrypt arbitrary sizes efficiently.  
+4. State — defining how to start, continue, and finish encryption safely.
+
+**Overview of Common Modes**
+
+| Mode | Secure? | Real Use Case | Notes |
+|------|---------|----------------|-------|
+| **ECB** | ❌ No | None (except teaching) | Leaks structure. Never use in production. |
+| **CBC** | ⚠️Risky | Legacy protocols | Requires a random IV. Padding mistakes break it. |
+| **CTR** | ✅ Yes | High-speed streaming, networking, I/O | Turns AES into a fast stream cipher. Very robust when nonce-unique. |
+| **XTS** | ✅ Yes | Disk and sector encryption | Designed for storage only, not general messages. |
+
+**ECB — The Anti-Example**
+
+ECB encrypts each block independently.  
+Patterns in the plaintext appear in the ciphertext.  
+Famous example: encrypting the Tux penguin still looks like a penguin.
+
+If you see ECB in a system, assume the designer didn’t understand cryptography.
+
+**CBC — The Old Workhorse**
+
+CBC chains each block with the previous one using XOR.  
+If the IV is truly random and padding is handled correctly, it’s fine.  
+But historically, padding-oracle attacks destroyed its safety in many protocols.
+
+Today, CBC mostly survives in legacy stacks and old file formats.  
+New designs avoid it.
+
+**CTR — The Modern Default**
+
+CTR mode transforms AES into a stream cipher.  
+Instead of encrypting the plaintext blocks directly, it encrypts a counter and XORs the result with the message.
+
+This gives:
+
+- high performance  
+- random access  
+- no padding  
+- clean parallelism  
+
+> 🚨
+>The only hard rule: never reuse the same (key, nonce) pair.  
+>Break that rule and attackers recover the XOR of two plaintexts.
+
+**CTR Example**
+
+```rust
+use aes::Aes128;
+use ctr::cipher::{KeyIvInit, StreamCipher};
+
+let mut cipher = ctr::Ctr128BE::<Aes128>::new(key.into(), nonce.into());
+cipher.apply_keystream(&mut buffer); // encrypt or decrypt
+```
+
+CTR is simple, fast, and well-suited to network protocols, telemetry pipelines, and embedded systems.
+
+**XTS — Built for Storage**
+
+XTS is AES-CTR + a “tweak” system tailored to disk sectors.
+It prevents block relocation attacks and keeps each sector isolated.
+
+XTS shines for full-disk encryption because it resists sector-copy tampering and is purpose-built for storage. It isn’t suitable for general messages or network data, and it requires two independent AES keys.
+
+Use XTS only when you’re encrypting storage blocks.
+
+**Key Takeaway**
+
+Modes of operation are not optional add-ons.
+They decide whether your encryption is safe or broken.
+
+- ECB teaches you what not to do.
+
+- CBC reminds you legacy systems carry hidden risks.
+
+- CTR gives you modern, scalable encryption for streaming workloads.
+
+- XTS protects disks—nothing else.
+
+</br>
+
+If you understand modes, you understand how real-world encryption actually works.
 
 
 [^DES]: DES — early symmetric cipher (56-bit), now insecure. [More](../99-appendices/99-01-glossary.md#des-data-encryption-standard)  
@@ -329,3 +507,8 @@ Decrypted text: Attack at dawn!
 [^IPSec]: IPSec — protocol suite for securing IP communications. [More](../99-appendices/99-01-glossary.md#ipsec)  
 [^CBC]: CBC — block cipher mode, chains blocks for security. [More](../99-appendices/99-01-glossary.md#cbc-cipher-block-chaining)  
 [^PKCS7]: PKCS7 — padding scheme for block ciphers. [More](../99-appendices/99-01-glossary.md#pkcs7)
+[^WIREGUARD]: WireGuard — modern VPN protocol using ChaCha20-Poly1305 to secure IP traffic. [More](../99-appendices/99-01-glossary.md#wireguard)
+[^NONAES]: Non-AES hardware — CPUs without AES instructions, where ChaCha20 is often faster than AES. [More](../99-appendices/99-01-glossary.md#non-aes-hardware)
+[^SALSA20]: Salsa20 — stream cipher by Daniel J. Bernstein; predecessor of ChaCha20, fast and well-studied. [More](../99-appendices/99-01-glossary.md#salsa20)
+[^PSEUDOKEY]: A pseudorandom keystream is a sequence of bits/bytes that looks random but is deterministically generated from a secret key (and usually a nonce). [More](../99-appendices/99-01-glossary.md#pseudorandom-keystream)
+[^POLY1305]: ChaCha20-Poly1305 is an AEAD scheme that combines the ChaCha20 stream cipher with the Poly1305 MAC to provide authenticated encryption (confidentiality + integrity). [More](../99-appendices/99-01-glossary.md#chacha20-poly1305)
