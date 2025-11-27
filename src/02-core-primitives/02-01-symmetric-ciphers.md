@@ -510,5 +510,5 @@ If you understand modes, you understand how real-world encryption actually works
 [^WIREGUARD]: WireGuard — modern VPN protocol using ChaCha20-Poly1305 to secure IP traffic. [More](../99-appendices/99-01-glossary.md#wireguard)
 [^NONAES]: Non-AES hardware — CPUs without AES instructions, where ChaCha20 is often faster than AES. [More](../99-appendices/99-01-glossary.md#non-aes-hardware)
 [^SALSA20]: Salsa20 — stream cipher by Daniel J. Bernstein; predecessor of ChaCha20, fast and well-studied. [More](../99-appendices/99-01-glossary.md#salsa20)
-[^PSEUDOKEY]: A pseudorandom keystream is a sequence of bits/bytes that looks random but is deterministically generated from a secret key (and usually a nonce). [More](../99-appendices/99-01-glossary.md#pseudorandom-keystream)
-[^POLY1305]: ChaCha20-Poly1305 is an AEAD scheme that combines the ChaCha20 stream cipher with the Poly1305 MAC to provide authenticated encryption (confidentiality + integrity). [More](../99-appendices/99-01-glossary.md#chacha20-poly1305)
+[^PSEUDOKEY]: Pseudorandom keystream - sequence of bits/bytes that looks random but is deterministically generated from a secret key (and usually a nonce). [More](../99-appendices/99-01-glossary.md#pseudorandom-keystream)
+[^POLY1305]: ChaCha20-Poly1305 - AEAD scheme that combines the ChaCha20 stream cipher with the Poly1305 MAC to provide authenticated encryption (confidentiality + integrity). [More](../99-appendices/99-01-glossary.md#chacha20-poly1305)
