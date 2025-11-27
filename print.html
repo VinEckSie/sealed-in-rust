@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-82fb7710.js";
+            window.path_to_searchindex_js = "searchindex-817f1940.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-9f632e2c.js"></script>
+        <script src="toc-960dc0a6.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -283,7 +283,7 @@ They illustrate cryptographic concepts — not replace mature, production-ready 
 <p>This is not a cryptography textbook — it’s a cryptographic engineering manual.<br>By the end, you’ll not only understand the primitives, you’ll know how to use them to secure real systems — in Rust, by design, not by accident.</p>
 <p>Let’s begin.</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="11-cryptography-is-a-systems-problem"><a href="#11-cryptography-is-a-systems-problem" class="header">1.1. Cryptography is a Systems Problem</a></h1>
+<h1 id="cryptography-is-a-systems-problem-1"><a href="#cryptography-is-a-systems-problem-1" class="header">Cryptography is a Systems Problem</a></h1>
 <h2 id="cryptography-is-a-systems-problem"><a class="header" href="#cryptography-is-a-systems-problem">Cryptography is a Systems Problem</a></h2>
 <p>Cryptography isn’t just about math.</p>
 <p>Yes, it starts with elegant algebra and deep number theory — but where it breaks is almost always <em>in the system</em>. Real-world failures come from poor implementations, leaky abstractions, memory bugs, side channels, or simply misunderstanding what problem crypto is supposed to solve.</p>
@@ -311,7 +311,7 @@ They illustrate cryptographic concepts — not replace mature, production-ready 
 </li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="12-safety-performance-predictability"><a href="#12-safety-performance-predictability" class="header">1.2. Safety, Performance, Predictability</a></h1>
+<h1 id="safety-performance-predictability-1"><a href="#safety-performance-predictability-1" class="header">Safety, Performance, Predictability</a></h1>
 <h2 id="safety-performance-predictability"><a class="header" href="#safety-performance-predictability">Safety, Performance, Predictability</a></h2>
 <p>Rust is often praised for its speed and memory safety, but in the world of cryptographic engineering, these traits aren’t just nice-to-haves — they’re critical.</p>
 <h3 id="safety"><a class="header" href="#safety">Safety</a></h3>
@@ -342,7 +342,7 @@ They illustrate cryptographic concepts — not replace mature, production-ready 
 <p>In short: Rust brings the low-level control of C, the safety of functional languages, and the clarity of modern syntax — all in a single toolchain. That’s why cryptographers and security engineers are increasingly turning to it.</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="13-cost-of-unsafety-famous-failures"><a href="#13-cost-of-unsafety-famous-failures" class="header">1.3. Cost of Unsafety: Famous Failures</a></h1>
+<h1 id="cost-of-unsafety-famous-failures"><a href="#cost-of-unsafety-famous-failures" class="header">Cost of Unsafety: Famous Failures</a></h1>
 <h2 id="the-cost-of-unsafety-in-crypto-famous-failures"><a class="header" href="#the-cost-of-unsafety-in-crypto-famous-failures">The Cost of Unsafety in Crypto: Famous Failures</a></h2>
 <p>Cryptography doesn’t fail because math is broken — it fails because <strong>systems leak</strong>, <strong>code panics</strong>, or <strong>side-channels whisper secrets</strong>.<br><br>
 And most of these failures? They stem from unsafety.
@@ -385,7 +385,7 @@ Here are just a few real-world examples of cryptographic disasters caused by uns
 <p>Writing secure cryptography in unsafe languages is like writing legal contracts with disappearing ink.</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="14-first-code-a-naive-xor-encryptor"><a href="#14-first-code-a-naive-xor-encryptor" class="header">1.4. First Code: A Naive XOR Encryptor</a></h1>
+<h1 id="first-code-a-naive-xor-encryptor-1"><a href="#first-code-a-naive-xor-encryptor-1" class="header">First Code: A Naive XOR Encryptor</a></h1>
 <h2 id="first-code-a-naive-xor-encryptor"><a class="header" href="#first-code-a-naive-xor-encryptor">First Code: A Naive XOR Encryptor</a></h2>
 <p>Let’s write our first cryptographic algorithm — or at least something that <em>looks</em> like one.</p>
 <p>We’ll implement a simple <strong>XOR cipher</strong>. This method is <em>insecure</em> and should never be used in real applications — but it’s the perfect teaching tool.</p>
@@ -487,7 +487,7 @@ This cipher is insecure — but it demonstrates important cryptographic concepts
 </ul>
 <p>You’ll build on this when implementing real-world ciphers like ChaCha20 or AES.</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="15-tooling-up"><a href="#15-tooling-up" class="header">1.5. Tooling Up</a></h1>
+<h1 id="tooling-up-1"><a href="#tooling-up-1" class="header">Tooling Up</a></h1>
 <h2 id="tooling-up"><a class="header" href="#tooling-up">Tooling Up</a></h2>
 <p>Before we dive into cryptographic primitives, here’s a quick look at tools that can support your Rust development journey — especially if you plan to write your own crypto libraries.</p>
 <blockquote>
@@ -523,7 +523,7 @@ cd sealed-starter
 cargo test
 </code></pre>
 <!--This project will evolve with the book and include examples, tests, and benchmarking code as you progress.--><div style="break-before: page; page-break-before: always;"></div>
-<h1 id="21-symmetric-ciphers--xor-aes-chacha20"><a href="#21-symmetric-ciphers--xor-aes-chacha20" class="header">2.1. Symmetric Ciphers — XOR, AES, ChaCha20</a></h1>
+<h1 id="symmetric-ciphers--xor-aes-chacha20"><a href="#symmetric-ciphers--xor-aes-chacha20" class="header">Symmetric Ciphers — XOR, AES, ChaCha20</a></h1>
 <h2 id="symmetric-ciphers-xor-aes-chacha20--beyond"><a class="header" href="#symmetric-ciphers-xor-aes-chacha20--beyond">Symmetric Ciphers: XOR, AES, ChaCha20 &amp; Beyond</a></h2>
 <blockquote>
 <p>🔐 <strong>Used in:</strong> VPNs, TLS (post-handshake), disk encryption, messaging apps<br>✅ Still foundational in modern cryptography.</p>
@@ -539,7 +539,7 @@ cargo test
 <!--
 >⚠️ Annotate if a Rust crate exists + maturity level
 -->
-<p>We first explored XOR encryption in <a href="#14-first-code-a-naive-xor-encryptor">Section 1.4: First Code — A Naive XOR Encryptor</a>, where we built a full working example from scratch.</p>
+<p>We first explored XOR encryption in <a href="#first-code-a-naive-xor-encryptor-1">Section 1.4: First Code — A Naive XOR Encryptor</a>, where we built a full working example from scratch.</p>
 <p>XOR is the simplest symmetric cipher: each byte of the message is XORed with a repeating key.
 Reversibility is built-in — XORing twice with the same key restores the original.</p>
 <pre class="playground"><code class="language-rust">fn main() {
