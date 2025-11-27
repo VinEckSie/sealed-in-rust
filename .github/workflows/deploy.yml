@@ -14,13 +14,12 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Install mdBook + test preprocessor
-        run: |
-          cargo install mdbook
-          cargo install mdbook-test
+      - name: Install mdBook
+        run: cargo install mdbook
 
       - name: Build the book
         run: mdbook build
+
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
