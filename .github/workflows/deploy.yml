@@ -4,7 +4,7 @@ on:
   workflow_dispatch:  # Manual trigger only
 
 permissions:
-  contents: write  # Needed for gh-pages push
+  contents: write
 
 jobs:
   deploy:
@@ -14,8 +14,10 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Install mdBook
-        run: cargo install mdbook
+      - name: Install mdBook + test preprocessor
+        run: |
+          cargo install mdbook
+          cargo install mdbook-test
 
       - name: Build the book
         run: mdbook build
@@ -25,5 +27,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./book
-          publish_branch: gh-pages  # 🔥 this tells it *exactly* where to deploy
-          keep_files: false         # ensures clean overwrite each time
+          publish_branch: gh-pages
+          keep_files: false
