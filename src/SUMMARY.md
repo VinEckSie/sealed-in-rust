@@ -5,14 +5,14 @@
 
 ---
 
-- [Part I — Why Rust Meets Cryptography]()
+- [Why Rust Meets Cryptography]()
     - [Cryptography is a Systems Problem](01-foundations/01-01-cryptography.md)
     - [Safety, Performance, Predictability](01-foundations/01-02-rust-offers.md)
     - [Cost of Unsafety: Famous Failures](01-foundations/01-03-cost-unsafety.md)
     - [First Code: A Naive XOR Encryptor](01-foundations/01-04-first-code.md)
     - [Tooling Up](01-foundations/01-05-tooling-up.md)
 
-- [Part II — Core Cryptographic Primitives]()
+- [Core Cryptographic Primitives]()
     - [Symmetric Ciphers — XOR, AES, ChaCha20](02-core-primitives/02-01-symmetric-ciphers.md)
 
 - [Appendices]()
