@@ -13,36 +13,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
-        <!-- MathJax -->
-        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex.js";
+            window.path_to_searchindex_js = "searchindex-82fb7710.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-9f632e2c.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -56,7 +53,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -85,12 +82,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -105,39 +102,39 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -145,41 +142,38 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
-                        </a>
-                        <a href="https://github.com/rust-lang/mdBook" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <p><strong>Cryptography is everywhere — and yet most of us treat it like magic.</strong></p>
@@ -234,15 +228,12 @@ You’ll gain an understanding of the core mechanics of symmetric ciphers, and a
 A Rust engineer who understands, wields, and applies cryptography with precision, context, and confidence.</p>
 <p>You won’t just read — you’ll build.<br>
 <a href="https://github.com/VinEckSie/sealed-in-rust-book-code">Focused implementations and applied examples</a> are available here and updated weekly.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="how-to-use-this-book"><a class="header" href="#how-to-use-this-book">How to Use This Book</a></h1>
-<p>This book is designed to be practical, modular, and domain-focused.<br />
-You can read it front to back, or jump directly to the domains and primitives most relevant to your work.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="how-to-use-this-book"><a class="header" href="#how-to-use-this-book">How to Use This Book</a></h1>
+<p>This book is designed to be practical, modular, and domain-focused.<br>You can read it front to back, or jump directly to the domains and primitives most relevant to your work.</p>
 <h2 id="structure"><a class="header" href="#structure">Structure</a></h2>
 <p>The book is organized into four major parts:</p>
-<p><strong>Foundations</strong> — Why Rust is uniquely suited for secure cryptographic engineering<br />
-<strong>Primitives</strong> — The core building blocks of cryptography, with Rust-focused usage and implementation<br />
-<strong>Applied Domains</strong> — Real-world systems and how they use cryptography in practice (blockchain, defense, aerospace, medical, infrastructure, etc.)<br />
-<strong>Crate Building</strong> — How to architect, test, audit, and publish your own cryptographic crate in Rust</p>
+<p><strong>Foundations</strong> — Why Rust is uniquely suited for secure cryptographic engineering<br><strong>Primitives</strong> — The core building blocks of cryptography, with Rust-focused usage and implementation<br><strong>Applied Domains</strong> — Real-world systems and how they use cryptography in practice (blockchain, defense, aerospace, medical, infrastructure, etc.)<br><strong>Crate Building</strong> — How to architect, test, audit, and publish your own cryptographic crate in Rust</p>
 <h3 id=""><a class="header" href="#"></a></h3>
 <p>Each chapter includes:</p>
 <ul>
@@ -265,15 +256,14 @@ cd sealed-in-rust/rust_crypto_book_code
 cargo run --example aes_cbc //Replace aes_cbc with any chapter example you want to try
 </code></pre>
 <blockquote>
-<p>⚠️ <strong>Note on Playground Limitations:</strong><br />
-Some examples in this book use no_run or ignore markers when rendered online, because external crates like aes, cbc, or rsa cannot be compiled in-browser.
+<p>⚠️ <strong>Note on Playground Limitations:</strong><br>Some examples in this book use no_run or ignore markers when rendered online, because external crates like aes, cbc, or rsa cannot be compiled in-browser.
 All examples work locally, and full source code is always included.</p>
 </blockquote>
 <blockquote>
 <p>💡 These examples are didactic and minimal by design.
 They illustrate cryptographic concepts — not replace mature, production-ready libraries.</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="non-linear-reading"><a class="header" href="#non-linear-reading">Non-linear Reading</a></h2>
 <p>This book doesn’t assume linear progress.</p>
 <ul>
@@ -290,10 +280,11 @@ They illustrate cryptographic concepts — not replace mature, production-ready 
 <li>Contributions to the examples repo are also welcome</li>
 </ul>
 <h2 id="final-note"><a class="header" href="#final-note">Final Note</a></h2>
-<p>This is not a cryptography textbook — it’s a cryptographic engineering manual.<br />
-By the end, you’ll not only understand the primitives, you’ll know how to use them to secure real systems — in Rust, by design, not by accident.</p>
+<p>This is not a cryptography textbook — it’s a cryptographic engineering manual.<br>By the end, you’ll not only understand the primitives, you’ll know how to use them to secure real systems — in Rust, by design, not by accident.</p>
 <p>Let’s begin.</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="cryptography-is-a-systems-problem"><a class="header" href="#cryptography-is-a-systems-problem">Cryptography is a Systems Problem</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="11-cryptography-is-a-systems-problem"><a href="#11-cryptography-is-a-systems-problem" class="header">1.1. Cryptography is a Systems Problem</a></h1>
+<h2 id="cryptography-is-a-systems-problem"><a class="header" href="#cryptography-is-a-systems-problem">Cryptography is a Systems Problem</a></h2>
 <p>Cryptography isn’t just about math.</p>
 <p>Yes, it starts with elegant algebra and deep number theory — but where it breaks is almost always <em>in the system</em>. Real-world failures come from poor implementations, leaky abstractions, memory bugs, side channels, or simply misunderstanding what problem crypto is supposed to solve.</p>
 <p>It’s easy to misuse even “secure” primitives. AES<sup class="footnote-reference" id="fr-aes-1"><a href="#footnote-aes">1</a></sup> in ECB mode<sup class="footnote-reference" id="fr-ecb-1"><a href="#footnote-ecb">2</a></sup> is fast — and useless. RSA<sup class="footnote-reference" id="fr-rsa-1"><a href="#footnote-rsa">3</a></sup> without padding<sup class="footnote-reference" id="fr-padding-1"><a href="#footnote-padding">4</a></sup> is a gift to attackers. And a perfectly strong key means nothing if it’s printed to your logs.</p>
@@ -303,21 +294,25 @@ By the end, you’ll not only understand the primitives, you’ll know how to us
 <p>Memory safety, explicit ownership, fearless concurrency, and tight control over the machine — these aren’t “nice to have.” They’re security features.</p>
 <h3 id="-1"><a class="header" href="#-1"></a></h3>
 <p>In this book, we’ll treat crypto not as a black box, but as a series of concrete systems problems — and show how Rust lets us solve them with clarity and precision.</p>
-<hr />
 <hr>
-<ol class="footnote-definition"><li id="footnote-aes">
-<p>AES. Modern symmetric cipher, fast &amp; secure. <a href="01-foundations/../99-appendices/99-01-glossary.html#aes-advanced-encryption-standard">More</a> <a href="#fr-aes-1">↩</a></p>
+<hr>
+<ol class="footnote-definition">
+<li id="footnote-aes">
+<p>AES. Modern symmetric cipher, fast &amp; secure. <a href="#aes-advanced-encryption-standard">More</a> <a href="#fr-aes-1">↩</a></p>
 </li>
 <li id="footnote-ecb">
-<p>ECB Mode. Simple block mode, insecure due to patterns. <a href="01-foundations/../99-appendices/99-01-glossary.html#ecb-electronic-code-book">More</a> <a href="#fr-ecb-1">↩</a></p>
+<p>ECB Mode. Simple block mode, insecure due to patterns. <a href="#ecb-electronic-code-book">More</a> <a href="#fr-ecb-1">↩</a></p>
 </li>
 <li id="footnote-rsa">
-<p>RSA. Public-key system for encryption &amp; signatures. <a href="01-foundations/../99-appendices/99-01-glossary.html#rsa-rivestshamiradleman">More</a> <a href="#fr-rsa-1">↩</a></p>
+<p>RSA. Public-key system for encryption &amp; signatures. <a href="#rsa-rivestshamiradleman">More</a> <a href="#fr-rsa-1">↩</a></p>
 </li>
 <li id="footnote-padding">
-<p>Padding. Adds randomness/structure to secure RSA encryption. <a href="01-foundations/../99-appendices/99-01-glossary.html#padding-in-rsa">More</a> <a href="#fr-padding-1">↩</a></p>
+<p>Padding. Adds randomness/structure to secure RSA encryption. <a href="#padding-in-rsa">More</a> <a href="#fr-padding-1">↩</a></p>
 </li>
-</ol><div style="break-before: page; page-break-before: always;"></div><h2 id="safety-performance-predictability"><a class="header" href="#safety-performance-predictability">Safety, Performance, Predictability</a></h2>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="12-safety-performance-predictability"><a href="#12-safety-performance-predictability" class="header">1.2. Safety, Performance, Predictability</a></h1>
+<h2 id="safety-performance-predictability"><a class="header" href="#safety-performance-predictability">Safety, Performance, Predictability</a></h2>
 <p>Rust is often praised for its speed and memory safety, but in the world of cryptographic engineering, these traits aren’t just nice-to-haves — they’re critical.</p>
 <h3 id="safety"><a class="header" href="#safety">Safety</a></h3>
 <p>Bugs in cryptographic code can be catastrophic. Memory corruption, undefined behavior, or uninitialized values can leak secrets or open attack vectors. Rust eliminates entire classes of these bugs at compile time:</p>
@@ -346,7 +341,9 @@ By the end, you’ll not only understand the primitives, you’ll know how to us
 <blockquote>
 <p>In short: Rust brings the low-level control of C, the safety of functional languages, and the clarity of modern syntax — all in a single toolchain. That’s why cryptographers and security engineers are increasingly turning to it.</p>
 </blockquote>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="the-cost-of-unsafety-in-crypto-famous-failures"><a class="header" href="#the-cost-of-unsafety-in-crypto-famous-failures">The Cost of Unsafety in Crypto: Famous Failures</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="13-cost-of-unsafety-famous-failures"><a href="#13-cost-of-unsafety-famous-failures" class="header">1.3. Cost of Unsafety: Famous Failures</a></h1>
+<h2 id="the-cost-of-unsafety-in-crypto-famous-failures"><a class="header" href="#the-cost-of-unsafety-in-crypto-famous-failures">The Cost of Unsafety in Crypto: Famous Failures</a></h2>
 <p>Cryptography doesn’t fail because math is broken — it fails because <strong>systems leak</strong>, <strong>code panics</strong>, or <strong>side-channels whisper secrets</strong>.<br><br>
 And most of these failures? They stem from unsafety.
 <br><br><br>
@@ -387,7 +384,9 @@ Here are just a few real-world examples of cryptographic disasters caused by uns
 <blockquote>
 <p>Writing secure cryptography in unsafe languages is like writing legal contracts with disappearing ink.</p>
 </blockquote>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="first-code-a-naive-xor-encryptor"><a class="header" href="#first-code-a-naive-xor-encryptor">First Code: A Naive XOR Encryptor</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="14-first-code-a-naive-xor-encryptor"><a href="#14-first-code-a-naive-xor-encryptor" class="header">1.4. First Code: A Naive XOR Encryptor</a></h1>
+<h2 id="first-code-a-naive-xor-encryptor"><a class="header" href="#first-code-a-naive-xor-encryptor">First Code: A Naive XOR Encryptor</a></h2>
 <p>Let’s write our first cryptographic algorithm — or at least something that <em>looks</em> like one.</p>
 <p>We’ll implement a simple <strong>XOR cipher</strong>. This method is <em>insecure</em> and should never be used in real applications — but it’s the perfect teaching tool.</p>
 <h3 id="whats-a-cipher"><a class="header" href="#whats-a-cipher">What’s a Cipher?</a></h3>
@@ -399,12 +398,18 @@ What started as a symbol for “nothing” evolved into a word for secret writin
 </blockquote>
 <h3 id="what-is-xor"><a class="header" href="#what-is-xor">What is XOR?</a></h3>
 <p>XOR stands for <strong>“exclusive or”</strong>, a bitwise operation:</p>
-<div class="table-wrapper"><table><thead><tr><th>A</th><th>B</th><th>A XOR B</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>A</th><th>B</th><th>A XOR B</th></tr>
+</thead>
+<tbody>
 <tr><td>0</td><td>0</td><td>0</td></tr>
 <tr><td>0</td><td>1</td><td>1</td></tr>
 <tr><td>1</td><td>0</td><td>1</td></tr>
 <tr><td>1</td><td>1</td><td>0</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
 <p>In short: XOR returns 1 if the bits differ, 0 if they’re the same.</p>
 <p>The XOR operation flips bits when they differ:</p>
@@ -447,7 +452,7 @@ If they’re the same → 0</p>
 <h3 id="naive-xor-in-rust"><a class="header" href="#naive-xor-in-rust">Naive XOR in Rust</a></h3>
 <p>Here’s how to implement a basic XOR encryptor in Rust: <br></p>
 <p>Filename: src/main.rs</p>
-<pre><pre class="playground"><code class="language-rust">fn main() {
+<pre class="playground"><code class="language-rust">fn main() {
     let message = b"hello world";
     let key = b"key";
 
@@ -464,7 +469,7 @@ pub fn xor_encrypt(input: &amp;[u8], key: &amp;[u8]) -&gt; Vec&lt;u8&gt; {
         .enumerate()
         .map(|(i, &amp;byte)| byte ^ key[i % key.len()])
         .collect()
-}</code></pre></pre>
+}</code></pre>
 <h3 id="output"><a class="header" href="#output">Output</a></h3>
 <p>The output will show the encrypted bytes (in hex) and the original decrypted message.</p>
 <h3 id="whats-wrong-with-this-cipher"><a class="header" href="#whats-wrong-with-this-cipher">What’s Wrong With This Cipher?</a></h3>
@@ -481,11 +486,12 @@ This cipher is insecure — but it demonstrates important cryptographic concepts
 <li>Why randomness and key handling matter</li>
 </ul>
 <p>You’ll build on this when implementing real-world ciphers like ChaCha20 or AES.</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="tooling-up"><a class="header" href="#tooling-up">Tooling Up</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="15-tooling-up"><a href="#15-tooling-up" class="header">1.5. Tooling Up</a></h1>
+<h2 id="tooling-up"><a class="header" href="#tooling-up">Tooling Up</a></h2>
 <p>Before we dive into cryptographic primitives, here’s a quick look at tools that can support your Rust development journey — especially if you plan to write your own crypto libraries.</p>
 <blockquote>
-<p>None of these tools are required to read or complete the following chapters.<br />
-If you already have <code>cargo</code> installed, you’re good to go!</p>
+<p>None of these tools are required to read or complete the following chapters.<br>If you already have <code>cargo</code> installed, you’re good to go!</p>
 </blockquote>
 <p>That said, for readers who want to build clean, secure, and testable codebases, these tools are worth bookmarking:</p>
 <h3 id="code-quality"><a class="header" href="#code-quality">Code Quality</a></h3>
@@ -516,10 +522,11 @@ If you already have <code>cargo</code> installed, you’re good to go!</p>
 cd sealed-starter
 cargo test
 </code></pre>
-<!--This project will evolve with the book and include examples, tests, and benchmarking code as you progress.--><div style="break-before: page; page-break-before: always;"></div><h2 id="symmetric-ciphers-xor-aes-chacha20--beyond"><a class="header" href="#symmetric-ciphers-xor-aes-chacha20--beyond">Symmetric Ciphers: XOR, AES, ChaCha20 &amp; Beyond</a></h2>
+<!--This project will evolve with the book and include examples, tests, and benchmarking code as you progress.--><div style="break-before: page; page-break-before: always;"></div>
+<h1 id="21-symmetric-ciphers--xor-aes-chacha20"><a href="#21-symmetric-ciphers--xor-aes-chacha20" class="header">2.1. Symmetric Ciphers — XOR, AES, ChaCha20</a></h1>
+<h2 id="symmetric-ciphers-xor-aes-chacha20--beyond"><a class="header" href="#symmetric-ciphers-xor-aes-chacha20--beyond">Symmetric Ciphers: XOR, AES, ChaCha20 &amp; Beyond</a></h2>
 <blockquote>
-<p>🔐 <strong>Used in:</strong> VPNs, TLS (post-handshake), disk encryption, messaging apps<br />
-✅ Still foundational in modern cryptography.</p>
+<p>🔐 <strong>Used in:</strong> VPNs, TLS (post-handshake), disk encryption, messaging apps<br>✅ Still foundational in modern cryptography.</p>
 </blockquote>
 <h3 id="what-are-symmetric-ciphers"><a class="header" href="#what-are-symmetric-ciphers">What Are Symmetric Ciphers?</a></h3>
 <p>Symmetric ciphers use the <strong>same key</strong> for both encryption and decryption. Unlike public-key cryptography, they don’t offer key exchange—but they are <strong>much faster</strong>, making them ideal for bulk data encryption.</p>
@@ -532,10 +539,10 @@ cargo test
 <!--
 >⚠️ Annotate if a Rust crate exists + maturity level
 -->
-<p>We first explored XOR encryption in <a href="02-core-primitives/../01-foundations/01-04-first-code.html">Section 1.4: First Code — A Naive XOR Encryptor</a>, where we built a full working example from scratch.</p>
+<p>We first explored XOR encryption in <a href="#14-first-code-a-naive-xor-encryptor">Section 1.4: First Code — A Naive XOR Encryptor</a>, where we built a full working example from scratch.</p>
 <p>XOR is the simplest symmetric cipher: each byte of the message is XORed with a repeating key.
 Reversibility is built-in — XORing twice with the same key restores the original.</p>
-<pre><pre class="playground"><code class="language-rust">fn main() {
+<pre class="playground"><code class="language-rust">fn main() {
     let message = b"Hi, Rust!";
     let key = b"key";
 
@@ -552,7 +559,7 @@ pub fn xor_encrypt(input: &amp;[u8], key: &amp;[u8]) -&gt; Vec&lt;u8&gt; {
         .enumerate()
         .map(|(i, &amp;byte)| byte ^ key[i % key.len()])
         .collect()
-}</code></pre></pre>
+}</code></pre>
 <blockquote>
 <p><strong>🟢 Conclusion</strong>
 XOR encryption is reversible and stateless, which makes it simple and fast. But it lacks confusion and diffusion, so patterns in the input remain visible — offering no real resistance to cryptanalysis.</p>
@@ -576,7 +583,7 @@ XOR encryption is reversible and stateless, which makes it simple and fast. But 
 R₂ = L₁ ⊕ f(R₁, key)
 </code></pre>
 <p>To encrypt, let’s see it in Rust:</p>
-<pre><pre class="playground"><code class="language-rust">fn feistel_round(l: u8, r: u8, k: u8) -&gt; (u8, u8) {
+<pre class="playground"><code class="language-rust">fn feistel_round(l: u8, r: u8, k: u8) -&gt; (u8, u8) {
     let f = r ^ k;
     (r, l ^ f)
 }
@@ -588,9 +595,9 @@ fn main() {
 
     let (left2, right2) = feistel_round(left1, right1, key);
     println!("Encrypted: ({}, {})", left2, right2);
-}</code></pre></pre>
+}</code></pre>
 <p>Decryption reuses the same function f, simply reversing the round transformation:</p>
-<pre><pre class="playground"><code class="language-rust">fn feistel_round(l1: u8, r1: u8, k: u8) -&gt; (u8, u8) {
+<pre class="playground"><code class="language-rust">fn feistel_round(l1: u8, r1: u8, k: u8) -&gt; (u8, u8) {
     let f = r1 ^ k;
     (r1, l1 ^ f)
 }
@@ -611,7 +618,7 @@ fn main() {
 
     let (left_orig, right_orig) = feistel_decrypt(left2, right2, key);
     println!("Decrypted: ({}, {})", left_orig, right_orig);
-}</code></pre></pre>
+}</code></pre>
 <br>
 Because encryption produces :
 <pre><code class="language-pgsql">Encrypted → (R, L ⊕ f(R, k))
@@ -649,8 +656,7 @@ So, decryption is
 R₁ = L₂
 </code></pre>
 <blockquote>
-<p><strong>🟢 Conclusion</strong><br />
-Reversibility comes from XOR being reversible and swapping the halves.
+<p><strong>🟢 Conclusion</strong><br>Reversibility comes from XOR being reversible and swapping the halves.
 Feistel networks let you build reversible encryption even with non-invertible functions.
 This idea shaped DES and similar ciphers.</p>
 <p>Not used today due to known vulnerabilities, but conceptually essential.</p>
@@ -682,7 +688,7 @@ This non-linear mapping ensures that small changes in the input produce unpredic
 </blockquote>
 <br>
 Let’s walk through a simple encryption of a 4-byte block.
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use std::convert::TryInto;
 
@@ -725,10 +731,10 @@ println!("Input       | {:02X}     | {:02X}     | {:02X}     | {:02X}", input[0]
 println!("Substituted | {:02X}     | {:02X}     | {:02X}     | {:02X}", substituted[0], substituted[1], substituted[2], substituted[3]);
 println!("Permuted    | {:02X}     | {:02X}     | {:02X}     | {:02X}", permuted[0], permuted[1], permuted[2], permuted[3]);
 println!("Encrypted   | {:02X}     | {:02X}     | {:02X}     | {:02X}", encrypted[0], encrypted[1], encrypted[2], encrypted[3]);
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}</span></code></pre>
 <br>
 To decrypt, reverse the steps in reverse order:
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use std::convert::TryInto;
 
@@ -779,7 +785,7 @@ println!("Encrypted   | {:02X}     | {:02X}     | {:02X}     | {:02X}", encrypte
 println!("XOR Rev     | {:02X}     | {:02X}     | {:02X}     | {:02X}", xor_reversed[0], xor_reversed[1], xor_reversed[2], xor_reversed[3]);
 println!("Perm Rev    | {:02X}     | {:02X}     | {:02X}     | {:02X}", permuted_reversed[0], permuted_reversed[1], permuted_reversed[2], permuted_reversed[3]);
 println!("Decrypted   | {:02X}     | {:02X}     | {:02X}     | {:02X}", decrypted[0], decrypted[1], decrypted[2], decrypted[3]);
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}</span></code></pre>
 <p>Why it works</p>
 <ul>
 <li>Substitution = confusion → Hide relationships between plaintext and ciphertext</li>
@@ -790,33 +796,28 @@ println!("Decrypted   | {:02X}     | {:02X}     | {:02X}     | {:02X}", decrypte
 <p>💡 Claude Shannon, widely considered the father of modern cryptography, introduced the concepts of confusion and diffusion in 1949 as the foundation of secure cipher design.</p>
 </blockquote>
 <blockquote>
-<p><strong>🟢 Conclusion</strong><br />
-Substitution-Permutation Networks provide a simple yet powerful structure for building symmetric ciphers. They deliver the critical properties of confusion and diffusion, as first formalized by Claude Shannon in his foundational work on cryptographic security.</p>
+<p><strong>🟢 Conclusion</strong><br>Substitution-Permutation Networks provide a simple yet powerful structure for building symmetric ciphers. They deliver the critical properties of confusion and diffusion, as first formalized by Claude Shannon in his foundational work on cryptographic security.</p>
 </blockquote>
 <h3 id="aes-advanced-encryption-standard---the-global-symmetric-standard"><a class="header" href="#aes-advanced-encryption-standard---the-global-symmetric-standard">AES (Advanced Encryption Standard)  — The Global Symmetric Standard</a></h3>
 <blockquote>
-<p>💡 Used in TLS<sup class="footnote-reference" id="fr-TLS-1"><a href="#footnote-TLS">5</a></sup>, LUKS<sup class="footnote-reference" id="fr-LUKS-1"><a href="#footnote-LUKS">6</a></sup>, SSH<sup class="footnote-reference" id="fr-SSH-1"><a href="#footnote-SSH">7</a></sup>, mobile apps, and FIPS-certified systems<sup class="footnote-reference" id="fr-FIPS-1"><a href="#footnote-FIPS">8</a></sup>.<br />
-Secure, fast, and hardware-accelerated</p>
+<p>💡 Used in TLS<sup class="footnote-reference" id="fr-TLS-1"><a href="#footnote-TLS">5</a></sup>, LUKS<sup class="footnote-reference" id="fr-LUKS-1"><a href="#footnote-LUKS">6</a></sup>, SSH<sup class="footnote-reference" id="fr-SSH-1"><a href="#footnote-SSH">7</a></sup>, mobile apps, and FIPS-certified systems<sup class="footnote-reference" id="fr-FIPS-1"><a href="#footnote-FIPS">8</a></sup>.<br>Secure, fast, and hardware-accelerated</p>
 </blockquote>
 <blockquote>
-<p><img src="02-core-primitives/../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: <a href="https://crates.io/crates/aes">aes</a>, <a href="https://github.com/RustCrypto/block-modes">block_modes</a></p>
+<p><img src="images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: <a href="https://crates.io/crates/aes">aes</a>, <a href="https://github.com/RustCrypto/block-modes">block_modes</a></p>
 </blockquote>
 <p>AES is a symmetric-key block cipher developed by Belgian cryptographers Vincent Rijmen and Joan Daemen. It was selected by NIST in 2001 as the successor to DES and 3DES.</p>
 <p>AES operates on 128-bit blocks and supports key sizes of 128, 192, or 256 bits. It is based on a Substitution–Permutation Network (SPN) and runs 10, 12, or 14 rounds depending on the key length.</p>
 <p>It is standardized by FIPS-197, ISO/IEC<sup class="footnote-reference" id="fr-ISOIEC-1"><a href="#footnote-ISOIEC">9</a></sup>, and widely adopted in security protocols such as TLS, SSH, and IPsec<sup class="footnote-reference" id="fr-IPSec-1"><a href="#footnote-IPSec">10</a></sup>. AES is available in hardware on most modern CPUs, making it both fast and energy-efficient.</p>
 <br>
-<p>🧪 <strong>Code Example: AES-128-CBC Encryption &amp; Decryption in Rust</strong>  (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)<br />
-We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-CBC-1"><a href="#footnote-CBC">11</a></sup> with PKCS7<sup class="footnote-reference" id="fr-PKCS7-1"><a href="#footnote-PKCS7">12</a></sup> padding.</p>
-<pre><pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+<p>🧪 <strong>Code Example: AES-128-CBC Encryption &amp; Decryption in Rust</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)<br>We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-CBC-1"><a href="#footnote-CBC">11</a></sup> with PKCS7<sup class="footnote-reference" id="fr-PKCS7-1"><a href="#footnote-PKCS7">12</a></sup> padding.</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use aes::Aes128;
 use block_padding::Pkcs7;
 use cbc::{Encryptor, Decryptor};
 use cipher::{BlockEncryptMut, BlockDecryptMut, KeyIvInit};
 
-
 pub fn run_aes_example() {
-
     let key = b"verysecretkey123";
     let iv = b"uniqueinitvector";
     let plaintext = b"Attack at dawn!";
@@ -825,235 +826,419 @@ pub fn run_aes_example() {
     let pos = buffer.len();
     buffer.resize(pos + 16, 0u8);
 
-    let mut encryptor = Encryptor::&lt;Aes128&gt;::new(key.into(), iv.into());
+    let encryptor = Encryptor::&lt;Aes128&gt;::new(key.into(), iv.into());
     let ciphertext = encryptor
         .encrypt_padded_mut::&lt;Pkcs7&gt;(&amp;mut buffer, pos)
         .expect("encryption failure");
 
     println!("Ciphertext (hex): {}", hex::encode(ciphertext));
 
-    let mut decryptor = Decryptor::&lt;Aes128&gt;::new(key.into(), iv.into());
+    let decryptor = Decryptor::&lt;Aes128&gt;::new(key.into(), iv.into());
 
-    let mut ciphertext_buffer = ciphertext.to_vec(); // make it mutable
+    let mut ciphertext_buffer = ciphertext.to_vec();
     let decrypted = decryptor
         .decrypt_padded_mut::&lt;Pkcs7&gt;(&amp;mut ciphertext_buffer)
         .expect("decryption failure");
 
-
     println!("Decrypted text: {}", String::from_utf8_lossy(decrypted));
     assert_eq!(plaintext.to_vec(), decrypted);
 }
-<span class="boring">}</span></code></pre></pre>
-<pre><pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+<span class="boring">}</span></code></pre>
+<p>Output:</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>Ciphertext (hex): 61b05644915a98fbd515e31b3a4e6d88
+</span>Ciphertext (hex): a2ae0699ff0bc71e6ff43a32531d88
 Decrypted text: Attack at dawn!
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}</span></code></pre>
 <p>✅ Use a unique IV (Initialization Vector) for every encryption, and never reuse a key/IV pair. Avoid ECB mode entirely, and prefer AEAD modes (e.g., AES-GCM) when available.</p>
 <blockquote>
-<p><strong>🟢 Conclusion</strong>
-AES is the modern standard for symmetric encryption. It is fast, secure, and hardware-accelerated — making it ideal for both embedded systems and high-throughput servers. When used correctly with a secure mode like CBC or GCM and proper key/IV management, AES provides strong resistance against all known practical attacks.</p>
+<p><strong>🟢 Conclusion</strong></p>
+<p>AES is the modern standard for symmetric encryption.</p>
+<p>It is fast, secure, and hardware-accelerated — making it ideal for both embedded systems and high-throughput servers.</p>
+<p>When used correctly with a secure mode like CBC or GCM and proper key/IV management, AES provides strong resistance against all known practical attacks.</p>
 </blockquote>
+<h3 id="chacha20--modern-stream-cipher"><a class="header" href="#chacha20--modern-stream-cipher">ChaCha20 — Modern Stream Cipher</a></h3>
+<blockquote>
+<p>💡 A stream cipher encrypts data one bit or byte at a time by XORing it with a pseudorandom keystream, instead of encrypting fixed-size blocks like a block cipher.</p>
+</blockquote>
+<blockquote>
+<p>💡 Used in WireGuard<sup class="footnote-reference" id="fr-WIREGUARD-1"><a href="#footnote-WIREGUARD">13</a></sup>, TLS (on non-AES hardware<sup class="footnote-reference" id="fr-NONAES-1"><a href="#footnote-NONAES">14</a></sup>), mobile apps, messaging protocols, and security libraries.<br>Fast, simple, and naturally resistant to timing attacks.</p>
+</blockquote>
+<blockquote>
+<p><img src="images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/chacha20">chacha20</a></p>
+</blockquote>
+<p>ChaCha20 is a modern stream cipher designed by Daniel J. Bernstein.</p>
+<p>It is the streamlined successor to Salsa20<sup class="footnote-reference" id="fr-SALSA20-1"><a href="#footnote-SALSA20">15</a></sup>, offering improved diffusion and exceptional performance on all platforms — especially devices without AES hardware.</p>
+<p>Unlike block ciphers, ChaCha20 does not process data in fixed-size blocks. Instead, it transforms a key + nonce + counter into a pseudorandom keystream<sup class="footnote-reference" id="fr-PSEUDOKEY-1"><a href="#footnote-PSEUDOKEY">16</a></sup>.</p>
+<p>Encryption is simply: ciphertext = plaintext XOR keystream</p>
+<p>No padding. No block alignment. Just pure stream encryption.</p>
+<p>ChaCha20 is now a fundamental primitive across modern cryptography:<br>WireGuard, OpenSSH (for session keys), TLS 1.3 fallback ciphers, mobile operating systems, and many authenticated encryption schemes like ChaCha20-Poly1305<sup class="footnote-reference" id="fr-POLY1305-1"><a href="#footnote-POLY1305">17</a></sup>.</p>
+<p>🧪 <strong>Code Example: ChaCha20 Encryption</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<p>We’ll generate a ChaCha20 keystream and XOR it with a plaintext message.<br>The API is extremely simple — you create a cipher and stream through it.</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_chacha20_example() {
+    use chacha20::cipher::{KeyIvInit, StreamCipher};
+    use chacha20::ChaCha20;
+
+    let key = *b"an example very very secret key!";
+    let nonce = *b"unique nonce";
+    let plaintext = b"Secret meeting at midnight".to_vec();
+
+    let mut ciphertext = plaintext.clone();
+
+    let mut encryptor = ChaCha20::new(&amp;key.into(), &amp;nonce.into());
+    encryptor.apply_keystream(&amp;mut ciphertext);
+
+    println!("Ciphertext (hex): {}", hex::encode(&amp;ciphertext));
+
+    let mut decrypted = ciphertext.clone();
+    let mut decryptor = ChaCha20::new(&amp;key.into(), &amp;nonce.into());
+    decryptor.apply_keystream(&amp;mut decrypted);
+
+    println!("Decrypted text: {}", String::from_utf8_lossy(&amp;decrypted));
+    assert_eq!(plaintext, decrypted);
+}
+<span class="boring">}</span></code></pre>
+<p>Output:</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>Ciphertext (hex): b0bf118af914c7127eb12a3a4a1489c262dcdd53e9563bfaf652
+Decrypted text: Secret meeting at midnight
+<span class="boring">}</span></code></pre>
+<blockquote>
+<p>🚨 <strong>Security rule</strong> 🚨</p>
+<p><strong>Never reuse the same (key, nonce) pair. Doing so reveals keystream reuse → instant compromise.</strong>
+<strong>ChaCha20 itself is secure, but it becomes unsafe if you repeat a nonce.</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>ChaCha20 is the modern workhorse of stream ciphers: fast, extremely simple to implement correctly, and designed to avoid timing leaks by construction.</p>
+<p>It performs brilliantly on laptops, phones, microcontrollers, and any platform lacking AES acceleration.</p>
+<p>Use a fresh nonce for every encryption, treat keystreams as one-time pads, and avoid reuse. When authenticated encryption is needed, pair ChaCha20 with Poly1305 (ChaCha20-Poly1305).</p>
+<p>ChaCha20 combines security, clarity, and performance — a perfect fit for modern Rust systems, network protocols, and embedded environments.</p>
+</blockquote>
+<h3 id="modes-of-operation"><a class="header" href="#modes-of-operation">Modes of Operation</a></h3>
+<p>Modern cryptography doesn’t encrypt “messages.” It encrypts <em>blocks</em>.<br>AES, for example, works on 128-bit chunks and nothing else.<br>So to handle real-world data—files, network packets, logs, telemetry—we need a strategy to link those fixed-size blocks together safely.</p>
+<p>That strategy is a mode of operation.</p>
+<p>Modes are not decorative. They don’t sit on top of AES; they <em>define</em> its security. Pick the wrong one and your encryption leaks patterns. Pick the right one and you get confidentiality at scale.</p>
+<p><strong>Why Modes Exist</strong></p>
+<p>A block cipher is deterministic: same key + same block = same output.<br>That predictability is deadly when encrypting long messages.</p>
+<p>Modes solve four problems:</p>
+<ol>
+<li>Randomness — injecting unpredictability so repeated blocks don’t look the same.</li>
+<li>Chaining — connecting blocks so tampering affects more than one piece.</li>
+<li>Streaming — letting you encrypt arbitrary sizes efficiently.</li>
+<li>State — defining how to start, continue, and finish encryption safely.</li>
+</ol>
+<p><strong>Overview of Common Modes</strong></p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Mode</th><th>Secure?</th><th>Real Use Case</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>ECB</strong></td><td>❌ No</td><td>None (except teaching)</td><td>Leaks structure. Never use in production.</td></tr>
+<tr><td><strong>CBC</strong></td><td>⚠️Risky</td><td>Legacy protocols</td><td>Requires a random IV. Padding mistakes break it.</td></tr>
+<tr><td><strong>CTR</strong></td><td>✅ Yes</td><td>High-speed streaming, networking, I/O</td><td>Turns AES into a fast stream cipher. Very robust when nonce-unique.</td></tr>
+<tr><td><strong>XTS</strong></td><td>✅ Yes</td><td>Disk and sector encryption</td><td>Designed for storage only, not general messages.</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>ECB — The Anti-Example</strong></p>
+<p>ECB encrypts each block independently.<br>Patterns in the plaintext appear in the ciphertext.<br>Famous example: encrypting the Tux penguin still looks like a penguin.</p>
+<p>If you see ECB in a system, assume the designer didn’t understand cryptography.</p>
+<p><strong>CBC — The Old Workhorse</strong></p>
+<p>CBC chains each block with the previous one using XOR.<br>If the IV is truly random and padding is handled correctly, it’s fine.<br>But historically, padding-oracle attacks destroyed its safety in many protocols.</p>
+<p>Today, CBC mostly survives in legacy stacks and old file formats.<br>New designs avoid it.</p>
+<p><strong>CTR — The Modern Default</strong></p>
+<p>CTR mode transforms AES into a stream cipher.<br>Instead of encrypting the plaintext blocks directly, it encrypts a counter and XORs the result with the message.</p>
+<p>This gives:</p>
+<ul>
+<li>high performance</li>
+<li>random access</li>
+<li>no padding</li>
+<li>clean parallelism</li>
+</ul>
+<blockquote>
+<p>🚨
+The only hard rule: never reuse the same (key, nonce) pair.<br>Break that rule and attackers recover the XOR of two plaintexts.</p>
+</blockquote>
+<p><strong>CTR Example</strong></p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use aes::Aes128;
+use ctr::cipher::{KeyIvInit, StreamCipher};
+
+let mut cipher = ctr::Ctr128BE::&lt;Aes128&gt;::new(key.into(), nonce.into());
+cipher.apply_keystream(&amp;mut buffer); // encrypt or decrypt
+<span class="boring">}</span></code></pre>
+<p>CTR is simple, fast, and well-suited to network protocols, telemetry pipelines, and embedded systems.</p>
+<p><strong>XTS — Built for Storage</strong></p>
+<p>XTS is AES-CTR + a “tweak” system tailored to disk sectors.
+It prevents block relocation attacks and keeps each sector isolated.</p>
+<p>XTS shines for full-disk encryption because it resists sector-copy tampering and is purpose-built for storage. It isn’t suitable for general messages or network data, and it requires two independent AES keys.</p>
+<p>Use XTS only when you’re encrypting storage blocks.</p>
+<p><strong>Key Takeaway</strong></p>
+<p>Modes of operation are not optional add-ons.
+They decide whether your encryption is safe or broken.</p>
+<ul>
+<li>
+<p>ECB teaches you what not to do.</p>
+</li>
+<li>
+<p>CBC reminds you legacy systems carry hidden risks.</p>
+</li>
+<li>
+<p>CTR gives you modern, scalable encryption for streaming workloads.</p>
+</li>
+<li>
+<p>XTS protects disks—nothing else.</p>
+</li>
+</ul>
+
+<p>If you understand modes, you understand how real-world encryption actually works.</p>
 <hr>
-<ol class="footnote-definition"><li id="footnote-DES">
-<p>DES — early symmetric cipher (56-bit), now insecure. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#des-data-encryption-standard">More</a> <a href="#fr-DES-1">↩</a></p>
+<ol class="footnote-definition">
+<li id="footnote-DES">
+<p>DES — early symmetric cipher (56-bit), now insecure. <a href="#des-data-encryption-standard">More</a> <a href="#fr-DES-1">↩</a></p>
 </li>
 <li id="footnote-3DES">
-<p>3DES — DES applied three times, better than DES but now deprecated. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#3des-triple-des">More</a> <a href="#fr-3DES-1">↩</a></p>
+<p>3DES — DES applied three times, better than DES but now deprecated. <a href="#3des-triple-des">More</a> <a href="#fr-3DES-1">↩</a></p>
 </li>
 <li id="footnote-AES">
-<p>AES — The modern global standard, fast, secure, and hardware-accelerated. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#aes-advanced-encryption-standard">More</a> <a href="#fr-AES-1">↩</a></p>
+<p>AES — The modern global standard, fast, secure, and hardware-accelerated. <a href="#aes-advanced-encryption-standard">More</a> <a href="#fr-AES-1">↩</a></p>
 </li>
 <li id="footnote-Camellia">
-<p>Camellia — Japanese block cipher, secure &amp; AES-comparable. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#camellia">More</a> <a href="#fr-Camellia-1">↩</a></p>
+<p>Camellia — Japanese block cipher, secure &amp; AES-comparable. <a href="#camellia">More</a> <a href="#fr-Camellia-1">↩</a></p>
 </li>
 <li id="footnote-TLS">
-<p>TLS — protocol securing data in transit (HTTPS, etc.). <a href="02-core-primitives/../99-appendices/99-01-glossary.html#tls-transport-layer-security">More</a> <a href="#fr-TLS-1">↩</a></p>
+<p>TLS — protocol securing data in transit (HTTPS, etc.). <a href="#tls-transport-layer-security">More</a> <a href="#fr-TLS-1">↩</a></p>
 </li>
 <li id="footnote-LUKS">
-<p>LUKS — Linux standard for full disk encryption. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#luks-linux-unified-key-setup">More</a> <a href="#fr-LUKS-1">↩</a></p>
+<p>LUKS — Linux standard for full disk encryption. <a href="#luks-linux-unified-key-setup">More</a> <a href="#fr-LUKS-1">↩</a></p>
 </li>
 <li id="footnote-SSH">
-<p>SSH — secure remote access protocol. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#ssh-secure-shell">More</a> <a href="#fr-SSH-1">↩</a></p>
+<p>SSH — secure remote access protocol. <a href="#ssh-secure-shell">More</a> <a href="#fr-SSH-1">↩</a></p>
 </li>
 <li id="footnote-FIPS">
-<p>FIPS — U.S. cryptographic standards for government/finance. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#fips-federal-information-processing-standards">More</a> <a href="#fr-FIPS-1">↩</a></p>
+<p>FIPS — U.S. cryptographic standards for government/finance. <a href="#fips-federal-information-processing-standards">More</a> <a href="#fr-FIPS-1">↩</a></p>
 </li>
 <li id="footnote-ISOIEC">
-<p>ISO/IEC — international standards for IT/crypto. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#isoiec">More</a> <a href="#fr-ISOIEC-1">↩</a></p>
+<p>ISO/IEC — international standards for IT/crypto. <a href="#isoiec">More</a> <a href="#fr-ISOIEC-1">↩</a></p>
 </li>
 <li id="footnote-IPSec">
-<p>IPSec — protocol suite for securing IP communications. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#ipsec">More</a> <a href="#fr-IPSec-1">↩</a></p>
+<p>IPSec — protocol suite for securing IP communications. <a href="#ipsec">More</a> <a href="#fr-IPSec-1">↩</a></p>
 </li>
 <li id="footnote-CBC">
-<p>CBC — block cipher mode, chains blocks for security. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#cbc-cipher-block-chaining">More</a> <a href="#fr-CBC-1">↩</a></p>
+<p>CBC — block cipher mode, chains blocks for security. <a href="#cbc-cipher-block-chaining">More</a> <a href="#fr-CBC-1">↩</a></p>
 </li>
 <li id="footnote-PKCS7">
-<p>PKCS7 — padding scheme for block ciphers. <a href="02-core-primitives/../99-appendices/99-01-glossary.html#pkcs7">More</a> <a href="#fr-PKCS7-1">↩</a></p>
+<p>PKCS7 — padding scheme for block ciphers. <a href="#pkcs7">More</a> <a href="#fr-PKCS7-1">↩</a></p>
 </li>
-</ol><div style="break-before: page; page-break-before: always;"></div><h1 id="glossary-of-terms"><a class="header" href="#glossary-of-terms">Glossary of Terms</a></h1>
+<li id="footnote-WIREGUARD">
+<p>WireGuard — modern VPN protocol using ChaCha20-Poly1305 to secure IP traffic. <a href="#wireguard">More</a> <a href="#fr-WIREGUARD-1">↩</a></p>
+</li>
+<li id="footnote-NONAES">
+<p>Non-AES hardware — CPUs without AES instructions, where ChaCha20 is often faster than AES. <a href="#non-aes-hardware">More</a> <a href="#fr-NONAES-1">↩</a></p>
+</li>
+<li id="footnote-SALSA20">
+<p>Salsa20 — stream cipher by Daniel J. Bernstein; predecessor of ChaCha20, fast and well-studied. <a href="#salsa20">More</a> <a href="#fr-SALSA20-1">↩</a></p>
+</li>
+<li id="footnote-PSEUDOKEY">
+<p>A pseudorandom keystream is a sequence of bits/bytes that looks random but is deterministically generated from a secret key (and usually a nonce). <a href="#pseudorandom-keystream">More</a> <a href="#fr-PSEUDOKEY-1">↩</a></p>
+</li>
+<li id="footnote-POLY1305">
+<p>ChaCha20-Poly1305 is an AEAD scheme that combines the ChaCha20 stream cipher with the Poly1305 MAC to provide authenticated encryption (confidentiality + integrity). <a href="#chacha20-poly1305">More</a> <a href="#fr-POLY1305-1">↩</a></p>
+</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="glossary-of-terms"><a class="header" href="#glossary-of-terms">Glossary of Terms</a></h1>
 <h2 id="aes-advanced-encryption-standard"><a class="header" href="#aes-advanced-encryption-standard">AES (Advanced Encryption Standard)</a></h2>
-<p>AES is a symmetric-key block cipher standardized by NIST in 2001, designed by Vincent Rijmen and Joan Daemen.<br />
-It operates on 128-bit blocks with keys of 128, 192, or 256 bits, and is based on a Substitution–Permutation Network.<br />
-AES is fast, secure, and widely implemented in both software and hardware (including CPU instructions).<br />
-It remains the global standard for symmetric encryption, used in TLS, SSH, disk encryption, and countless applications.</p>
-<hr />
+<p>AES is a symmetric-key block cipher standardized by NIST in 2001, designed by Vincent Rijmen and Joan Daemen.<br>It operates on 128-bit blocks with keys of 128, 192, or 256 bits, and is based on a Substitution–Permutation Network.<br>AES is fast, secure, and widely implemented in both software and hardware (including CPU instructions).<br>It remains the global standard for symmetric encryption, used in TLS, SSH, disk encryption, and countless applications.</p>
+<hr>
 <h2 id="ecb-electronic-code-book"><a class="header" href="#ecb-electronic-code-book">ECB (Electronic Code Book)</a></h2>
-<p>ECB is the simplest block cipher mode of operation: it encrypts each block independently with the same key.<br />
-While easy to implement, it is insecure because identical plaintext blocks produce identical ciphertext blocks.<br />
-This leaks patterns in the input (e.g., images encrypted with ECB visibly preserve outlines).<br />
-Because of this, ECB is almost never used in practice and is considered unsafe.</p>
-<hr />
+<p>ECB is the simplest block cipher mode of operation: it encrypts each block independently with the same key.<br>While easy to implement, it is insecure because identical plaintext blocks produce identical ciphertext blocks.<br>This leaks patterns in the input (e.g., images encrypted with ECB visibly preserve outlines).<br>Because of this, ECB is almost never used in practice and is considered unsafe.</p>
+<hr>
 <h2 id="rsa-rivestshamiradleman"><a class="header" href="#rsa-rivestshamiradleman">RSA (Rivest–Shamir–Adleman)</a></h2>
-<p>RSA is one of the first public-key cryptosystems, invented in 1977 by Ron Rivest, Adi Shamir, and Leonard Adleman.<br />
-It allows secure key exchange, encryption, and digital signatures by relying on the mathematical difficulty of factoring large integers.<br />
-RSA keys are typically 2048 or 3072 bits today. While still widely used, modern protocols increasingly migrate to elliptic-curve cryptography (ECC) for better performance and smaller key sizes.</p>
-<hr />
+<p>RSA is one of the first public-key cryptosystems, invented in 1977 by Ron Rivest, Adi Shamir, and Leonard Adleman.<br>It allows secure key exchange, encryption, and digital signatures by relying on the mathematical difficulty of factoring large integers.<br>RSA keys are typically 2048 or 3072 bits today. While still widely used, modern protocols increasingly migrate to elliptic-curve cryptography (ECC) for better performance and smaller key sizes.</p>
+<hr>
 <h2 id="padding-in-rsa"><a class="header" href="#padding-in-rsa">Padding in RSA</a></h2>
-<p>RSA encryption without padding is deterministic: encrypting the same message always produces the same ciphertext.<br />
-This makes it insecure, as attackers can guess messages or exploit mathematical properties of RSA.<br />
-Padding schemes (e.g., PKCS#1 v1.5 or OAEP) add randomness or structured bytes before encryption.<br />
-This ensures different ciphertexts for the same plaintext and provides protection against chosen-plaintext or chosen-ciphertext attacks.<br />
-Proper padding is essential for RSA’s security in practice.</p>
-<hr />
+<p>RSA encryption without padding is deterministic: encrypting the same message always produces the same ciphertext.<br>This makes it insecure, as attackers can guess messages or exploit mathematical properties of RSA.<br>Padding schemes (e.g., PKCS#1 v1.5 or OAEP) add randomness or structured bytes before encryption.<br>This ensures different ciphertexts for the same plaintext and provides protection against chosen-plaintext or chosen-ciphertext attacks.<br>Proper padding is essential for RSA’s security in practice.</p>
+<hr>
 <h2 id="des-data-encryption-standard"><a class="header" href="#des-data-encryption-standard">DES (Data Encryption Standard)</a></h2>
-<p>DES is a symmetric-key block cipher standardized in the 1970s by NIST.<br />
-It uses a 56-bit key and operates on 64-bit blocks.<br />
-Once a global standard, DES is now considered insecure due to its short key length, which makes it vulnerable to brute-force attacks.</p>
-<hr />
+<p>DES is a symmetric-key block cipher standardized in the 1970s by NIST.<br>It uses a 56-bit key and operates on 64-bit blocks.<br>Once a global standard, DES is now considered insecure due to its short key length, which makes it vulnerable to brute-force attacks.</p>
+<hr>
 <h2 id="3des-triple-des"><a class="header" href="#3des-triple-des">3DES (Triple DES)</a></h2>
-<p>Triple DES (3DES) is an extension of DES that applies the DES algorithm three times with either two or three different keys.<br />
-This increases the effective key length to 112 or 168 bits.<br />
-It offered better security than DES but is now deprecated due to its slow performance and known cryptographic weaknesses.</p>
-<hr />
+<p>Triple DES (3DES) is an extension of DES that applies the DES algorithm three times with either two or three different keys.<br>This increases the effective key length to 112 or 168 bits.<br>It offered better security than DES but is now deprecated due to its slow performance and known cryptographic weaknesses.</p>
+<hr>
 <h2 id="camellia"><a class="header" href="#camellia">Camellia</a></h2>
-<p>Camellia is a modern symmetric-key block cipher developed in Japan by Mitsubishi Electric and NTT.<br />
-It offers security and performance comparable to AES, supporting key sizes of 128, 192, and 256 bits.<br />
-Camellia is standardized by ISO/IEC and the NESSIE project.<br />
-Though less widely used than AES, it is considered secure and suitable for both software and hardware implementations.</p>
-<hr />
+<p>Camellia is a modern symmetric-key block cipher developed in Japan by Mitsubishi Electric and NTT.<br>It offers security and performance comparable to AES, supporting key sizes of 128, 192, and 256 bits.<br>Camellia is standardized by ISO/IEC and the NESSIE project.<br>Though less widely used than AES, it is considered secure and suitable for both software and hardware implementations.</p>
+<hr>
 <h2 id="tls-transport-layer-security"><a class="header" href="#tls-transport-layer-security">TLS (Transport Layer Security)</a></h2>
-<p>TLS is a protocol defined by the IETF to secure data during transmission, most notably in HTTPS.<br />
-It uses asymmetric encryption for the handshake and key exchange, then switches to symmetric encryption for efficient bulk data encryption.<br />
-TLS provides confidentiality, integrity, and authentication for internet communications.</p>
-<hr />
+<p>TLS is a protocol defined by the IETF to secure data during transmission, most notably in HTTPS.<br>It uses asymmetric encryption for the handshake and key exchange, then switches to symmetric encryption for efficient bulk data encryption.<br>TLS provides confidentiality, integrity, and authentication for internet communications.</p>
+<hr>
 <h2 id="luks-linux-unified-key-setup"><a class="header" href="#luks-linux-unified-key-setup">LUKS (Linux Unified Key Setup)</a></h2>
-<p>LUKS is the standard format for full disk encryption on Linux, designed by Clemens Fruhwirth.<br />
-It provides strong symmetric encryption for protecting data at rest and supports multiple key slots, allowing different passphrases or keys to unlock the same volume.</p>
-<hr />
+<p>LUKS is the standard format for full disk encryption on Linux, designed by Clemens Fruhwirth.<br>It provides strong symmetric encryption for protecting data at rest and supports multiple key slots, allowing different passphrases or keys to unlock the same volume.</p>
+<hr>
 <h2 id="ssh-secure-shell"><a class="header" href="#ssh-secure-shell">SSH (Secure Shell)</a></h2>
-<p>SSH is a secure remote access protocol invented by Tatu Ylönen in 1995.<br />
-It uses asymmetric encryption to authenticate users and symmetric encryption to secure the session once established.<br />
-SSH replaced insecure protocols such as Telnet and rlogin and is now the standard for secure remote administration.</p>
-<hr />
+<p>SSH is a secure remote access protocol invented by Tatu Ylönen in 1995.<br>It uses asymmetric encryption to authenticate users and symmetric encryption to secure the session once established.<br>SSH replaced insecure protocols such as Telnet and rlogin and is now the standard for secure remote administration.</p>
+<hr>
 <h2 id="fips-federal-information-processing-standards"><a class="header" href="#fips-federal-information-processing-standards">FIPS (Federal Information Processing Standards)</a></h2>
-<p>FIPS are cryptographic standards defined by NIST for use in U.S. government systems.<br />
-FIPS certification ensures that cryptographic algorithms and implementations meet strict security requirements.<br />
-It is often required in government, healthcare, and financial sectors to guarantee compliance and trust.</p>
-<hr />
+<p>FIPS are cryptographic standards defined by NIST for use in U.S. government systems.<br>FIPS certification ensures that cryptographic algorithms and implementations meet strict security requirements.<br>It is often required in government, healthcare, and financial sectors to guarantee compliance and trust.</p>
+<hr>
 <h2 id="isoiec"><a class="header" href="#isoiec">ISO/IEC</a></h2>
-<p>ISO (International Organization for Standardization) and IEC (International Electrotechnical Commission) jointly publish international standards for information technology, including cryptography.<br />
-These standards ensure interoperability and security across implementations worldwide.</p>
-<hr />
+<p>ISO (International Organization for Standardization) and IEC (International Electrotechnical Commission) jointly publish international standards for information technology, including cryptography.<br>These standards ensure interoperability and security across implementations worldwide.</p>
+<hr>
 <h2 id="ipsec"><a class="header" href="#ipsec">IPSec</a></h2>
-<p>IPSec (Internet Protocol Security) is a suite of protocols designed to secure IP communications.<br />
-It operates at the network layer, providing encryption, integrity, and authentication for IP packets.<br />
-IPSec is widely used for VPNs and site-to-site secure tunnels.</p>
-<hr />
+<p>IPSec (Internet Protocol Security) is a suite of protocols designed to secure IP communications.<br>It operates at the network layer, providing encryption, integrity, and authentication for IP packets.<br>IPSec is widely used for VPNs and site-to-site secure tunnels.</p>
+<hr>
 <h2 id="cbc-cipher-block-chaining"><a class="header" href="#cbc-cipher-block-chaining">CBC (Cipher Block Chaining)</a></h2>
-<p>CBC is a block cipher mode of operation that chains blocks together for added security.<br />
-Each plaintext block is XORed with the previous ciphertext block before encryption, preventing identical plaintexts from producing identical ciphertexts.<br />
-An Initialization Vector (IV) is required for the first block to ensure uniqueness.<br />
-While stronger than ECB, CBC has weaknesses and should be used with caution.</p>
-<hr />
+<p>CBC is a block cipher mode of operation that chains blocks together for added security.<br>Each plaintext block is XORed with the previous ciphertext block before encryption, preventing identical plaintexts from producing identical ciphertexts.<br>An Initialization Vector (IV) is required for the first block to ensure uniqueness.<br>While stronger than ECB, CBC has weaknesses and should be used with caution.</p>
+<hr>
 <h2 id="pkcs7"><a class="header" href="#pkcs7">PKCS7</a></h2>
-<p>PKCS7 is a padding scheme used in block cipher encryption.<br />
-It fills up the last block of plaintext with bytes all set to the value of the number of padding bytes added.<br />
-For example, if 4 bytes of padding are needed, the block is filled with <code>04 04 04 04</code>.<br />
-PKCS7 ensures that plaintext lengths align with the cipher’s block size, but improper validation of padding can lead to padding oracle attacks.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="cryptographic-concepts-cheatsheet"><a class="header" href="#cryptographic-concepts-cheatsheet">Cryptographic Concepts Cheatsheet</a></h1>
+<p>PKCS7 is a padding scheme used in block cipher encryption.<br>It fills up the last block of plaintext with bytes all set to the value of the number of padding bytes added.<br>For example, if 4 bytes of padding are needed, the block is filled with <code>04 04 04 04</code>.<br>PKCS7 ensures that plaintext lengths align with the cipher’s block size, but improper validation of padding can lead to padding oracle attacks.</p>
+<h2 id="wireguard"><a class="header" href="#wireguard">Wireguard</a></h2>
+<p>WireGuard is a modern VPN protocol and implementation designed by Jason A. Donenfeld.<br>It focuses on simplicity, performance, and a small codebase, in contrast to traditional VPN stacks like IPsec and OpenVPN.<br>WireGuard uses a fixed, opinionated set of strong primitives (e.g., Curve25519, ChaCha20-Poly1305, BLAKE2s, and HKDF) arranged in a Noise-based handshake pattern.<br>It is now integrated into the Linux kernel and widely deployed for site-to-site VPNs, remote access, and privacy-focused applications.</p>
+<h2 id="non-aes-hardware"><a class="header" href="#non-aes-hardware">Non-AES Hardware</a></h2>
+<p>“Non-AES hardware” refers to CPUs and devices that do not provide hardware acceleration for AES (such as Intel’s AES-NI instructions).<br>On these platforms, software-only AES can be relatively slow and sometimes harder to implement in a constant-time way.<br>Stream ciphers like ChaCha20, which use simple add-rotate-xor operations, tend to be faster and easier to harden against timing attacks on such hardware.<br>Modern protocols therefore often select ChaCha20-Poly1305 as a preferred or fallback cipher suite for clients without efficient AES support.</p>
+<h2 id="salsa20"><a class="header" href="#salsa20">Salsa20</a></h2>
+<p>Salsa20 is a stream cipher designed by Daniel J. Bernstein as part of the eSTREAM project.<br>It uses simple add-rotate-xor (ARX) operations to generate a pseudorandom keystream from a key, nonce, and counter, making it fast and easy to implement on a wide range of hardware.<br>Salsa20 was extensively analyzed and gained a strong security reputation, and its design directly inspired ChaCha20, which refines the permutation for better diffusion and performance on modern CPUs.</p>
+<h2 id="pseudorandom-keystream"><a class="header" href="#pseudorandom-keystream">Pseudorandom Keystream</a></h2>
+<p>A pseudorandom keystream is a sequence of bits or bytes that appears random but is generated deterministically from a secret key (and often a nonce/counter).<br>In a secure stream cipher, this keystream should be computationally indistinguishable from true randomness to anyone who does not know the key.<br>When the keystream is XORed with plaintext (and never reused with the same key/nonce), it hides the original data while still allowing the receiver, who can regenerate the same keystream, to decrypt it.</p>
+<h2 id="chacha20-poly1305"><a class="header" href="#chacha20-poly1305">ChaCha20-Poly1305</a></h2>
+<p>ChaCha20-Poly1305 is an AEAD (Authenticated Encryption with Associated Data) construction that combines the ChaCha20 stream cipher with the Poly1305 message authentication code.<br>ChaCha20 provides fast, software-friendly encryption using add-rotate-xor operations, while Poly1305 computes a strong one-time MAC over the ciphertext and associated data.<br>Together, they provide confidentiality, integrity, and authenticity in a single primitive, widely deployed in TLS 1.3, WireGuard, and many modern protocols, especially on devices without AES hardware acceleration.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="cryptographic-concepts-cheatsheet"><a class="header" href="#cryptographic-concepts-cheatsheet">Cryptographic Concepts Cheatsheet</a></h1>
 <p><em>This cheatsheet is designed as a quick mental map. For detailed explanations and Rust code, see Part 2 and Part 3 of this book.</em></p>
-<hr />
+<hr>
 <h2 id="-core-principles"><a class="header" href="#-core-principles">🔐 Core Principles</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Summary</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Concept</th><th>Summary</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>Kerckhoffs’ Principle</strong></td><td>A cryptosystem must be secure even if everything except the key is known</td></tr>
 <tr><td><strong>Shannon’s Maxim</strong></td><td>The enemy knows the system — don’t rely on obscurity</td></tr>
 <tr><td><strong>Perfect Secrecy</strong></td><td>Ciphertext reveals no information without the key (e.g., OTP)</td></tr>
 <tr><td><strong>Semantic Security</strong></td><td>An attacker can’t learn anything new from ciphertext</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
-<hr />
+<hr>
 <h2 id="-mathematical-foundations"><a class="header" href="#-mathematical-foundations">🔢 Mathematical Foundations</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Summary</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Concept</th><th>Summary</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>Entropy</strong></td><td>A measure of randomness; critical for secure key generation</td></tr>
 <tr><td><strong>Modular Arithmetic</strong></td><td>Math used in most crypto (e.g., <em>a mod n</em>)</td></tr>
 <tr><td><strong>Finite Fields</strong></td><td>Algebraic structures where crypto operations like ECC take place</td></tr>
 <tr><td><strong>Primes &amp; Factorization</strong></td><td>Basis for RSA’s difficulty: factoring large numbers is hard</td></tr>
 <tr><td><strong>Discrete Log Problem</strong></td><td>Hardness assumption behind Diffie-Hellman and ECC</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
-<hr />
+<hr>
 <h2 id="-encryption-concepts"><a class="header" href="#-encryption-concepts">🔄 Encryption Concepts</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Summary</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Concept</th><th>Summary</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>Symmetric Encryption</strong></td><td>Same key used for encryption and decryption (e.g., AES)</td></tr>
 <tr><td><strong>Asymmetric Encryption</strong></td><td>Public-key systems like RSA and ECC</td></tr>
 <tr><td><strong>Block Cipher</strong></td><td>Encrypts fixed-size blocks (e.g., AES-128)</td></tr>
 <tr><td><strong>Stream Cipher</strong></td><td>Encrypts bit-by-bit or byte-by-byte (e.g., ChaCha20)</td></tr>
 <tr><td><strong>Modes of Operation</strong></td><td>Techniques to apply block ciphers to arbitrary-length data (e.g., CBC, GCM)</td></tr>
 <tr><td><strong>Padding</strong></td><td>Fills the last block in block cipher (e.g., PKCS#7)</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
-<hr />
+<hr>
 <h2 id="-cryptographic-properties"><a class="header" href="#-cryptographic-properties">🔁 Cryptographic Properties</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Summary</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Concept</th><th>Summary</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>Confusion</strong></td><td>Makes the relationship between key and ciphertext complex</td></tr>
 <tr><td><strong>Diffusion</strong></td><td>Spreads the influence of each input bit across the ciphertext</td></tr>
 <tr><td><strong>Avalanche Effect</strong></td><td>Small change in input → large change in output</td></tr>
 <tr><td><strong>Deterministic Encryption</strong></td><td>Same ciphertext for same input+key — <em>not semantically secure</em></td></tr>
 <tr><td><strong>Non-deterministic Encryption</strong></td><td>Includes randomness (like IVs) to ensure unique ciphertexts</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
-<hr />
+<hr>
 <h2 id="-hash-functions"><a class="header" href="#-hash-functions">🔐 Hash Functions</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Summary</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Concept</th><th>Summary</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>Collision Resistance</strong></td><td>It’s hard to find two different inputs with the same hash</td></tr>
 <tr><td><strong>Preimage Resistance</strong></td><td>Given a hash, it’s hard to find an input that produces it</td></tr>
 <tr><td><strong>Second Preimage Resistance</strong></td><td>Given an input, hard to find another that hashes to the same value</td></tr>
 <tr><td><strong>Birthday Paradox</strong></td><td>Hash collisions can happen surprisingly early (~2^n/2 complexity)</td></tr>
 <tr><td><strong>Merkle–Damgård Construction</strong></td><td>A method used in many hash functions like SHA-1, SHA-256</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
-<hr />
+<hr>
 <h2 id="-digital-signatures"><a class="header" href="#-digital-signatures">🔏 Digital Signatures</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Summary</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Concept</th><th>Summary</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>Authenticity</strong></td><td>Verifies that the message comes from the claimed sender</td></tr>
 <tr><td><strong>Non-repudiation</strong></td><td>Signer cannot deny having signed</td></tr>
 <tr><td><strong>ECDSA / RSA Signatures</strong></td><td>Algorithms for digital signatures using asymmetric keys</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
-<hr />
+<hr>
 <h2 id="-protocol-concepts"><a class="header" href="#-protocol-concepts">📡 Protocol Concepts</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Summary</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Concept</th><th>Summary</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>Key Exchange</strong></td><td>Securely establishing a shared key over an insecure channel (e.g., Diffie-Hellman)</td></tr>
 <tr><td><strong>Forward Secrecy</strong></td><td>Compromise of one key doesn’t expose past sessions</td></tr>
 <tr><td><strong>Replay Attack</strong></td><td>Re-sending valid data to trick the system again</td></tr>
 <tr><td><strong>Man-in-the-Middle</strong></td><td>Attacker intercepts communication between two parties</td></tr>
 <tr><td><strong>Nonce</strong></td><td>A number used once — prevents replay attacks and ensures uniqueness</td></tr>
 <tr><td><strong>Initialization Vector (IV)</strong></td><td>Random value to ensure unique ciphertexts in block cipher modes</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
-<hr />
+<hr>
 <h2 id="-attack-models"><a class="header" href="#-attack-models">🛡️ Attack Models</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>Concept</th><th>Summary</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Concept</th><th>Summary</th></tr>
+</thead>
+<tbody>
 <tr><td><strong>Ciphertext-only attack</strong></td><td>Attacker only has access to encrypted messages</td></tr>
 <tr><td><strong>Known-plaintext attack</strong></td><td>Attacker knows some plaintext–ciphertext pairs</td></tr>
 <tr><td><strong>Chosen-plaintext attack</strong></td><td>Attacker can choose plaintexts and get their ciphertexts</td></tr>
 <tr><td><strong>Chosen-ciphertext attack</strong></td><td>Attacker can decrypt chosen ciphertexts</td></tr>
 <tr><td><strong>Side-channel attack</strong></td><td>Exploits physical leaks (timing, power, EM radiation)</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
-<hr />
-
+<hr>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
@@ -1071,6 +1256,11 @@ PKCS7 ensures that plaintext lengths align with the cipher’s block size, but i
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -1078,27 +1268,20 @@ PKCS7 ensures that plaintext lengths align with the cipher’s block size, but i
             window.playground_copyable = true;
         </script>
 
-        <script src="ace.js"></script>
-        <script src="mode-rust.js"></script>
-        <script src="editor.js"></script>
-        <script src="theme-dawn.js"></script>
-        <script src="theme-tomorrow_night.js"></script>
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
 
         <script>
         window.addEventListener('load', function() {
-            MathJax.Hub.Register.StartupHook('End', function() {
-                window.setTimeout(window.print, 100);
-            });
+            window.setTimeout(window.print, 100);
         });
         </script>
 
