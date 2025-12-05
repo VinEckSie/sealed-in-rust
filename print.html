@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-fd789328.js";
+            window.path_to_searchindex_js = "searchindex-046445bb.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-3f84beb2.js"></script>
@@ -809,7 +809,7 @@ println!("Decrypted   | {:02X}     | {:02X}     | {:02X}     | {:02X}", decrypte
 <p>AES operates on 128-bit blocks and supports key sizes of 128, 192, or 256 bits. It is based on a Substitution–Permutation Network (SPN) and runs 10, 12, or 14 rounds depending on the key length.</p>
 <p>It is standardized by FIPS-197, ISO/IEC<sup class="footnote-reference" id="fr-ISOIEC-1"><a href="#footnote-ISOIEC">9</a></sup>, and widely adopted in security protocols such as TLS, SSH, and IPsec<sup class="footnote-reference" id="fr-IPSec-1"><a href="#footnote-IPSec">10</a></sup>. AES is available in hardware on most modern CPUs, making it both fast and energy-efficient.</p>
 <br>
-<p>🧪 <strong>Code Example: AES-128-CBC Encryption &amp; Decryption in Rust</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)<br>We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-CBC-1"><a href="#footnote-CBC">11</a></sup> with PKCS7<sup class="footnote-reference" id="fr-PKCS7-1"><a href="#footnote-PKCS7">12</a></sup> padding.</p>
+<p>🧪 <strong>Code Example: AES-128-CBC Encryption &amp; Decryption</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)<br>We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-CBC-1"><a href="#footnote-CBC">11</a></sup> with PKCS7<sup class="footnote-reference" id="fr-PKCS7-1"><a href="#footnote-PKCS7">12</a></sup> padding.</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use aes::Aes128;
@@ -873,7 +873,7 @@ Decrypted text: Attack at dawn!
 <p>Encryption is simply: ciphertext = plaintext XOR keystream</p>
 <p>No padding. No block alignment. Just pure stream encryption.</p>
 <p>ChaCha20 is now a fundamental primitive across modern cryptography:<br>WireGuard, OpenSSH (for session keys), TLS 1.3 fallback ciphers, mobile operating systems, and many authenticated encryption schemes like ChaCha20-Poly1305<sup class="footnote-reference" id="fr-POLY1305-1"><a href="#footnote-POLY1305">17</a></sup>.</p>
-<p>🧪 <strong>Code Example: ChaCha20 Encryption</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<p>🧪 <strong>Code Example: ChaCha20 Encryption &amp; Decryption</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
 <p>We’ll generate a ChaCha20 keystream and XOR it with a plaintext message.<br>The API is extremely simple — you create a cipher and stream through it.</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -945,13 +945,13 @@ Decrypted text: Secret meeting at midnight
 </tbody>
 </table>
 </div>
-<p><strong>ECB — The Anti-Example</strong></p>
+<p><strong>ECB (Electronic Codebook) — The Anti-Example</strong></p>
 <p>ECB encrypts each block independently.<br>Patterns in the plaintext appear in the ciphertext.<br>Famous example: encrypting the Tux penguin still looks like a penguin.</p>
 <p>If you see ECB in a system, assume the designer didn’t understand cryptography.</p>
-<p><strong>CBC — The Old Workhorse</strong></p>
+<p><strong>CBC (Cipher Bloc Chaining) — The Old Workhorse</strong></p>
 <p>CBC chains each block with the previous one using XOR.<br>If the IV is truly random and padding is handled correctly, it’s fine.<br>But historically, padding-oracle attacks destroyed its safety in many protocols.</p>
 <p>Today, CBC mostly survives in legacy stacks and old file formats.<br>New designs avoid it.</p>
-<p><strong>CTR — The Modern Default</strong></p>
+<p><strong>CTR (Counter Mode) — The Modern Default</strong></p>
 <p>CTR mode transforms AES into a stream cipher.<br>Instead of encrypting the plaintext blocks directly, it encrypts a counter and XORs the result with the message.</p>
 <p>This gives:</p>
 <ul>
@@ -974,7 +974,7 @@ let mut cipher = ctr::Ctr128BE::&lt;Aes128&gt;::new(key.into(), nonce.into());
 cipher.apply_keystream(&amp;mut buffer); // encrypt or decrypt
 <span class="boring">}</span></code></pre>
 <p>CTR is simple, fast, and well-suited to network protocols, telemetry pipelines, and embedded systems.</p>
-<p><strong>XTS — Built for Storage</strong></p>
+<p><strong>XTS (XEX-based (XOR-Encrypt-XOR-based) Tweaked CodeBook with Ciphertext Stealing) — Built for Storage</strong></p>
 <p>XTS is AES-CTR + a “tweak” system tailored to disk sectors.
 It prevents block relocation attacks and keeps each sector isolated.</p>
 <p>XTS shines for full-disk encryption because it resists sector-copy tampering and is purpose-built for storage. It isn’t suitable for general messages or network data, and it requires two independent AES keys.</p>
@@ -998,6 +998,55 @@ They decide whether your encryption is safe or broken.</p>
 </ul>
 
 <p>If you understand modes, you understand how real-world encryption actually works.</p>
+<h3 id="aes-vs-chacha20--which-one-should-you-choose"><a class="header" href="#aes-vs-chacha20--which-one-should-you-choose">AES vs. ChaCha20 — Which One Should You Choose?</a></h3>
+<p>Both AES and ChaCha20 are modern, secure, and widely deployed symmetric encryption algorithms. You will encounter them everywhere: in HTTPS, VPNs, mobile apps, cloud storage, and embedded systems.</p>
+<p>Yet, choosing between them is not a matter of “which is stronger” — both are cryptographically secure. The real difference lies in performance, implementation safety, and hardware availability.</p>
+<p><strong>AES (Advanced Encryption Standard)</strong></p>
+<ul>
+<li>Type: Block cipher</li>
+<li>Strength: 128, 192, or 256-bit keys</li>
+<li>Typical Modes Depends on the mode of operation used</li>
+<li>Performance:  Extremely fast when hardware acceleration is available</li>
+<li>Used In TLS, disk encryption, databases, government systems</li>
+</ul>
+<p>✅ Strengths:</p>
+<ul>
+<li>Decades of analysis and trust</li>
+<li>Hardware acceleration on most modern CPUs</li>
+<li>Excellent for high-throughput systems</li>
+</ul>
+<p>⚠️ Weaknesses:</p>
+<ul>
+<li>More complex to implement correctly</li>
+<li>Vulnerable to timing and cache side-channel attacks if implemented poorly</li>
+</ul>
+<p><strong>ChaCha20</strong></p>
+<ul>
+<li>Type: Stream cipher</li>
+<li>Key Size: 256-bit</li>
+<li>Performance: Fast on all CPUs, even without hardware support</li>
+<li>Used In: Mobile apps, VPNs, embedded systems</li>
+</ul>
+<p>✅ Strengths:</p>
+<ul>
+<li>Very simple design</li>
+<li>Timing-attack resistant by design</li>
+<li>Outstanding performance on low-power devices</li>
+<li>Fewer catastrophic implementation mistakes</li>
+</ul>
+<p>⚠️ Weaknesses:</p>
+<ul>
+<li>No native hardware acceleration (yet)</li>
+<li>Less common in legacy enterprise systems</li>
+</ul>
+
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>Use AES-GCM when you have hardware acceleration or when you need standardized enterprise compatibility</p>
+<p>Use ChaCha20-Poly1305 when you target mobile, embedded, or low-power devices or you want maximum implementation safety or you care about side-channel resistance</p>
+<p><strong>Important truth:</strong><br>Both are safe when used correctly.
+ChaCha20 is often preferred today when simplicity and portability matter more than raw throughput.</p>
+</blockquote>
 <hr>
 <ol class="footnote-definition">
 <li id="footnote-DES">
@@ -1049,7 +1098,8 @@ They decide whether your encryption is safe or broken.</p>
 <p>Pseudorandom keystream - sequence of bits/bytes that looks random but is deterministically generated from a secret key (and usually a nonce). <a href="#pseudorandom-keystream">More</a> <a href="#fr-PSEUDOKEY-1">↩</a></p>
 </li>
 <li id="footnote-POLY1305">
-<p>ChaCha20-Poly1305 - AEAD scheme that combines the ChaCha20 stream cipher with the Poly1305 MAC to provide authenticated encryption (confidentiality + integrity). <a href="#chacha20-poly1305">More</a> <a href="#fr-POLY1305-1">↩</a></p>
+<p>ChaCha20-Poly1305 -
+AEAD scheme that combines the ChaCha20 stream cipher with the Poly1305 MAC to provide authenticated encryption (confidentiality + integrity). <a href="#chacha20-poly1305">More</a> <a href="#fr-POLY1305-1">↩</a></p>
 </li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div>
