@@ -312,7 +312,7 @@ It is standardized by FIPS-197, ISO/IEC[^ISOIEC], and widely adopted in security
 
 <br>
 
-🧪 **Code Example: AES-128-CBC Encryption & Decryption in Rust** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))  
+🧪 **Code Example: AES-128-CBC Encryption & Decryption** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))  
 We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode[^CBC] with PKCS7[^PKCS7] padding.
 
 ```rust,no_run
@@ -361,7 +361,7 @@ No padding. No block alignment. Just pure stream encryption.
 ChaCha20 is now a fundamental primitive across modern cryptography:  
 WireGuard, OpenSSH (for session keys), TLS 1.3 fallback ciphers, mobile operating systems, and many authenticated encryption schemes like ChaCha20-Poly1305[^POLY1305].
 
-🧪 **Code Example: ChaCha20 Encryption** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))
+🧪 **Code Example: ChaCha20 Encryption & Decryption** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))
 
 We’ll generate a ChaCha20 keystream and XOR it with a plaintext message.  
 The API is extremely simple — you create a cipher and stream through it.
@@ -423,7 +423,7 @@ Modes solve four problems:
 | **CTR** | ✅ Yes | High-speed streaming, networking, I/O | Turns AES into a fast stream cipher. Very robust when nonce-unique. |
 | **XTS** | ✅ Yes | Disk and sector encryption | Designed for storage only, not general messages. |
 
-**ECB — The Anti-Example**
+**ECB (Electronic Codebook) — The Anti-Example**
 
 ECB encrypts each block independently.  
 Patterns in the plaintext appear in the ciphertext.  
@@ -431,7 +431,7 @@ Famous example: encrypting the Tux penguin still looks like a penguin.
 
 If you see ECB in a system, assume the designer didn’t understand cryptography.
 
-**CBC — The Old Workhorse**
+**CBC (Cipher Bloc Chaining) — The Old Workhorse**
 
 CBC chains each block with the previous one using XOR.  
 If the IV is truly random and padding is handled correctly, it’s fine.  
@@ -440,7 +440,7 @@ But historically, padding-oracle attacks destroyed its safety in many protocols.
 Today, CBC mostly survives in legacy stacks and old file formats.  
 New designs avoid it.
 
-**CTR — The Modern Default**
+**CTR (Counter Mode) — The Modern Default**
 
 CTR mode transforms AES into a stream cipher.  
 Instead of encrypting the plaintext blocks directly, it encrypts a counter and XORs the result with the message.
@@ -468,7 +468,7 @@ cipher.apply_keystream(&mut buffer); // encrypt or decrypt
 
 CTR is simple, fast, and well-suited to network protocols, telemetry pipelines, and embedded systems.
 
-**XTS — Built for Storage**
+**XTS (XEX-based (XOR-Encrypt-XOR-based) Tweaked CodeBook with Ciphertext Stealing) — Built for Storage**
 
 XTS is AES-CTR + a “tweak” system tailored to disk sectors.
 It prevents block relocation attacks and keeps each sector isolated.
@@ -495,6 +495,61 @@ They decide whether your encryption is safe or broken.
 If you understand modes, you understand how real-world encryption actually works.
 
 
+### AES vs. ChaCha20 — Which One Should You Choose?
+
+Both AES and ChaCha20 are modern, secure, and widely deployed symmetric encryption algorithms. You will encounter them everywhere: in HTTPS, VPNs, mobile apps, cloud storage, and embedded systems.
+
+Yet, choosing between them is not a matter of “which is stronger” — both are cryptographically secure. The real difference lies in performance, implementation safety, and hardware availability.
+
+
+**AES (Advanced Encryption Standard)**
+
+- Type: Block cipher  
+- Strength: 128, 192, or 256-bit keys  
+- Typical Modes Depends on the mode of operation used  
+- Performance:  Extremely fast when hardware acceleration is available  
+- Used In TLS, disk encryption, databases, government systems  
+
+✅ Strengths:
+- Decades of analysis and trust
+- Hardware acceleration on most modern CPUs
+- Excellent for high-throughput systems
+
+⚠️ Weaknesses:
+- More complex to implement correctly
+- Vulnerable to timing and cache side-channel attacks if implemented poorly
+
+
+**ChaCha20**
+
+- Type: Stream cipher  
+- Key Size: 256-bit  
+- Performance: Fast on all CPUs, even without hardware support  
+- Used In: Mobile apps, VPNs, embedded systems  
+
+✅ Strengths:
+- Very simple design
+- Timing-attack resistant by design
+- Outstanding performance on low-power devices
+- Fewer catastrophic implementation mistakes
+
+⚠️ Weaknesses:
+- No native hardware acceleration (yet)
+- Less common in legacy enterprise systems
+
+</br>
+
+> **🟢 Conclusion**
+>
+> Use AES-GCM when you have hardware acceleration or when you need standardized enterprise compatibility  
+>
+> Use ChaCha20-Poly1305 when you target mobile, embedded, or low-power devices or you want maximum implementation safety or you care about side-channel resistance  
+>
+>**Important truth:**  
+>Both are safe when used correctly.
+>ChaCha20 is often preferred today when simplicity and portability matter more than raw throughput.
+
+
 [^DES]: DES — early symmetric cipher (56-bit), now insecure. [More](../99-appendices/99-01-glossary.md#des-data-encryption-standard)  
 [^3DES]: 3DES — DES applied three times, better than DES but now deprecated. [More](../99-appendices/99-01-glossary.md#3des-triple-des)  
 [^AES]: AES — The modern global standard, fast, secure, and hardware-accelerated. [More](../99-appendices/99-01-glossary.md#aes-advanced-encryption-standard)
@@ -511,4 +566,5 @@ If you understand modes, you understand how real-world encryption actually works
 [^NONAES]: Non-AES hardware — CPUs without AES instructions, where ChaCha20 is often faster than AES. [More](../99-appendices/99-01-glossary.md#non-aes-hardware)
 [^SALSA20]: Salsa20 — stream cipher by Daniel J. Bernstein; predecessor of ChaCha20, fast and well-studied. [More](../99-appendices/99-01-glossary.md#salsa20)
 [^PSEUDOKEY]: Pseudorandom keystream - sequence of bits/bytes that looks random but is deterministically generated from a secret key (and usually a nonce). [More](../99-appendices/99-01-glossary.md#pseudorandom-keystream)
-[^POLY1305]: ChaCha20-Poly1305 - AEAD scheme that combines the ChaCha20 stream cipher with the Poly1305 MAC to provide authenticated encryption (confidentiality + integrity). [More](../99-appendices/99-01-glossary.md#chacha20-poly1305)
+[^POLY1305]: ChaCha20-Poly1305 -
+AEAD scheme that combines the ChaCha20 stream cipher with the Poly1305 MAC to provide authenticated encryption (confidentiality + integrity). [More](../99-appendices/99-01-glossary.md#chacha20-poly1305)
