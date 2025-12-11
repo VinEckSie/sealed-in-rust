@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-046445bb.js";
+            window.path_to_searchindex_js = "../searchindex-66040b22.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-3f84beb2.js"></script>
@@ -176,59 +176,121 @@
                     <main>
                         <h1 id="glossary-of-terms"><a class="header" href="#glossary-of-terms">Glossary of Terms</a></h1>
 <h2 id="aes-advanced-encryption-standard"><a class="header" href="#aes-advanced-encryption-standard">AES (Advanced Encryption Standard)</a></h2>
-<p>AES is a symmetric-key block cipher standardized by NIST in 2001, designed by Vincent Rijmen and Joan Daemen.<br>It operates on 128-bit blocks with keys of 128, 192, or 256 bits, and is based on a Substitution–Permutation Network.<br>AES is fast, secure, and widely implemented in both software and hardware (including CPU instructions).<br>It remains the global standard for symmetric encryption, used in TLS, SSH, disk encryption, and countless applications.</p>
+<p>AES is a symmetric-key block cipher standardized by NIST in 2001, designed by Vincent Rijmen and Joan Daemen.
+It operates on 128-bit blocks with keys of 128, 192, or 256 bits, and is based on a Substitution–Permutation Network.
+AES is fast, secure, and widely implemented in both software and hardware (including CPU instructions).
+It remains the global standard for symmetric encryption, used in TLS, SSH, disk encryption, and countless applications.</p>
 <hr>
 <h2 id="ecb-electronic-code-book"><a class="header" href="#ecb-electronic-code-book">ECB (Electronic Code Book)</a></h2>
-<p>ECB is the simplest block cipher mode of operation: it encrypts each block independently with the same key.<br>While easy to implement, it is insecure because identical plaintext blocks produce identical ciphertext blocks.<br>This leaks patterns in the input (e.g., images encrypted with ECB visibly preserve outlines).<br>Because of this, ECB is almost never used in practice and is considered unsafe.</p>
+<p>ECB is the simplest block cipher mode of operation: it encrypts each block independently with the same key.
+While easy to implement, it is insecure because identical plaintext blocks produce identical ciphertext blocks.
+This leaks patterns in the input (e.g., images encrypted with ECB visibly preserve outlines).
+Because of this, ECB is almost never used in practice and is considered unsafe.</p>
 <hr>
 <h2 id="rsa-rivestshamiradleman"><a class="header" href="#rsa-rivestshamiradleman">RSA (Rivest–Shamir–Adleman)</a></h2>
-<p>RSA is one of the first public-key cryptosystems, invented in 1977 by Ron Rivest, Adi Shamir, and Leonard Adleman.<br>It allows secure key exchange, encryption, and digital signatures by relying on the mathematical difficulty of factoring large integers.<br>RSA keys are typically 2048 or 3072 bits today. While still widely used, modern protocols increasingly migrate to elliptic-curve cryptography (ECC) for better performance and smaller key sizes.</p>
+<p>RSA is one of the first public-key cryptosystems, invented in 1977 by Ron Rivest, Adi Shamir, and Leonard Adleman.
+It allows secure key exchange, encryption, and digital signatures by relying on the mathematical difficulty of factoring large integers.
+RSA keys are typically 2048 or 3072 bits today. While still widely used, modern protocols increasingly migrate to elliptic-curve cryptography (ECC) for better performance and smaller key sizes.</p>
 <hr>
 <h2 id="padding-in-rsa"><a class="header" href="#padding-in-rsa">Padding in RSA</a></h2>
-<p>RSA encryption without padding is deterministic: encrypting the same message always produces the same ciphertext.<br>This makes it insecure, as attackers can guess messages or exploit mathematical properties of RSA.<br>Padding schemes (e.g., PKCS#1 v1.5 or OAEP) add randomness or structured bytes before encryption.<br>This ensures different ciphertexts for the same plaintext and provides protection against chosen-plaintext or chosen-ciphertext attacks.<br>Proper padding is essential for RSA’s security in practice.</p>
+<p>RSA encryption without padding is deterministic: encrypting the same message always produces the same ciphertext.
+This makes it insecure, as attackers can guess messages or exploit mathematical properties of RSA.
+Padding schemes (e.g., PKCS#1 v1.5 or OAEP) add randomness or structured bytes before encryption.
+This ensures different ciphertexts for the same plaintext and provides protection against chosen-plaintext or chosen-ciphertext attacks.
+Proper padding is essential for RSA’s security in practice.</p>
 <hr>
 <h2 id="des-data-encryption-standard"><a class="header" href="#des-data-encryption-standard">DES (Data Encryption Standard)</a></h2>
-<p>DES is a symmetric-key block cipher standardized in the 1970s by NIST.<br>It uses a 56-bit key and operates on 64-bit blocks.<br>Once a global standard, DES is now considered insecure due to its short key length, which makes it vulnerable to brute-force attacks.</p>
+<p>DES is a symmetric-key block cipher standardized in the 1970s by NIST.
+It uses a 56-bit key and operates on 64-bit blocks.
+Once a global standard, DES is now considered insecure due to its short key length, which makes it vulnerable to brute-force attacks.</p>
 <hr>
 <h2 id="3des-triple-des"><a class="header" href="#3des-triple-des">3DES (Triple DES)</a></h2>
-<p>Triple DES (3DES) is an extension of DES that applies the DES algorithm three times with either two or three different keys.<br>This increases the effective key length to 112 or 168 bits.<br>It offered better security than DES but is now deprecated due to its slow performance and known cryptographic weaknesses.</p>
+<p>Triple DES (3DES) is an extension of DES that applies the DES algorithm three times with either two or three different keys.
+This increases the effective key length to 112 or 168 bits.
+It offered better security than DES but is now deprecated due to its slow performance and known cryptographic weaknesses.</p>
 <hr>
 <h2 id="camellia"><a class="header" href="#camellia">Camellia</a></h2>
-<p>Camellia is a modern symmetric-key block cipher developed in Japan by Mitsubishi Electric and NTT.<br>It offers security and performance comparable to AES, supporting key sizes of 128, 192, and 256 bits.<br>Camellia is standardized by ISO/IEC and the NESSIE project.<br>Though less widely used than AES, it is considered secure and suitable for both software and hardware implementations.</p>
+<p>Camellia is a modern symmetric-key block cipher developed in Japan by Mitsubishi Electric and NTT.
+It offers security and performance comparable to AES, supporting key sizes of 128, 192, and 256 bits.
+Camellia is standardized by ISO/IEC and the NESSIE project.
+Though less widely used than AES, it is considered secure and suitable for both software and hardware implementations.</p>
 <hr>
 <h2 id="tls-transport-layer-security"><a class="header" href="#tls-transport-layer-security">TLS (Transport Layer Security)</a></h2>
-<p>TLS is a protocol defined by the IETF to secure data during transmission, most notably in HTTPS.<br>It uses asymmetric encryption for the handshake and key exchange, then switches to symmetric encryption for efficient bulk data encryption.<br>TLS provides confidentiality, integrity, and authentication for internet communications.</p>
+<p>TLS is a protocol defined by the IETF to secure data during transmission, most notably in HTTPS.
+It uses asymmetric encryption for the handshake and key exchange, then switches to symmetric encryption for efficient bulk data encryption.
+TLS provides confidentiality, integrity, and authentication for internet communications.</p>
 <hr>
 <h2 id="luks-linux-unified-key-setup"><a class="header" href="#luks-linux-unified-key-setup">LUKS (Linux Unified Key Setup)</a></h2>
-<p>LUKS is the standard format for full disk encryption on Linux, designed by Clemens Fruhwirth.<br>It provides strong symmetric encryption for protecting data at rest and supports multiple key slots, allowing different passphrases or keys to unlock the same volume.</p>
+<p>LUKS is the standard format for full disk encryption on Linux, designed by Clemens Fruhwirth.
+It provides strong symmetric encryption for protecting data at rest and supports multiple key slots, allowing different passphrases or keys to unlock the same volume.</p>
 <hr>
 <h2 id="ssh-secure-shell"><a class="header" href="#ssh-secure-shell">SSH (Secure Shell)</a></h2>
-<p>SSH is a secure remote access protocol invented by Tatu Ylönen in 1995.<br>It uses asymmetric encryption to authenticate users and symmetric encryption to secure the session once established.<br>SSH replaced insecure protocols such as Telnet and rlogin and is now the standard for secure remote administration.</p>
+<p>SSH is a secure remote access protocol invented by Tatu Ylönen in 1995.
+It uses asymmetric encryption to authenticate users and symmetric encryption to secure the session once established.
+SSH replaced insecure protocols such as Telnet and rlogin and is now the standard for secure remote administration.</p>
 <hr>
 <h2 id="fips-federal-information-processing-standards"><a class="header" href="#fips-federal-information-processing-standards">FIPS (Federal Information Processing Standards)</a></h2>
-<p>FIPS are cryptographic standards defined by NIST for use in U.S. government systems.<br>FIPS certification ensures that cryptographic algorithms and implementations meet strict security requirements.<br>It is often required in government, healthcare, and financial sectors to guarantee compliance and trust.</p>
+<p>FIPS are cryptographic standards defined by NIST for use in U.S. government systems.
+FIPS certification ensures that cryptographic algorithms and implementations meet strict security requirements.
+It is often required in government, healthcare, and financial sectors to guarantee compliance and trust.</p>
 <hr>
 <h2 id="isoiec"><a class="header" href="#isoiec">ISO/IEC</a></h2>
-<p>ISO (International Organization for Standardization) and IEC (International Electrotechnical Commission) jointly publish international standards for information technology, including cryptography.<br>These standards ensure interoperability and security across implementations worldwide.</p>
+<p>ISO (International Organization for Standardization) and IEC (International Electrotechnical Commission) jointly publish international standards for information technology, including cryptography.
+These standards ensure interoperability and security across implementations worldwide.</p>
 <hr>
 <h2 id="ipsec"><a class="header" href="#ipsec">IPSec</a></h2>
-<p>IPSec (Internet Protocol Security) is a suite of protocols designed to secure IP communications.<br>It operates at the network layer, providing encryption, integrity, and authentication for IP packets.<br>IPSec is widely used for VPNs and site-to-site secure tunnels.</p>
+<p>IPSec (Internet Protocol Security) is a suite of protocols designed to secure IP communications.
+It operates at the network layer, providing encryption, integrity, and authentication for IP packets.
+IPSec is widely used for VPNs and site-to-site secure tunnels.</p>
 <hr>
 <h2 id="cbc-cipher-block-chaining"><a class="header" href="#cbc-cipher-block-chaining">CBC (Cipher Block Chaining)</a></h2>
-<p>CBC is a block cipher mode of operation that chains blocks together for added security.<br>Each plaintext block is XORed with the previous ciphertext block before encryption, preventing identical plaintexts from producing identical ciphertexts.<br>An Initialization Vector (IV) is required for the first block to ensure uniqueness.<br>While stronger than ECB, CBC has weaknesses and should be used with caution.</p>
+<p>CBC is a block cipher mode of operation that chains blocks together for added security.
+Each plaintext block is XORed with the previous ciphertext block before encryption, preventing identical plaintexts from producing identical ciphertexts.
+An Initialization Vector (IV) is required for the first block to ensure uniqueness.
+While stronger than ECB, CBC has weaknesses and should be used with caution.</p>
 <hr>
 <h2 id="pkcs7"><a class="header" href="#pkcs7">PKCS7</a></h2>
-<p>PKCS7 is a padding scheme used in block cipher encryption.<br>It fills up the last block of plaintext with bytes all set to the value of the number of padding bytes added.<br>For example, if 4 bytes of padding are needed, the block is filled with <code>04 04 04 04</code>.<br>PKCS7 ensures that plaintext lengths align with the cipher’s block size, but improper validation of padding can lead to padding oracle attacks.</p>
+<p>PKCS7 is a padding scheme used in block cipher encryption.
+It fills up the last block of plaintext with bytes all set to the value of the number of padding bytes added.
+For example, if 4 bytes of padding are needed, the block is filled with <code>04 04 04 04</code>.
+PKCS7 ensures that plaintext lengths align with the cipher’s block size, but improper validation of padding can lead to padding oracle attacks.</p>
 <h2 id="wireguard"><a class="header" href="#wireguard">Wireguard</a></h2>
-<p>WireGuard is a modern VPN protocol and implementation designed by Jason A. Donenfeld.<br>It focuses on simplicity, performance, and a small codebase, in contrast to traditional VPN stacks like IPsec and OpenVPN.<br>WireGuard uses a fixed, opinionated set of strong primitives (e.g., Curve25519, ChaCha20-Poly1305, BLAKE2s, and HKDF) arranged in a Noise-based handshake pattern.<br>It is now integrated into the Linux kernel and widely deployed for site-to-site VPNs, remote access, and privacy-focused applications.</p>
+<p>WireGuard is a modern VPN protocol and implementation designed by Jason A. Donenfeld.
+It focuses on simplicity, performance, and a small codebase, in contrast to traditional VPN stacks like IPsec and OpenVPN.
+WireGuard uses a fixed, opinionated set of strong primitives (e.g., Curve25519, ChaCha20-Poly1305, BLAKE2s, and HKDF) arranged in a Noise-based handshake pattern.
+It is now integrated into the Linux kernel and widely deployed for site-to-site VPNs, remote access, and privacy-focused applications.</p>
 <h2 id="non-aes-hardware"><a class="header" href="#non-aes-hardware">Non-AES Hardware</a></h2>
-<p>“Non-AES hardware” refers to CPUs and devices that do not provide hardware acceleration for AES (such as Intel’s AES-NI instructions).<br>On these platforms, software-only AES can be relatively slow and sometimes harder to implement in a constant-time way.<br>Stream ciphers like ChaCha20, which use simple add-rotate-xor operations, tend to be faster and easier to harden against timing attacks on such hardware.<br>Modern protocols therefore often select ChaCha20-Poly1305 as a preferred or fallback cipher suite for clients without efficient AES support.</p>
+<p>“Non-AES hardware” refers to CPUs and devices that do not provide hardware acceleration for AES (such as Intel’s AES-NI instructions).
+On these platforms, software-only AES can be relatively slow and sometimes harder to implement in a constant-time way.
+Stream ciphers like ChaCha20, which use simple add-rotate-xor operations, tend to be faster and easier to harden against timing attacks on such hardware.
+Modern protocols therefore often select ChaCha20-Poly1305 as a preferred or fallback cipher suite for clients without efficient AES support.</p>
 <h2 id="salsa20"><a class="header" href="#salsa20">Salsa20</a></h2>
-<p>Salsa20 is a stream cipher designed by Daniel J. Bernstein as part of the eSTREAM project.<br>It uses simple add-rotate-xor (ARX) operations to generate a pseudorandom keystream from a key, nonce, and counter, making it fast and easy to implement on a wide range of hardware.<br>Salsa20 was extensively analyzed and gained a strong security reputation, and its design directly inspired ChaCha20, which refines the permutation for better diffusion and performance on modern CPUs.</p>
+<p>Salsa20 is a stream cipher designed by Daniel J. Bernstein as part of the eSTREAM project.
+It uses simple add-rotate-xor (ARX) operations to generate a pseudorandom keystream from a key, nonce, and counter, making it fast and easy to implement on a wide range of hardware.
+Salsa20 was extensively analyzed and gained a strong security reputation, and its design directly inspired ChaCha20, which refines the permutation for better diffusion and performance on modern CPUs.</p>
 <h2 id="pseudorandom-keystream"><a class="header" href="#pseudorandom-keystream">Pseudorandom Keystream</a></h2>
-<p>A pseudorandom keystream is a sequence of bits or bytes that appears random but is generated deterministically from a secret key (and often a nonce/counter).<br>In a secure stream cipher, this keystream should be computationally indistinguishable from true randomness to anyone who does not know the key.<br>When the keystream is XORed with plaintext (and never reused with the same key/nonce), it hides the original data while still allowing the receiver, who can regenerate the same keystream, to decrypt it.</p>
+<p>A pseudorandom keystream is a sequence of bits or bytes that appears random but is generated deterministically from a secret key (and often a nonce/counter).
+In a secure stream cipher, this keystream should be computationally indistinguishable from true randomness to anyone who does not know the key.
+When the keystream is XORed with plaintext (and never reused with the same key/nonce), it hides the original data while still allowing the receiver, who can regenerate the same keystream, to decrypt it.</p>
 <h2 id="chacha20-poly1305"><a class="header" href="#chacha20-poly1305">ChaCha20-Poly1305</a></h2>
-<p>ChaCha20-Poly1305 is an AEAD (Authenticated Encryption with Associated Data) construction that combines the ChaCha20 stream cipher with the Poly1305 message authentication code.<br>ChaCha20 provides fast, software-friendly encryption using add-rotate-xor operations, while Poly1305 computes a strong one-time MAC over the ciphertext and associated data.<br>Together, they provide confidentiality, integrity, and authenticity in a single primitive, widely deployed in TLS 1.3, WireGuard, and many modern protocols, especially on devices without AES hardware acceleration.</p>
+<p>ChaCha20-Poly1305 is an AEAD (Authenticated Encryption with Associated Data) construction that combines the ChaCha20 stream cipher with the Poly1305 message authentication code.
+ChaCha20 provides fast, software-friendly encryption using add-rotate-xor operations, while Poly1305 computes a strong one-time MAC over the ciphertext and associated data.
+Together, they provide confidentiality, integrity, and authenticity in a single primitive, widely deployed in TLS 1.3, WireGuard, and many modern protocols, especially on devices without AES hardware acceleration.</p>
+<h2 id="salt"><a class="header" href="#salt">Salt</a></h2>
+<p>A salt is a random value added to a password before hashing or key derivation to ensure that identical passwords never produce identical outputs. It completely defeats precomputed attacks such as rainbow tables by forcing attackers to recompute hashes for every individual target.
+Salts are not secret and are stored alongside the hash, but they must be unique and random per password. A salt does not slow down brute force by itself—it only prevents large-scale hash reuse and precomputation.</p>
+<h2 id="pbkdf2"><a class="header" href="#pbkdf2">PBKDF2</a></h2>
+<p>PBKDF2 is a standardized function used to derive cryptographic keys from passwords by applying a hash function (via HMAC) many times in succession to slow down brute-force attacks.
+It is widely supported, easy to implement, and still secure when configured with a high iteration count, but it is not memory-hard, making it vulnerable to modern GPU and ASIC attacks. Today, it is considered legacy-safe but no longer state-of-the-art.</p>
+<h2 id="argon2"><a class="header" href="#argon2">Argon2</a></h2>
+<p>Argon2 is the modern standard for password hashing and key derivation, designed to resist GPU, FPGA, and ASIC attacks through memory-hard computation. It won the Password Hashing Competition in 2015.
+It allows precise tuning of memory usage, execution time, and parallelism, making large-scale cracking physically expensive. The recommended variant today is Argon2id, which combines security against side-channels and brute-force attacks.</p>
+<h2 id="scrypt"><a class="header" href="#scrypt">scrypt</a></h2>
+<p>scrypt is an earlier memory-hard password-based key derivation function created to make hardware attacks costly by requiring large amounts of memory during computation.
+It remains cryptographically strong and widely used, especially in cryptocurrencies and disk encryption, but it is harder to tune correctly than Argon2 and is now generally considered second-choice for new systems.</p>
+<h2 id="hkdf"><a class="header" href="#hkdf">HKDF</a></h2>
+<p>HKDF is a key derivation function used for expanding a strong secret into multiple independent cryptographic keys using HMAC. It is designed for key separation and protocol key management, not for passwords.
+It is heavily used in TLS, secure messaging, and operating systems. HKDF provides no brute-force protection and must never be used directly with human passwords.</p>
 
                     </main>
 

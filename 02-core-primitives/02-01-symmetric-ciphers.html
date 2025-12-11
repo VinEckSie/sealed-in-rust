@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-046445bb.js";
+            window.path_to_searchindex_js = "../searchindex-66040b22.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-3f84beb2.js"></script>
@@ -176,7 +176,8 @@
                     <main>
                         <h2 id="symmetric-ciphers-xor-aes-chacha20--beyond"><a class="header" href="#symmetric-ciphers-xor-aes-chacha20--beyond">Symmetric Ciphers: XOR, AES, ChaCha20 &amp; Beyond</a></h2>
 <blockquote>
-<p>🔐 <strong>Used in:</strong> VPNs, TLS (post-handshake), disk encryption, messaging apps<br>✅ Still foundational in modern cryptography.</p>
+<p>🔐 <strong>Used in:</strong> VPNs, TLS (post-handshake), disk encryption, messaging apps
+✅ Still foundational in modern cryptography.</p>
 </blockquote>
 <h3 id="what-are-symmetric-ciphers"><a class="header" href="#what-are-symmetric-ciphers">What Are Symmetric Ciphers?</a></h3>
 <p>Symmetric ciphers use the <strong>same key</strong> for both encryption and decryption. Unlike public-key cryptography, they don’t offer key exchange—but they are <strong>much faster</strong>, making them ideal for bulk data encryption.</p>
@@ -306,7 +307,8 @@ So, decryption is
 R₁ = L₂
 </code></pre>
 <blockquote>
-<p><strong>🟢 Conclusion</strong><br>Reversibility comes from XOR being reversible and swapping the halves.
+<p><strong>🟢 Conclusion</strong>
+Reversibility comes from XOR being reversible and swapping the halves.
 Feistel networks let you build reversible encryption even with non-invertible functions.
 This idea shaped DES and similar ciphers.</p>
 <p>Not used today due to known vulnerabilities, but conceptually essential.</p>
@@ -446,11 +448,13 @@ println!("Decrypted   | {:02X}     | {:02X}     | {:02X}     | {:02X}", decrypte
 <p>💡 Claude Shannon, widely considered the father of modern cryptography, introduced the concepts of confusion and diffusion in 1949 as the foundation of secure cipher design.</p>
 </blockquote>
 <blockquote>
-<p><strong>🟢 Conclusion</strong><br>Substitution-Permutation Networks provide a simple yet powerful structure for building symmetric ciphers. They deliver the critical properties of confusion and diffusion, as first formalized by Claude Shannon in his foundational work on cryptographic security.</p>
+<p><strong>🟢 Conclusion</strong>
+Substitution-Permutation Networks provide a simple yet powerful structure for building symmetric ciphers. They deliver the critical properties of confusion and diffusion, as first formalized by Claude Shannon in his foundational work on cryptographic security.</p>
 </blockquote>
 <h3 id="aes-advanced-encryption-standard---the-global-symmetric-standard"><a class="header" href="#aes-advanced-encryption-standard---the-global-symmetric-standard">AES (Advanced Encryption Standard)  — The Global Symmetric Standard</a></h3>
 <blockquote>
-<p>💡 Used in TLS<sup class="footnote-reference" id="fr-TLS-1"><a href="#footnote-TLS">5</a></sup>, LUKS<sup class="footnote-reference" id="fr-LUKS-1"><a href="#footnote-LUKS">6</a></sup>, SSH<sup class="footnote-reference" id="fr-SSH-1"><a href="#footnote-SSH">7</a></sup>, mobile apps, and FIPS-certified systems<sup class="footnote-reference" id="fr-FIPS-1"><a href="#footnote-FIPS">8</a></sup>.<br>Secure, fast, and hardware-accelerated</p>
+<p>💡 Used in TLS<sup class="footnote-reference" id="fr-TLS-1"><a href="#footnote-TLS">5</a></sup>, LUKS<sup class="footnote-reference" id="fr-LUKS-1"><a href="#footnote-LUKS">6</a></sup>, SSH<sup class="footnote-reference" id="fr-SSH-1"><a href="#footnote-SSH">7</a></sup>, mobile apps, and FIPS-certified systems<sup class="footnote-reference" id="fr-FIPS-1"><a href="#footnote-FIPS">8</a></sup>.
+Secure, fast, and hardware-accelerated</p>
 </blockquote>
 <blockquote>
 <p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: <a href="https://crates.io/crates/aes">aes</a>, <a href="https://github.com/RustCrypto/block-modes">block_modes</a></p>
@@ -459,7 +463,8 @@ println!("Decrypted   | {:02X}     | {:02X}     | {:02X}     | {:02X}", decrypte
 <p>AES operates on 128-bit blocks and supports key sizes of 128, 192, or 256 bits. It is based on a Substitution–Permutation Network (SPN) and runs 10, 12, or 14 rounds depending on the key length.</p>
 <p>It is standardized by FIPS-197, ISO/IEC<sup class="footnote-reference" id="fr-ISOIEC-1"><a href="#footnote-ISOIEC">9</a></sup>, and widely adopted in security protocols such as TLS, SSH, and IPsec<sup class="footnote-reference" id="fr-IPSec-1"><a href="#footnote-IPSec">10</a></sup>. AES is available in hardware on most modern CPUs, making it both fast and energy-efficient.</p>
 <br>
-<p>🧪 <strong>Code Example: AES-128-CBC Encryption &amp; Decryption</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)<br>We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-CBC-1"><a href="#footnote-CBC">11</a></sup> with PKCS7<sup class="footnote-reference" id="fr-PKCS7-1"><a href="#footnote-PKCS7">12</a></sup> padding.</p>
+<p>🧪 <strong>Code Example: AES-128-CBC Encryption &amp; Decryption</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)
+We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-CBC-1"><a href="#footnote-CBC">11</a></sup> with PKCS7<sup class="footnote-reference" id="fr-PKCS7-1"><a href="#footnote-PKCS7">12</a></sup> padding.</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use aes::Aes128;
@@ -512,7 +517,8 @@ Decrypted text: Attack at dawn!
 <p>💡 A stream cipher encrypts data one bit or byte at a time by XORing it with a pseudorandom keystream, instead of encrypting fixed-size blocks like a block cipher.</p>
 </blockquote>
 <blockquote>
-<p>💡 Used in WireGuard<sup class="footnote-reference" id="fr-WIREGUARD-1"><a href="#footnote-WIREGUARD">13</a></sup>, TLS (on non-AES hardware<sup class="footnote-reference" id="fr-NONAES-1"><a href="#footnote-NONAES">14</a></sup>), mobile apps, messaging protocols, and security libraries.<br>Fast, simple, and naturally resistant to timing attacks.</p>
+<p>💡 Used in WireGuard<sup class="footnote-reference" id="fr-WIREGUARD-1"><a href="#footnote-WIREGUARD">13</a></sup>, TLS (on non-AES hardware<sup class="footnote-reference" id="fr-NONAES-1"><a href="#footnote-NONAES">14</a></sup>), mobile apps, messaging protocols, and security libraries.
+Fast, simple, and naturally resistant to timing attacks.</p>
 </blockquote>
 <blockquote>
 <p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/chacha20">chacha20</a></p>
@@ -522,9 +528,11 @@ Decrypted text: Attack at dawn!
 <p>Unlike block ciphers, ChaCha20 does not process data in fixed-size blocks. Instead, it transforms a key + nonce + counter into a pseudorandom keystream<sup class="footnote-reference" id="fr-PSEUDOKEY-1"><a href="#footnote-PSEUDOKEY">16</a></sup>.</p>
 <p>Encryption is simply: ciphertext = plaintext XOR keystream</p>
 <p>No padding. No block alignment. Just pure stream encryption.</p>
-<p>ChaCha20 is now a fundamental primitive across modern cryptography:<br>WireGuard, OpenSSH (for session keys), TLS 1.3 fallback ciphers, mobile operating systems, and many authenticated encryption schemes like ChaCha20-Poly1305<sup class="footnote-reference" id="fr-POLY1305-1"><a href="#footnote-POLY1305">17</a></sup>.</p>
+<p>ChaCha20 is now a fundamental primitive across modern cryptography:
+WireGuard, OpenSSH (for session keys), TLS 1.3 fallback ciphers, mobile operating systems, and many authenticated encryption schemes like ChaCha20-Poly1305<sup class="footnote-reference" id="fr-POLY1305-1"><a href="#footnote-POLY1305">17</a></sup>.</p>
 <p>🧪 <strong>Code Example: ChaCha20 Encryption &amp; Decryption</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
-<p>We’ll generate a ChaCha20 keystream and XOR it with a plaintext message.<br>The API is extremely simple — you create a cipher and stream through it.</p>
+<p>We’ll generate a ChaCha20 keystream and XOR it with a plaintext message.
+The API is extremely simple — you create a cipher and stream through it.</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn run_chacha20_example() {
@@ -569,11 +577,14 @@ Decrypted text: Secret meeting at midnight
 <p>ChaCha20 combines security, clarity, and performance — a perfect fit for modern Rust systems, network protocols, and embedded environments.</p>
 </blockquote>
 <h3 id="modes-of-operation"><a class="header" href="#modes-of-operation">Modes of Operation</a></h3>
-<p>Modern cryptography doesn’t encrypt “messages.” It encrypts <em>blocks</em>.<br>AES, for example, works on 128-bit chunks and nothing else.<br>So to handle real-world data—files, network packets, logs, telemetry—we need a strategy to link those fixed-size blocks together safely.</p>
+<p>Modern cryptography doesn’t encrypt “messages.” It encrypts <em>blocks</em>.
+AES, for example, works on 128-bit chunks and nothing else.
+So to handle real-world data—files, network packets, logs, telemetry—we need a strategy to link those fixed-size blocks together safely.</p>
 <p>That strategy is a mode of operation.</p>
 <p>Modes are not decorative. They don’t sit on top of AES; they <em>define</em> its security. Pick the wrong one and your encryption leaks patterns. Pick the right one and you get confidentiality at scale.</p>
 <p><strong>Why Modes Exist</strong></p>
-<p>A block cipher is deterministic: same key + same block = same output.<br>That predictability is deadly when encrypting long messages.</p>
+<p>A block cipher is deterministic: same key + same block = same output.
+That predictability is deadly when encrypting long messages.</p>
 <p>Modes solve four problems:</p>
 <ol>
 <li>Randomness — injecting unpredictability so repeated blocks don’t look the same.</li>
@@ -596,13 +607,19 @@ Decrypted text: Secret meeting at midnight
 </table>
 </div>
 <p><strong>ECB (Electronic Codebook) — The Anti-Example</strong></p>
-<p>ECB encrypts each block independently.<br>Patterns in the plaintext appear in the ciphertext.<br>Famous example: encrypting the Tux penguin still looks like a penguin.</p>
+<p>ECB encrypts each block independently.
+Patterns in the plaintext appear in the ciphertext.
+Famous example: encrypting the Tux penguin still looks like a penguin.</p>
 <p>If you see ECB in a system, assume the designer didn’t understand cryptography.</p>
 <p><strong>CBC (Cipher Bloc Chaining) — The Old Workhorse</strong></p>
-<p>CBC chains each block with the previous one using XOR.<br>If the IV is truly random and padding is handled correctly, it’s fine.<br>But historically, padding-oracle attacks destroyed its safety in many protocols.</p>
-<p>Today, CBC mostly survives in legacy stacks and old file formats.<br>New designs avoid it.</p>
+<p>CBC chains each block with the previous one using XOR.
+If the IV is truly random and padding is handled correctly, it’s fine.
+But historically, padding-oracle attacks destroyed its safety in many protocols.</p>
+<p>Today, CBC mostly survives in legacy stacks and old file formats.
+New designs avoid it.</p>
 <p><strong>CTR (Counter Mode) — The Modern Default</strong></p>
-<p>CTR mode transforms AES into a stream cipher.<br>Instead of encrypting the plaintext blocks directly, it encrypts a counter and XORs the result with the message.</p>
+<p>CTR mode transforms AES into a stream cipher.
+Instead of encrypting the plaintext blocks directly, it encrypts a counter and XORs the result with the message.</p>
 <p>This gives:</p>
 <ul>
 <li>high performance</li>
@@ -612,7 +629,8 @@ Decrypted text: Secret meeting at midnight
 </ul>
 <blockquote>
 <p>🚨
-The only hard rule: never reuse the same (key, nonce) pair.<br>Break that rule and attackers recover the XOR of two plaintexts.</p>
+The only hard rule: never reuse the same (key, nonce) pair.
+Break that rule and attackers recover the XOR of two plaintexts.</p>
 </blockquote>
 <p><strong>CTR Example</strong></p>
 <pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
@@ -694,8 +712,78 @@ They decide whether your encryption is safe or broken.</p>
 <p><strong>🟢 Conclusion</strong></p>
 <p>Use AES-GCM when you have hardware acceleration or when you need standardized enterprise compatibility</p>
 <p>Use ChaCha20-Poly1305 when you target mobile, embedded, or low-power devices or you want maximum implementation safety or you care about side-channel resistance</p>
-<p><strong>Important truth:</strong><br>Both are safe when used correctly.
+<p><strong>Important truth:</strong>
+Both are safe when used correctly.
 ChaCha20 is often preferred today when simplicity and portability matter more than raw throughput.</p>
+</blockquote>
+<h3 id="a-glimpse-at-key-derivation"><a class="header" href="#a-glimpse-at-key-derivation">A Glimpse at Key Derivation</a></h3>
+<p><strong>What Goes Wrong Without a KDF (Real Consequence)</strong></p>
+<p>Let’s say a beginner does this:</p>
+<ul>
+<li>Password = “mysecret123”</li>
+<li>Key for AES = “mysecret123”</li>
+</ul>
+<p>This is cryptographically broken, even if AES itself is mathematically perfect.</p>
+<p>Because:</p>
+<ul>
+<li>The password has low entropy</li>
+<li>It exists in wordlists</li>
+<li>It can be tested at billions of attempts per second</li>
+<li>The attacker does not break AES — they simply break the password</li>
+</ul>
+<p>This is the single biggest real-world cryptographic failure.</p>
+<p>✅ <strong>A Key Derivation Function (KDF) converts a weak human secret into a strong cryptographic key suitable for AES or ChaCha20.</strong>
+<strong>It is a conversion machine between two worlds</strong>:</p>
+<p>Human Password → KDF → Cryptographic Key → AES / ChaCha20</p>
+<p>A KDF protects symmetric encryption by:</p>
+<ul>
+<li>Adding randomness (salt<sup class="footnote-reference" id="fr-SALT-1"><a href="#footnote-SALT">18</a></sup>)</li>
+<li>Applying slow, repeated cryptographic operations</li>
+<li>Making brute-force attacks economically unviable</li>
+</ul>
+<p><strong>Common KDF Families</strong></p>
+<ul>
+<li><strong>PBKDF2<sup class="footnote-reference" id="fr-PBKDF2-1"><a href="#footnote-PBKDF2">19</a></sup></strong> → Legacy compatibility</li>
+<li><strong>Argon2<sup class="footnote-reference" id="fr-ARGON2-1"><a href="#footnote-ARGON2">20</a></sup></strong> → Modern password-based security standard</li>
+<li><strong>scrypt<sup class="footnote-reference" id="fr-SCRYPT-1"><a href="#footnote-SCRYPT">21</a></sup></strong> → Memory-hard defense against hardware attacks</li>
+<li><strong>HKDF<sup class="footnote-reference" id="fr-HKDF-1"><a href="#footnote-HKDF">22</a></sup></strong> → Safe key expansion from an already strong secret</li>
+</ul>
+<p><strong>Important Distinction</strong></p>
+<ul>
+<li>Human password → Argon2 / scrypt</li>
+<li>Existing cryptographic secret → HKDF</li>
+</ul>
+<blockquote>
+<p>🚨
+<strong>They solve different security problems and must never be confused.</strong></p>
+</blockquote>
+<p>🧪 <strong>Code Example: HKDF</strong></p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use hkdf::Hkdf;
+use sha2::Sha256;
+
+let hk = Hkdf::&lt;Sha256&gt;::new(Some(salt), ikm);
+let mut okm = [0u8; 32];
+hk.expand(b"encryption key", &amp;mut okm).unwrap();
+<span class="boring">}</span></code></pre>
+<p>HKDF is used to derive multiple secure keys from a single master secret.</p>
+<p>This allows you to:</p>
+<ul>
+<li>Derive separate keys for encryption, authentication, and signatures</li>
+<li>Avoid key reuse</li>
+<li>Maintain cryptographic isolation</li>
+</ul>
+<blockquote>
+<p>🚨 <strong>Critical Security Rule</strong></p>
+<p><strong>Never use user passwords directly as encryption keys. Ever.</strong></p>
+<p><strong>Always apply:</strong></p>
+<ul>
+<li><strong>a salt</strong></li>
+<li><strong>a slow KDF</strong></li>
+<li><strong>a modern hash function</strong></li>
+</ul>
+<p><strong>Without this step, your entire encryption system is compromised before it even begins.</strong></p>
 </blockquote>
 <hr>
 <ol class="footnote-definition">
@@ -750,6 +838,23 @@ ChaCha20 is often preferred today when simplicity and portability matter more th
 <li id="footnote-POLY1305">
 <p>ChaCha20-Poly1305 -
 AEAD scheme that combines the ChaCha20 stream cipher with the Poly1305 MAC to provide authenticated encryption (confidentiality + integrity). <a href="../99-appendices/99-01-glossary.html#chacha20-poly1305">More</a> <a href="#fr-POLY1305-1">↩</a></p>
+</li>
+<li id="footnote-SALT">
+<p>Salt - A random value added to a password before key derivation to prevent identical passwords from producing identical keys and to defeat precomputed attacks such as rainbow tables.. <a href="../99-appendices/99-01-glossary.html#salt">More</a> <a href="#fr-SALT-1">↩</a></p>
+</li>
+<li id="footnote-PBKDF2">
+<p>PBKDF2 (Password-Based Key Derivation Function) - The standardized successor to PBKDF1 for deriving cryptographic keys from passwords.. <a href="../99-appendices/99-01-glossary.html#pbkdf2">More</a> <a href="#fr-PBKDF2-1">↩</a></p>
+</li>
+<li id="footnote-ARGON2">
+<p>Argon2 (named after the mythological ship Argo and its crew, the Argonauts) - The modern standard for password hashing and key derivation, designed to resist GPU and ASIC attacks using memory-hard computation. <a href="../99-appendices/99-01-glossary.html#argon2">More</a> <a href="#fr-ARGON2-1">↩</a></p>
+</li>
+<li id="footnote-SCRYPT">
+<p>Scrypt -
+A memory-hard password-based key derivation function built to make large-scale hardware brute-force attacks expensive and inefficient. Older than Argon2 but still widely used. <a href="../99-appendices/99-01-glossary.html#scrypt">More</a> <a href="#fr-SCRYPT-1">↩</a></p>
+</li>
+<li id="footnote-HKDF">
+<p>HKDF (HMAC-based Key Derivation Function) -
+A key derivation function for expanding an already strong secret into multiple independent cryptographic keys using hash functions. Used for key separation and key hygiene, not for protecting weak passwords. <a href="../99-appendices/99-01-glossary.html#hkdf">More</a> <a href="#fr-HKDF-1">↩</a></p>
 </li>
 </ol>
 
