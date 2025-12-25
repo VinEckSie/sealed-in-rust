@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-c697e5b5.js";
+            window.path_to_searchindex_js = "searchindex-ef6239ed.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-f418e634.js"></script>
@@ -1282,12 +1282,12 @@ If you don’t know which hash to use, SHA-256 will almost never be the wrong an
 </blockquote>
 <h3 id="why-hashes-are-not-password-protection"><a class="header" href="#why-hashes-are-not-password-protection">Why Hashes Are Not Password Protection</a></h3>
 <p>If you do this, you are already vulnerable.</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>hash(password)
 <span class="boring">}</span></code></pre>
 <p>because Hashes are fast, attackers can try billions per second, rainbow tables exist.</p>
-<p>This is why hash ≠ password security. We fix this with KDFs<sup class="footnote-reference" id="fr-KDF-1"><a href="#footnote-KDF">7</a></sup> (Argon2<sup class="footnote-reference" id="fr-ARGON2-1-1"><a href="#footnote-ARGON2-1">8</a></sup>, scrypt<sup class="footnote-reference" id="fr-SCRYPT-1-1"><a href="#footnote-SCRYPT-1">9</a></sup>). See <a href="#a-glimpse-at-key-derivation">Key Derivation section</a></p>
+<p>We fix this with KDFs<sup class="footnote-reference" id="fr-KDF-1"><a href="#footnote-KDF">7</a></sup> (Argon2<sup class="footnote-reference" id="fr-ARGON2-1-1"><a href="#footnote-ARGON2-1">8</a></sup>, scrypt<sup class="footnote-reference" id="fr-SCRYPT-1-1"><a href="#footnote-SCRYPT-1">9</a></sup>). See <a href="#a-glimpse-at-key-derivation">Key Derivation section</a></p>
 <blockquote>
 <p><strong>🚨 Fast hashes are dangerous for passwords.</strong></p>
 </blockquote>
