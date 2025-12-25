@@ -1,14 +1,13 @@
 ## Symmetric Ciphers: XOR, AES, ChaCha20 & Beyond
 
 > 🔐 **Used in:** VPNs, TLS (post-handshake), disk encryption, messaging apps
+>
 > ✅ Still foundational in modern cryptography.
-
-
 
 
 ### What Are Symmetric Ciphers?
 
-Symmetric ciphers use the **same key** for both encryption and decryption. Unlike public-key cryptography, they don’t offer key exchange—but they are **much faster**, making them ideal for bulk data encryption.
+Symmetric ciphers use the same key for both encryption and decryption. Unlike public-key cryptography, they don’t offer key exchange—but they are much faster, making them ideal for bulk data encryption.
 
 They are used everywhere: encrypted file systems, secure communications, and even inside protocols like TLS (after the handshake).
 

@@ -154,3 +154,103 @@ It remains cryptographically strong and widely used, especially in cryptocurrenc
 ## HKDF
 HKDF is a key derivation function used for expanding a strong secret into multiple independent cryptographic keys using HMAC. It is designed for key separation and protocol key management, not for passwords.
 It is heavily used in TLS, secure messaging, and operating systems. HKDF provides no brute-force protection and must never be used directly with human passwords.
+
+## SHA-2 (Secure Hash Algorithm 2)
+SHA-2 is a family of cryptographic hash functions standardized by NIST as successors to SHA-1.
+It includes SHA-224, SHA-256, SHA-384, and SHA-512, which differ mainly in output size and internal parameters.
+SHA-2 is designed to provide strong collision resistance, preimage resistance, and avalanche behavior.
+It is widely used in TLS, digital signatures, certificate authorities, blockchains, and secure software distribution.
+Despite its age, SHA-2 remains secure and is considered a conservative, well-understood choice.
+
+## BLAKE3
+BLAKE3 is a modern cryptographic hash function derived from the BLAKE hash family, designed for high performance, parallelism, and simplicity.
+It builds on the cryptographic foundations of BLAKE2 while introducing a tree-based structure that enables efficient multicore and SIMD execution.
+BLAKE3 supports incremental hashing, keyed hashing, and extendable output (XOF) within a single unified API.
+It is well suited for content hashing, integrity verification, and high-throughput systems, though it is not standardized by NIST.
+BLAKE3 is considered secure and is increasingly adopted in modern software systems.
+
+## NIST
+NIST is a U.S. federal agency responsible for developing and publishing technical standards, including cryptographic algorithms.
+It standardizes widely used primitives such as AES, SHA-2, RSA padding schemes, and digital signature algorithms.
+NIST standards are often required for government, defense, financial, and regulated industries.
+While NIST does not “invent” most algorithms, its approval process heavily influences global cryptographic adoption.
+Compliance with NIST standards is often referred to as “FIPS compliance.”
+
+## SHA-224
+SHA-224 is a cryptographic hash function belonging to the SHA-2 family.
+It produces a 224-bit digest and is derived from the same internal structure as SHA-256, with different initialization constants and truncation.
+SHA-224 offers slightly reduced output size and security margin compared to SHA-256.
+It is used in constrained environments where smaller hash outputs are desirable, though SHA-256 is far more common.
+
+## SHA-256
+SHA-256 is the most widely deployed member of the SHA-2 hash family.
+It produces a 256-bit digest and provides strong collision and preimage resistance.
+SHA-256 is used extensively in TLS, digital signatures, blockchains (including Bitcoin), and secure software verification.
+Its balance of security, performance, and broad support makes it the default hash function in many systems.
+
+## SHA-384
+SHA-384 is a SHA-2 variant optimized for 64-bit architectures.
+It produces a 384-bit output and uses different internal parameters than SHA-256, providing a higher security margin.
+SHA-384 is often used in high-security or long-term systems where additional safety margin is desired.
+It is commonly paired with 64-bit platforms and high-assurance protocols.
+
+## SHA-512
+SHA-512 is the largest-output member of the SHA-2 family, producing a 512-bit hash.
+It is optimized for 64-bit processors and often performs better than SHA-256 on such systems.
+SHA-512 provides an extremely large security margin against collision and preimage attacks.
+Variants such as SHA-512/256 reuse the SHA-512 core while producing shorter outputs.
+
+## KDF
+A Key Derivation Function (KDF) is a cryptographic function that derives one or more cryptographically strong keys from an initial secret.
+The input may be a human password, a shared secret, or another cryptographic key.
+KDFs enforce key separation, prevent key reuse, and ensure derived keys have the correct length and distribution.
+Some KDFs (e.g., Argon2, scrypt) are designed to resist brute-force attacks, while others (e.g., HKDF) are used for safe key expansion.
+Choosing the correct KDF depends on whether the input secret is weak or already strong.
+
+## SIMD
+SIMD is a CPU execution model where a single instruction operates simultaneously on multiple data elements.
+It enables data-parallel computation using vector registers, significantly improving performance for cryptographic and numeric workloads.
+Modern CPUs use SIMD extensively for hashing, encryption, and multimedia processing.
+Algorithms designed with SIMD in mind (such as BLAKE3) can achieve very high throughput on modern hardware.
+
+## Incremental Hashing
+Incremental hashing is the ability to compute a hash progressively by processing input data in chunks.
+This allows hashing of large or streaming data without loading it entirely into memory.
+Incremental hashing is essential for file hashing, network protocols, and real-time data processing.
+Most modern cryptographic hash functions support incremental hashing by design.
+
+## Keyed Hashing
+Keyed hashing is a hashing mode that incorporates a secret key into the hash computation.
+It is used to provide message authentication and integrity, ensuring that only parties with the key can generate or verify the hash.
+Keyed hashing prevents attackers from forging valid hashes for modified messages.
+HMAC is the most widely used standardized construction for keyed hashing.
+
+## Extendable Output Function
+An Extendable Output Function (XOF) is a hash construction that can generate an arbitrary-length output from a single input.
+Instead of producing a fixed-size digest, an XOF acts like a pseudorandom stream derived from the input.
+XOFs are useful for key derivation, randomness expansion, and domain separation.
+Examples include SHAKE and the XOF mode of BLAKE3.
+
+## Collision
+A collision occurs when two distinct inputs produce the same hash output.
+Collision resistance means it is computationally infeasible to find such pairs intentionally.
+While collisions must exist mathematically, a secure hash makes finding them impractical.
+Collision resistance is critical for digital signatures, certificates, and integrity systems.
+
+## Brute Force
+A brute-force attack is an exhaustive search that tries all possible inputs or keys until the correct one is found.
+Its effectiveness depends entirely on the size of the search space and the speed of computation.
+Modern cryptography relies on making brute-force attacks computationally infeasible.
+KDFs and memory-hard functions are designed specifically to slow down brute-force attacks.
+
+## Preimage
+A preimage is an input that produces a specific hash output.
+Preimage resistance means it is computationally infeasible to recover the original input from its hash.
+This property ensures that hashes cannot be reversed to reveal sensitive data.
+Preimage resistance is fundamental for password hashing and data integrity.
+
+## Merkle Tree
+A Merkle tree is a hash-based tree data structure where each internal node is the hash of its child nodes.
+It allows efficient verification of large data sets by validating only a small subset of hashes.
+Merkle trees are used in blockchains, distributed systems, file systems, and secure databases.
+They provide tamper detection and integrity guarantees with logarithmic verification cost.

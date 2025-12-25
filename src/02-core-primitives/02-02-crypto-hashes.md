@@ -1,0 +1,202 @@
+## Cryptographic Hashes — SHA-2, BLAKE3 & Beyond
+
+> 🔐 **Used in:** password storage, digital signatures, blockchains, TLS, integrity checks
+>
+> ✅ One-way, deterministic, and foundational to *all* modern cryptography
+
+
+### What Is a Cryptographic Hash?
+A cryptographic hash function takes arbitrary input data and produces a fixed-size output, called a *digest*.
+
+Key properties:
+
+- Deterministic:  same input → same output
+- One-way:  infeasible to recover the input
+- Collision-resistant:  infeasible to find two inputs with the same hash
+- Avalanche effect:  tiny input change → completely different output
+
+**Hash functions are not encryption.There is no key. There is no decryption.**
+
+They exist to answer one question: *“Has this data changed — and can I trust it?”*
+
+### What Hashes Are Used For (Real Systems)
+- Password storage (never store plaintext passwords)
+- Digital signatures (hash → sign)
+- TLS certificates (hashing messages before authentication)
+- Package managers (verify downloads)
+- Git (content-addressed storage)
+- Blockchains (immutability and chaining)
+
+**If symmetric ciphers protect confidentiality, hashes protect integrity and identity.**
+
+
+### One-Way by Design
+
+Consider this:
+
+```text
+"hello"  →  2cf24dba5fb0a30e26e83b2ac5b9e29e...
+"hellO"  →  0d4a1185eecb25c46b7a5d3bca4f4f8b...
+
+One flipped bit >> Completely different output
+```
+
+This is not accidental — it’s the core security property.
+
+### SHA-2 — The Conservative Standard
+> 💡 Used in TLS, certificates, package signing, blockchains. Stable, conservative, and widely trusted
+
+> <img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: [sha2](https://crates.io/crates/sha2)
+
+SHA-2[^SHA2] is a family of hash functions standardized by NIST[^NIST]:
+- SHA-224[^SHA224]
+- SHA-256[^SHA256]
+- SHA-384[^SHA384]
+- SHA-512[^SHA512]
+
+SHA-256 is the most common.
+It is slow enough to be secure, fast enough for general use and extremely well analyzed.
+SHA-2 is boring and that’s a compliment.
+
+### 🧪 Code Example: SHA-256 Hashing in Rust
+```rust,no_run
+use sha2::{Digest, Sha256};
+
+fn main() {
+    let mut hasher = Sha256::new();
+    hasher.update(b"hello world");
+
+    let result = hasher.finalize();
+    println!("SHA-256: {:x}", result);
+}
+````
+
+Output:
+```text
+SHA-256: b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+
+Same input. Same output. Always.
+```
+
+> **🟢 Conclusion**
+> SHA-2 is the safe default.
+> If you don’t know which hash to use, SHA-256 will almost never be the wrong answer.
+
+### Why Hashes Are Not Password Protection
+If you do this, you are already vulnerable.
+```rust
+hash(password)
+```
+because Hashes are fast, attackers can try billions per second, rainbow tables exist.
+
+This is why hash ≠ password security. We fix this with KDFs[^KDF] (Argon2[^ARGON2], scrypt[^SCRYPT]). See [Key Derivation section](../02-core-primitives/02-01-symmetric-ciphers.md#a-glimpse-at-key-derivation)
+
+> **🚨 Fast hashes are dangerous for passwords.**
+
+### BLAKE3 — Modern, Fast, and Parallel
+>💡 Used in modern systems, content addressing, integrity pipelines. Extremely fast, secure, and designed for today’s hardware
+
+> <img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: [blake3](https://crates.io/crates/blake3)
+
+
+BLAKE3[^BLAKE3] is the modern evolution of BLAKE2:
+- Cryptographically secure
+- Massively parallel
+- Faster than SHA-2
+- Designed for multicore CPUs and SIMD[^SIMD]
+- Unlike SHA-2, BLAKE3 was designed after modern hardware existed.
+
+It also supports:
+- Streaming
+- Incremental hashing[^INC]
+- Keyed hashing[^KEY]
+- Extendable output (XOF)[^EXT]
+
+### 🧪 Code Example: BLAKE3 Hashing
+```rust,no_run
+use blake3;
+
+fn main() {
+    let hash = blake3::hash(b"hello world");
+    println!("BLAKE3: {}", hash);
+}
+````
+
+Output:
+```text
+BLAKE3: d74981efa70a0c880b8d8c1985d075db...
+````
+
+
+### SHA-2 vs. BLAKE3 — Which Should You Use?
+
+| Property       | SHA-256              | BLAKE3             |
+|----------------|----------------------|--------------------|
+| Standardized   | ✅ Yes               | ❌ Not NIST         |
+| Speed          | ⚠️ Moderate          | 🚀 Extremely fast   |
+| Parallelism    | ❌ Limited           | ✅ Built-in         |
+| Maturity       | 🧱 Very conservative | 🧠 Modern design    |
+| Simplicity     | ✅ Simple            | ✅ Simple           |
+| Use cases      | ✅ Compliance        | ✅ Performance      |
+|                | ✅ Interoperability  | ✅ Content hashing  |
+|                |                      | ✅ Modern systems   |
+
+
+### Collision Resistance — What “Breaking a Hash” Really Means
+Breaking a hash means one of two things:
+- Finding a collision[^COLLISION] faster than brute force[^BRUTEFORCE]
+- Finding a preimage[^PREIMAGE] faster than brute force
+
+For SHA-256:
+- No practical attacks exist
+- Collision cost ≈ 2¹²⁸
+- Preimage cost ≈ 2²⁵⁶
+
+That is astronomically infeasible.
+
+> 💡 Most real-world failures come from misuse, not broken math.
+
+### Hashes in Real Protocols
+Hashes are rarely used alone.
+
+They appear inside:
+- HMAC — keyed hashing for authentication
+- HKDF — key derivation
+- Digital signatures — sign(hash(message))
+- Merkle trees[^MERKLE] — integrity structures
+- Password KDFs — slow hashing
+
+> **🟢 Conclusion**
+>
+>Hash functions provide integrity, not secrecy.
+>
+>They are one-way by design:
+>- SHA-2 is conservative and universal
+>- BLAKE3 is modern, fast, and scalable
+>Hashes alone are not password protection
+>
+> Cryptographic hashes are the glue of modern security.
+>
+> They verify data, anchor trust, protect identities, and power nearly every cryptographic construction you’ll encounter.
+> If encryption hides secrets, hashes define truth.
+
+
+[^SHA2]: SHA-2 (Secure Hash Algorithm 2) — NIST-standardized family of cryptographic hash functions including SHA-224, SHA-256, SHA-384, and SHA-512. [More](../99-appendices/99-01-glossary.md#sha-2-secure-hash-algorithm-2)
+[^BLAKE3]: BLAKE3 (named after the BLAKE hash family) — Modern cryptographic hash optimized for speed, parallelism, and simplicity on modern hardware. [More](../99-appendices/99-01-glossary.md#blake3)
+[^NIST]: NIST (National Institute of Standards and Technology) — U.S. authority responsible for standardizing widely used cryptographic algorithms. [More](../99-appendices/99-01-glossary.md#nist)
+[^SHA224]: SHA-224 - SHA-2 variant producing a 224-bit digest, derived from SHA-256. [More](../99-appendices/99-01-glossary.md#sha-224)
+[^SHA256]: SHA-256 — Most widely deployed SHA-2 hash function, offering strong collision and preimage resistance. [More](../99-appendices/99-01-glossary.md#sha-256)
+[^SHA384]: SHA-384 — SHA-2 variant optimized for 64-bit systems with higher security margin. [More](../99-appendices/99-01-glossary.md#sha-384)
+[^SHA512]: SHA-512 — SHA-2 variant with the largest output size and best performance on 64-bit architectures. [More](../99-appendices/99-01-glossary.md#sha-512)
+[^KDF]: KDF (Key Derivation Function) — Function that transforms a weak or strong secret into cryptographically secure keys for use with symmetric encryption. [More](../99-appendices/99-01-glossary.md#kdf)
+[^ARGON2]: Argon2 (named after the mythological ship Argo and its crew, the Argonauts) - The modern standard for password hashing and key derivation, designed to resist GPU and ASIC attacks using memory-hard computation. [More](../99-appendices/99-01-glossary.md#argon2)
+[^SCRYPT]: Scrypt -
+A memory-hard password-based key derivation function built to make large-scale hardware brute-force attacks expensive and inefficient. Older than Argon2 but still widely used. [More](../99-appendices/99-01-glossary.md#scrypt)
+[^SIMD]: SIMD (Single Instruction, Multiple Data) — CPU execution model that applies the same operation to multiple data elements in parallel for high performance. [More](../99-appendices/99-01-glossary.md#simd)
+[^INC]: Incremental hashing — Hashing method that processes input in chunks, allowing streaming and large data hashing without loading everything into memory. [More](../99-appendices/99-01-glossary.md#incremental-hashing)
+[^KEY]: Keyed hashing — Hash function variant that incorporates a secret key to provide message authentication and integrity guarantees. [More](../99-appendices/99-01-glossary.md#keyed-hashing)
+[^EXT]: Extendable output (XOF) — Hash construction that can generate an arbitrary-length output stream from a single input and key. [More](../99-appendices/99-01-glossary.md#extendable-output-function)
+[^COLLISION]: Collision — Existence of two distinct inputs that produce the same hash output, undermining a hash function’s uniqueness guarantee. [More](../99-appendices/99-01-glossary.md#collision)
+[^BRUTEFORCE]: Brute force — Exhaustive attack that tries all possible inputs or keys until the correct one is found. [More](../99-appendices/99-01-glossary.md#brute-force)
+[^PREIMAGE]: Preimage — Original input corresponding to a given hash output; preimage resistance means it is infeasible to recover this input. [More](../99-appendices/99-01-glossary.md#preimage)
+[^MERKLE]: Merkle tree — Tree data structure where each node is a hash of its children, enabling efficient and secure data integrity verification. [More](../99-appendices/99-01-glossary.md#merkle-tree)
