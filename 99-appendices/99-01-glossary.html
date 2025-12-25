@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-66040b22.js";
+            window.path_to_searchindex_js = "../searchindex-c697e5b5.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-3f84beb2.js"></script>
+        <script src="../toc-f418e634.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -291,12 +291,96 @@ It remains cryptographically strong and widely used, especially in cryptocurrenc
 <h2 id="hkdf"><a class="header" href="#hkdf">HKDF</a></h2>
 <p>HKDF is a key derivation function used for expanding a strong secret into multiple independent cryptographic keys using HMAC. It is designed for key separation and protocol key management, not for passwords.
 It is heavily used in TLS, secure messaging, and operating systems. HKDF provides no brute-force protection and must never be used directly with human passwords.</p>
+<h2 id="sha-2-secure-hash-algorithm-2"><a class="header" href="#sha-2-secure-hash-algorithm-2">SHA-2 (Secure Hash Algorithm 2)</a></h2>
+<p>SHA-2 is a family of cryptographic hash functions standardized by NIST as successors to SHA-1.
+It includes SHA-224, SHA-256, SHA-384, and SHA-512, which differ mainly in output size and internal parameters.
+SHA-2 is designed to provide strong collision resistance, preimage resistance, and avalanche behavior.
+It is widely used in TLS, digital signatures, certificate authorities, blockchains, and secure software distribution.
+Despite its age, SHA-2 remains secure and is considered a conservative, well-understood choice.</p>
+<h2 id="blake3"><a class="header" href="#blake3">BLAKE3</a></h2>
+<p>BLAKE3 is a modern cryptographic hash function derived from the BLAKE hash family, designed for high performance, parallelism, and simplicity.
+It builds on the cryptographic foundations of BLAKE2 while introducing a tree-based structure that enables efficient multicore and SIMD execution.
+BLAKE3 supports incremental hashing, keyed hashing, and extendable output (XOF) within a single unified API.
+It is well suited for content hashing, integrity verification, and high-throughput systems, though it is not standardized by NIST.
+BLAKE3 is considered secure and is increasingly adopted in modern software systems.</p>
+<h2 id="nist"><a class="header" href="#nist">NIST</a></h2>
+<p>NIST is a U.S. federal agency responsible for developing and publishing technical standards, including cryptographic algorithms.
+It standardizes widely used primitives such as AES, SHA-2, RSA padding schemes, and digital signature algorithms.
+NIST standards are often required for government, defense, financial, and regulated industries.
+While NIST does not “invent” most algorithms, its approval process heavily influences global cryptographic adoption.
+Compliance with NIST standards is often referred to as “FIPS compliance.”</p>
+<h2 id="sha-224"><a class="header" href="#sha-224">SHA-224</a></h2>
+<p>SHA-224 is a cryptographic hash function belonging to the SHA-2 family.
+It produces a 224-bit digest and is derived from the same internal structure as SHA-256, with different initialization constants and truncation.
+SHA-224 offers slightly reduced output size and security margin compared to SHA-256.
+It is used in constrained environments where smaller hash outputs are desirable, though SHA-256 is far more common.</p>
+<h2 id="sha-256"><a class="header" href="#sha-256">SHA-256</a></h2>
+<p>SHA-256 is the most widely deployed member of the SHA-2 hash family.
+It produces a 256-bit digest and provides strong collision and preimage resistance.
+SHA-256 is used extensively in TLS, digital signatures, blockchains (including Bitcoin), and secure software verification.
+Its balance of security, performance, and broad support makes it the default hash function in many systems.</p>
+<h2 id="sha-384"><a class="header" href="#sha-384">SHA-384</a></h2>
+<p>SHA-384 is a SHA-2 variant optimized for 64-bit architectures.
+It produces a 384-bit output and uses different internal parameters than SHA-256, providing a higher security margin.
+SHA-384 is often used in high-security or long-term systems where additional safety margin is desired.
+It is commonly paired with 64-bit platforms and high-assurance protocols.</p>
+<h2 id="sha-512"><a class="header" href="#sha-512">SHA-512</a></h2>
+<p>SHA-512 is the largest-output member of the SHA-2 family, producing a 512-bit hash.
+It is optimized for 64-bit processors and often performs better than SHA-256 on such systems.
+SHA-512 provides an extremely large security margin against collision and preimage attacks.
+Variants such as SHA-512/256 reuse the SHA-512 core while producing shorter outputs.</p>
+<h2 id="kdf"><a class="header" href="#kdf">KDF</a></h2>
+<p>A Key Derivation Function (KDF) is a cryptographic function that derives one or more cryptographically strong keys from an initial secret.
+The input may be a human password, a shared secret, or another cryptographic key.
+KDFs enforce key separation, prevent key reuse, and ensure derived keys have the correct length and distribution.
+Some KDFs (e.g., Argon2, scrypt) are designed to resist brute-force attacks, while others (e.g., HKDF) are used for safe key expansion.
+Choosing the correct KDF depends on whether the input secret is weak or already strong.</p>
+<h2 id="simd"><a class="header" href="#simd">SIMD</a></h2>
+<p>SIMD is a CPU execution model where a single instruction operates simultaneously on multiple data elements.
+It enables data-parallel computation using vector registers, significantly improving performance for cryptographic and numeric workloads.
+Modern CPUs use SIMD extensively for hashing, encryption, and multimedia processing.
+Algorithms designed with SIMD in mind (such as BLAKE3) can achieve very high throughput on modern hardware.</p>
+<h2 id="incremental-hashing"><a class="header" href="#incremental-hashing">Incremental Hashing</a></h2>
+<p>Incremental hashing is the ability to compute a hash progressively by processing input data in chunks.
+This allows hashing of large or streaming data without loading it entirely into memory.
+Incremental hashing is essential for file hashing, network protocols, and real-time data processing.
+Most modern cryptographic hash functions support incremental hashing by design.</p>
+<h2 id="keyed-hashing"><a class="header" href="#keyed-hashing">Keyed Hashing</a></h2>
+<p>Keyed hashing is a hashing mode that incorporates a secret key into the hash computation.
+It is used to provide message authentication and integrity, ensuring that only parties with the key can generate or verify the hash.
+Keyed hashing prevents attackers from forging valid hashes for modified messages.
+HMAC is the most widely used standardized construction for keyed hashing.</p>
+<h2 id="extendable-output-function"><a class="header" href="#extendable-output-function">Extendable Output Function</a></h2>
+<p>An Extendable Output Function (XOF) is a hash construction that can generate an arbitrary-length output from a single input.
+Instead of producing a fixed-size digest, an XOF acts like a pseudorandom stream derived from the input.
+XOFs are useful for key derivation, randomness expansion, and domain separation.
+Examples include SHAKE and the XOF mode of BLAKE3.</p>
+<h2 id="collision"><a class="header" href="#collision">Collision</a></h2>
+<p>A collision occurs when two distinct inputs produce the same hash output.
+Collision resistance means it is computationally infeasible to find such pairs intentionally.
+While collisions must exist mathematically, a secure hash makes finding them impractical.
+Collision resistance is critical for digital signatures, certificates, and integrity systems.</p>
+<h2 id="brute-force"><a class="header" href="#brute-force">Brute Force</a></h2>
+<p>A brute-force attack is an exhaustive search that tries all possible inputs or keys until the correct one is found.
+Its effectiveness depends entirely on the size of the search space and the speed of computation.
+Modern cryptography relies on making brute-force attacks computationally infeasible.
+KDFs and memory-hard functions are designed specifically to slow down brute-force attacks.</p>
+<h2 id="preimage"><a class="header" href="#preimage">Preimage</a></h2>
+<p>A preimage is an input that produces a specific hash output.
+Preimage resistance means it is computationally infeasible to recover the original input from its hash.
+This property ensures that hashes cannot be reversed to reveal sensitive data.
+Preimage resistance is fundamental for password hashing and data integrity.</p>
+<h2 id="merkle-tree"><a class="header" href="#merkle-tree">Merkle Tree</a></h2>
+<p>A Merkle tree is a hash-based tree data structure where each internal node is the hash of its child nodes.
+It allows efficient verification of large data sets by validating only a small subset of hashes.
+Merkle trees are used in blockchains, distributed systems, file systems, and secure databases.
+They provide tamper detection and integrity guarantees with logarithmic verification cost.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../02-core-primitives/02-01-symmetric-ciphers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../02-core-primitives/02-02-crypto-hashes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
@@ -310,7 +394,7 @@ It is heavily used in TLS, secure messaging, and operating systems. HKDF provide
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../02-core-primitives/02-01-symmetric-ciphers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../02-core-primitives/02-02-crypto-hashes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 

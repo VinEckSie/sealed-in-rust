@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - Sealed in Rust — Domain-Driven Edition</title>
+        <title>Cryptographic Hashes — SHA-2, BLAKE3 - Sealed in Rust — Domain-Driven Edition</title>
 
 
         <!-- Custom HTML head -->
@@ -174,66 +174,245 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p><strong>Cryptography is everywhere — and yet most of us treat it like magic.</strong></p>
-<p>From encrypted chats and online banking to firmware updates on satellites, the systems we rely on daily are secured (or compromised) by cryptography. And too often, it fails — not because the math was wrong, but because the implementation was.</p>
-<p><strong>This book exists to change that.</strong></p>
-<p>You’re not here to memorize equations. You’re here to understand, implement, and apply cryptographic primitives to real-world systems using a language designed to prevent mistakes before they happen: <strong>Rust</strong>.</p>
-<p>Whether you’re building infrastructure, smart contracts, embedded firmware, or secure APIs, this book gives you the tools to use cryptography safely, idiomatically, and fearlessly — one primitive, one project, one domain at a time.</p>
-<h2 id="-important-note-on-scope"><a class="header" href="#-important-note-on-scope">⚠️ Important Note on Scope</a></h2>
-<p>This book takes a two-layered approach:</p>
-<p><strong>Learning the Primitives</strong></p>
+                        <h2 id="cryptographic-hashes--sha-2-blake3--beyond"><a class="header" href="#cryptographic-hashes--sha-2-blake3--beyond">Cryptographic Hashes — SHA-2, BLAKE3 &amp; Beyond</a></h2>
+<blockquote>
+<p>🔐 <strong>Used in:</strong> password storage, digital signatures, blockchains, TLS, integrity checks</p>
+<p>✅ One-way, deterministic, and foundational to <em>all</em> modern cryptography</p>
+</blockquote>
+<h3 id="what-is-a-cryptographic-hash"><a class="header" href="#what-is-a-cryptographic-hash">What Is a Cryptographic Hash?</a></h3>
+<p>A cryptographic hash function takes arbitrary input data and produces a fixed-size output, called a <em>digest</em>.</p>
+<p>Key properties:</p>
 <ul>
-<li>We begin with fundamental building blocks (XOR, AES, ChaCha20, Feistel, SPN) to teach how cryptography works under the hood.</li>
-<li>These examples are simplified, sometimes insecure by design, and are provided for educational clarity.</li>
+<li>Deterministic:  same input → same output</li>
+<li>One-way:  infeasible to recover the input</li>
+<li>Collision-resistant:  infeasible to find two inputs with the same hash</li>
+<li>Avalanche effect:  tiny input change → completely different output</li>
 </ul>
-<p><strong>Applying Secure Constructions</strong></p>
+<p><strong>Hash functions are not encryption.There is no key. There is no decryption.</strong></p>
+<p>They exist to answer one question: <em>“Has this data changed — and can I trust it?”</em></p>
+<h3 id="what-hashes-are-used-for-real-systems"><a class="header" href="#what-hashes-are-used-for-real-systems">What Hashes Are Used For (Real Systems)</a></h3>
 <ul>
-<li>For every primitive introduced, we also demonstrate how it is used safely in practice — with production-ready Rust code and well-reviewed crates.</li>
-<li>In modern systems, raw primitives are never used alone. Instead, we rely on AEAD (Authenticated Encryption with Associated Data) modes such as AES-GCM or ChaCha20-Poly1305, which provide both confidentiality and integrity/authentication.</li>
-<li>Each chapter connects the primitive to its real-world domains (e.g., AES-GCM in TLS, ChaCha20-Poly1305 in VPNs and mobile messaging, AES-XTS in disk encryption).</li>
+<li>Password storage (never store plaintext passwords)</li>
+<li>Digital signatures (hash → sign)</li>
+<li>TLS certificates (hashing messages before authentication)</li>
+<li>Package managers (verify downloads)</li>
+<li>Git (content-addressed storage)</li>
+<li>Blockchains (immutability and chaining)</li>
 </ul>
-<p><strong>💡 Bottom line:</strong>
-You’ll gain an understanding of the core mechanics of symmetric ciphers, and also learn how to apply them correctly with Rust in production scenarios. By the end, you’ll not only know what’s inside the black box, but also how to choose and use the right construction for your specific domain.</p>
-<h2 id="who-this-book-is-for"><a class="header" href="#who-this-book-is-for">Who This Book Is For</a></h2>
+<p><strong>If symmetric ciphers protect confidentiality, hashes protect integrity and identity.</strong></p>
+<h3 id="one-way-by-design"><a class="header" href="#one-way-by-design">One-Way by Design</a></h3>
+<p>Consider this:</p>
+<pre><code class="language-text">"hello"  →  2cf24dba5fb0a30e26e83b2ac5b9e29e...
+"hellO"  →  0d4a1185eecb25c46b7a5d3bca4f4f8b...
+
+One flipped bit &gt;&gt; Completely different output
+</code></pre>
+<p>This is not accidental — it’s the core security property.</p>
+<h3 id="sha-2--the-conservative-standard"><a class="header" href="#sha-2--the-conservative-standard">SHA-2 — The Conservative Standard</a></h3>
+<blockquote>
+<p>💡 Used in TLS, certificates, package signing, blockchains. Stable, conservative, and widely trusted</p>
+</blockquote>
+<blockquote>
+<p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/sha2">sha2</a></p>
+</blockquote>
+<p>SHA-2<sup class="footnote-reference" id="fr-SHA2-1"><a href="#footnote-SHA2">1</a></sup> is a family of hash functions standardized by NIST<sup class="footnote-reference" id="fr-NIST-1"><a href="#footnote-NIST">2</a></sup>:</p>
 <ul>
-<li>Rust developers who want to understand and apply cryptography</li>
-<li>Security engineers transitioning to Rust</li>
-<li>Curious hackers tired of black-box crypto</li>
-<li>Systems developers who care about safety, correctness, and resilience</li>
+<li>SHA-224<sup class="footnote-reference" id="fr-SHA224-1"><a href="#footnote-SHA224">3</a></sup></li>
+<li>SHA-256<sup class="footnote-reference" id="fr-SHA256-1"><a href="#footnote-SHA256">4</a></sup></li>
+<li>SHA-384<sup class="footnote-reference" id="fr-SHA384-1"><a href="#footnote-SHA384">5</a></sup></li>
+<li>SHA-512<sup class="footnote-reference" id="fr-SHA512-1"><a href="#footnote-SHA512">6</a></sup></li>
 </ul>
-<h2 id="what-youll-learn"><a class="header" href="#what-youll-learn">What You’ll Learn</a></h2>
+<p>SHA-256 is the most common.
+It is slow enough to be secure, fast enough for general use and extremely well analyzed.
+SHA-2 is boring and that’s a compliment.</p>
+<h3 id="-code-example-sha-256-hashing-in-rust"><a class="header" href="#-code-example-sha-256-hashing-in-rust">🧪 Code Example: SHA-256 Hashing in Rust</a></h3>
+<pre class="playground"><code class="language-rust no_run">use sha2::{Digest, Sha256};
+
+fn main() {
+    let mut hasher = Sha256::new();
+    hasher.update(b"hello world");
+
+    let result = hasher.finalize();
+    println!("SHA-256: {:x}", result);
+}</code></pre>
+<p>Output:</p>
+<pre><code class="language-text">SHA-256: b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+
+Same input. Same output. Always.
+</code></pre>
+<blockquote>
+<p><strong>🟢 Conclusion</strong>
+SHA-2 is the safe default.
+If you don’t know which hash to use, SHA-256 will almost never be the wrong answer.</p>
+</blockquote>
+<h3 id="why-hashes-are-not-password-protection"><a class="header" href="#why-hashes-are-not-password-protection">Why Hashes Are Not Password Protection</a></h3>
+<p>If you do this, you are already vulnerable.</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>hash(password)
+<span class="boring">}</span></code></pre>
+<p>because Hashes are fast, attackers can try billions per second, rainbow tables exist.</p>
+<p>This is why hash ≠ password security. We fix this with KDFs<sup class="footnote-reference" id="fr-KDF-1"><a href="#footnote-KDF">7</a></sup> (Argon2<sup class="footnote-reference" id="fr-ARGON2-1"><a href="#footnote-ARGON2">8</a></sup>, scrypt<sup class="footnote-reference" id="fr-SCRYPT-1"><a href="#footnote-SCRYPT">9</a></sup>). See <a href="../02-core-primitives/02-01-symmetric-ciphers.html#a-glimpse-at-key-derivation">Key Derivation section</a></p>
+<blockquote>
+<p><strong>🚨 Fast hashes are dangerous for passwords.</strong></p>
+</blockquote>
+<h3 id="blake3--modern-fast-and-parallel"><a class="header" href="#blake3--modern-fast-and-parallel">BLAKE3 — Modern, Fast, and Parallel</a></h3>
+<blockquote>
+<p>💡 Used in modern systems, content addressing, integrity pipelines. Extremely fast, secure, and designed for today’s hardware</p>
+</blockquote>
+<blockquote>
+<p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/blake3">blake3</a></p>
+</blockquote>
+<p>BLAKE3<sup class="footnote-reference" id="fr-BLAKE3-1"><a href="#footnote-BLAKE3">10</a></sup> is the modern evolution of BLAKE2:</p>
 <ul>
-<li>The foundations and mental models behind symmetric and asymmetric cryptography</li>
-<li>How to use modern cryptographic crates in Rust safely and idiomatically</li>
-<li>Where cryptographic primitives show up in real-world domains (blockchain, embedded, medical, etc.)</li>
-<li>How to design, test, and publish your own secure Rust crypto crate</li>
+<li>Cryptographically secure</li>
+<li>Massively parallel</li>
+<li>Faster than SHA-2</li>
+<li>Designed for multicore CPUs and SIMD<sup class="footnote-reference" id="fr-SIMD-1"><a href="#footnote-SIMD">11</a></sup></li>
+<li>Unlike SHA-2, BLAKE3 was designed after modern hardware existed.</li>
 </ul>
-<h2 id="what-this-book-is-not"><a class="header" href="#what-this-book-is-not">What This Book Is Not</a></h2>
+<p>It also supports:</p>
 <ul>
-<li>❌ A math-heavy cryptography textbook</li>
-<li>❌ A copy-paste cookbook</li>
-<li>❌ A blockchain hype manual</li>
+<li>Streaming</li>
+<li>Incremental hashing<sup class="footnote-reference" id="fr-INC-1"><a href="#footnote-INC">12</a></sup></li>
+<li>Keyed hashing<sup class="footnote-reference" id="fr-KEY-1"><a href="#footnote-KEY">13</a></sup></li>
+<li>Extendable output (XOF)<sup class="footnote-reference" id="fr-EXT-1"><a href="#footnote-EXT">14</a></sup></li>
 </ul>
-<p>We won’t drown you in proofs, but we’ll explain just enough math to build intuition. We’ll write real code — not just use libraries. And we’ll focus on systems-level crypto, not speculative tokens.</p>
-<h2 id="what-youll-need"><a class="header" href="#what-youll-need">What You’ll Need</a></h2>
+<h3 id="-code-example-blake3-hashing"><a class="header" href="#-code-example-blake3-hashing">🧪 Code Example: BLAKE3 Hashing</a></h3>
+<pre class="playground"><code class="language-rust no_run">use blake3;
+
+fn main() {
+    let hash = blake3::hash(b"hello world");
+    println!("BLAKE3: {}", hash);
+}</code></pre>
+<p>Output:</p>
+<pre><code class="language-text">BLAKE3: d74981efa70a0c880b8d8c1985d075db...
+</code></pre>
+<h3 id="sha-2-vs-blake3--which-should-you-use"><a class="header" href="#sha-2-vs-blake3--which-should-you-use">SHA-2 vs. BLAKE3 — Which Should You Use?</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Property</th><th>SHA-256</th><th>BLAKE3</th></tr>
+</thead>
+<tbody>
+<tr><td>Standardized</td><td>✅ Yes</td><td>❌ Not NIST</td></tr>
+<tr><td>Speed</td><td>⚠️ Moderate</td><td>🚀 Extremely fast</td></tr>
+<tr><td>Parallelism</td><td>❌ Limited</td><td>✅ Built-in</td></tr>
+<tr><td>Maturity</td><td>🧱 Very conservative</td><td>🧠 Modern design</td></tr>
+<tr><td>Simplicity</td><td>✅ Simple</td><td>✅ Simple</td></tr>
+<tr><td>Use cases</td><td>✅ Compliance</td><td>✅ Performance</td></tr>
+<tr><td></td><td>✅ Interoperability</td><td>✅ Content hashing</td></tr>
+<tr><td></td><td></td><td>✅ Modern systems</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="collision-resistance--what-breaking-a-hash-really-means"><a class="header" href="#collision-resistance--what-breaking-a-hash-really-means">Collision Resistance — What “Breaking a Hash” Really Means</a></h3>
+<p>Breaking a hash means one of two things:</p>
 <ul>
-<li>✅ Basic experience with Rust (enough to build a CLI or follow <code>cargo run</code>)</li>
-<li>✅ Comfort with reading code, refactoring, and using crates</li>
-<li>✅ Curiosity, and a bias toward safe, practical, applied learning</li>
+<li>Finding a collision<sup class="footnote-reference" id="fr-COLLISION-1"><a href="#footnote-COLLISION">15</a></sup> faster than brute force<sup class="footnote-reference" id="fr-BRUTEFORCE-1"><a href="#footnote-BRUTEFORCE">16</a></sup></li>
+<li>Finding a preimage<sup class="footnote-reference" id="fr-PREIMAGE-1"><a href="#footnote-PREIMAGE">17</a></sup> faster than brute force</li>
 </ul>
-<h2 id="lets-begin"><a class="header" href="#lets-begin">Let’s begin</a></h2>
-<p>This book won’t make you a cryptographer in the academic sense — but it will make you something just as rare and valuable:
-A Rust engineer who understands, wields, and applies cryptography with precision, context, and confidence.</p>
-<p>You won’t just read — you’ll build.<br>
-<a href="https://github.com/VinEckSie/sealed-in-rust-book-code">Focused implementations and applied examples</a> are available here and updated weekly.</p>
+<p>For SHA-256:</p>
+<ul>
+<li>No practical attacks exist</li>
+<li>Collision cost ≈ 2¹²⁸</li>
+<li>Preimage cost ≈ 2²⁵⁶</li>
+</ul>
+<p>That is astronomically infeasible.</p>
+<blockquote>
+<p>💡 Most real-world failures come from misuse, not broken math.</p>
+</blockquote>
+<h3 id="hashes-in-real-protocols"><a class="header" href="#hashes-in-real-protocols">Hashes in Real Protocols</a></h3>
+<p>Hashes are rarely used alone.</p>
+<p>They appear inside:</p>
+<ul>
+<li>HMAC — keyed hashing for authentication</li>
+<li>HKDF — key derivation</li>
+<li>Digital signatures — sign(hash(message))</li>
+<li>Merkle trees<sup class="footnote-reference" id="fr-MERKLE-1"><a href="#footnote-MERKLE">18</a></sup> — integrity structures</li>
+<li>Password KDFs — slow hashing</li>
+</ul>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>Hash functions provide integrity, not secrecy.</p>
+<p>They are one-way by design:</p>
+<ul>
+<li>SHA-2 is conservative and universal</li>
+<li>BLAKE3 is modern, fast, and scalable
+Hashes alone are not password protection</li>
+</ul>
+<p>Cryptographic hashes are the glue of modern security.</p>
+<p>They verify data, anchor trust, protect identities, and power nearly every cryptographic construction you’ll encounter.
+If encryption hides secrets, hashes define truth.</p>
+</blockquote>
+<hr>
+<ol class="footnote-definition">
+<li id="footnote-SHA2">
+<p>SHA-2 (Secure Hash Algorithm 2) — NIST-standardized family of cryptographic hash functions including SHA-224, SHA-256, SHA-384, and SHA-512. <a href="../99-appendices/99-01-glossary.html#sha-2-secure-hash-algorithm-2">More</a> <a href="#fr-SHA2-1">↩</a></p>
+</li>
+<li id="footnote-NIST">
+<p>NIST (National Institute of Standards and Technology) — U.S. authority responsible for standardizing widely used cryptographic algorithms. <a href="../99-appendices/99-01-glossary.html#nist">More</a> <a href="#fr-NIST-1">↩</a></p>
+</li>
+<li id="footnote-SHA224">
+<p>SHA-224 - SHA-2 variant producing a 224-bit digest, derived from SHA-256. <a href="../99-appendices/99-01-glossary.html#sha-224">More</a> <a href="#fr-SHA224-1">↩</a></p>
+</li>
+<li id="footnote-SHA256">
+<p>SHA-256 — Most widely deployed SHA-2 hash function, offering strong collision and preimage resistance. <a href="../99-appendices/99-01-glossary.html#sha-256">More</a> <a href="#fr-SHA256-1">↩</a></p>
+</li>
+<li id="footnote-SHA384">
+<p>SHA-384 — SHA-2 variant optimized for 64-bit systems with higher security margin. <a href="../99-appendices/99-01-glossary.html#sha-384">More</a> <a href="#fr-SHA384-1">↩</a></p>
+</li>
+<li id="footnote-SHA512">
+<p>SHA-512 — SHA-2 variant with the largest output size and best performance on 64-bit architectures. <a href="../99-appendices/99-01-glossary.html#sha-512">More</a> <a href="#fr-SHA512-1">↩</a></p>
+</li>
+<li id="footnote-KDF">
+<p>KDF (Key Derivation Function) — Function that transforms a weak or strong secret into cryptographically secure keys for use with symmetric encryption. <a href="../99-appendices/99-01-glossary.html#kdf">More</a> <a href="#fr-KDF-1">↩</a></p>
+</li>
+<li id="footnote-ARGON2">
+<p>Argon2 (named after the mythological ship Argo and its crew, the Argonauts) - The modern standard for password hashing and key derivation, designed to resist GPU and ASIC attacks using memory-hard computation. <a href="../99-appendices/99-01-glossary.html#argon2">More</a> <a href="#fr-ARGON2-1">↩</a></p>
+</li>
+<li id="footnote-SCRYPT">
+<p>Scrypt -
+A memory-hard password-based key derivation function built to make large-scale hardware brute-force attacks expensive and inefficient. Older than Argon2 but still widely used. <a href="../99-appendices/99-01-glossary.html#scrypt">More</a> <a href="#fr-SCRYPT-1">↩</a></p>
+</li>
+<li id="footnote-BLAKE3">
+<p>BLAKE3 (named after the BLAKE hash family) — Modern cryptographic hash optimized for speed, parallelism, and simplicity on modern hardware. <a href="../99-appendices/99-01-glossary.html#blake3">More</a> <a href="#fr-BLAKE3-1">↩</a></p>
+</li>
+<li id="footnote-SIMD">
+<p>SIMD (Single Instruction, Multiple Data) — CPU execution model that applies the same operation to multiple data elements in parallel for high performance. <a href="../99-appendices/99-01-glossary.html#simd">More</a> <a href="#fr-SIMD-1">↩</a></p>
+</li>
+<li id="footnote-INC">
+<p>Incremental hashing — Hashing method that processes input in chunks, allowing streaming and large data hashing without loading everything into memory. <a href="../99-appendices/99-01-glossary.html#incremental-hashing">More</a> <a href="#fr-INC-1">↩</a></p>
+</li>
+<li id="footnote-KEY">
+<p>Keyed hashing — Hash function variant that incorporates a secret key to provide message authentication and integrity guarantees. <a href="../99-appendices/99-01-glossary.html#keyed-hashing">More</a> <a href="#fr-KEY-1">↩</a></p>
+</li>
+<li id="footnote-EXT">
+<p>Extendable output (XOF) — Hash construction that can generate an arbitrary-length output stream from a single input and key. <a href="../99-appendices/99-01-glossary.html#extendable-output-function">More</a> <a href="#fr-EXT-1">↩</a></p>
+</li>
+<li id="footnote-COLLISION">
+<p>Collision — Existence of two distinct inputs that produce the same hash output, undermining a hash function’s uniqueness guarantee. <a href="../99-appendices/99-01-glossary.html#collision">More</a> <a href="#fr-COLLISION-1">↩</a></p>
+</li>
+<li id="footnote-BRUTEFORCE">
+<p>Brute force — Exhaustive attack that tries all possible inputs or keys until the correct one is found. <a href="../99-appendices/99-01-glossary.html#brute-force">More</a> <a href="#fr-BRUTEFORCE-1">↩</a></p>
+</li>
+<li id="footnote-PREIMAGE">
+<p>Preimage — Original input corresponding to a given hash output; preimage resistance means it is infeasible to recover this input. <a href="../99-appendices/99-01-glossary.html#preimage">More</a> <a href="#fr-PREIMAGE-1">↩</a></p>
+</li>
+<li id="footnote-MERKLE">
+<p>Merkle tree — Tree data structure where each node is a hash of its children, enabling efficient and secure data integrity verification. <a href="../99-appendices/99-01-glossary.html#merkle-tree">More</a> <a href="#fr-MERKLE-1">↩</a></p>
+</li>
+</ol>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../02-core-primitives/02-01-symmetric-ciphers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="../00-Intro/how-to-use.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../99-appendices/99-01-glossary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -243,8 +422,11 @@ A Rust engineer who understands, wields, and applies cryptography with precision
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../02-core-primitives/02-01-symmetric-ciphers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="../00-Intro/how-to-use.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../99-appendices/99-01-glossary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
