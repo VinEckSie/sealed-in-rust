@@ -84,12 +84,12 @@ Same input. Same output. Always.
 
 ### Why Hashes Are Not Password Protection
 If you do this, you are already vulnerable.
-```rust
+```rust,no_run
 hash(password)
 ```
 because Hashes are fast, attackers can try billions per second, rainbow tables exist.
 
-This is why hash ≠ password security. We fix this with KDFs[^KDF] (Argon2[^ARGON2], scrypt[^SCRYPT]). See [Key Derivation section](../02-core-primitives/02-01-symmetric-ciphers.md#a-glimpse-at-key-derivation)
+We fix this with KDFs[^KDF] (Argon2[^ARGON2], scrypt[^SCRYPT]). See [Key Derivation section](../02-core-primitives/02-01-symmetric-ciphers.md#a-glimpse-at-key-derivation)
 
 > **🚨 Fast hashes are dangerous for passwords.**
 
