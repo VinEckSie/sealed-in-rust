@@ -1,10 +1,10 @@
 // ANCHOR: aes
-use aes::Aes128;
-use block_padding::Pkcs7;
-use cbc::{Encryptor, Decryptor};
-use cipher::{BlockEncryptMut, BlockDecryptMut, KeyIvInit};
-
 pub fn run_aes_example() {
+    use aes::Aes128;
+    use cbc::{Decryptor, Encryptor};
+    use cipher::block_padding::Pkcs7;
+    use cipher::{BlockDecryptMut, BlockEncryptMut, KeyIvInit};
+
     let key = b"verysecretkey123";
     let iv = b"uniqueinitvector";
     let plaintext = b"Attack at dawn!";
@@ -34,8 +34,8 @@ pub fn run_aes_example() {
 
 // ANCHOR: chacha20
 pub fn run_chacha20_example() {
-    use chacha20::cipher::{KeyIvInit, StreamCipher};
     use chacha20::ChaCha20;
+    use chacha20::cipher::{KeyIvInit, StreamCipher};
 
     let key = *b"an example very very secret key!";
     let nonce = *b"unique nonce";
@@ -56,3 +56,86 @@ pub fn run_chacha20_example() {
     assert_eq!(plaintext, decrypted);
 }
 // ANCHOR_END: chacha20
+
+// ANCHOR: hkdf
+pub fn run_hkdf_example() {
+    use hkdf::Hkdf;
+    use sha2::Sha256;
+
+    // salt: optional, non-secret, should be random per context/session
+    let salt: [u8; 16] = *b"unique-salt-1234";
+
+    // ikm: Input Keying Material (must be high-entropy)
+    // In real systems this comes from a handshake secret, a shared key, etc.
+    let ikm: [u8; 32] = *b"0123456789ABCDEF0123456789ABCDEF";
+
+    let hk = Hkdf::<Sha256>::new(Some(&salt), &ikm);
+
+    let mut okm = [0u8; 32];
+    hk.expand(b"encryption key", &mut okm).unwrap();
+
+    println!("OKM: {:02x?}", okm);
+}
+// ANCHOR_END: hkdf
+
+// ANCHOR: sha256
+pub fn run_sha256_example() {
+    use sha2::{Digest, Sha256};
+
+    let mut hasher = Sha256::new();
+    Digest::update(&mut hasher, b"hello world");
+
+    let result = hasher.finalize();
+    println!("SHA-256: {:x}", result);
+}
+// ANCHOR_END: sha256
+
+// ANCHOR: blake3
+pub fn run_blake3_example() {
+    use blake3;
+
+    let hash = blake3::hash(b"hello world");
+    println!("BLAKE3: {}", hash);
+}
+// ANCHOR_END: blake3
+
+// ANCHOR: hmac
+pub fn run_hmac_example() {
+    use hkdf::hmac::Hmac;
+    use hkdf::hmac::digest::Mac;
+    use sha2::Sha256;
+
+    type HmacSha256 = Hmac<Sha256>;
+
+    let key = b"super-secret-key";
+    let message = b"transfer=1000&to=alice";
+
+    let mut mac = <HmacSha256 as Mac>::new_from_slice(key).unwrap();
+    Mac::update(&mut mac, message);
+
+    let tag = mac.finalize().into_bytes();
+
+    // Verification
+    let mut verify = <HmacSha256 as Mac>::new_from_slice(key).unwrap();
+    Mac::update(&mut verify, message);
+    Mac::verify_slice(verify, tag.as_slice()).unwrap();
+}
+// ANCHOR: hmac
+
+// ANCHOR: poly1305
+pub fn run_poly1305_example() {
+    use poly1305::{
+        Poly1305,
+        universal_hash::{KeyInit, UniversalHash},
+    };
+
+    let key = [0u8; 32]; // placeholder: must be a one-time key in real use
+    let message = b"authenticated message";
+
+    let mut mac = Poly1305::new(&key.into());
+    mac.update_padded(message);
+
+    let tag = mac.finalize();
+    let _tag_bytes: [u8; 16] = tag.into(); // if plain array wished
+}
+// ANCHOR: poly1305

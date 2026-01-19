@@ -596,16 +596,17 @@ A KDF protects symmetric encryption by:
 > 🚨
 >**They solve different security problems and must never be confused.**
 
-🧪 **Code Example: HKDF**
+🧪 **Code Example: HKDF** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))
 
 ```rust,no_run
-use hkdf::Hkdf;
-use sha2::Sha256;
-
-let hk = Hkdf::<Sha256>::new(Some(salt), ikm);
-let mut okm = [0u8; 32];
-hk.expand(b"encryption key", &mut okm).unwrap();
+{{#include ../../rust_crypto_book_code/src/lib.rs:hkdf}}
 ```
+
+Output:
+```rust,no_run
+OKM: [0c, fd, 4c, 90, 3f, 4e, d8, 7e, 3f, d3, 28, e6, da, b7, f7, d6, aa, 9d, 76, df, 66, be, 5d, f1, a0, 17, 0b, 85, f4, 72, 39, c0]
+```
+
 
 HKDF is used to derive multiple secure keys from a single master secret.
 

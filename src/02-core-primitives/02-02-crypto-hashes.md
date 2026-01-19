@@ -58,25 +58,18 @@ SHA-256 is the most common.
 It is slow enough to be secure, fast enough for general use and extremely well analyzed.
 SHA-2 is boring and that’s a compliment.
 
-### 🧪 Code Example: SHA-256 Hashing in Rust
+🧪 **Code Example: SHA-256 Hashing** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))
+
 ```rust,no_run
-use sha2::{Digest, Sha256};
-
-fn main() {
-    let mut hasher = Sha256::new();
-    hasher.update(b"hello world");
-
-    let result = hasher.finalize();
-    println!("SHA-256: {:x}", result);
-}
-````
+{{#include ../../rust_crypto_book_code/src/lib.rs:sha256}}
+```
 
 Output:
 ```text
 SHA-256: b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+```
 
 Same input. Same output. Always.
-```
 
 > **🟢 Conclusion**
 > SHA-2 is the safe default.
@@ -112,21 +105,16 @@ It also supports:
 - Keyed hashing[^KEY]
 - Extendable output (XOF)[^EXT]
 
-### 🧪 Code Example: BLAKE3 Hashing
-```rust,no_run
-use blake3;
+🧪 **Code Example: BLAKE3 Hashing** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))
 
-fn main() {
-    let hash = blake3::hash(b"hello world");
-    println!("BLAKE3: {}", hash);
-}
-````
+```rust,no_run
+{{#include ../../rust_crypto_book_code/src/lib.rs:blake3}}
+```
 
 Output:
 ```text
-BLAKE3: d74981efa70a0c880b8d8c1985d075db...
-````
-
+BLAKE3: d74981efa70a0c880b8d8c1985d075dbcbf679b99a5f9914e5aaf96b831a9e24
+```
 
 ### SHA-2 vs. BLAKE3 — Which Should You Use?
 
