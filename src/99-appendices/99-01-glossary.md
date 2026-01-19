@@ -254,3 +254,75 @@ A Merkle tree is a hash-based tree data structure where each internal node is th
 It allows efficient verification of large data sets by validating only a small subset of hashes.
 Merkle trees are used in blockchains, distributed systems, file systems, and secure databases.
 They provide tamper detection and integrity guarantees with logarithmic verification cost.
+
+## Forged API Request
+A forged API request is a maliciously crafted or modified request designed to impersonate a legitimate client or bypass security controls.
+Attackers may manipulate headers, parameters, identifiers, signatures, or timestamps to gain unauthorized access or perform restricted actions.
+These attacks often exploit weak authentication, missing authorization checks, predictable identifiers, or insufficient request validation.
+Mitigations include strong authentication, strict authorization, request integrity verification, and anti-replay mechanisms.
+
+## Token Manipulation
+Token manipulation refers to tampering with authentication or session tokens to escalate privileges or impersonate another identity.
+Common targets include JWTs, cookies, and API keys where claims, signatures, or metadata may be altered or abused.
+Vulnerabilities often arise from weak verification, algorithm confusion, excessive token lifetime, or insecure storage.
+Defenses include strict signature validation, short expirations, audience checks, and secure token handling practices.
+
+## Padding Oracle Attack
+A padding oracle attack exploits observable differences in error messages or timing when a system validates decrypted padding.
+By sending many crafted ciphertexts, an attacker can progressively recover plaintext or forge valid encrypted messages.
+This attack commonly affects block cipher modes such as CBC when padding errors are distinguishable.
+Using authenticated encryption, uniform error handling, and constant-time validation prevents this class of attack.
+
+## Silent Data Corruption
+Silent data corruption occurs when data is modified without detection due to hardware faults, software bugs, or transmission errors.
+Because no immediate error is raised, corrupted data may propagate into backups, computations, or decision systems.
+This can silently compromise integrity, correctness, and long-term reliability of stored or processed information.
+End-to-end checksums, cryptographic integrity verification, and hardware redundancy reduce this risk.
+
+## JWT
+A JSON Web Token is a compact, URL-safe token format used to transmit cryptographically protected claims between parties.
+It typically consists of a header, payload, and signature encoded using Base64URL.
+JWTs are widely used for stateless authentication and authorization in distributed systems and APIs.
+Secure usage requires strict signature verification, algorithm allow-lists, expiration checks, and issuer validation.
+
+## API
+An application programming interface defines how software components communicate through structured requests and responses.
+It specifies operations, data formats, authentication rules, error handling, and versioning conventions.
+APIs enable modular system design, interoperability, and automated integration between services.
+Security depends on proper identity verification, authorization enforcement, input validation, and transport protection.
+
+## OAuth 2.0
+OAuth 2.0 is an authorization framework that enables delegated access to protected resources without sharing user credentials.
+It allows applications to obtain limited-scope access tokens issued by an authorization server.
+OAuth separates authentication from authorization and supports multiple standardized authorization flows.
+Secure deployments rely on PKCE, strict redirect validation, token verification, and safe client storage.
+
+## AWS Request Signin (SigV4)
+AWS request signing is a cryptographic mechanism used to authenticate and authorize API requests to AWS services.
+Requests are canonicalized, hashed, and signed using HMAC with secret credentials and request metadata.
+This protects against request tampering and limits replay attacks through timestamp validation.
+Correct canonicalization and key handling are critical for reliable and secure operation.
+
+## TLS Internals
+TLS internals describe the cryptographic protocols and handshake mechanisms that secure network communications.
+During the handshake, peers authenticate, negotiate algorithms, and derive shared symmetric session keys.
+Modern TLS provides confidentiality, integrity, authentication, and forward secrecy.
+It protects application data against eavesdropping, tampering, and active network attacks.
+
+## Length-Extension Attack
+A length-extension attack exploits the internal structure of certain hash functions to append data to a hashed message.
+An attacker can compute a valid hash for an extended message without knowing the original secret.
+This vulnerability breaks naïve constructions such as hash-based authentication using secret-prefix hashing.
+Proper MAC constructions such as HMAC are specifically designed to prevent this attack.
+
+## Constant-Time Algorithm
+A constant-time algorithm executes independently of secret data to avoid leaking information through timing behavior.
+Branching, memory access patterns, and early exits must not depend on sensitive values.
+Timing side channels can otherwise reveal keys, authentication tags, or internal state.
+Constant-time techniques are essential for secure cryptographic implementations.
+
+## Stream Cipher
+A stream cipher encrypts data by generating a pseudorandom keystream and XORing it with plaintext bytes.
+The same operation is used for encryption and decryption.
+Reusing the same keystream for multiple messages compromises confidentiality immediately.
+Modern stream ciphers are typically combined with authentication to provide full data integrity.

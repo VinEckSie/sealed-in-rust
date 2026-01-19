@@ -62,7 +62,7 @@ If even one bit changes, verification fails.
 
 ### HMAC (Hash-based Message Authentication Code) — The Standard MAC Construction
 
-> 💡 Used in JWT[^jwt], APIs[^apis], OAuth[^oauth], AWS signing[^aws-signin], TLS internals[^tls-internals]
+> 💡 Used in JWT[^jwt], APIs[^api], OAuth[^oauth], AWS signing[^aws-signin], TLS internals[^tls-internals]
 >
 > Stable, conservative, battle-tested
 
@@ -131,7 +131,7 @@ It is generated from a cipher keystream, usually ChaCha20.
 > Poly1305 is fast, elegant, and extremely secure when used correctly,
 > but it must be paired with a cipher that guarantees fresh keys.
 
-
+<!--
 ### AEAD — Authenticated Encryption (The Right Way)
 
 Modern cryptography does not ask: “Should I encrypt or authenticate?”
@@ -266,14 +266,18 @@ If you understand this chapter,
 you understand **why modern protocols are secure** — and why legacy ones failed.
 
 That’s the difference between *crypto that works* and *crypto that survives attackers*.
+-->
 
-[^forged-api]: test
-[^token-manip]: test
-[^padding-oracle]: test
-[^silent-data]: test
-[^jwt]: q
-[^apis]: t
-[^oauth]: t
-[^aws-signin]: e
-[^tls-internals]: r
-[^length-attack]: l
+
+[^forged-api]: Forged API Request — Attack where an adversary crafts or alters API requests to impersonate a legitimate client or bypass authentication and authorization controls. [More](../99-appendices/99-01-glossary.md#forged-api-request)
+[^token-manip]: Token Manipulation — Tampering with authentication or session tokens (JWT, cookies, API keys) to escalate privileges, extend validity, or impersonate another user. [More](../99-appendices/99-01-glossary.md#token-manipulation)
+[^padding-oracle]: Padding Oracle Attack — Cryptographic attack exploiting padding validation errors in block ciphers to progressively recover plaintext or forge valid ciphertexts. [More](../99-appendices/99-01-glossary.md#padding-oracle-attack)
+[^silent-data]: Silent Data Corruption — Undetected modification of data caused by hardware faults, software bugs, or transmission errors, leading to integrity loss without immediate failure signals. [More](../99-appendices/99-01-glossary.md#silent-data-corruption)
+[^jwt]: JWT (JSON Web Token) — Compact, URL-safe token format used to securely transmit signed or encrypted claims for authentication and authorization in distributed systems. [More](../99-appendices/99-01-glossary.md#jwt)
+[^api]: API (Application Programming Interface) — Contract defining how software components communicate via structured requests, responses, authentication, and versioned endpoints. [More](../99-appendices/99-01-glossary.md#api)
+[^oauth]: OAuth 2.0 — Industry-standard authorization framework enabling delegated access to protected resources without sharing user credentials with third-party applications. [More](../99-appendices/99-01-glossary.md#oauth-20)
+[^aws-signin]: AWS Request Signin — Cryptographic mechanism (SigV4) that authenticates and authorizes AWS API requests using HMAC-based signatures derived from secret credentials. [More](../99-appendices/99-01-glossary.md#aws-request-signin-sigv4)
+[^tls-internals]: TLS Internals — Cryptographic protocols and handshake mechanisms that provide authentication, key exchange, confidentiality, and integrity for secure network communications. [More](../99-appendices/99-01-glossary.md#tls-internals)
+[^length-attack]: Length-Extension Attack — Hash function vulnerability allowing attackers to append data to a hashed message and compute a valid hash without knowing the secret. [More](../99-appendices/99-01-glossary.md#length-extension-attack)
+[^constant-time]: Constant-Time Algorithm — Implementation strategy where execution time is independent of secret data, preventing timing side-channel information leakage. [More](../99-appendices/99-01-glossary.md#constant-time-algorithm)
+[^stream-cipher]: Stream Cipher — Symmetric encryption primitive that generates a pseudorandom keystream and encrypts data by XORing it with plaintext bytes. [More](../99-appendices/99-01-glossary.md#stream-cipher)
