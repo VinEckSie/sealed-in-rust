@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-b52a41cb.js";
+            window.path_to_searchindex_js = "searchindex-241dc41c.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-510ff4c2.js"></script>
@@ -1545,22 +1545,6 @@ That’s false.</p>
     let mut verify = &lt;HmacSha256 as Mac&gt;::new_from_slice(key).unwrap();
     Mac::update(&amp;mut verify, message);
     Mac::verify_slice(verify, tag.as_slice()).unwrap();
-}
-
-pub fn run_poly1305_example() {
-    use poly1305::{
-        Poly1305,
-        universal_hash::{KeyInit, UniversalHash},
-    };
-
-    let key = [0u8; 32]; // placeholder: must be a one-time key in real use
-    let message = b"authenticated message";
-
-    let mut mac = Poly1305::new(&amp;key.into());
-    mac.update_padded(message);
-
-    let tag = mac.finalize();
-    let _tag_bytes: [u8; 16] = tag.into(); // if plain array wished
 }
 <span class="boring">}</span></code></pre>
 <p>If the message or tag is altered, verification fails immediately.</p>
