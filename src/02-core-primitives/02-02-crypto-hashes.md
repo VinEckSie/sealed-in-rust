@@ -170,7 +170,7 @@ They appear inside:
 
 
 [^SHA2]: SHA-2 (Secure Hash Algorithm 2) — NIST-standardized family of cryptographic hash functions including SHA-224, SHA-256, SHA-384, and SHA-512. [More](../99-appendices/99-01-glossary.md#sha-2-secure-hash-algorithm-2)
-[^BLAKE3]: BLAKE3 (named after the BLAKE hash family) — Modern cryptographic hash optimized for speed, parallelism, and simplicity on modern hardware. [More](../99-appendices/99-01-glossary.md#blake3)
+]: BLAKE3 (named after the BLAKE hash family) — Modern cryptographic hash optimized for speed, parallelism, and  implicity on modern hardware. [More](../99-appendices/99-01-glossary.md#blake3)
 [^NIST]: NIST (National Institute of Standards and Technology) — U.S. authority responsible for standardizing widely used cryptographic algorithms. [More](../99-appendices/99-01-glossary.md#nist)
 [^SHA224]: SHA-224 - SHA-2 variant producing a 224-bit digest, derived from SHA-256. [More](../99-appendices/99-01-glossary.md#sha-224)
 [^SHA256]: SHA-256 — Most widely deployed SHA-2 hash function, offering strong collision and preimage resistance. [More](../99-appendices/99-01-glossary.md#sha-256)
