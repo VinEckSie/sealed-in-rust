@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-ef6239ed.js";
+            window.path_to_searchindex_js = "../searchindex-b52a41cb.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-f418e634.js"></script>
+        <script src="../toc-510ff4c2.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -225,21 +225,23 @@ One flipped bit &gt;&gt; Completely different output
 <p>SHA-256 is the most common.
 It is slow enough to be secure, fast enough for general use and extremely well analyzed.
 SHA-2 is boring and that’s a compliment.</p>
-<h3 id="-code-example-sha-256-hashing-in-rust"><a class="header" href="#-code-example-sha-256-hashing-in-rust">🧪 Code Example: SHA-256 Hashing in Rust</a></h3>
-<pre class="playground"><code class="language-rust no_run">use sha2::{Digest, Sha256};
+<p>🧪 <strong>Code Example: SHA-256 Hashing</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_sha256_example() {
+    use sha2::{Digest, Sha256};
 
-fn main() {
     let mut hasher = Sha256::new();
-    hasher.update(b"hello world");
+    Digest::update(&amp;mut hasher, b"hello world");
 
     let result = hasher.finalize();
     println!("SHA-256: {:x}", result);
-}</code></pre>
+}
+<span class="boring">}</span></code></pre>
 <p>Output:</p>
 <pre><code class="language-text">SHA-256: b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
-
-Same input. Same output. Always.
 </code></pre>
+<p>Same input. Same output. Always.</p>
 <blockquote>
 <p><strong>🟢 Conclusion</strong>
 SHA-2 is the safe default.
@@ -263,30 +265,33 @@ If you don’t know which hash to use, SHA-256 will almost never be the wrong an
 <blockquote>
 <p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/blake3">blake3</a></p>
 </blockquote>
-<p>BLAKE3<sup class="footnote-reference" id="fr-BLAKE3-1"><a href="#footnote-BLAKE3">10</a></sup> is the modern evolution of BLAKE2:</p>
+<p>BLAKE3[^BLAKE3] is the modern evolution of BLAKE2:</p>
 <ul>
 <li>Cryptographically secure</li>
 <li>Massively parallel</li>
 <li>Faster than SHA-2</li>
-<li>Designed for multicore CPUs and SIMD<sup class="footnote-reference" id="fr-SIMD-1"><a href="#footnote-SIMD">11</a></sup></li>
+<li>Designed for multicore CPUs and SIMD<sup class="footnote-reference" id="fr-SIMD-1"><a href="#footnote-SIMD">10</a></sup></li>
 <li>Unlike SHA-2, BLAKE3 was designed after modern hardware existed.</li>
 </ul>
 <p>It also supports:</p>
 <ul>
 <li>Streaming</li>
-<li>Incremental hashing<sup class="footnote-reference" id="fr-INC-1"><a href="#footnote-INC">12</a></sup></li>
-<li>Keyed hashing<sup class="footnote-reference" id="fr-KEY-1"><a href="#footnote-KEY">13</a></sup></li>
-<li>Extendable output (XOF)<sup class="footnote-reference" id="fr-EXT-1"><a href="#footnote-EXT">14</a></sup></li>
+<li>Incremental hashing<sup class="footnote-reference" id="fr-INC-1"><a href="#footnote-INC">11</a></sup></li>
+<li>Keyed hashing<sup class="footnote-reference" id="fr-KEY-1"><a href="#footnote-KEY">12</a></sup></li>
+<li>Extendable output (XOF)<sup class="footnote-reference" id="fr-EXT-1"><a href="#footnote-EXT">13</a></sup></li>
 </ul>
-<h3 id="-code-example-blake3-hashing"><a class="header" href="#-code-example-blake3-hashing">🧪 Code Example: BLAKE3 Hashing</a></h3>
-<pre class="playground"><code class="language-rust no_run">use blake3;
+<p>🧪 <strong>Code Example: BLAKE3 Hashing</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_blake3_example() {
+    use blake3;
 
-fn main() {
     let hash = blake3::hash(b"hello world");
     println!("BLAKE3: {}", hash);
-}</code></pre>
+}
+<span class="boring">}</span></code></pre>
 <p>Output:</p>
-<pre><code class="language-text">BLAKE3: d74981efa70a0c880b8d8c1985d075db...
+<pre><code class="language-text">BLAKE3: d74981efa70a0c880b8d8c1985d075dbcbf679b99a5f9914e5aaf96b831a9e24
 </code></pre>
 <h3 id="sha-2-vs-blake3--which-should-you-use"><a class="header" href="#sha-2-vs-blake3--which-should-you-use">SHA-2 vs. BLAKE3 — Which Should You Use?</a></h3>
 <div class="table-wrapper">
@@ -309,8 +314,8 @@ fn main() {
 <h3 id="collision-resistance--what-breaking-a-hash-really-means"><a class="header" href="#collision-resistance--what-breaking-a-hash-really-means">Collision Resistance — What “Breaking a Hash” Really Means</a></h3>
 <p>Breaking a hash means one of two things:</p>
 <ul>
-<li>Finding a collision<sup class="footnote-reference" id="fr-COLLISION-1"><a href="#footnote-COLLISION">15</a></sup> faster than brute force<sup class="footnote-reference" id="fr-BRUTEFORCE-1"><a href="#footnote-BRUTEFORCE">16</a></sup></li>
-<li>Finding a preimage<sup class="footnote-reference" id="fr-PREIMAGE-1"><a href="#footnote-PREIMAGE">17</a></sup> faster than brute force</li>
+<li>Finding a collision<sup class="footnote-reference" id="fr-COLLISION-1"><a href="#footnote-COLLISION">14</a></sup> faster than brute force<sup class="footnote-reference" id="fr-BRUTEFORCE-1"><a href="#footnote-BRUTEFORCE">15</a></sup></li>
+<li>Finding a preimage<sup class="footnote-reference" id="fr-PREIMAGE-1"><a href="#footnote-PREIMAGE">16</a></sup> faster than brute force</li>
 </ul>
 <p>For SHA-256:</p>
 <ul>
@@ -329,7 +334,7 @@ fn main() {
 <li>HMAC — keyed hashing for authentication</li>
 <li>HKDF — key derivation</li>
 <li>Digital signatures — sign(hash(message))</li>
-<li>Merkle trees<sup class="footnote-reference" id="fr-MERKLE-1"><a href="#footnote-MERKLE">18</a></sup> — integrity structures</li>
+<li>Merkle trees<sup class="footnote-reference" id="fr-MERKLE-1"><a href="#footnote-MERKLE">17</a></sup> — integrity structures</li>
 <li>Password KDFs — slow hashing</li>
 </ul>
 <blockquote>
@@ -348,7 +353,8 @@ If encryption hides secrets, hashes define truth.</p>
 <hr>
 <ol class="footnote-definition">
 <li id="footnote-SHA2">
-<p>SHA-2 (Secure Hash Algorithm 2) — NIST-standardized family of cryptographic hash functions including SHA-224, SHA-256, SHA-384, and SHA-512. <a href="../99-appendices/99-01-glossary.html#sha-2-secure-hash-algorithm-2">More</a> <a href="#fr-SHA2-1">↩</a></p>
+<p>SHA-2 (Secure Hash Algorithm 2) — NIST-standardized family of cryptographic hash functions including SHA-224, SHA-256, SHA-384, and SHA-512. <a href="../99-appendices/99-01-glossary.html#sha-2-secure-hash-algorithm-2">More</a>
+]: BLAKE3 (named after the BLAKE hash family) — Modern cryptographic hash optimized for speed, parallelism, and  implicity on modern hardware. <a href="../99-appendices/99-01-glossary.html#blake3">More</a> <a href="#fr-SHA2-1">↩</a></p>
 </li>
 <li id="footnote-NIST">
 <p>NIST (National Institute of Standards and Technology) — U.S. authority responsible for standardizing widely used cryptographic algorithms. <a href="../99-appendices/99-01-glossary.html#nist">More</a> <a href="#fr-NIST-1">↩</a></p>
@@ -374,9 +380,6 @@ If encryption hides secrets, hashes define truth.</p>
 <li id="footnote-SCRYPT">
 <p>Scrypt -
 A memory-hard password-based key derivation function built to make large-scale hardware brute-force attacks expensive and inefficient. Older than Argon2 but still widely used. <a href="../99-appendices/99-01-glossary.html#scrypt">More</a> <a href="#fr-SCRYPT-1">↩</a></p>
-</li>
-<li id="footnote-BLAKE3">
-<p>BLAKE3 (named after the BLAKE hash family) — Modern cryptographic hash optimized for speed, parallelism, and simplicity on modern hardware. <a href="../99-appendices/99-01-glossary.html#blake3">More</a> <a href="#fr-BLAKE3-1">↩</a></p>
 </li>
 <li id="footnote-SIMD">
 <p>SIMD (Single Instruction, Multiple Data) — CPU execution model that applies the same operation to multiple data elements in parallel for high performance. <a href="../99-appendices/99-01-glossary.html#simd">More</a> <a href="#fr-SIMD-1">↩</a></p>
@@ -412,7 +415,7 @@ A memory-hard password-based key derivation function built to make large-scale h
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../99-appendices/99-01-glossary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../02-core-primitives/02-03-mac-aead.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -426,7 +429,7 @@ A memory-hard password-based key derivation function built to make large-scale h
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../99-appendices/99-01-glossary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../02-core-primitives/02-03-mac-aead.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

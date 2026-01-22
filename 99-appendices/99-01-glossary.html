@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-ef6239ed.js";
+            window.path_to_searchindex_js = "../searchindex-b52a41cb.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-f418e634.js"></script>
+        <script src="../toc-510ff4c2.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -375,12 +375,72 @@ Preimage resistance is fundamental for password hashing and data integrity.</p>
 It allows efficient verification of large data sets by validating only a small subset of hashes.
 Merkle trees are used in blockchains, distributed systems, file systems, and secure databases.
 They provide tamper detection and integrity guarantees with logarithmic verification cost.</p>
+<h2 id="forged-api-request"><a class="header" href="#forged-api-request">Forged API Request</a></h2>
+<p>A forged API request is a maliciously crafted or modified request designed to impersonate a legitimate client or bypass security controls.
+Attackers may manipulate headers, parameters, identifiers, signatures, or timestamps to gain unauthorized access or perform restricted actions.
+These attacks often exploit weak authentication, missing authorization checks, predictable identifiers, or insufficient request validation.
+Mitigations include strong authentication, strict authorization, request integrity verification, and anti-replay mechanisms.</p>
+<h2 id="token-manipulation"><a class="header" href="#token-manipulation">Token Manipulation</a></h2>
+<p>Token manipulation refers to tampering with authentication or session tokens to escalate privileges or impersonate another identity.
+Common targets include JWTs, cookies, and API keys where claims, signatures, or metadata may be altered or abused.
+Vulnerabilities often arise from weak verification, algorithm confusion, excessive token lifetime, or insecure storage.
+Defenses include strict signature validation, short expirations, audience checks, and secure token handling practices.</p>
+<h2 id="padding-oracle-attack"><a class="header" href="#padding-oracle-attack">Padding Oracle Attack</a></h2>
+<p>A padding oracle attack exploits observable differences in error messages or timing when a system validates decrypted padding.
+By sending many crafted ciphertexts, an attacker can progressively recover plaintext or forge valid encrypted messages.
+This attack commonly affects block cipher modes such as CBC when padding errors are distinguishable.
+Using authenticated encryption, uniform error handling, and constant-time validation prevents this class of attack.</p>
+<h2 id="silent-data-corruption"><a class="header" href="#silent-data-corruption">Silent Data Corruption</a></h2>
+<p>Silent data corruption occurs when data is modified without detection due to hardware faults, software bugs, or transmission errors.
+Because no immediate error is raised, corrupted data may propagate into backups, computations, or decision systems.
+This can silently compromise integrity, correctness, and long-term reliability of stored or processed information.
+End-to-end checksums, cryptographic integrity verification, and hardware redundancy reduce this risk.</p>
+<h2 id="jwt"><a class="header" href="#jwt">JWT</a></h2>
+<p>A JSON Web Token is a compact, URL-safe token format used to transmit cryptographically protected claims between parties.
+It typically consists of a header, payload, and signature encoded using Base64URL.
+JWTs are widely used for stateless authentication and authorization in distributed systems and APIs.
+Secure usage requires strict signature verification, algorithm allow-lists, expiration checks, and issuer validation.</p>
+<h2 id="api"><a class="header" href="#api">API</a></h2>
+<p>An application programming interface defines how software components communicate through structured requests and responses.
+It specifies operations, data formats, authentication rules, error handling, and versioning conventions.
+APIs enable modular system design, interoperability, and automated integration between services.
+Security depends on proper identity verification, authorization enforcement, input validation, and transport protection.</p>
+<h2 id="oauth-20"><a class="header" href="#oauth-20">OAuth 2.0</a></h2>
+<p>OAuth 2.0 is an authorization framework that enables delegated access to protected resources without sharing user credentials.
+It allows applications to obtain limited-scope access tokens issued by an authorization server.
+OAuth separates authentication from authorization and supports multiple standardized authorization flows.
+Secure deployments rely on PKCE, strict redirect validation, token verification, and safe client storage.</p>
+<h2 id="aws-request-signin-sigv4"><a class="header" href="#aws-request-signin-sigv4">AWS Request Signin (SigV4)</a></h2>
+<p>AWS request signing is a cryptographic mechanism used to authenticate and authorize API requests to AWS services.
+Requests are canonicalized, hashed, and signed using HMAC with secret credentials and request metadata.
+This protects against request tampering and limits replay attacks through timestamp validation.
+Correct canonicalization and key handling are critical for reliable and secure operation.</p>
+<h2 id="tls-internals"><a class="header" href="#tls-internals">TLS Internals</a></h2>
+<p>TLS internals describe the cryptographic protocols and handshake mechanisms that secure network communications.
+During the handshake, peers authenticate, negotiate algorithms, and derive shared symmetric session keys.
+Modern TLS provides confidentiality, integrity, authentication, and forward secrecy.
+It protects application data against eavesdropping, tampering, and active network attacks.</p>
+<h2 id="length-extension-attack"><a class="header" href="#length-extension-attack">Length-Extension Attack</a></h2>
+<p>A length-extension attack exploits the internal structure of certain hash functions to append data to a hashed message.
+An attacker can compute a valid hash for an extended message without knowing the original secret.
+This vulnerability breaks naïve constructions such as hash-based authentication using secret-prefix hashing.
+Proper MAC constructions such as HMAC are specifically designed to prevent this attack.</p>
+<h2 id="constant-time-algorithm"><a class="header" href="#constant-time-algorithm">Constant-Time Algorithm</a></h2>
+<p>A constant-time algorithm executes independently of secret data to avoid leaking information through timing behavior.
+Branching, memory access patterns, and early exits must not depend on sensitive values.
+Timing side channels can otherwise reveal keys, authentication tags, or internal state.
+Constant-time techniques are essential for secure cryptographic implementations.</p>
+<h2 id="stream-cipher"><a class="header" href="#stream-cipher">Stream Cipher</a></h2>
+<p>A stream cipher encrypts data by generating a pseudorandom keystream and XORing it with plaintext bytes.
+The same operation is used for encryption and decryption.
+Reusing the same keystream for multiple messages compromises confidentiality immediately.
+Modern stream ciphers are typically combined with authentication to provide full data integrity.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../02-core-primitives/02-02-crypto-hashes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../02-core-primitives/02-03-mac-aead.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
@@ -394,7 +454,7 @@ They provide tamper detection and integrity guarantees with logarithmic verifica
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../02-core-primitives/02-02-crypto-hashes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../02-core-primitives/02-03-mac-aead.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 

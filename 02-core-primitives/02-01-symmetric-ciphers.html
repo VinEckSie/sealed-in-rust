@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-ef6239ed.js";
+            window.path_to_searchindex_js = "../searchindex-b52a41cb.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-f418e634.js"></script>
+        <script src="../toc-510ff4c2.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -467,12 +467,12 @@ Secure, fast, and hardware-accelerated</p>
 We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-CBC-1"><a href="#footnote-CBC">11</a></sup> with PKCS7<sup class="footnote-reference" id="fr-PKCS7-1"><a href="#footnote-PKCS7">12</a></sup> padding.</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>use aes::Aes128;
-use block_padding::Pkcs7;
-use cbc::{Encryptor, Decryptor};
-use cipher::{BlockEncryptMut, BlockDecryptMut, KeyIvInit};
+</span>pub fn run_aes_example() {
+    use aes::Aes128;
+    use cbc::{Decryptor, Encryptor};
+    use cipher::block_padding::Pkcs7;
+    use cipher::{BlockDecryptMut, BlockEncryptMut, KeyIvInit};
 
-pub fn run_aes_example() {
     let key = b"verysecretkey123";
     let iv = b"uniqueinitvector";
     let plaintext = b"Attack at dawn!";
@@ -536,8 +536,8 @@ The API is extremely simple — you create a cipher and stream through it.</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn run_chacha20_example() {
-    use chacha20::cipher::{KeyIvInit, StreamCipher};
     use chacha20::ChaCha20;
+    use chacha20::cipher::{KeyIvInit, StreamCipher};
 
     let key = *b"an example very very secret key!";
     let nonce = *b"unique nonce";
@@ -757,15 +757,32 @@ ChaCha20 is often preferred today when simplicity and portability matter more th
 <p>🚨
 <strong>They solve different security problems and must never be confused.</strong></p>
 </blockquote>
-<p>🧪 <strong>Code Example: HKDF</strong></p>
+<p>🧪 <strong>Code Example: HKDF</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>use hkdf::Hkdf;
-use sha2::Sha256;
+</span>pub fn run_hkdf_example() {
+    use hkdf::Hkdf;
+    use sha2::Sha256;
 
-let hk = Hkdf::&lt;Sha256&gt;::new(Some(salt), ikm);
-let mut okm = [0u8; 32];
-hk.expand(b"encryption key", &amp;mut okm).unwrap();
+    // salt: optional, non-secret, should be random per context/session
+    let salt: [u8; 16] = *b"unique-salt-1234";
+
+    // ikm: Input Keying Material (must be high-entropy)
+    // In real systems this comes from a handshake secret, a shared key, etc.
+    let ikm: [u8; 32] = *b"0123456789ABCDEF0123456789ABCDEF";
+
+    let hk = Hkdf::&lt;Sha256&gt;::new(Some(&amp;salt), &amp;ikm);
+
+    let mut okm = [0u8; 32];
+    hk.expand(b"encryption key", &amp;mut okm).unwrap();
+
+    println!("OKM: {:02x?}", okm);
+}
+<span class="boring">}</span></code></pre>
+<p>Output:</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>OKM: [0c, fd, 4c, 90, 3f, 4e, d8, 7e, 3f, d3, 28, e6, da, b7, f7, d6, aa, 9d, 76, df, 66, be, 5d, f1, a0, 17, 0b, 85, f4, 72, 39, c0]
 <span class="boring">}</span></code></pre>
 <p>HKDF is used to derive multiple secure keys from a single master secret.</p>
 <p>This allows you to:</p>

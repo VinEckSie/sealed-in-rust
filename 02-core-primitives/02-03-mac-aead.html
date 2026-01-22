@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Tooling Up - Sealed in Rust — Domain-Driven Edition</title>
+        <title>MACs &amp; AEAD — HMAC, Poly1305, AES-GCM - Sealed in Rust — Domain-Driven Edition</title>
 
 
         <!-- Custom HTML head -->
@@ -174,50 +174,356 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="tooling-up"><a class="header" href="#tooling-up">Tooling Up</a></h2>
-<p>Before we dive into cryptographic primitives, here’s a quick look at tools that can support your Rust development journey — especially if you plan to write your own crypto libraries.</p>
+                        <h2 id="macs--aead--hmac-poly1305-aes-gcm"><a class="header" href="#macs--aead--hmac-poly1305-aes-gcm">MACs &amp; AEAD — HMAC, Poly1305, AES-GCM</a></h2>
 <blockquote>
-<p>None of these tools are required to read or complete the following chapters.<br>If you already have <code>cargo</code> installed, you’re good to go!</p>
+<p>🔐 <strong>Used in:</strong> TLS, APIs, cookies, tokens, VPNs, messaging apps</p>
+<p>✅ Essential for integrity and authenticity, not optional.</p>
 </blockquote>
-<p>That said, for readers who want to build clean, secure, and testable codebases, these tools are worth bookmarking:</p>
-<h3 id="code-quality"><a class="header" href="#code-quality">Code Quality</a></h3>
+<p>Encryption hides data.
+But encryption alone does not stop attackers from modifying it.</p>
+<p>Modern cryptography requires two guarantees:</p>
 <ul>
-<li><strong><a href="https://github.com/rust-lang/rustfmt">rustfmt</a></strong> — auto-formats code to keep it idiomatic</li>
-<li><strong><a href="https://github.com/rust-lang/rust-clippy">clippy</a></strong> — catches common pitfalls and non-idiomatic patterns</li>
+<li><strong>Confidentiality</strong> → Nobody can read the data</li>
+<li><strong>Integrity &amp; Authenticity</strong> → Nobody can tamper with it unnoticed</li>
 </ul>
-<h3 id="testing--fuzzing"><a class="header" href="#testing--fuzzing">Testing &amp; Fuzzing</a></h3>
+<p>This chapter is about the second half — the part beginners forget, and attackers exploit.</p>
+<h3 id="why-encryption-alone-is-not-enough"><a class="header" href="#why-encryption-alone-is-not-enough">Why Encryption Alone Is Not Enough</a></h3>
+<p>A common beginner mistake:
+“My data is encrypted, so it’s secure.”
+That’s false.</p>
+<p>If an attacker can flip bits in your ciphertext and you don’t detect it, your system is broken.</p>
+<p>Real consequences:</p>
 <ul>
-<li><strong><a href="https://docs.rs/proptest">proptest</a></strong> — property-based testing for edge case discovery</li>
-<li><strong><a href="https://rust-fuzz.github.io/book/">cargo-fuzz</a></strong> — fuzz testing to uncover panics and vulnerabilities</li>
+<li>Modified database records</li>
+<li>Forged API requests<sup class="footnote-reference" id="fr-forged-api-1"><a href="#footnote-forged-api">1</a></sup></li>
+<li>Token manipulation<sup class="footnote-reference" id="fr-token-manip-1"><a href="#footnote-token-manip">2</a></sup></li>
+<li>Padding-oracle exploits<sup class="footnote-reference" id="fr-padding-oracle-1"><a href="#footnote-padding-oracle">3</a></sup></li>
+<li>Silent data corruption<sup class="footnote-reference" id="fr-silent-data-1"><a href="#footnote-silent-data">4</a></sup></li>
 </ul>
-<h3 id="security--auditing"><a class="header" href="#security--auditing">Security &amp; Auditing</a></h3>
+<p><strong>Encryption without integrity is malleable by default</strong>.</p>
+<p>This is why <strong>MACs</strong> and <strong>AEAD</strong> exist.</p>
+<h3 id="macs-message-authentication-codes"><a class="header" href="#macs-message-authentication-codes">MACs (Message Authentication Codes)</a></h3>
+<p>A MAC is a cryptographic checksum computed using a secret key.</p>
+<p>It answers one critical question:</p>
+<blockquote>
+<p>“Was this message produced by someone who knows the secret key — and was it modified?”</p>
+</blockquote>
+<p>MACs provide:</p>
 <ul>
-<li><strong><a href="https://github.com/RustSec/rustsec/tree/main/cargo-audit">cargo-audit</a></strong> — alerts you to vulnerable crates</li>
-<li><strong><a href="https://github.com/rust-secure-code/cargo-geiger">cargo-geiger</a></strong> — scans for <code>unsafe</code> code</li>
+<li>Integrity (detect modification)</li>
+<li>Authenticity (prove origin)</li>
+<li>No confidentiality (data remains readable)</li>
 </ul>
-<h3 id="benchmarking--debugging"><a class="header" href="#benchmarking--debugging">Benchmarking &amp; Debugging</a></h3>
-<ul>
-<li><strong><a href="https://bheisler.github.io/criterion.rs/book/">Criterion.rs</a></strong> — precise performance benchmarks</li>
-<li><strong><a href="https://github.com/dtolnay/cargo-expand">cargo-expand</a></strong> — view macro-expanded code (useful when using <code>#[derive(...)]</code>)</li>
-</ul>
-<p>As you gain experience, integrating these tools will help ensure your cryptographic code is not only correct — but robust, maintainable, and audit-friendly.</p>
-<h3 id="try-it-yourself"><a class="header" href="#try-it-yourself">Try It Yourself</a></h3>
-<p>Want to skip the setup and jump right into coding?</p>
-<p>👉 Use the <a href="https://github.com/vinecksie/sealed-starter">Sealed in Rust Starter Template</a> — a minimal Rust project preconfigured with the tools mentioned above.</p>
-<pre><code class="language-bash">git clone https://github.com/vinecksie/sealed-starter.git
-cd sealed-starter
-cargo test
+<p>A MAC is not encryption.</p>
+<pre><code class="language-text">message + secret key → MAC
 </code></pre>
-<!--This project will evolve with the book and include examples, tests, and benchmarking code as you progress.-->
+<p>How to verify:</p>
+<pre><code class="language-text">message + secret key → recomputed MAC → compare
+</code></pre>
+<p>If even one bit changes, verification fails.</p>
+<h3 id="hmac-hash-based-message-authentication-code--the-standard-mac-construction"><a class="header" href="#hmac-hash-based-message-authentication-code--the-standard-mac-construction">HMAC (Hash-based Message Authentication Code) — The Standard MAC Construction</a></h3>
+<blockquote>
+<p>💡 Used in JWT<sup class="footnote-reference" id="fr-jwt-1"><a href="#footnote-jwt">5</a></sup>, APIs<sup class="footnote-reference" id="fr-api-1"><a href="#footnote-api">6</a></sup>, OAuth<sup class="footnote-reference" id="fr-oauth-1"><a href="#footnote-oauth">7</a></sup>, AWS signing<sup class="footnote-reference" id="fr-aws-signin-1"><a href="#footnote-aws-signin">8</a></sup>, TLS internals<sup class="footnote-reference" id="fr-tls-internals-1"><a href="#footnote-tls-internals">9</a></sup></p>
+<p>Stable, conservative, battle-tested</p>
+</blockquote>
+<blockquote>
+<p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/hmac">hmac</a></p>
+</blockquote>
+<p>HMAC allows two parties sharing a secret key to authenticate a message and detect any tampering, without requiring encryption.</p>
+<p>HMAC combines:</p>
+<ul>
+<li>a cryptographic hash function (e.g. SHA-256)</li>
+<li>a secret key</li>
+<li>a hardened construction resistant to length-extension attacks<sup class="footnote-reference" id="fr-length-attack-1"><a href="#footnote-length-attack">10</a></sup></li>
+</ul>
+<p>Unlike naïve <code>hash(key || message)</code>, HMAC is safe.</p>
+<p>🧪 <strong>Code Example: HMAC-SHA256</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_hmac_example() {
+    use hkdf::hmac::Hmac;
+    use hkdf::hmac::digest::Mac;
+    use sha2::Sha256;
+
+    type HmacSha256 = Hmac&lt;Sha256&gt;;
+
+    let key = b"super-secret-key";
+    let message = b"transfer=1000&amp;to=alice";
+
+    let mut mac = &lt;HmacSha256 as Mac&gt;::new_from_slice(key).unwrap();
+    Mac::update(&amp;mut mac, message);
+
+    let tag = mac.finalize().into_bytes();
+
+    // Verification
+    let mut verify = &lt;HmacSha256 as Mac&gt;::new_from_slice(key).unwrap();
+    Mac::update(&amp;mut verify, message);
+    Mac::verify_slice(verify, tag.as_slice()).unwrap();
+}
+
+pub fn run_poly1305_example() {
+    use poly1305::{
+        Poly1305,
+        universal_hash::{KeyInit, UniversalHash},
+    };
+
+    let key = [0u8; 32]; // placeholder: must be a one-time key in real use
+    let message = b"authenticated message";
+
+    let mut mac = Poly1305::new(&amp;key.into());
+    mac.update_padded(message);
+
+    let tag = mac.finalize();
+    let _tag_bytes: [u8; 16] = tag.into(); // if plain array wished
+}
+<span class="boring">}</span></code></pre>
+<p>If the message or tag is altered, verification fails immediately.</p>
+<blockquote>
+<dl>
+<dt id="-critical-rule"><a class="header" href="#-critical-rule">🚨 <strong>Critical rule</strong></a></dt>
+<dd>Never compare MACs with <code>==</code>.
+Always use constant-time verification APIs.</dd>
+</dl>
+</blockquote>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>HMAC is conservative, widely deployed, and extremely hard to misuse.</p>
+<p>If you need integrity without encryption — HMAC is the right tool.</p>
+</blockquote>
+<h3 id="poly1305--one-time-mac-for-modern-crypto"><a class="header" href="#poly1305--one-time-mac-for-modern-crypto">Poly1305 — One-Time MAC for Modern Crypto</a></h3>
+<blockquote>
+<p>💡 Used in ChaCha20-Poly1305, TLS 1.3, WireGuard</p>
+<p>Extremely fast, simple, and timing-safe</p>
+</blockquote>
+<blockquote>
+<p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/poly1305">poly1305</a></p>
+</blockquote>
+<p>Poly1305 is a modern MAC designed by Daniel J. Bernstein.</p>
+<p>Key properties:</p>
+<ul>
+<li>One-time MAC (key must never be reused)</li>
+<li>Constant-time<sup class="footnote-reference" id="fr-constant-time-1"><a href="#footnote-constant-time">11</a></sup> by design</li>
+<li>Very small and fast</li>
+<li>Designed to pair with stream ciphers<sup class="footnote-reference" id="fr-stream-cipher-1"><a href="#footnote-stream-cipher">12</a></sup></li>
+</ul>
+<p>Poly1305 is almost never used alone.
+It is generated from a cipher keystream, usually ChaCha20.</p>
+<p>🧪 <strong>Code Example: Poly1305 Tag</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_poly1305_example() {
+    use poly1305::{
+        Poly1305,
+        universal_hash::{KeyInit, UniversalHash},
+    };
+
+    let key = [0u8; 32]; // placeholder: must be a one-time key in real use
+    let message = b"authenticated message";
+
+    let mut mac = Poly1305::new(&amp;key.into());
+    mac.update_padded(message);
+
+    let tag = mac.finalize();
+    let _tag_bytes: [u8; 16] = tag.into(); // if plain array wished
+}
+<span class="boring">}</span></code></pre>
+<blockquote>
+<dl>
+<dt id="-critical-rule-1"><a class="header" href="#-critical-rule-1">🚨 <strong>Critical rule</strong></a></dt>
+<dd>Poly1305 keys must never be reused.
+Reuse = forgery.</dd>
+</dl>
+</blockquote>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>Poly1305 is fast, elegant, and extremely secure when used correctly,
+but it must be paired with a cipher that guarantees fresh keys.</p>
+</blockquote>
+<!--
+### AEAD — Authenticated Encryption (The Right Way)
+
+Modern cryptography does not ask: “Should I encrypt or authenticate?”
+
+The answer is: **Both. Together. Always.** This is **AEAD** — *Authenticated Encryption with Associated Data*.
+
+AEAD guarantees:
+
+* Confidentiality
+* Integrity
+* Authenticity
+* Optional authentication of unencrypted metadata
+
+If authentication fails → **decryption must not happen**.
+
+---
+
+### AES-GCM — The Enterprise Standard AEAD
+
+> 💡 Used in TLS, HTTPS, databases, cloud storage, hardware security modules
+>
+> Hardware-accelerated and widely standardized
+
+> <img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: [aes-gcm](https://crates.io/crates/aes-gcm)
+
+**AES-GCM** combines:
+
+* AES block cipher
+* CTR mode (for encryption)
+* GHASH (for authentication)
+
+🧪 **Code Example: AES-256-GCM**
+
+```rust,no_run
+use aes_gcm::{Aes256Gcm, Key, Nonce};
+use aes_gcm::aead::{Aead, KeyInit};
+
+let key = Key::<Aes256Gcm>::from_slice(&[0u8; 32]);
+let cipher = Aes256Gcm::new(key);
+
+let nonce = Nonce::from_slice(&[0u8; 12]);
+let ciphertext = cipher.encrypt(nonce, b"secret data".as_ref()).unwrap();
+
+let plaintext = cipher.decrypt(nonce, ciphertext.as_ref()).unwrap();
+```
+
+> 🚨 **Security rule**
+>
+> **Never reuse a nonce with the same key. Ever.**
+>
+> GCM nonce reuse = total compromise.
+
+> **🟢 Conclusion**
+>
+> AES-GCM is extremely fast on modern CPUs and ideal for servers,
+> but nonce management must be flawless.
+
+---
+
+### ChaCha20-Poly1305 — The Safer Default
+
+> 💡 Used in WireGuard, mobile apps, embedded systems, TLS fallback
+>
+> Designed for misuse resistance
+
+ChaCha20-Poly1305 combines:
+
+* ChaCha20 (encryption)
+* Poly1305 (authentication)
+* A clean, unified AEAD API
+
+Advantages:
+
+* Constant-time by design
+* No cache-timing issues
+* Excellent performance everywhere
+* Fewer catastrophic mistakes
+
+🧪 **Code Example: ChaCha20-Poly1305**
+
+```rust,no_run
+use chacha20poly1305::{ChaCha20Poly1305, Key, Nonce};
+use chacha20poly1305::aead::{Aead, KeyInit};
+
+let key = Key::from_slice(&[0u8; 32]);
+let cipher = ChaCha20Poly1305::new(key);
+
+let nonce = Nonce::from_slice(&[0u8; 12]);
+let ciphertext = cipher.encrypt(nonce, b"top secret".as_ref()).unwrap();
+
+let plaintext = cipher.decrypt(nonce, ciphertext.as_ref()).unwrap();
+```
+
+> **🟢 Conclusion**
+>
+> ChaCha20-Poly1305 is often the best default choice —
+> safer APIs, portable performance, and strong resistance to side-channel attacks.
+
+---
+
+### MAC vs AEAD — What Should You Use?
+
+| Situation          | Use                      |
+| ------------------ | ------------------------ |
+| Integrity only     | HMAC                     |
+| Streaming cipher   | Poly1305 (with ChaCha20) |
+| General encryption | AEAD                     |
+| Enterprise systems | AES-GCM                  |
+| Mobile / embedded  | ChaCha20-Poly1305        |
+
+> **Rule of thumb**
+>
+> **If encryption is involved → always use AEAD.**
+> Rolling your own MAC + encryption is a mistake.
+
+---
+
+### Final Takeaway
+
+Encryption without authentication is broken.
+Authentication without encryption is incomplete.
+
+Modern cryptography converged on one answer:
+
+> **AEAD everywhere.**
+
+* MACs teach integrity
+* Poly1305 shows modern design
+* AEAD prevents entire classes of attacks
+
+If you understand this chapter,
+you understand **why modern protocols are secure** — and why legacy ones failed.
+
+That’s the difference between *crypto that works* and *crypto that survives attackers*.
+-->
+<hr>
+<ol class="footnote-definition">
+<li id="footnote-forged-api">
+<p>Forged API Request — Attack where an adversary crafts or alters API requests to impersonate a legitimate client or bypass authentication and authorization controls. <a href="../99-appendices/99-01-glossary.html#forged-api-request">More</a> <a href="#fr-forged-api-1">↩</a></p>
+</li>
+<li id="footnote-token-manip">
+<p>Token Manipulation — Tampering with authentication or session tokens (JWT, cookies, API keys) to escalate privileges, extend validity, or impersonate another user. <a href="../99-appendices/99-01-glossary.html#token-manipulation">More</a> <a href="#fr-token-manip-1">↩</a></p>
+</li>
+<li id="footnote-padding-oracle">
+<p>Padding Oracle Attack — Cryptographic attack exploiting padding validation errors in block ciphers to progressively recover plaintext or forge valid ciphertexts. <a href="../99-appendices/99-01-glossary.html#padding-oracle-attack">More</a> <a href="#fr-padding-oracle-1">↩</a></p>
+</li>
+<li id="footnote-silent-data">
+<p>Silent Data Corruption — Undetected modification of data caused by hardware faults, software bugs, or transmission errors, leading to integrity loss without immediate failure signals. <a href="../99-appendices/99-01-glossary.html#silent-data-corruption">More</a> <a href="#fr-silent-data-1">↩</a></p>
+</li>
+<li id="footnote-jwt">
+<p>JWT (JSON Web Token) — Compact, URL-safe token format used to securely transmit signed or encrypted claims for authentication and authorization in distributed systems. <a href="../99-appendices/99-01-glossary.html#jwt">More</a> <a href="#fr-jwt-1">↩</a></p>
+</li>
+<li id="footnote-api">
+<p>API (Application Programming Interface) — Contract defining how software components communicate via structured requests, responses, authentication, and versioned endpoints. <a href="../99-appendices/99-01-glossary.html#api">More</a> <a href="#fr-api-1">↩</a></p>
+</li>
+<li id="footnote-oauth">
+<p>OAuth 2.0 — Industry-standard authorization framework enabling delegated access to protected resources without sharing user credentials with third-party applications. <a href="../99-appendices/99-01-glossary.html#oauth-20">More</a> <a href="#fr-oauth-1">↩</a></p>
+</li>
+<li id="footnote-aws-signin">
+<p>AWS Request Signin — Cryptographic mechanism (SigV4) that authenticates and authorizes AWS API requests using HMAC-based signatures derived from secret credentials. <a href="../99-appendices/99-01-glossary.html#aws-request-signin-sigv4">More</a> <a href="#fr-aws-signin-1">↩</a></p>
+</li>
+<li id="footnote-tls-internals">
+<p>TLS Internals — Cryptographic protocols and handshake mechanisms that provide authentication, key exchange, confidentiality, and integrity for secure network communications. <a href="../99-appendices/99-01-glossary.html#tls-internals">More</a> <a href="#fr-tls-internals-1">↩</a></p>
+</li>
+<li id="footnote-length-attack">
+<p>Length-Extension Attack — Hash function vulnerability allowing attackers to append data to a hashed message and compute a valid hash without knowing the secret. <a href="../99-appendices/99-01-glossary.html#length-extension-attack">More</a> <a href="#fr-length-attack-1">↩</a></p>
+</li>
+<li id="footnote-constant-time">
+<p>Constant-Time Algorithm — Implementation strategy where execution time is independent of secret data, preventing timing side-channel information leakage. <a href="../99-appendices/99-01-glossary.html#constant-time-algorithm">More</a> <a href="#fr-constant-time-1">↩</a></p>
+</li>
+<li id="footnote-stream-cipher">
+<p>Stream Cipher — Symmetric encryption primitive that generates a pseudorandom keystream and encrypts data by XORing it with plaintext bytes. <a href="../99-appendices/99-01-glossary.html#stream-cipher">More</a> <a href="#fr-stream-cipher-1">↩</a></p>
+</li>
+</ol>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../01-foundations/01-04-first-code.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../02-core-primitives/02-02-crypto-hashes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../02-core-primitives/02-01-symmetric-ciphers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../99-appendices/99-01-glossary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -227,11 +533,11 @@ cargo test
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../01-foundations/01-04-first-code.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../02-core-primitives/02-02-crypto-hashes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../02-core-primitives/02-01-symmetric-ciphers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../99-appendices/99-01-glossary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
