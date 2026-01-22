@@ -120,7 +120,7 @@ pub fn run_hmac_example() {
     Mac::update(&mut verify, message);
     Mac::verify_slice(verify, tag.as_slice()).unwrap();
 }
-// ANCHOR: hmac
+// ANCHOR_END: hmac
 
 // ANCHOR: poly1305
 pub fn run_poly1305_example() {
@@ -138,4 +138,4 @@ pub fn run_poly1305_example() {
     let tag = mac.finalize();
     let _tag_bytes: [u8; 16] = tag.into(); // if plain array wished
 }
-// ANCHOR: poly1305
+// ANCHOR_END: poly1305
