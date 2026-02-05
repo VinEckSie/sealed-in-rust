@@ -1,9 +1,9 @@
 // ANCHOR: aes
 pub fn run_aes_example() {
     use aes::Aes128;
+    use cbc::cipher::block_padding::Pkcs7;
+    use cbc::cipher::{BlockDecryptMut, BlockEncryptMut, KeyIvInit};
     use cbc::{Decryptor, Encryptor};
-    use cipher::block_padding::Pkcs7;
-    use cipher::{BlockDecryptMut, BlockEncryptMut, KeyIvInit};
 
     let key = b"verysecretkey123";
     let iv = b"uniqueinitvector";
@@ -139,3 +139,35 @@ pub fn run_poly1305_example() {
     let _tag_bytes: [u8; 16] = tag.into(); // if plain array wished
 }
 // ANCHOR_END: poly1305
+
+// ANCHOR: aes256gcm
+pub fn run_aes256gcm_example() {
+    use aes_gcm::aead::{Aead, KeyInit};
+    use aes_gcm::{Aes256Gcm, Key, Nonce};
+
+    let key = Key::<Aes256Gcm>::from_slice(&[0u8; 32]);
+    let cipher = Aes256Gcm::new(key);
+
+    let nonce = Nonce::from_slice(&[0u8; 12]);
+    let ciphertext = cipher.encrypt(nonce, b"secret data".as_ref()).unwrap();
+
+    let plaintext = cipher.decrypt(nonce, ciphertext.as_ref()).unwrap();
+    println!("AES256-GCM: {:#?}", plaintext);
+}
+// ANCHOR_END: aes256gcm
+
+// ANCHOR: chacha20poly1305
+pub fn run_chacha20poly1305_example() {
+    use chacha20poly1305::aead::{Aead, KeyInit};
+    use chacha20poly1305::{ChaCha20Poly1305, Key, Nonce};
+
+    let key = Key::from_slice(&[0u8; 32]);
+    let cipher = ChaCha20Poly1305::new(key);
+
+    let nonce = Nonce::from_slice(&[0u8; 12]);
+    let ciphertext = cipher.encrypt(nonce, b"secret data".as_ref()).unwrap();
+
+    let plaintext = cipher.decrypt(nonce, ciphertext.as_ref()).unwrap();
+    println!("Chacha20-Poly1305: {:#?}", plaintext);
+}
+// ANCHOR_END: chacha20poly1305
