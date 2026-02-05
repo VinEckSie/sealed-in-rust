@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-241dc41c.js";
+            window.path_to_searchindex_js = "../searchindex-a31e1a5e.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-510ff4c2.js"></script>
@@ -187,7 +187,7 @@ But encryption alone does not stop attackers from modifying it.</p>
 <li><strong>Integrity &amp; Authenticity</strong> → Nobody can tamper with it unnoticed</li>
 </ul>
 <p>This chapter is about the second half — the part beginners forget, and attackers exploit.</p>
-<h3 id="why-encryption-alone-is-not-enough"><a class="header" href="#why-encryption-alone-is-not-enough">Why Encryption Alone Is Not Enough</a></h3>
+<h2 id="why-encryption-alone-is-not-enough"><a class="header" href="#why-encryption-alone-is-not-enough">Why Encryption Alone Is Not Enough</a></h2>
 <p>A common beginner mistake:
 “My data is encrypted, so it’s secure.”
 That’s false.</p>
@@ -202,7 +202,7 @@ That’s false.</p>
 </ul>
 <p><strong>Encryption without integrity is malleable by default</strong>.</p>
 <p>This is why <strong>MACs</strong> and <strong>AEAD</strong> exist.</p>
-<h3 id="macs-message-authentication-codes"><a class="header" href="#macs-message-authentication-codes">MACs (Message Authentication Codes)</a></h3>
+<h2 id="macs-message-authentication-codes"><a class="header" href="#macs-message-authentication-codes">MACs (Message Authentication Codes)</a></h2>
 <p>A MAC is a cryptographic checksum computed using a secret key.</p>
 <p>It answers one critical question:</p>
 <blockquote>
@@ -221,7 +221,7 @@ That’s false.</p>
 <pre><code class="language-text">message + secret key → recomputed MAC → compare
 </code></pre>
 <p>If even one bit changes, verification fails.</p>
-<h3 id="hmac-hash-based-message-authentication-code--the-standard-mac-construction"><a class="header" href="#hmac-hash-based-message-authentication-code--the-standard-mac-construction">HMAC (Hash-based Message Authentication Code) — The Standard MAC Construction</a></h3>
+<h2 id="hmac-hash-based-message-authentication-code--the-standard-mac-construction"><a class="header" href="#hmac-hash-based-message-authentication-code--the-standard-mac-construction">HMAC (Hash-based Message Authentication Code) — The Standard MAC Construction</a></h2>
 <blockquote>
 <p>💡 Used in JWT<sup class="footnote-reference" id="fr-jwt-1"><a href="#footnote-jwt">5</a></sup>, APIs<sup class="footnote-reference" id="fr-api-1"><a href="#footnote-api">6</a></sup>, OAuth<sup class="footnote-reference" id="fr-oauth-1"><a href="#footnote-oauth">7</a></sup>, AWS signing<sup class="footnote-reference" id="fr-aws-signin-1"><a href="#footnote-aws-signin">8</a></sup>, TLS internals<sup class="footnote-reference" id="fr-tls-internals-1"><a href="#footnote-tls-internals">9</a></sup></p>
 <p>Stable, conservative, battle-tested</p>
@@ -274,7 +274,7 @@ Always use constant-time verification APIs.</dd>
 <p>HMAC is conservative, widely deployed, and extremely hard to misuse.</p>
 <p>If you need integrity without encryption — HMAC is the right tool.</p>
 </blockquote>
-<h3 id="poly1305--one-time-mac-for-modern-crypto"><a class="header" href="#poly1305--one-time-mac-for-modern-crypto">Poly1305 — One-Time MAC for Modern Crypto</a></h3>
+<h2 id="poly1305--one-time-mac-for-modern-crypto"><a class="header" href="#poly1305--one-time-mac-for-modern-crypto">Poly1305 — One-Time MAC for Modern Crypto</a></h2>
 <blockquote>
 <p>💡 Used in ChaCha20-Poly1305, TLS 1.3, WireGuard</p>
 <p>Extremely fast, simple, and timing-safe</p>
@@ -292,7 +292,7 @@ Always use constant-time verification APIs.</dd>
 </ul>
 <p>Poly1305 is almost never used alone.
 It is generated from a cipher keystream, usually ChaCha20.</p>
-<p>🧪 <strong>Code Example: Poly1305 Tag</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<p>🧪 <strong>Code Example: Poly1305</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn run_poly1305_example() {
@@ -323,142 +323,158 @@ Reuse = forgery.</dd>
 <p>Poly1305 is fast, elegant, and extremely secure when used correctly,
 but it must be paired with a cipher that guarantees fresh keys.</p>
 </blockquote>
-<!--
-### AEAD — Authenticated Encryption (The Right Way)
+<h2 id="aead--authenticated-encryption-the-right-way"><a class="header" href="#aead--authenticated-encryption-the-right-way">AEAD — Authenticated Encryption (The Right Way)</a></h2>
+<p>Modern cryptography does not ask: “Should I encrypt or authenticate?”.</p>
+<p>The answer is: <strong>Both. Together. Always.</strong></p>
+<p>AEAD guarantees:</p>
+<ul>
+<li>Confidentiality</li>
+<li>Integrity</li>
+<li>Authenticity</li>
+<li>Optional authentication of unencrypted metadata</li>
+</ul>
+<p>If authentication fails → decryption must not happen.</p>
+<h2 id="aes-gcm--the-enterprise-standard-aead"><a class="header" href="#aes-gcm--the-enterprise-standard-aead">AES-GCM — The Enterprise Standard AEAD</a></h2>
+<blockquote>
+<p>💡 Used in TLS, HTTPS, databases, cloud storage, hardware security modules, hardware-accelerated and widely standardized</p>
+</blockquote>
+<blockquote>
+<p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: <a href="https://crates.io/crates/aes-gcm">aes-gcm</a></p>
+</blockquote>
+<p>AES-GCM<sup class="footnote-reference" id="fr-aes-gcm-1"><a href="#footnote-aes-gcm">13</a></sup> combines:</p>
+<ul>
+<li>AES block cipher<sup class="footnote-reference" id="fr-aes-block-cipher-1"><a href="#footnote-aes-block-cipher">14</a></sup></li>
+<li>CTR mode<sup class="footnote-reference" id="fr-ctr-mode-1"><a href="#footnote-ctr-mode">15</a></sup> (for encryption)</li>
+<li>GHASH<sup class="footnote-reference" id="fr-ghash-1"><a href="#footnote-ghash">16</a></sup>  (for authentication)</li>
+</ul>
+<p>🧪 <strong>Code Example: AES-256-GCM</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_aes256gcm_example() {
+    use aes_gcm::aead::{Aead, KeyInit};
+    use aes_gcm::{Aes256Gcm, Key, Nonce};
 
-Modern cryptography does not ask: “Should I encrypt or authenticate?”
+    let key = Key::&lt;Aes256Gcm&gt;::from_slice(&amp;[0u8; 32]);
+    let cipher = Aes256Gcm::new(key);
 
-The answer is: **Both. Together. Always.** This is **AEAD** — *Authenticated Encryption with Associated Data*.
+    let nonce = Nonce::from_slice(&amp;[0u8; 12]);
+    let ciphertext = cipher.encrypt(nonce, b"secret data".as_ref()).unwrap();
 
-AEAD guarantees:
+    let plaintext = cipher.decrypt(nonce, ciphertext.as_ref()).unwrap();
+    println!("AES256-GCM: {:#?}", plaintext);
+}
+<span class="boring">}</span></code></pre>
+<p>Output:</p>
+<pre><code class="language-text">AES256-GCM: [
+    115,
+    101,
+    99,
+    114,
+    101,
+    116,
+    32,
+    100,
+    97,
+    116,
+    97,
+]
+</code></pre>
+<blockquote>
+<dl>
+<dt id="-critical-rule-2"><a class="header" href="#-critical-rule-2">🚨 <strong>Critical rule</strong></a></dt>
+<dd>Never reuse a nonce with the same key. Ever.
+GCM nonce reuse = total compromise.</dd>
+</dl>
+</blockquote>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>AES-GCM is extremely fast on modern CPUs and ideal for servers,
+but nonce management must be flawless.</p>
+</blockquote>
+<h2 id="chacha20-poly1305--the-safer-default"><a class="header" href="#chacha20-poly1305--the-safer-default">ChaCha20-Poly1305 — The Safer Default</a></h2>
+<blockquote>
+<p>💡 Used in WireGuard<sup class="footnote-reference" id="fr-wireguard-1"><a href="#footnote-wireguard">17</a></sup>, mobile apps, embedded systems, TLS fallback<sup class="footnote-reference" id="fr-tls-fallback-1"><a href="#footnote-tls-fallback">18</a></sup></p>
+<p>Designed for misuse resistance<sup class="footnote-reference" id="fr-misuse-resistance-1"><a href="#footnote-misuse-resistance">19</a></sup></p>
+</blockquote>
+<p>ChaCha20-Poly1305<sup class="footnote-reference" id="fr-chacha20-poly1305-1"><a href="#footnote-chacha20-poly1305">20</a></sup> combines:</p>
+<ul>
+<li>ChaCha20<sup class="footnote-reference" id="fr-chacha20-1"><a href="#footnote-chacha20">21</a></sup> (encryption)</li>
+<li>Poly1305<sup class="footnote-reference" id="fr-poly1305-1"><a href="#footnote-poly1305">22</a></sup> (authentication)</li>
+<li>A clean, unified AEAD API<sup class="footnote-reference" id="fr-aead-api-1"><a href="#footnote-aead-api">23</a></sup></li>
+</ul>
+<p>Advantages:</p>
+<ul>
+<li>Constant-time<sup class="footnote-reference" id="fr-constant-time-2"><a href="#footnote-constant-time">11</a></sup> by design</li>
+<li>No cache-timing<sup class="footnote-reference" id="fr-cache-timing-1"><a href="#footnote-cache-timing">24</a></sup> issues</li>
+<li>Excellent performance everywhere</li>
+<li>Fewer catastrophic mistakes</li>
+</ul>
+<p>🧪 <strong>Code Example: ChaCha20-Poly1305</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_chacha20poly1305_example() {
+    use chacha20poly1305::aead::{Aead, KeyInit};
+    use chacha20poly1305::{ChaCha20Poly1305, Key, Nonce};
 
-* Confidentiality
-* Integrity
-* Authenticity
-* Optional authentication of unencrypted metadata
+    let key = Key::from_slice(&amp;[0u8; 32]);
+    let cipher = ChaCha20Poly1305::new(key);
 
-If authentication fails → **decryption must not happen**.
+    let nonce = Nonce::from_slice(&amp;[0u8; 12]);
+    let ciphertext = cipher.encrypt(nonce, b"secret data".as_ref()).unwrap();
 
----
-
-### AES-GCM — The Enterprise Standard AEAD
-
-> 💡 Used in TLS, HTTPS, databases, cloud storage, hardware security modules
->
-> Hardware-accelerated and widely standardized
-
-> <img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: [aes-gcm](https://crates.io/crates/aes-gcm)
-
-**AES-GCM** combines:
-
-* AES block cipher
-* CTR mode (for encryption)
-* GHASH (for authentication)
-
-🧪 **Code Example: AES-256-GCM**
-
-```rust,no_run
-use aes_gcm::{Aes256Gcm, Key, Nonce};
-use aes_gcm::aead::{Aead, KeyInit};
-
-let key = Key::<Aes256Gcm>::from_slice(&[0u8; 32]);
-let cipher = Aes256Gcm::new(key);
-
-let nonce = Nonce::from_slice(&[0u8; 12]);
-let ciphertext = cipher.encrypt(nonce, b"secret data".as_ref()).unwrap();
-
-let plaintext = cipher.decrypt(nonce, ciphertext.as_ref()).unwrap();
-```
-
-> 🚨 **Security rule**
->
-> **Never reuse a nonce with the same key. Ever.**
->
-> GCM nonce reuse = total compromise.
-
-> **🟢 Conclusion**
->
-> AES-GCM is extremely fast on modern CPUs and ideal for servers,
-> but nonce management must be flawless.
-
----
-
-### ChaCha20-Poly1305 — The Safer Default
-
-> 💡 Used in WireGuard, mobile apps, embedded systems, TLS fallback
->
-> Designed for misuse resistance
-
-ChaCha20-Poly1305 combines:
-
-* ChaCha20 (encryption)
-* Poly1305 (authentication)
-* A clean, unified AEAD API
-
-Advantages:
-
-* Constant-time by design
-* No cache-timing issues
-* Excellent performance everywhere
-* Fewer catastrophic mistakes
-
-🧪 **Code Example: ChaCha20-Poly1305**
-
-```rust,no_run
-use chacha20poly1305::{ChaCha20Poly1305, Key, Nonce};
-use chacha20poly1305::aead::{Aead, KeyInit};
-
-let key = Key::from_slice(&[0u8; 32]);
-let cipher = ChaCha20Poly1305::new(key);
-
-let nonce = Nonce::from_slice(&[0u8; 12]);
-let ciphertext = cipher.encrypt(nonce, b"top secret".as_ref()).unwrap();
-
-let plaintext = cipher.decrypt(nonce, ciphertext.as_ref()).unwrap();
-```
-
-> **🟢 Conclusion**
->
-> ChaCha20-Poly1305 is often the best default choice —
-> safer APIs, portable performance, and strong resistance to side-channel attacks.
-
----
-
-### MAC vs AEAD — What Should You Use?
-
-| Situation          | Use                      |
-| ------------------ | ------------------------ |
-| Integrity only     | HMAC                     |
-| Streaming cipher   | Poly1305 (with ChaCha20) |
-| General encryption | AEAD                     |
-| Enterprise systems | AES-GCM                  |
-| Mobile / embedded  | ChaCha20-Poly1305        |
-
-> **Rule of thumb**
->
-> **If encryption is involved → always use AEAD.**
-> Rolling your own MAC + encryption is a mistake.
-
----
-
-### Final Takeaway
-
-Encryption without authentication is broken.
-Authentication without encryption is incomplete.
-
-Modern cryptography converged on one answer:
-
-> **AEAD everywhere.**
-
-* MACs teach integrity
-* Poly1305 shows modern design
-* AEAD prevents entire classes of attacks
-
-If you understand this chapter,
-you understand **why modern protocols are secure** — and why legacy ones failed.
-
-That’s the difference between *crypto that works* and *crypto that survives attackers*.
--->
+    let plaintext = cipher.decrypt(nonce, ciphertext.as_ref()).unwrap();
+    println!("Chacha20-Poly1305: {:#?}", plaintext);
+}
+<span class="boring">}</span></code></pre>
+<p>Output:</p>
+<pre><code class="language-text">Chacha20-Poly1305: [
+    115,
+    101,
+    99,
+    114,
+    101,
+    116,
+    32,
+    100,
+    97,
+    116,
+    97,
+]
+</code></pre>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>ChaCha20-Poly1305 is often the best default choice: safer APIs, portable performance, and strong resistance to side-channel attacks<sup class="footnote-reference" id="fr-side-channel-attack-1"><a href="#footnote-side-channel-attack">25</a></sup>.</p>
+</blockquote>
+<h2 id="mac-vs-aead--what-should-you-use"><a class="header" href="#mac-vs-aead--what-should-you-use">MAC vs AEAD — What Should You Use?</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Situation</th><th>Use</th></tr>
+</thead>
+<tbody>
+<tr><td>Integrity only</td><td>HMAC</td></tr>
+<tr><td>Streaming cipher</td><td>Poly1305 (with ChaCha20)</td></tr>
+<tr><td>General encryption</td><td>AEAD</td></tr>
+<tr><td>Enterprise systems</td><td>AES-GCM</td></tr>
+<tr><td>Mobile / embedded</td><td>ChaCha20-Poly1305</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<dl>
+<dt id="-critical-rule-3"><a class="header" href="#-critical-rule-3">🚨 <strong>Critical rule</strong></a></dt>
+<dd>If encryption is involved → always use AEAD.
+Rolling your own MAC + encryption is a mistake.</dd>
+</dl>
+</blockquote>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>Encryption alone only hides data — it doesn’t stop attackers from changing it.</p>
+<p>A MAC teaches the integrity lesson: “was this message modified, and did it come from someone with the key?”</p>
+<p>Poly1305 shows modern MAC design: fast and safe when used correctly (one-time keys).</p>
+<p>AEAD (AES-GCM, ChaCha20-Poly1305) combines encryption + authentication so tampering is detected and decryption is refused.</p>
+<p>Practical rule: if you encrypt data in real systems, <strong>use AEAD by default</strong> and treat nonce/key management as a first-class security requirement.</p>
+</blockquote>
 <hr>
 <ol class="footnote-definition">
 <li id="footnote-forged-api">
@@ -492,10 +508,49 @@ That’s the difference between *crypto that works* and *crypto that survives at
 <p>Length-Extension Attack — Hash function vulnerability allowing attackers to append data to a hashed message and compute a valid hash without knowing the secret. <a href="../99-appendices/99-01-glossary.html#length-extension-attack">More</a> <a href="#fr-length-attack-1">↩</a></p>
 </li>
 <li id="footnote-constant-time">
-<p>Constant-Time Algorithm — Implementation strategy where execution time is independent of secret data, preventing timing side-channel information leakage. <a href="../99-appendices/99-01-glossary.html#constant-time-algorithm">More</a> <a href="#fr-constant-time-1">↩</a></p>
+<p>Constant-Time Algorithm — Implementation strategy where execution time is independent of secret data, preventing timing side-channel information leakage. <a href="../99-appendices/99-01-glossary.html#constant-time-algorithm">More</a> <a href="#fr-constant-time-1">↩</a> <a href="#fr-constant-time-2">↩2</a></p>
 </li>
 <li id="footnote-stream-cipher">
 <p>Stream Cipher — Symmetric encryption primitive that generates a pseudorandom keystream and encrypts data by XORing it with plaintext bytes. <a href="../99-appendices/99-01-glossary.html#stream-cipher">More</a> <a href="#fr-stream-cipher-1">↩</a></p>
+</li>
+<li id="footnote-aes-gcm">
+<p>AES-GCM — Standard AEAD using AES-CTR for encryption plus GHASH for authentication; fast but requires unique nonces per key. <a href="../99-appendices/99-01-glossary.html#aes-gcm">More</a> <a href="#fr-aes-gcm-1">↩</a></p>
+</li>
+<li id="footnote-aes-block-cipher">
+<p>AES Block Cipher — AES is a 128-bit block cipher primitive; you still need a mode/AEAD (CTR, GCM, etc.) to encrypt messages safely. <a href="../99-appendices/99-01-glossary.html#aes-block-cipher">More</a> <a href="#fr-aes-block-cipher-1">↩</a></p>
+</li>
+<li id="footnote-ctr-mode">
+<p>CTR Mode — Counter mode turns a block cipher into a keystream generator; it’s fast but malleable and must be paired with authentication. <a href="../99-appendices/99-01-glossary.html#ctr-mode">More</a> <a href="#fr-ctr-mode-1">↩</a></p>
+</li>
+<li id="footnote-ghash">
+<p>GHASH — The polynomial-hash authenticator inside AES-GCM, computed over AAD and ciphertext to help produce the authentication tag. <a href="../99-appendices/99-01-glossary.html#ghash">More</a> <a href="#fr-ghash-1">↩</a></p>
+</li>
+<li id="footnote-wireguard">
+<p>WireGuard — Modern VPN protocol using a small, fixed set of strong primitives (notably ChaCha20-Poly1305) for high performance and simplicity. <a href="../99-appendices/99-01-glossary.html#wireguard">More</a> <a href="#fr-wireguard-1">↩</a></p>
+</li>
+<li id="footnote-tls-fallback">
+<p>TLS Fallback — Choosing an alternative cipher suite during TLS negotiation (often ChaCha20-Poly1305 on non-AES hardware) without sacrificing authenticated encryption. <a href="../99-appendices/99-01-glossary.html#tls-fallback">More</a> <a href="#fr-tls-fallback-1">↩</a></p>
+</li>
+<li id="footnote-misuse-resistance">
+<p>Misuse Resistance — Design goal where common mistakes (especially nonce reuse) cause less catastrophic failure; still not “safe to misuse,” just safer. <a href="../99-appendices/99-01-glossary.html#misuse-resistance">More</a> <a href="#fr-misuse-resistance-1">↩</a></p>
+</li>
+<li id="footnote-chacha20-poly1305">
+<p>ChaCha20-Poly1305 — Widely deployed AEAD combining ChaCha20 encryption with Poly1305 authentication; strong, fast in software, and common in TLS and WireGuard. <a href="../99-appendices/99-01-glossary.html#chacha20-poly1305">More</a> <a href="#fr-chacha20-poly1305-1">↩</a></p>
+</li>
+<li id="footnote-chacha20">
+<p>ChaCha20 — Fast ARX-based stream cipher; encrypts by XORing a generated keystream with plaintext; nonce reuse under the same key breaks confidentiality. <a href="../99-appendices/99-01-glossary.html#chacha20">More</a> <a href="#fr-chacha20-1">↩</a></p>
+</li>
+<li id="footnote-poly1305">
+<p>Poly1305 — One-time MAC producing a 16-byte tag; secure only if the Poly1305 key is never reused, typically derived fresh per message. <a href="../99-appendices/99-01-glossary.html#poly1305">More</a> <a href="#fr-poly1305-1">↩</a></p>
+</li>
+<li id="footnote-aead-api">
+<p>AEAD API — Standard encrypt/decrypt interface using (key, nonce, AAD, plaintext/ciphertext) and returning success or authentication failure; never release plaintext on failure. <a href="../99-appendices/99-01-glossary.html#aead-api">More</a> <a href="#fr-aead-api-1">↩</a></p>
+</li>
+<li id="footnote-cache-timing">
+<p>Cache Timing — Timing leakage caused by secret-dependent CPU cache accesses (e.g., lookup tables), which can reveal keys; mitigated by constant-time code and AES-NI. <a href="../99-appendices/99-01-glossary.html#cache-timing">More</a> <a href="#fr-cache-timing-1">↩</a></p>
+</li>
+<li id="footnote-side-channel-attack">
+<p>Side-Channel Attack — Attack that exploits leaked information from an implementation (timing, cache, power, EM, faults) rather than breaking the underlying cryptography. <a href="../99-appendices/99-01-glossary.html#side-channel-attack">More</a> <a href="#fr-side-channel-attack-1">↩</a></p>
 </li>
 </ol>
 

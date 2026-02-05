@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-241dc41c.js";
+            window.path_to_searchindex_js = "../searchindex-a31e1a5e.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-510ff4c2.js"></script>
@@ -469,9 +469,9 @@ We’ll use the aes and block-modes crates to encrypt and decrypt a message usin
 </span><span class="boring">fn main() {
 </span>pub fn run_aes_example() {
     use aes::Aes128;
+    use cbc::cipher::block_padding::Pkcs7;
+    use cbc::cipher::{BlockDecryptMut, BlockEncryptMut, KeyIvInit};
     use cbc::{Decryptor, Encryptor};
-    use cipher::block_padding::Pkcs7;
-    use cipher::{BlockDecryptMut, BlockEncryptMut, KeyIvInit};
 
     let key = b"verysecretkey123";
     let iv = b"uniqueinitvector";
