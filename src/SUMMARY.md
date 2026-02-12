@@ -15,6 +15,7 @@
 <!-- Side-Channel Attacks & Constant-Time Design -->
 
 - [Core Cryptographic Primitives]()
+    - [How Ciphers, Hashes, MACs, AEAD Compose](02-core-primitives/02-00-primitives-overview.md)
     - [Symmetric Ciphers — XOR, AES, ChaCha20](02-core-primitives/02-01-symmetric-ciphers.md)
     - [Cryptographic Hashes — SHA-2, BLAKE3](02-core-primitives/02-02-crypto-hashes.md)
     - [MACs & AEAD — HMAC, Poly1305, AES-GCM](02-core-primitives/02-03-mac-aead.md)
