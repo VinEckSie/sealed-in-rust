@@ -19,6 +19,7 @@
     - [Symmetric Ciphers — XOR, AES, ChaCha20](02-core-primitives/02-01-symmetric-ciphers.md)
     - [Cryptographic Hashes — SHA-2, BLAKE3](02-core-primitives/02-02-crypto-hashes.md)
     - [MACs & AEAD — HMAC, Poly1305, AES-GCM](02-core-primitives/02-03-mac-aead.md)
+    - [Randomness & Entropy — Nonces, IVs, CSPRNGs](02-core-primitives/02-07-randomness-entropy.md)
 
 - [Appendices]()
     - [Glossary of Terms](99-appendices/99-01-glossary.md)

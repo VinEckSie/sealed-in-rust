@@ -171,3 +171,16 @@ pub fn run_chacha20poly1305_example() {
     println!("Chacha20-Poly1305: {:#?}", plaintext);
 }
 // ANCHOR_END: chacha20poly1305
+
+// ANCHOR: csprng
+pub fn run_csprng_example() {
+    use rand::RngCore;
+    use rand::rngs::OsRng;
+
+    let mut bytes = [0u8; 32];
+    OsRng.fill_bytes(&mut bytes);
+
+    println!("32 random bytes: {}", hex::encode(bytes));
+    println!("random u64: {}", OsRng.next_u64());
+}
+// ANCHOR_END: csprng
