@@ -1,6 +1,6 @@
 ## Randomness & Entropy — Nonces, IVs, CSPRNGs
 
-> 🔐 **Used in:** encryption schemes[^encryption-scheme], TLS, digital signatures[^digital-signature], key generation, session tokens
+> 🔐 **Used in:** encryption schemes, TLS, digital signatures[^digital-signature], key generation, session tokens
 >
 > ✅ Unpredictability is security. If randomness fails, everything collapses.
 
@@ -207,7 +207,6 @@ You rely on:
 >Without entropy, cryptography is an illusion.
 
 
-[^encryption-iv]: Initialization vector (IV): non-secret per-message value required by some cipher modes; must follow scheme rules; reuse can leak information. [More](../99-appendices/99-01-glossary.md#iv-initialization-vector)
 [^digital-signature]: Digital signature: private-key proof of authenticity and integrity; anyone with the public key can verify; enables non-repudiation. [More](../99-appendices/99-01-glossary.md#digital-signature)
 [^encryption-iv]: Initialization vector (IV): non-secret per-message value required by some cipher modes; must follow scheme rules; reuse can leak information. [More](../99-appendices/99-01-glossary.md#iv-initialization-vector)
 [^nonce]: Nonce (“number used once”): per-operation value that must not repeat for a given key; reuse can catastrophically break AEAD security. [More](../99-appendices/99-01-glossary.md#nonce)
