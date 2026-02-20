@@ -78,6 +78,45 @@ pub fn run_hkdf_example() {
 }
 // ANCHOR_END: hkdf
 
+// ANCHOR: argon2id
+pub fn run_argon2id_example() {
+    use argon2::Argon2;
+    use argon2::password_hash::{
+        PasswordHash, PasswordHasher, PasswordVerifier, SaltString,
+        rand_core::OsRng,
+    };
+
+    let password = b"correct horse battery staple";
+    let salt = SaltString::generate(&mut OsRng);
+
+    let argon2 = Argon2::default(); // Argon2id by default
+    let hash = argon2.hash_password(password, &salt).unwrap().to_string();
+
+    // Store `hash` in your DB. Later, verify by parsing the encoded string.
+    let parsed = PasswordHash::new(&hash).unwrap();
+    argon2.verify_password(password, &parsed).unwrap();
+
+    println!("Argon2id hash: {hash}");
+}
+// ANCHOR_END: argon2id
+
+// ANCHOR: scrypt
+pub fn run_scrypt_example() {
+    use scrypt::{Params, scrypt};
+
+    let password = b"correct horse battery staple";
+    let salt = b"unique salt"; // should be random and unique per user/file in real systems
+
+    // N=2^15, r=8, p=1 is a common baseline; tune for your environment.
+    let params = Params::new(15, 8, 1, 32).unwrap();
+
+    let mut key = [0u8; 32];
+    scrypt(password, salt, &params, &mut key).unwrap();
+
+    println!("scrypt-derived key: {}", hex::encode(key));
+}
+// ANCHOR_END: scrypt
+
 // ANCHOR: sha256
 pub fn run_sha256_example() {
     use sha2::{Digest, Sha256};
