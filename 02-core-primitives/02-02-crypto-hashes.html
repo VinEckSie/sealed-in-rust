@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-a31e1a5e.js";
+            window.path_to_searchindex_js = "../searchindex-fc2a98bd.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-510ff4c2.js"></script>
+        <script src="../toc-8b53bd40.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -215,12 +215,12 @@ One flipped bit &gt;&gt; Completely different output
 <blockquote>
 <p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/sha2">sha2</a></p>
 </blockquote>
-<p>SHA-2<sup class="footnote-reference" id="fr-SHA2-1"><a href="#footnote-SHA2">1</a></sup> is a family of hash functions standardized by NIST<sup class="footnote-reference" id="fr-NIST-1"><a href="#footnote-NIST">2</a></sup>:</p>
+<p>SHA-2<sup class="footnote-reference" id="fr-sha2-1"><a href="#footnote-sha2">1</a></sup> is a family of hash functions standardized by NIST<sup class="footnote-reference" id="fr-nist-1"><a href="#footnote-nist">2</a></sup>:</p>
 <ul>
-<li>SHA-224<sup class="footnote-reference" id="fr-SHA224-1"><a href="#footnote-SHA224">3</a></sup></li>
-<li>SHA-256<sup class="footnote-reference" id="fr-SHA256-1"><a href="#footnote-SHA256">4</a></sup></li>
-<li>SHA-384<sup class="footnote-reference" id="fr-SHA384-1"><a href="#footnote-SHA384">5</a></sup></li>
-<li>SHA-512<sup class="footnote-reference" id="fr-SHA512-1"><a href="#footnote-SHA512">6</a></sup></li>
+<li>SHA-224<sup class="footnote-reference" id="fr-sha224-1"><a href="#footnote-sha224">3</a></sup></li>
+<li>SHA-256<sup class="footnote-reference" id="fr-sha256-1"><a href="#footnote-sha256">4</a></sup></li>
+<li>SHA-384<sup class="footnote-reference" id="fr-sha384-1"><a href="#footnote-sha384">5</a></sup></li>
+<li>SHA-512<sup class="footnote-reference" id="fr-sha512-1"><a href="#footnote-sha512">6</a></sup></li>
 </ul>
 <p>SHA-256 is the most common.
 It is slow enough to be secure, fast enough for general use and extremely well analyzed.
@@ -254,7 +254,7 @@ If you don’t know which hash to use, SHA-256 will almost never be the wrong an
 </span>hash(password)
 <span class="boring">}</span></code></pre>
 <p>because Hashes are fast, attackers can try billions per second, rainbow tables exist.</p>
-<p>We fix this with KDFs<sup class="footnote-reference" id="fr-KDF-1"><a href="#footnote-KDF">7</a></sup> (Argon2<sup class="footnote-reference" id="fr-ARGON2-1"><a href="#footnote-ARGON2">8</a></sup>, scrypt<sup class="footnote-reference" id="fr-SCRYPT-1"><a href="#footnote-SCRYPT">9</a></sup>). See <a href="../02-core-primitives/02-01-symmetric-ciphers.html#a-glimpse-at-key-derivation">Key Derivation section</a></p>
+<p>We fix this with KDFs<sup class="footnote-reference" id="fr-kdf-1"><a href="#footnote-kdf">7</a></sup> (Argon2<sup class="footnote-reference" id="fr-argon2-1"><a href="#footnote-argon2">8</a></sup>, scrypt<sup class="footnote-reference" id="fr-scrypt-1"><a href="#footnote-scrypt">9</a></sup>). See <a href="../02-core-primitives/02-01-symmetric-ciphers.html#a-glimpse-at-key-derivation">Key Derivation section</a></p>
 <blockquote>
 <p><strong>🚨 Fast hashes are dangerous for passwords.</strong></p>
 </blockquote>
@@ -265,20 +265,20 @@ If you don’t know which hash to use, SHA-256 will almost never be the wrong an
 <blockquote>
 <p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/blake3">blake3</a></p>
 </blockquote>
-<p>BLAKE3[^BLAKE3] is the modern evolution of BLAKE2:</p>
+<p>BLAKE3<sup class="footnote-reference" id="fr-blake3-1"><a href="#footnote-blake3">10</a></sup> is the modern evolution of BLAKE2:</p>
 <ul>
 <li>Cryptographically secure</li>
 <li>Massively parallel</li>
 <li>Faster than SHA-2</li>
-<li>Designed for multicore CPUs and SIMD<sup class="footnote-reference" id="fr-SIMD-1"><a href="#footnote-SIMD">10</a></sup></li>
+<li>Designed for multicore CPUs and SIMD<sup class="footnote-reference" id="fr-simd-1"><a href="#footnote-simd">11</a></sup></li>
 <li>Unlike SHA-2, BLAKE3 was designed after modern hardware existed.</li>
 </ul>
 <p>It also supports:</p>
 <ul>
 <li>Streaming</li>
-<li>Incremental hashing<sup class="footnote-reference" id="fr-INC-1"><a href="#footnote-INC">11</a></sup></li>
-<li>Keyed hashing<sup class="footnote-reference" id="fr-KEY-1"><a href="#footnote-KEY">12</a></sup></li>
-<li>Extendable output (XOF)<sup class="footnote-reference" id="fr-EXT-1"><a href="#footnote-EXT">13</a></sup></li>
+<li>Incremental hashing<sup class="footnote-reference" id="fr-inc-1"><a href="#footnote-inc">12</a></sup></li>
+<li>Keyed hashing<sup class="footnote-reference" id="fr-key-1"><a href="#footnote-key">13</a></sup></li>
+<li>Extendable output (XOF)<sup class="footnote-reference" id="fr-ext-1"><a href="#footnote-ext">14</a></sup></li>
 </ul>
 <p>🧪 <strong>Code Example: BLAKE3 Hashing</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
@@ -314,8 +314,8 @@ If you don’t know which hash to use, SHA-256 will almost never be the wrong an
 <h3 id="collision-resistance--what-breaking-a-hash-really-means"><a class="header" href="#collision-resistance--what-breaking-a-hash-really-means">Collision Resistance — What “Breaking a Hash” Really Means</a></h3>
 <p>Breaking a hash means one of two things:</p>
 <ul>
-<li>Finding a collision<sup class="footnote-reference" id="fr-COLLISION-1"><a href="#footnote-COLLISION">14</a></sup> faster than brute force<sup class="footnote-reference" id="fr-BRUTEFORCE-1"><a href="#footnote-BRUTEFORCE">15</a></sup></li>
-<li>Finding a preimage<sup class="footnote-reference" id="fr-PREIMAGE-1"><a href="#footnote-PREIMAGE">16</a></sup> faster than brute force</li>
+<li>Finding a collision<sup class="footnote-reference" id="fr-collision-1"><a href="#footnote-collision">15</a></sup> faster than brute force<sup class="footnote-reference" id="fr-bruteforce-1"><a href="#footnote-bruteforce">16</a></sup></li>
+<li>Finding a preimage<sup class="footnote-reference" id="fr-preimage-1"><a href="#footnote-preimage">17</a></sup> faster than brute force</li>
 </ul>
 <p>For SHA-256:</p>
 <ul>
@@ -334,7 +334,7 @@ If you don’t know which hash to use, SHA-256 will almost never be the wrong an
 <li>HMAC — keyed hashing for authentication</li>
 <li>HKDF — key derivation</li>
 <li>Digital signatures — sign(hash(message))</li>
-<li>Merkle trees<sup class="footnote-reference" id="fr-MERKLE-1"><a href="#footnote-MERKLE">17</a></sup> — integrity structures</li>
+<li>Merkle trees<sup class="footnote-reference" id="fr-merkle-1"><a href="#footnote-merkle">18</a></sup> — integrity structures</li>
 <li>Password KDFs — slow hashing</li>
 </ul>
 <blockquote>
@@ -352,58 +352,59 @@ If encryption hides secrets, hashes define truth.</p>
 </blockquote>
 <hr>
 <ol class="footnote-definition">
-<li id="footnote-SHA2">
-<p>SHA-2 (Secure Hash Algorithm 2) — NIST-standardized family of cryptographic hash functions including SHA-224, SHA-256, SHA-384, and SHA-512. <a href="../99-appendices/99-01-glossary.html#sha-2-secure-hash-algorithm-2">More</a>
-]: BLAKE3 (named after the BLAKE hash family) — Modern cryptographic hash optimized for speed, parallelism, and  implicity on modern hardware. <a href="../99-appendices/99-01-glossary.html#blake3">More</a> <a href="#fr-SHA2-1">↩</a></p>
+<li id="footnote-sha2">
+<p>SHA-2 (Secure Hash Algorithm 2) — NIST-standardized family of cryptographic hash functions including SHA-224, SHA-256, SHA-384, and SHA-512. <a href="../99-appendices/99-01-glossary.html#sha-2-secure-hash-algorithm-2">More</a> <a href="#fr-sha2-1">↩</a></p>
 </li>
-<li id="footnote-NIST">
-<p>NIST (National Institute of Standards and Technology) — U.S. authority responsible for standardizing widely used cryptographic algorithms. <a href="../99-appendices/99-01-glossary.html#nist">More</a> <a href="#fr-NIST-1">↩</a></p>
+<li id="footnote-nist">
+<p>NIST (National Institute of Standards and Technology) — U.S. authority responsible for standardizing widely used cryptographic algorithms. <a href="../99-appendices/99-01-glossary.html#nist">More</a> <a href="#fr-nist-1">↩</a></p>
 </li>
-<li id="footnote-SHA224">
-<p>SHA-224 - SHA-2 variant producing a 224-bit digest, derived from SHA-256. <a href="../99-appendices/99-01-glossary.html#sha-224">More</a> <a href="#fr-SHA224-1">↩</a></p>
+<li id="footnote-sha224">
+<p>SHA-224 - SHA-2 variant producing a 224-bit digest, derived from SHA-256. <a href="../99-appendices/99-01-glossary.html#sha-224">More</a> <a href="#fr-sha224-1">↩</a></p>
 </li>
-<li id="footnote-SHA256">
-<p>SHA-256 — Most widely deployed SHA-2 hash function, offering strong collision and preimage resistance. <a href="../99-appendices/99-01-glossary.html#sha-256">More</a> <a href="#fr-SHA256-1">↩</a></p>
+<li id="footnote-sha256">
+<p>SHA-256 — Most widely deployed SHA-2 hash function, offering strong collision and preimage resistance. <a href="../99-appendices/99-01-glossary.html#sha-256">More</a> <a href="#fr-sha256-1">↩</a></p>
 </li>
-<li id="footnote-SHA384">
-<p>SHA-384 — SHA-2 variant optimized for 64-bit systems with higher security margin. <a href="../99-appendices/99-01-glossary.html#sha-384">More</a> <a href="#fr-SHA384-1">↩</a></p>
+<li id="footnote-sha384">
+<p>SHA-384 — SHA-2 variant optimized for 64-bit systems with higher security margin. <a href="../99-appendices/99-01-glossary.html#sha-384">More</a> <a href="#fr-sha384-1">↩</a></p>
 </li>
-<li id="footnote-SHA512">
-<p>SHA-512 — SHA-2 variant with the largest output size and best performance on 64-bit architectures. <a href="../99-appendices/99-01-glossary.html#sha-512">More</a> <a href="#fr-SHA512-1">↩</a></p>
+<li id="footnote-sha512">
+<p>SHA-512 — SHA-2 variant with the largest output size and best performance on 64-bit architectures. <a href="../99-appendices/99-01-glossary.html#sha-512">More</a> <a href="#fr-sha512-1">↩</a></p>
 </li>
-<li id="footnote-KDF">
-<p>KDF (Key Derivation Function) — Function that transforms a weak or strong secret into cryptographically secure keys for use with symmetric encryption. <a href="../99-appendices/99-01-glossary.html#kdf">More</a> <a href="#fr-KDF-1">↩</a></p>
+<li id="footnote-kdf">
+<p>KDF (Key Derivation Function) — Function that transforms a weak or strong secret into cryptographically secure keys for use with symmetric encryption. <a href="../99-appendices/99-01-glossary.html#kdf">More</a> <a href="#fr-kdf-1">↩</a></p>
 </li>
-<li id="footnote-ARGON2">
-<p>Argon2 (named after the mythological ship Argo and its crew, the Argonauts) - The modern standard for password hashing and key derivation, designed to resist GPU and ASIC attacks using memory-hard computation. <a href="../99-appendices/99-01-glossary.html#argon2">More</a> <a href="#fr-ARGON2-1">↩</a></p>
+<li id="footnote-argon2">
+<p>Argon2 (named after the mythological ship Argo and its crew, the Argonauts) - The modern standard for password hashing and key derivation, designed to resist GPU and ASIC attacks using memory-hard computation. <a href="../99-appendices/99-01-glossary.html#argon2">More</a> <a href="#fr-argon2-1">↩</a></p>
 </li>
-<li id="footnote-SCRYPT">
-<p>Scrypt -
-A memory-hard password-based key derivation function built to make large-scale hardware brute-force attacks expensive and inefficient. Older than Argon2 but still widely used. <a href="../99-appendices/99-01-glossary.html#scrypt">More</a> <a href="#fr-SCRYPT-1">↩</a></p>
+<li id="footnote-scrypt">
+<p>Scrypt - A memory-hard password-based key derivation function built to make large-scale hardware brute-force attacks expensive and inefficient. Older than Argon2 but still widely used. <a href="../99-appendices/99-01-glossary.html#scrypt">More</a> <a href="#fr-scrypt-1">↩</a></p>
 </li>
-<li id="footnote-SIMD">
-<p>SIMD (Single Instruction, Multiple Data) — CPU execution model that applies the same operation to multiple data elements in parallel for high performance. <a href="../99-appendices/99-01-glossary.html#simd">More</a> <a href="#fr-SIMD-1">↩</a></p>
+<li id="footnote-blake3">
+<p>BLAKE3 (named after the BLAKE hash family) — Modern cryptographic hash optimized for speed, parallelism, and  implicity on modern hardware. <a href="../99-appendices/99-01-glossary.html#blake3">More</a> <a href="#fr-blake3-1">↩</a></p>
 </li>
-<li id="footnote-INC">
-<p>Incremental hashing — Hashing method that processes input in chunks, allowing streaming and large data hashing without loading everything into memory. <a href="../99-appendices/99-01-glossary.html#incremental-hashing">More</a> <a href="#fr-INC-1">↩</a></p>
+<li id="footnote-simd">
+<p>SIMD (Single Instruction, Multiple Data) — CPU execution model that applies the same operation to multiple data elements in parallel for high performance. <a href="../99-appendices/99-01-glossary.html#simd">More</a> <a href="#fr-simd-1">↩</a></p>
 </li>
-<li id="footnote-KEY">
-<p>Keyed hashing — Hash function variant that incorporates a secret key to provide message authentication and integrity guarantees. <a href="../99-appendices/99-01-glossary.html#keyed-hashing">More</a> <a href="#fr-KEY-1">↩</a></p>
+<li id="footnote-inc">
+<p>Incremental hashing — Hashing method that processes input in chunks, allowing streaming and large data hashing without loading everything into memory. <a href="../99-appendices/99-01-glossary.html#incremental-hashing">More</a> <a href="#fr-inc-1">↩</a></p>
 </li>
-<li id="footnote-EXT">
-<p>Extendable output (XOF) — Hash construction that can generate an arbitrary-length output stream from a single input and key. <a href="../99-appendices/99-01-glossary.html#extendable-output-function">More</a> <a href="#fr-EXT-1">↩</a></p>
+<li id="footnote-key">
+<p>Keyed hashing — Hash function variant that incorporates a secret key to provide message authentication and integrity guarantees. <a href="../99-appendices/99-01-glossary.html#keyed-hashing">More</a> <a href="#fr-key-1">↩</a></p>
 </li>
-<li id="footnote-COLLISION">
-<p>Collision — Existence of two distinct inputs that produce the same hash output, undermining a hash function’s uniqueness guarantee. <a href="../99-appendices/99-01-glossary.html#collision">More</a> <a href="#fr-COLLISION-1">↩</a></p>
+<li id="footnote-ext">
+<p>Extendable output (XOF) — Hash construction that can generate an arbitrary-length output stream from a single input and key. <a href="../99-appendices/99-01-glossary.html#extendable-output-function">More</a> <a href="#fr-ext-1">↩</a></p>
 </li>
-<li id="footnote-BRUTEFORCE">
-<p>Brute force — Exhaustive attack that tries all possible inputs or keys until the correct one is found. <a href="../99-appendices/99-01-glossary.html#brute-force">More</a> <a href="#fr-BRUTEFORCE-1">↩</a></p>
+<li id="footnote-collision">
+<p>Collision — Existence of two distinct inputs that produce the same hash output, undermining a hash function’s uniqueness guarantee. <a href="../99-appendices/99-01-glossary.html#collision">More</a> <a href="#fr-collision-1">↩</a></p>
 </li>
-<li id="footnote-PREIMAGE">
-<p>Preimage — Original input corresponding to a given hash output; preimage resistance means it is infeasible to recover this input. <a href="../99-appendices/99-01-glossary.html#preimage">More</a> <a href="#fr-PREIMAGE-1">↩</a></p>
+<li id="footnote-bruteforce">
+<p>Brute force — Exhaustive attack that tries all possible inputs or keys until the correct one is found. <a href="../99-appendices/99-01-glossary.html#brute-force">More</a> <a href="#fr-bruteforce-1">↩</a></p>
 </li>
-<li id="footnote-MERKLE">
-<p>Merkle tree — Tree data structure where each node is a hash of its children, enabling efficient and secure data integrity verification. <a href="../99-appendices/99-01-glossary.html#merkle-tree">More</a> <a href="#fr-MERKLE-1">↩</a></p>
+<li id="footnote-preimage">
+<p>Preimage — Original input corresponding to a given hash output; preimage resistance means it is infeasible to recover this input. <a href="../99-appendices/99-01-glossary.html#preimage">More</a> <a href="#fr-preimage-1">↩</a></p>
+</li>
+<li id="footnote-merkle">
+<p>Merkle tree — Tree data structure where each node is a hash of its children, enabling efficient and secure data integrity verification. <a href="../99-appendices/99-01-glossary.html#merkle-tree">More</a> <a href="#fr-merkle-1">↩</a></p>
 </li>
 </ol>
 

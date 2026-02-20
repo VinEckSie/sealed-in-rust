@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-a31e1a5e.js";
+            window.path_to_searchindex_js = "../searchindex-fc2a98bd.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-510ff4c2.js"></script>
+        <script src="../toc-8b53bd40.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -217,7 +217,7 @@ XOR encryption is reversible and stateless, which makes it simple and fast. But 
 </blockquote>
 <h3 id="feistel-networks--foundation-of-classic-block-ciphers"><a class="header" href="#feistel-networks--foundation-of-classic-block-ciphers">Feistel Networks — Foundation of Classic Block Ciphers</a></h3>
 <blockquote>
-<p>⚠️ Cryptographically obsolete, but conceptually important (used in DES<sup class="footnote-reference" id="fr-DES-1"><a href="#footnote-DES">1</a></sup>, 3DES<sup class="footnote-reference" id="fr-3DES-1"><a href="#footnote-3DES">2</a></sup>)</p>
+<p>⚠️ Cryptographically obsolete, but conceptually important (used in DES<sup class="footnote-reference" id="fr-des-1"><a href="#footnote-des">1</a></sup>, 3DES<sup class="footnote-reference" id="fr-3des-1"><a href="#footnote-3des">2</a></sup>)</p>
 </blockquote>
 <!--
 > ⚠️️ Annotate if a Rust crate exists + maturity level
@@ -318,7 +318,7 @@ This idea shaped DES and similar ciphers.</p>
 <p>⚠️ Software-only S-box implementations can leak secrets through cache timing. Modern AES implementations use hardware instructions (AES-NI) or constant-time software libraries.</p>
 </blockquote>
 <blockquote>
-<p>⚠️ Used in AES<sup class="footnote-reference" id="fr-AES-1"><a href="#footnote-AES">3</a></sup>, Camellia<sup class="footnote-reference" id="fr-Camellia-1"><a href="#footnote-Camellia">4</a></sup>, and modern block ciphers.
+<p>⚠️ Used in AES<sup class="footnote-reference" id="fr-aes-1"><a href="#footnote-aes">3</a></sup>, Camellia<sup class="footnote-reference" id="fr-camellia-1"><a href="#footnote-camellia">4</a></sup>, and modern block ciphers.
 Still dominant in current cipher architectures</p>
 </blockquote>
 <!--
@@ -453,7 +453,7 @@ Substitution-Permutation Networks provide a simple yet powerful structure for bu
 </blockquote>
 <h3 id="aes-advanced-encryption-standard---the-global-symmetric-standard"><a class="header" href="#aes-advanced-encryption-standard---the-global-symmetric-standard">AES (Advanced Encryption Standard)  — The Global Symmetric Standard</a></h3>
 <blockquote>
-<p>💡 Used in TLS<sup class="footnote-reference" id="fr-TLS-1"><a href="#footnote-TLS">5</a></sup>, LUKS<sup class="footnote-reference" id="fr-LUKS-1"><a href="#footnote-LUKS">6</a></sup>, SSH<sup class="footnote-reference" id="fr-SSH-1"><a href="#footnote-SSH">7</a></sup>, mobile apps, and FIPS-certified systems<sup class="footnote-reference" id="fr-FIPS-1"><a href="#footnote-FIPS">8</a></sup>.
+<p>💡 Used in TLS<sup class="footnote-reference" id="fr-tls-1"><a href="#footnote-tls">5</a></sup>, LUKS<sup class="footnote-reference" id="fr-luks-1"><a href="#footnote-luks">6</a></sup>, SSH<sup class="footnote-reference" id="fr-ssh-1"><a href="#footnote-ssh">7</a></sup>, mobile apps, and FIPS-certified systems<sup class="footnote-reference" id="fr-fips-1"><a href="#footnote-fips">8</a></sup>.
 Secure, fast, and hardware-accelerated</p>
 </blockquote>
 <blockquote>
@@ -461,10 +461,10 @@ Secure, fast, and hardware-accelerated</p>
 </blockquote>
 <p>AES is a symmetric-key block cipher developed by Belgian cryptographers Vincent Rijmen and Joan Daemen. It was selected by NIST in 2001 as the successor to DES and 3DES.</p>
 <p>AES operates on 128-bit blocks and supports key sizes of 128, 192, or 256 bits. It is based on a Substitution–Permutation Network (SPN) and runs 10, 12, or 14 rounds depending on the key length.</p>
-<p>It is standardized by FIPS-197, ISO/IEC<sup class="footnote-reference" id="fr-ISOIEC-1"><a href="#footnote-ISOIEC">9</a></sup>, and widely adopted in security protocols such as TLS, SSH, and IPsec<sup class="footnote-reference" id="fr-IPSec-1"><a href="#footnote-IPSec">10</a></sup>. AES is available in hardware on most modern CPUs, making it both fast and energy-efficient.</p>
+<p>It is standardized by FIPS-197, ISO/IEC[^isoiec], and widely adopted in security protocols such as TLS, SSH, and IPsec<sup class="footnote-reference" id="fr-ipsec-1"><a href="#footnote-ipsec">9</a></sup>. AES is available in hardware on most modern CPUs, making it both fast and energy-efficient.</p>
 <br>
 <p>🧪 <strong>Code Example: AES-128-CBC Encryption &amp; Decryption</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)
-We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-CBC-1"><a href="#footnote-CBC">11</a></sup> with PKCS7<sup class="footnote-reference" id="fr-PKCS7-1"><a href="#footnote-PKCS7">12</a></sup> padding.</p>
+We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-cbc-1"><a href="#footnote-cbc">10</a></sup> with PKCS7<sup class="footnote-reference" id="fr-pkcs7-1"><a href="#footnote-pkcs7">11</a></sup> padding.</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn run_aes_example() {
@@ -517,19 +517,19 @@ Decrypted text: Attack at dawn!
 <p>💡 A stream cipher encrypts data one bit or byte at a time by XORing it with a pseudorandom keystream, instead of encrypting fixed-size blocks like a block cipher.</p>
 </blockquote>
 <blockquote>
-<p>💡 Used in WireGuard<sup class="footnote-reference" id="fr-WIREGUARD-1"><a href="#footnote-WIREGUARD">13</a></sup>, TLS (on non-AES hardware<sup class="footnote-reference" id="fr-NONAES-1"><a href="#footnote-NONAES">14</a></sup>), mobile apps, messaging protocols, and security libraries.
+<p>💡 Used in WireGuard<sup class="footnote-reference" id="fr-wireguard-1"><a href="#footnote-wireguard">12</a></sup>, TLS (on non-AES hardware<sup class="footnote-reference" id="fr-non-aes-1"><a href="#footnote-non-aes">13</a></sup>), mobile apps, messaging protocols, and security libraries.
 Fast, simple, and naturally resistant to timing attacks.</p>
 </blockquote>
 <blockquote>
 <p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/chacha20">chacha20</a></p>
 </blockquote>
 <p>ChaCha20 is a modern stream cipher designed by Daniel J. Bernstein.</p>
-<p>It is the streamlined successor to Salsa20<sup class="footnote-reference" id="fr-SALSA20-1"><a href="#footnote-SALSA20">15</a></sup>, offering improved diffusion and exceptional performance on all platforms — especially devices without AES hardware.</p>
-<p>Unlike block ciphers, ChaCha20 does not process data in fixed-size blocks. Instead, it transforms a key + nonce + counter into a pseudorandom keystream<sup class="footnote-reference" id="fr-PSEUDOKEY-1"><a href="#footnote-PSEUDOKEY">16</a></sup>.</p>
+<p>It is the streamlined successor to Salsa20<sup class="footnote-reference" id="fr-salsa20-1"><a href="#footnote-salsa20">14</a></sup>, offering improved diffusion and exceptional performance on all platforms — especially devices without AES hardware.</p>
+<p>Unlike block ciphers, ChaCha20 does not process data in fixed-size blocks. Instead, it transforms a key + nonce + counter into a pseudorandom keystream<sup class="footnote-reference" id="fr-pseudokey-1"><a href="#footnote-pseudokey">15</a></sup>.</p>
 <p>Encryption is simply: ciphertext = plaintext XOR keystream</p>
 <p>No padding. No block alignment. Just pure stream encryption.</p>
 <p>ChaCha20 is now a fundamental primitive across modern cryptography:
-WireGuard, OpenSSH (for session keys), TLS 1.3 fallback ciphers, mobile operating systems, and many authenticated encryption schemes like ChaCha20-Poly1305<sup class="footnote-reference" id="fr-POLY1305-1"><a href="#footnote-POLY1305">17</a></sup>.</p>
+WireGuard, OpenSSH (for session keys), TLS 1.3 fallback ciphers, mobile operating systems, and many authenticated encryption schemes like ChaCha20-Poly1305<sup class="footnote-reference" id="fr-poly1305-1"><a href="#footnote-poly1305">16</a></sup>.</p>
 <p>🧪 <strong>Code Example: ChaCha20 Encryption &amp; Decryption</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
 <p>We’ll generate a ChaCha20 keystream and XOR it with a plaintext message.
 The API is extremely simple — you create a cipher and stream through it.</p>
@@ -737,16 +737,16 @@ ChaCha20 is often preferred today when simplicity and portability matter more th
 <p>Human Password → KDF → Cryptographic Key → AES / ChaCha20</p>
 <p>A KDF protects symmetric encryption by:</p>
 <ul>
-<li>Adding randomness (salt<sup class="footnote-reference" id="fr-SALT-1"><a href="#footnote-SALT">18</a></sup>)</li>
+<li>Adding randomness (salt<sup class="footnote-reference" id="fr-salt-1"><a href="#footnote-salt">17</a></sup>)</li>
 <li>Applying slow, repeated cryptographic operations</li>
 <li>Making brute-force attacks economically unviable</li>
 </ul>
 <p><strong>Common KDF Families</strong></p>
 <ul>
-<li><strong>PBKDF2<sup class="footnote-reference" id="fr-PBKDF2-1"><a href="#footnote-PBKDF2">19</a></sup></strong> → Legacy compatibility</li>
-<li><strong>Argon2<sup class="footnote-reference" id="fr-ARGON2-1"><a href="#footnote-ARGON2">20</a></sup></strong> → Modern password-based security standard</li>
-<li><strong>scrypt<sup class="footnote-reference" id="fr-SCRYPT-1"><a href="#footnote-SCRYPT">21</a></sup></strong> → Memory-hard defense against hardware attacks</li>
-<li><strong>HKDF<sup class="footnote-reference" id="fr-HKDF-1"><a href="#footnote-HKDF">22</a></sup></strong> → Safe key expansion from an already strong secret</li>
+<li><strong>PBKDF2<sup class="footnote-reference" id="fr-pbkdf2-1"><a href="#footnote-pbkdf2">18</a></sup></strong> → Legacy compatibility</li>
+<li><strong>Argon2<sup class="footnote-reference" id="fr-argon2-1"><a href="#footnote-argon2">19</a></sup></strong> → Modern password-based security standard</li>
+<li><strong>scrypt<sup class="footnote-reference" id="fr-scrypt-1"><a href="#footnote-scrypt">20</a></sup></strong> → Memory-hard defense against hardware attacks</li>
+<li><strong>HKDF<sup class="footnote-reference" id="fr-hkdf-1"><a href="#footnote-hkdf">21</a></sup></strong> → Safe key expansion from an already strong secret</li>
 </ul>
 <p><strong>Important Distinction</strong></p>
 <ul>
@@ -804,74 +804,71 @@ ChaCha20 is often preferred today when simplicity and portability matter more th
 </blockquote>
 <hr>
 <ol class="footnote-definition">
-<li id="footnote-DES">
-<p>DES — early symmetric cipher (56-bit), now insecure. <a href="../99-appendices/99-01-glossary.html#des-data-encryption-standard">More</a> <a href="#fr-DES-1">↩</a></p>
+<li id="footnote-des">
+<p>DES — early symmetric cipher (56-bit), now insecure. <a href="../99-appendices/99-01-glossary.html#des-data-encryption-standard">More</a> <a href="#fr-des-1">↩</a></p>
 </li>
-<li id="footnote-3DES">
-<p>3DES — DES applied three times, better than DES but now deprecated. <a href="../99-appendices/99-01-glossary.html#3des-triple-des">More</a> <a href="#fr-3DES-1">↩</a></p>
+<li id="footnote-3des">
+<p>3DES — DES applied three times, better than DES but now deprecated. <a href="../99-appendices/99-01-glossary.html#3des-triple-des">More</a> <a href="#fr-3des-1">↩</a></p>
 </li>
-<li id="footnote-AES">
-<p>AES — The modern global standard, fast, secure, and hardware-accelerated. <a href="../99-appendices/99-01-glossary.html#aes-advanced-encryption-standard">More</a> <a href="#fr-AES-1">↩</a></p>
+<li id="footnote-aes">
+<p>AES — The modern global standard, fast, secure, and hardware-accelerated. <a href="../99-appendices/99-01-glossary.html#aes-advanced-encryption-standard">More</a> <a href="#fr-aes-1">↩</a></p>
 </li>
-<li id="footnote-Camellia">
-<p>Camellia — Japanese block cipher, secure &amp; AES-comparable. <a href="../99-appendices/99-01-glossary.html#camellia">More</a> <a href="#fr-Camellia-1">↩</a></p>
+<li id="footnote-camellia">
+<p>Camellia — Japanese block cipher, secure &amp; AES-comparable. <a href="../99-appendices/99-01-glossary.html#camellia">More</a> <a href="#fr-camellia-1">↩</a></p>
 </li>
-<li id="footnote-TLS">
-<p>TLS — protocol securing data in transit (HTTPS, etc.). <a href="../99-appendices/99-01-glossary.html#tls-transport-layer-security">More</a> <a href="#fr-TLS-1">↩</a></p>
+<li id="footnote-tls">
+<p>TLS — protocol securing data in transit (HTTPS, etc.). <a href="../99-appendices/99-01-glossary.html#tls-transport-layer-security">More</a> <a href="#fr-tls-1">↩</a></p>
 </li>
-<li id="footnote-LUKS">
-<p>LUKS — Linux standard for full disk encryption. <a href="../99-appendices/99-01-glossary.html#luks-linux-unified-key-setup">More</a> <a href="#fr-LUKS-1">↩</a></p>
+<li id="footnote-luks">
+<p>LUKS — Linux standard for full disk encryption. <a href="../99-appendices/99-01-glossary.html#luks-linux-unified-key-setup">More</a> <a href="#fr-luks-1">↩</a></p>
 </li>
-<li id="footnote-SSH">
-<p>SSH — secure remote access protocol. <a href="../99-appendices/99-01-glossary.html#ssh-secure-shell">More</a> <a href="#fr-SSH-1">↩</a></p>
+<li id="footnote-ssh">
+<p>SSH — secure remote access protocol. <a href="../99-appendices/99-01-glossary.html#ssh-secure-shell">More</a> <a href="#fr-ssh-1">↩</a></p>
 </li>
-<li id="footnote-FIPS">
-<p>FIPS — U.S. cryptographic standards for government/finance. <a href="../99-appendices/99-01-glossary.html#fips-federal-information-processing-standards">More</a> <a href="#fr-FIPS-1">↩</a></p>
+<li id="footnote-fips">
+<p>FIPS — U.S. cryptographic standards for government/finance. <a href="../99-appendices/99-01-glossary.html#fips-federal-information-processing-standards">More</a> <a href="#fr-fips-1">↩</a></p>
 </li>
-<li id="footnote-ISOIEC">
-<p>ISO/IEC — international standards for IT/crypto. <a href="../99-appendices/99-01-glossary.html#isoiec">More</a> <a href="#fr-ISOIEC-1">↩</a></p>
+<li id="footnote-ipsec">
+<p>IPSec — protocol suite for securing IP communications. <a href="../99-appendices/99-01-glossary.html#ipsec">More</a> <a href="#fr-ipsec-1">↩</a></p>
 </li>
-<li id="footnote-IPSec">
-<p>IPSec — protocol suite for securing IP communications. <a href="../99-appendices/99-01-glossary.html#ipsec">More</a> <a href="#fr-IPSec-1">↩</a></p>
+<li id="footnote-cbc">
+<p>CBC — block cipher mode, chains blocks for security. <a href="../99-appendices/99-01-glossary.html#cbc-cipher-block-chaining">More</a> <a href="#fr-cbc-1">↩</a></p>
 </li>
-<li id="footnote-CBC">
-<p>CBC — block cipher mode, chains blocks for security. <a href="../99-appendices/99-01-glossary.html#cbc-cipher-block-chaining">More</a> <a href="#fr-CBC-1">↩</a></p>
+<li id="footnote-pkcs7">
+<p>PKCS7 — padding scheme for block ciphers. <a href="../99-appendices/99-01-glossary.html#pkcs7">More</a> <a href="#fr-pkcs7-1">↩</a></p>
 </li>
-<li id="footnote-PKCS7">
-<p>PKCS7 — padding scheme for block ciphers. <a href="../99-appendices/99-01-glossary.html#pkcs7">More</a> <a href="#fr-PKCS7-1">↩</a></p>
+<li id="footnote-wireguard">
+<p>WireGuard — modern VPN protocol using ChaCha20-Poly1305 to secure IP traffic. <a href="../99-appendices/99-01-glossary.html#wireguard">More</a> <a href="#fr-wireguard-1">↩</a></p>
 </li>
-<li id="footnote-WIREGUARD">
-<p>WireGuard — modern VPN protocol using ChaCha20-Poly1305 to secure IP traffic. <a href="../99-appendices/99-01-glossary.html#wireguard">More</a> <a href="#fr-WIREGUARD-1">↩</a></p>
+<li id="footnote-non-aes">
+<p>Non-AES hardware — CPUs without AES instructions, where ChaCha20 is often faster than AES. <a href="../99-appendices/99-01-glossary.html#non-aes-hardware">More</a> <a href="#fr-non-aes-1">↩</a></p>
 </li>
-<li id="footnote-NONAES">
-<p>Non-AES hardware — CPUs without AES instructions, where ChaCha20 is often faster than AES. <a href="../99-appendices/99-01-glossary.html#non-aes-hardware">More</a> <a href="#fr-NONAES-1">↩</a></p>
+<li id="footnote-salsa20">
+<p>Salsa20 — stream cipher by Daniel J. Bernstein; predecessor of ChaCha20, fast and well-studied. <a href="../99-appendices/99-01-glossary.html#salsa20">More</a> <a href="#fr-salsa20-1">↩</a></p>
 </li>
-<li id="footnote-SALSA20">
-<p>Salsa20 — stream cipher by Daniel J. Bernstein; predecessor of ChaCha20, fast and well-studied. <a href="../99-appendices/99-01-glossary.html#salsa20">More</a> <a href="#fr-SALSA20-1">↩</a></p>
+<li id="footnote-pseudokey">
+<p>Pseudorandom keystream - sequence of bits/bytes that looks random but is deterministically generated from a secret key (and usually a nonce). <a href="../99-appendices/99-01-glossary.html#pseudorandom-keystream">More</a> <a href="#fr-pseudokey-1">↩</a></p>
 </li>
-<li id="footnote-PSEUDOKEY">
-<p>Pseudorandom keystream - sequence of bits/bytes that looks random but is deterministically generated from a secret key (and usually a nonce). <a href="../99-appendices/99-01-glossary.html#pseudorandom-keystream">More</a> <a href="#fr-PSEUDOKEY-1">↩</a></p>
-</li>
-<li id="footnote-POLY1305">
+<li id="footnote-poly1305">
 <p>ChaCha20-Poly1305 -
-AEAD scheme that combines the ChaCha20 stream cipher with the Poly1305 MAC to provide authenticated encryption (confidentiality + integrity). <a href="../99-appendices/99-01-glossary.html#chacha20-poly1305">More</a> <a href="#fr-POLY1305-1">↩</a></p>
+AEAD scheme that combines the ChaCha20 stream cipher with the Poly1305 MAC to provide authenticated encryption (confidentiality + integrity). <a href="../99-appendices/99-01-glossary.html#chacha20-poly1305">More</a> <a href="#fr-poly1305-1">↩</a></p>
 </li>
-<li id="footnote-SALT">
-<p>Salt - A random value added to a password before key derivation to prevent identical passwords from producing identical keys and to defeat precomputed attacks such as rainbow tables.. <a href="../99-appendices/99-01-glossary.html#salt">More</a> <a href="#fr-SALT-1">↩</a></p>
+<li id="footnote-salt">
+<p>Salt - A random value added to a password before key derivation to prevent identical passwords from producing identical keys and to defeat precomputed attacks such as rainbow tables.. <a href="../99-appendices/99-01-glossary.html#salt">More</a> <a href="#fr-salt-1">↩</a></p>
 </li>
-<li id="footnote-PBKDF2">
-<p>PBKDF2 (Password-Based Key Derivation Function) - The standardized successor to PBKDF1 for deriving cryptographic keys from passwords.. <a href="../99-appendices/99-01-glossary.html#pbkdf2">More</a> <a href="#fr-PBKDF2-1">↩</a></p>
+<li id="footnote-pbkdf2">
+<p>PBKDF2 (Password-Based Key Derivation Function) - The standardized successor to PBKDF1 for deriving cryptographic keys from passwords.. <a href="../99-appendices/99-01-glossary.html#pbkdf2">More</a> <a href="#fr-pbkdf2-1">↩</a></p>
 </li>
-<li id="footnote-ARGON2">
-<p>Argon2 (named after the mythological ship Argo and its crew, the Argonauts) - The modern standard for password hashing and key derivation, designed to resist GPU and ASIC attacks using memory-hard computation. <a href="../99-appendices/99-01-glossary.html#argon2">More</a> <a href="#fr-ARGON2-1">↩</a></p>
+<li id="footnote-argon2">
+<p>Argon2 (named after the mythological ship Argo and its crew, the Argonauts) - The modern standard for password hashing and key derivation, designed to resist GPU and ASIC attacks using memory-hard computation. <a href="../99-appendices/99-01-glossary.html#argon2">More</a> <a href="#fr-argon2-1">↩</a></p>
 </li>
-<li id="footnote-SCRYPT">
+<li id="footnote-scrypt">
 <p>Scrypt -
-A memory-hard password-based key derivation function built to make large-scale hardware brute-force attacks expensive and inefficient. Older than Argon2 but still widely used. <a href="../99-appendices/99-01-glossary.html#scrypt">More</a> <a href="#fr-SCRYPT-1">↩</a></p>
+A memory-hard password-based key derivation function built to make large-scale hardware brute-force attacks expensive and inefficient. Older than Argon2 but still widely used. <a href="../99-appendices/99-01-glossary.html#scrypt">More</a> <a href="#fr-scrypt-1">↩</a></p>
 </li>
-<li id="footnote-HKDF">
+<li id="footnote-hkdf">
 <p>HKDF (HMAC-based Key Derivation Function) -
-A key derivation function for expanding an already strong secret into multiple independent cryptographic keys using hash functions. Used for key separation and key hygiene, not for protecting weak passwords. <a href="../99-appendices/99-01-glossary.html#hkdf">More</a> <a href="#fr-HKDF-1">↩</a></p>
+A key derivation function for expanding an already strong secret into multiple independent cryptographic keys using hash functions. Used for key separation and key hygiene, not for protecting weak passwords. <a href="../99-appendices/99-01-glossary.html#hkdf">More</a> <a href="#fr-hkdf-1">↩</a></p>
 </li>
 </ol>
 
@@ -879,7 +876,7 @@ A key derivation function for expanding an already strong secret into multiple i
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../01-foundations/01-05-tooling-up.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../02-core-primitives/02-00-primitives-overview.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
@@ -893,7 +890,7 @@ A key derivation function for expanding an already strong secret into multiple i
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../01-foundations/01-05-tooling-up.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../02-core-primitives/02-00-primitives-overview.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 

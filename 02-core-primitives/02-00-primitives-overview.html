@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>How to Use This Book - Sealed in Rust — Domain-Driven Edition</title>
+        <title>How Ciphers, Hashes, MACs, AEAD Compose - Sealed in Rust — Domain-Driven Edition</title>
 
 
         <!-- Custom HTML head -->
@@ -174,69 +174,60 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="how-to-use-this-book"><a class="header" href="#how-to-use-this-book">How to Use This Book</a></h1>
-<p>This book is designed to be practical, modular, and domain-focused.<br>You can read it front to back, or jump directly to the domains and primitives most relevant to your work.</p>
-<h2 id="structure"><a class="header" href="#structure">Structure</a></h2>
-<p>The book is organized into four major parts:</p>
-<p><strong>Foundations</strong> — Why Rust is uniquely suited for secure cryptographic engineering<br><strong>Primitives</strong> — The core building blocks of cryptography, with Rust-focused usage and implementation<br><strong>Applied Domains</strong> — Real-world systems and how they use cryptography in practice (blockchain, defense, aerospace, medical, infrastructure, etc.)<br><strong>Crate Building</strong> — How to architect, test, audit, and publish your own cryptographic crate in Rust</p>
-<h3 id=""><a class="header" href="#"></a></h3>
-<p>Each chapter includes:</p>
-<ul>
-<li>Plain-language explanations</li>
-<li>Rust code examples using community crates</li>
-<li>Security insights and common pitfalls</li>
-<li>Domain-specific applications</li>
-</ul>
-<h2 id="code--examples"><a class="header" href="#code--examples">Code &amp; Examples</a></h2>
-<p>This book includes real, runnable Rust code for nearly every chapter.</p>
-<ul>
-<li>All examples are written for <strong>Rust 2024</strong></li>
-<li>You’ll need a working Rust toolchain (<code>rustup</code>, <code>cargo</code>)</li>
-<li>Each chapter’s code is provided as a separate <strong>Cargo example</strong>.</li>
-<li>Examples live inside the companion repository: <a href="https://github.com/VinEckSie/sealed-in-rust/tree/main/rust_crypto_book_code">sealed-in-rust</a></li>
-</ul>
-<p>You can run them locally without touching production crates or complex setups:</p>
-<pre><code class="language-bash">git clone https://github.com/VinEckSie/sealed-in-rust.git
-cd sealed-in-rust/rust_crypto_book_code
-cargo run --example aes_cbc //Replace aes_cbc with any chapter example you want to try
-</code></pre>
+                        <h2 id="how-ciphers-hashes-macs-aead-compose"><a class="header" href="#how-ciphers-hashes-macs-aead-compose">How Ciphers, Hashes, MACs, AEAD Compose</a></h2>
+<p>This book introduces several cryptographic primitives.
+They are not isolated tools. They are building blocks that compose into secure systems.</p>
+<p>This section shows how they connect.</p>
+<p>Each following chapter will explore one of these components in depth.</p>
+<h2 id="the-four-core-primitives"><a class="header" href="#the-four-core-primitives">The Four Core Primitives</a></h2>
+<h3 id="symmetric-cipher"><a class="header" href="#symmetric-cipher">Symmetric Cipher</a></h3>
+<p>Provides confidentiality.
+Encrypts data using a shared secret key.</p>
+<h3 id="hash-function"><a class="header" href="#hash-function">Hash Function</a></h3>
+<p>Provides integrity fingerprinting.
+Maps arbitrary data to a fixed-size digest. No key.</p>
+<h3 id="mac-message-authentication-code"><a class="header" href="#mac-message-authentication-code">MAC (Message Authentication Code)</a></h3>
+<p>Provides integrity + authenticity.
+Built using a secret key (often from a hash construction such as HMAC).</p>
+<h3 id="aead-authenticated-encryption-with-associated-data"><a class="header" href="#aead-authenticated-encryption-with-associated-data">AEAD (Authenticated Encryption with Associated Data)</a></h3>
+<p>Provides confidentiality + integrity + authenticity in a single construction.</p>
+<h2 id="composition-hierarchy"><a class="header" href="#composition-hierarchy">Composition Hierarchy</a></h2>
+<p>Hash
+→ Used to build MAC (HMAC)</p>
+<p>Cipher + Authenticator
+→ Used to build AEAD</p>
+<p>AEAD
+→ Used in modern secure communication protocols</p>
+<h2 id="mental-model"><a class="header" href="#mental-model">Mental Model</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Goal</th><th>Primitive</th></tr>
+</thead>
+<tbody>
+<tr><td>Hide data</td><td>Symmetric cipher</td></tr>
+<tr><td>Detect Modification</td><td>Hash</td></tr>
+<tr><td>Prove authenticity</td><td>MAC</td></tr>
+<tr><td>Hide + authenticate</td><td>AEAD</td></tr>
+</tbody>
+</table>
+</div>
 <blockquote>
-<p>⚠️ <strong>Note on Playground Limitations:</strong><br>Some examples in this book use no_run or ignore markers when rendered online, because external crates like aes, cbc, or rsa cannot be compiled in-browser.
-All examples work locally, and full source code is always included.</p>
+<p><strong>🚨 Security rule 🚨</strong></p>
+<p><strong>Never invent your own composition.</strong></p>
+<p>❌ Bad idea: encrypt(data) + hash(data)</p>
+<p>✅ Correct approach: Use AEAD.</p>
 </blockquote>
-<blockquote>
-<p>💡 These examples are didactic and minimal by design.
-They illustrate cryptographic concepts — not replace mature, production-ready libraries.</p>
-</blockquote>
-<hr>
-<h2 id="non-linear-reading"><a class="header" href="#non-linear-reading">Non-linear Reading</a></h2>
-<p>This book doesn’t assume linear progress.</p>
-<ul>
-<li>Want to build a secure file encryption tool? <strong>Symmetric Ciphers</strong> + <strong>Secure Infrastructure</strong></li>
-<li>Curious about smart contracts? Go directly to <strong>ECC</strong> and <strong>Blockchain &amp; Web3</strong></li>
-<li>Working on embedded firmware? Check out <strong>Ascon</strong>, <strong>PRESENT</strong>, and <strong>Defense &amp; Aerospace</strong></li>
-</ul>
-<p>Each domain chapter reminds you of the necessary primitives — like a map, not a locked path.</p>
-<h2 id="contributing-feedback--issues"><a class="header" href="#contributing-feedback--issues">Contributing, Feedback, &amp; Issues</a></h2>
-<p>This book is a living project.</p>
-<ul>
-<li>Errors? Open an issue or PR on the <a href="https://github.com/VinEckSie/sealed-in-rust">GitHub repo</a></li>
-<li>Suggestions? You’re welcome to share ideas for domains, examples, or improvements</li>
-<li>Contributions to the examples repo are also welcome</li>
-</ul>
-<h2 id="final-note"><a class="header" href="#final-note">Final Note</a></h2>
-<p>This is not a cryptography textbook — it’s a cryptographic engineering manual.<br>By the end, you’ll not only understand the primitives, you’ll know how to use them to secure real systems — in Rust, by design, not by accident.</p>
-<p>Let’s begin.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../00-Intro/introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../01-foundations/01-05-tooling-up.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../01-foundations/01-01-cryptography.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../02-core-primitives/02-01-symmetric-ciphers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -246,11 +237,11 @@ They illustrate cryptographic concepts — not replace mature, production-ready 
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../00-Intro/introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../01-foundations/01-05-tooling-up.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../01-foundations/01-01-cryptography.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../02-core-primitives/02-01-symmetric-ciphers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

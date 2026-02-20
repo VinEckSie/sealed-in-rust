@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a31e1a5e.js";
+            window.path_to_searchindex_js = "searchindex-fc2a98bd.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-510ff4c2.js"></script>
+        <script src="toc-8b53bd40.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -523,6 +523,52 @@ cd sealed-starter
 cargo test
 </code></pre>
 <!--This project will evolve with the book and include examples, tests, and benchmarking code as you progress.--><div style="break-before: page; page-break-before: always;"></div>
+<h1 id="how-ciphers-hashes-macs-aead-compose-1"><a href="#how-ciphers-hashes-macs-aead-compose-1" class="header">How Ciphers, Hashes, MACs, AEAD Compose</a></h1>
+<h2 id="how-ciphers-hashes-macs-aead-compose"><a class="header" href="#how-ciphers-hashes-macs-aead-compose">How Ciphers, Hashes, MACs, AEAD Compose</a></h2>
+<p>This book introduces several cryptographic primitives.
+They are not isolated tools. They are building blocks that compose into secure systems.</p>
+<p>This section shows how they connect.</p>
+<p>Each following chapter will explore one of these components in depth.</p>
+<h2 id="the-four-core-primitives"><a class="header" href="#the-four-core-primitives">The Four Core Primitives</a></h2>
+<h3 id="symmetric-cipher"><a class="header" href="#symmetric-cipher">Symmetric Cipher</a></h3>
+<p>Provides confidentiality.
+Encrypts data using a shared secret key.</p>
+<h3 id="hash-function"><a class="header" href="#hash-function">Hash Function</a></h3>
+<p>Provides integrity fingerprinting.
+Maps arbitrary data to a fixed-size digest. No key.</p>
+<h3 id="mac-message-authentication-code"><a class="header" href="#mac-message-authentication-code">MAC (Message Authentication Code)</a></h3>
+<p>Provides integrity + authenticity.
+Built using a secret key (often from a hash construction such as HMAC).</p>
+<h3 id="aead-authenticated-encryption-with-associated-data"><a class="header" href="#aead-authenticated-encryption-with-associated-data">AEAD (Authenticated Encryption with Associated Data)</a></h3>
+<p>Provides confidentiality + integrity + authenticity in a single construction.</p>
+<h2 id="composition-hierarchy"><a class="header" href="#composition-hierarchy">Composition Hierarchy</a></h2>
+<p>Hash
+→ Used to build MAC (HMAC)</p>
+<p>Cipher + Authenticator
+→ Used to build AEAD</p>
+<p>AEAD
+→ Used in modern secure communication protocols</p>
+<h2 id="mental-model"><a class="header" href="#mental-model">Mental Model</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Goal</th><th>Primitive</th></tr>
+</thead>
+<tbody>
+<tr><td>Hide data</td><td>Symmetric cipher</td></tr>
+<tr><td>Detect Modification</td><td>Hash</td></tr>
+<tr><td>Prove authenticity</td><td>MAC</td></tr>
+<tr><td>Hide + authenticate</td><td>AEAD</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p><strong>🚨 Security rule 🚨</strong></p>
+<p><strong>Never invent your own composition.</strong></p>
+<p>❌ Bad idea: encrypt(data) + hash(data)</p>
+<p>✅ Correct approach: Use AEAD.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="symmetric-ciphers--xor-aes-chacha20"><a href="#symmetric-ciphers--xor-aes-chacha20" class="header">Symmetric Ciphers — XOR, AES, ChaCha20</a></h1>
 <h2 id="symmetric-ciphers-xor-aes-chacha20--beyond"><a class="header" href="#symmetric-ciphers-xor-aes-chacha20--beyond">Symmetric Ciphers: XOR, AES, ChaCha20 &amp; Beyond</a></h2>
 <blockquote>
@@ -567,7 +613,7 @@ XOR encryption is reversible and stateless, which makes it simple and fast. But 
 </blockquote>
 <h3 id="feistel-networks--foundation-of-classic-block-ciphers"><a class="header" href="#feistel-networks--foundation-of-classic-block-ciphers">Feistel Networks — Foundation of Classic Block Ciphers</a></h3>
 <blockquote>
-<p>⚠️ Cryptographically obsolete, but conceptually important (used in DES<sup class="footnote-reference" id="fr-DES-1"><a href="#footnote-DES">1</a></sup>, 3DES<sup class="footnote-reference" id="fr-3DES-1"><a href="#footnote-3DES">2</a></sup>)</p>
+<p>⚠️ Cryptographically obsolete, but conceptually important (used in DES<sup class="footnote-reference" id="fr-des-1"><a href="#footnote-des">1</a></sup>, 3DES<sup class="footnote-reference" id="fr-3des-1"><a href="#footnote-3des">2</a></sup>)</p>
 </blockquote>
 <!--
 > ⚠️️ Annotate if a Rust crate exists + maturity level
@@ -668,7 +714,7 @@ This idea shaped DES and similar ciphers.</p>
 <p>⚠️ Software-only S-box implementations can leak secrets through cache timing. Modern AES implementations use hardware instructions (AES-NI) or constant-time software libraries.</p>
 </blockquote>
 <blockquote>
-<p>⚠️ Used in AES<sup class="footnote-reference" id="fr-AES-1"><a href="#footnote-AES">3</a></sup>, Camellia<sup class="footnote-reference" id="fr-Camellia-1"><a href="#footnote-Camellia">4</a></sup>, and modern block ciphers.
+<p>⚠️ Used in AES<sup class="footnote-reference" id="fr-aes-1-1"><a href="#footnote-aes-1">3</a></sup>, Camellia<sup class="footnote-reference" id="fr-camellia-1"><a href="#footnote-camellia">4</a></sup>, and modern block ciphers.
 Still dominant in current cipher architectures</p>
 </blockquote>
 <!--
@@ -803,7 +849,7 @@ Substitution-Permutation Networks provide a simple yet powerful structure for bu
 </blockquote>
 <h3 id="aes-advanced-encryption-standard---the-global-symmetric-standard"><a class="header" href="#aes-advanced-encryption-standard---the-global-symmetric-standard">AES (Advanced Encryption Standard)  — The Global Symmetric Standard</a></h3>
 <blockquote>
-<p>💡 Used in TLS<sup class="footnote-reference" id="fr-TLS-1"><a href="#footnote-TLS">5</a></sup>, LUKS<sup class="footnote-reference" id="fr-LUKS-1"><a href="#footnote-LUKS">6</a></sup>, SSH<sup class="footnote-reference" id="fr-SSH-1"><a href="#footnote-SSH">7</a></sup>, mobile apps, and FIPS-certified systems<sup class="footnote-reference" id="fr-FIPS-1"><a href="#footnote-FIPS">8</a></sup>.
+<p>💡 Used in TLS<sup class="footnote-reference" id="fr-tls-1"><a href="#footnote-tls">5</a></sup>, LUKS<sup class="footnote-reference" id="fr-luks-1"><a href="#footnote-luks">6</a></sup>, SSH<sup class="footnote-reference" id="fr-ssh-1"><a href="#footnote-ssh">7</a></sup>, mobile apps, and FIPS-certified systems<sup class="footnote-reference" id="fr-fips-1"><a href="#footnote-fips">8</a></sup>.
 Secure, fast, and hardware-accelerated</p>
 </blockquote>
 <blockquote>
@@ -811,10 +857,10 @@ Secure, fast, and hardware-accelerated</p>
 </blockquote>
 <p>AES is a symmetric-key block cipher developed by Belgian cryptographers Vincent Rijmen and Joan Daemen. It was selected by NIST in 2001 as the successor to DES and 3DES.</p>
 <p>AES operates on 128-bit blocks and supports key sizes of 128, 192, or 256 bits. It is based on a Substitution–Permutation Network (SPN) and runs 10, 12, or 14 rounds depending on the key length.</p>
-<p>It is standardized by FIPS-197, ISO/IEC<sup class="footnote-reference" id="fr-ISOIEC-1"><a href="#footnote-ISOIEC">9</a></sup>, and widely adopted in security protocols such as TLS, SSH, and IPsec<sup class="footnote-reference" id="fr-IPSec-1"><a href="#footnote-IPSec">10</a></sup>. AES is available in hardware on most modern CPUs, making it both fast and energy-efficient.</p>
+<p>It is standardized by FIPS-197, ISO/IEC[^isoiec], and widely adopted in security protocols such as TLS, SSH, and IPsec<sup class="footnote-reference" id="fr-ipsec-1"><a href="#footnote-ipsec">9</a></sup>. AES is available in hardware on most modern CPUs, making it both fast and energy-efficient.</p>
 <br>
 <p>🧪 <strong>Code Example: AES-128-CBC Encryption &amp; Decryption</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)
-We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-CBC-1"><a href="#footnote-CBC">11</a></sup> with PKCS7<sup class="footnote-reference" id="fr-PKCS7-1"><a href="#footnote-PKCS7">12</a></sup> padding.</p>
+We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-cbc-1"><a href="#footnote-cbc">10</a></sup> with PKCS7<sup class="footnote-reference" id="fr-pkcs7-1"><a href="#footnote-pkcs7">11</a></sup> padding.</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn run_aes_example() {
@@ -867,19 +913,19 @@ Decrypted text: Attack at dawn!
 <p>💡 A stream cipher encrypts data one bit or byte at a time by XORing it with a pseudorandom keystream, instead of encrypting fixed-size blocks like a block cipher.</p>
 </blockquote>
 <blockquote>
-<p>💡 Used in WireGuard<sup class="footnote-reference" id="fr-WIREGUARD-1"><a href="#footnote-WIREGUARD">13</a></sup>, TLS (on non-AES hardware<sup class="footnote-reference" id="fr-NONAES-1"><a href="#footnote-NONAES">14</a></sup>), mobile apps, messaging protocols, and security libraries.
+<p>💡 Used in WireGuard<sup class="footnote-reference" id="fr-wireguard-1"><a href="#footnote-wireguard">12</a></sup>, TLS (on non-AES hardware<sup class="footnote-reference" id="fr-non-aes-1"><a href="#footnote-non-aes">13</a></sup>), mobile apps, messaging protocols, and security libraries.
 Fast, simple, and naturally resistant to timing attacks.</p>
 </blockquote>
 <blockquote>
 <p><img src="images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/chacha20">chacha20</a></p>
 </blockquote>
 <p>ChaCha20 is a modern stream cipher designed by Daniel J. Bernstein.</p>
-<p>It is the streamlined successor to Salsa20<sup class="footnote-reference" id="fr-SALSA20-1"><a href="#footnote-SALSA20">15</a></sup>, offering improved diffusion and exceptional performance on all platforms — especially devices without AES hardware.</p>
-<p>Unlike block ciphers, ChaCha20 does not process data in fixed-size blocks. Instead, it transforms a key + nonce + counter into a pseudorandom keystream<sup class="footnote-reference" id="fr-PSEUDOKEY-1"><a href="#footnote-PSEUDOKEY">16</a></sup>.</p>
+<p>It is the streamlined successor to Salsa20<sup class="footnote-reference" id="fr-salsa20-1"><a href="#footnote-salsa20">14</a></sup>, offering improved diffusion and exceptional performance on all platforms — especially devices without AES hardware.</p>
+<p>Unlike block ciphers, ChaCha20 does not process data in fixed-size blocks. Instead, it transforms a key + nonce + counter into a pseudorandom keystream<sup class="footnote-reference" id="fr-pseudokey-1"><a href="#footnote-pseudokey">15</a></sup>.</p>
 <p>Encryption is simply: ciphertext = plaintext XOR keystream</p>
 <p>No padding. No block alignment. Just pure stream encryption.</p>
 <p>ChaCha20 is now a fundamental primitive across modern cryptography:
-WireGuard, OpenSSH (for session keys), TLS 1.3 fallback ciphers, mobile operating systems, and many authenticated encryption schemes like ChaCha20-Poly1305<sup class="footnote-reference" id="fr-POLY1305-1"><a href="#footnote-POLY1305">17</a></sup>.</p>
+WireGuard, OpenSSH (for session keys), TLS 1.3 fallback ciphers, mobile operating systems, and many authenticated encryption schemes like ChaCha20-Poly1305<sup class="footnote-reference" id="fr-poly1305-1"><a href="#footnote-poly1305">16</a></sup>.</p>
 <p>🧪 <strong>Code Example: ChaCha20 Encryption &amp; Decryption</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
 <p>We’ll generate a ChaCha20 keystream and XOR it with a plaintext message.
 The API is extremely simple — you create a cipher and stream through it.</p>
@@ -1087,16 +1133,16 @@ ChaCha20 is often preferred today when simplicity and portability matter more th
 <p>Human Password → KDF → Cryptographic Key → AES / ChaCha20</p>
 <p>A KDF protects symmetric encryption by:</p>
 <ul>
-<li>Adding randomness (salt<sup class="footnote-reference" id="fr-SALT-1"><a href="#footnote-SALT">18</a></sup>)</li>
+<li>Adding randomness (salt<sup class="footnote-reference" id="fr-salt-1"><a href="#footnote-salt">17</a></sup>)</li>
 <li>Applying slow, repeated cryptographic operations</li>
 <li>Making brute-force attacks economically unviable</li>
 </ul>
 <p><strong>Common KDF Families</strong></p>
 <ul>
-<li><strong>PBKDF2<sup class="footnote-reference" id="fr-PBKDF2-1"><a href="#footnote-PBKDF2">19</a></sup></strong> → Legacy compatibility</li>
-<li><strong>Argon2<sup class="footnote-reference" id="fr-ARGON2-1"><a href="#footnote-ARGON2">20</a></sup></strong> → Modern password-based security standard</li>
-<li><strong>scrypt<sup class="footnote-reference" id="fr-SCRYPT-1"><a href="#footnote-SCRYPT">21</a></sup></strong> → Memory-hard defense against hardware attacks</li>
-<li><strong>HKDF<sup class="footnote-reference" id="fr-HKDF-1"><a href="#footnote-HKDF">22</a></sup></strong> → Safe key expansion from an already strong secret</li>
+<li><strong>PBKDF2<sup class="footnote-reference" id="fr-pbkdf2-1"><a href="#footnote-pbkdf2">18</a></sup></strong> → Legacy compatibility</li>
+<li><strong>Argon2<sup class="footnote-reference" id="fr-argon2-1"><a href="#footnote-argon2">19</a></sup></strong> → Modern password-based security standard</li>
+<li><strong>scrypt<sup class="footnote-reference" id="fr-scrypt-1"><a href="#footnote-scrypt">20</a></sup></strong> → Memory-hard defense against hardware attacks</li>
+<li><strong>HKDF<sup class="footnote-reference" id="fr-hkdf-1"><a href="#footnote-hkdf">21</a></sup></strong> → Safe key expansion from an already strong secret</li>
 </ul>
 <p><strong>Important Distinction</strong></p>
 <ul>
@@ -1154,74 +1200,71 @@ ChaCha20 is often preferred today when simplicity and portability matter more th
 </blockquote>
 <hr>
 <ol class="footnote-definition">
-<li id="footnote-DES">
-<p>DES — early symmetric cipher (56-bit), now insecure. <a href="#des-data-encryption-standard">More</a> <a href="#fr-DES-1">↩</a></p>
+<li id="footnote-des">
+<p>DES — early symmetric cipher (56-bit), now insecure. <a href="#des-data-encryption-standard">More</a> <a href="#fr-des-1">↩</a></p>
 </li>
-<li id="footnote-3DES">
-<p>3DES — DES applied three times, better than DES but now deprecated. <a href="#3des-triple-des">More</a> <a href="#fr-3DES-1">↩</a></p>
+<li id="footnote-3des">
+<p>3DES — DES applied three times, better than DES but now deprecated. <a href="#3des-triple-des">More</a> <a href="#fr-3des-1">↩</a></p>
 </li>
-<li id="footnote-AES">
-<p>AES — The modern global standard, fast, secure, and hardware-accelerated. <a href="#aes-advanced-encryption-standard">More</a> <a href="#fr-AES-1">↩</a></p>
+<li id="footnote-aes-1">
+<p>AES — The modern global standard, fast, secure, and hardware-accelerated. <a href="#aes-advanced-encryption-standard">More</a> <a href="#fr-aes-1-1">↩</a></p>
 </li>
-<li id="footnote-Camellia">
-<p>Camellia — Japanese block cipher, secure &amp; AES-comparable. <a href="#camellia">More</a> <a href="#fr-Camellia-1">↩</a></p>
+<li id="footnote-camellia">
+<p>Camellia — Japanese block cipher, secure &amp; AES-comparable. <a href="#camellia">More</a> <a href="#fr-camellia-1">↩</a></p>
 </li>
-<li id="footnote-TLS">
-<p>TLS — protocol securing data in transit (HTTPS, etc.). <a href="#tls-transport-layer-security">More</a> <a href="#fr-TLS-1">↩</a></p>
+<li id="footnote-tls">
+<p>TLS — protocol securing data in transit (HTTPS, etc.). <a href="#tls-transport-layer-security">More</a> <a href="#fr-tls-1">↩</a></p>
 </li>
-<li id="footnote-LUKS">
-<p>LUKS — Linux standard for full disk encryption. <a href="#luks-linux-unified-key-setup">More</a> <a href="#fr-LUKS-1">↩</a></p>
+<li id="footnote-luks">
+<p>LUKS — Linux standard for full disk encryption. <a href="#luks-linux-unified-key-setup">More</a> <a href="#fr-luks-1">↩</a></p>
 </li>
-<li id="footnote-SSH">
-<p>SSH — secure remote access protocol. <a href="#ssh-secure-shell">More</a> <a href="#fr-SSH-1">↩</a></p>
+<li id="footnote-ssh">
+<p>SSH — secure remote access protocol. <a href="#ssh-secure-shell">More</a> <a href="#fr-ssh-1">↩</a></p>
 </li>
-<li id="footnote-FIPS">
-<p>FIPS — U.S. cryptographic standards for government/finance. <a href="#fips-federal-information-processing-standards">More</a> <a href="#fr-FIPS-1">↩</a></p>
+<li id="footnote-fips">
+<p>FIPS — U.S. cryptographic standards for government/finance. <a href="#fips-federal-information-processing-standards">More</a> <a href="#fr-fips-1">↩</a></p>
 </li>
-<li id="footnote-ISOIEC">
-<p>ISO/IEC — international standards for IT/crypto. <a href="#isoiec">More</a> <a href="#fr-ISOIEC-1">↩</a></p>
+<li id="footnote-ipsec">
+<p>IPSec — protocol suite for securing IP communications. <a href="#ipsec">More</a> <a href="#fr-ipsec-1">↩</a></p>
 </li>
-<li id="footnote-IPSec">
-<p>IPSec — protocol suite for securing IP communications. <a href="#ipsec">More</a> <a href="#fr-IPSec-1">↩</a></p>
+<li id="footnote-cbc">
+<p>CBC — block cipher mode, chains blocks for security. <a href="#cbc-cipher-block-chaining">More</a> <a href="#fr-cbc-1">↩</a></p>
 </li>
-<li id="footnote-CBC">
-<p>CBC — block cipher mode, chains blocks for security. <a href="#cbc-cipher-block-chaining">More</a> <a href="#fr-CBC-1">↩</a></p>
+<li id="footnote-pkcs7">
+<p>PKCS7 — padding scheme for block ciphers. <a href="#pkcs7">More</a> <a href="#fr-pkcs7-1">↩</a></p>
 </li>
-<li id="footnote-PKCS7">
-<p>PKCS7 — padding scheme for block ciphers. <a href="#pkcs7">More</a> <a href="#fr-PKCS7-1">↩</a></p>
+<li id="footnote-wireguard">
+<p>WireGuard — modern VPN protocol using ChaCha20-Poly1305 to secure IP traffic. <a href="#wireguard">More</a> <a href="#fr-wireguard-1">↩</a></p>
 </li>
-<li id="footnote-WIREGUARD">
-<p>WireGuard — modern VPN protocol using ChaCha20-Poly1305 to secure IP traffic. <a href="#wireguard">More</a> <a href="#fr-WIREGUARD-1">↩</a></p>
+<li id="footnote-non-aes">
+<p>Non-AES hardware — CPUs without AES instructions, where ChaCha20 is often faster than AES. <a href="#non-aes-hardware">More</a> <a href="#fr-non-aes-1">↩</a></p>
 </li>
-<li id="footnote-NONAES">
-<p>Non-AES hardware — CPUs without AES instructions, where ChaCha20 is often faster than AES. <a href="#non-aes-hardware">More</a> <a href="#fr-NONAES-1">↩</a></p>
+<li id="footnote-salsa20">
+<p>Salsa20 — stream cipher by Daniel J. Bernstein; predecessor of ChaCha20, fast and well-studied. <a href="#salsa20">More</a> <a href="#fr-salsa20-1">↩</a></p>
 </li>
-<li id="footnote-SALSA20">
-<p>Salsa20 — stream cipher by Daniel J. Bernstein; predecessor of ChaCha20, fast and well-studied. <a href="#salsa20">More</a> <a href="#fr-SALSA20-1">↩</a></p>
+<li id="footnote-pseudokey">
+<p>Pseudorandom keystream - sequence of bits/bytes that looks random but is deterministically generated from a secret key (and usually a nonce). <a href="#pseudorandom-keystream">More</a> <a href="#fr-pseudokey-1">↩</a></p>
 </li>
-<li id="footnote-PSEUDOKEY">
-<p>Pseudorandom keystream - sequence of bits/bytes that looks random but is deterministically generated from a secret key (and usually a nonce). <a href="#pseudorandom-keystream">More</a> <a href="#fr-PSEUDOKEY-1">↩</a></p>
-</li>
-<li id="footnote-POLY1305">
+<li id="footnote-poly1305">
 <p>ChaCha20-Poly1305 -
-AEAD scheme that combines the ChaCha20 stream cipher with the Poly1305 MAC to provide authenticated encryption (confidentiality + integrity). <a href="#chacha20-poly1305">More</a> <a href="#fr-POLY1305-1">↩</a></p>
+AEAD scheme that combines the ChaCha20 stream cipher with the Poly1305 MAC to provide authenticated encryption (confidentiality + integrity). <a href="#chacha20-poly1305">More</a> <a href="#fr-poly1305-1">↩</a></p>
 </li>
-<li id="footnote-SALT">
-<p>Salt - A random value added to a password before key derivation to prevent identical passwords from producing identical keys and to defeat precomputed attacks such as rainbow tables.. <a href="#salt">More</a> <a href="#fr-SALT-1">↩</a></p>
+<li id="footnote-salt">
+<p>Salt - A random value added to a password before key derivation to prevent identical passwords from producing identical keys and to defeat precomputed attacks such as rainbow tables.. <a href="#salt">More</a> <a href="#fr-salt-1">↩</a></p>
 </li>
-<li id="footnote-PBKDF2">
-<p>PBKDF2 (Password-Based Key Derivation Function) - The standardized successor to PBKDF1 for deriving cryptographic keys from passwords.. <a href="#pbkdf2">More</a> <a href="#fr-PBKDF2-1">↩</a></p>
+<li id="footnote-pbkdf2">
+<p>PBKDF2 (Password-Based Key Derivation Function) - The standardized successor to PBKDF1 for deriving cryptographic keys from passwords.. <a href="#pbkdf2">More</a> <a href="#fr-pbkdf2-1">↩</a></p>
 </li>
-<li id="footnote-ARGON2">
-<p>Argon2 (named after the mythological ship Argo and its crew, the Argonauts) - The modern standard for password hashing and key derivation, designed to resist GPU and ASIC attacks using memory-hard computation. <a href="#argon2">More</a> <a href="#fr-ARGON2-1">↩</a></p>
+<li id="footnote-argon2">
+<p>Argon2 (named after the mythological ship Argo and its crew, the Argonauts) - The modern standard for password hashing and key derivation, designed to resist GPU and ASIC attacks using memory-hard computation. <a href="#argon2">More</a> <a href="#fr-argon2-1">↩</a></p>
 </li>
-<li id="footnote-SCRYPT">
+<li id="footnote-scrypt">
 <p>Scrypt -
-A memory-hard password-based key derivation function built to make large-scale hardware brute-force attacks expensive and inefficient. Older than Argon2 but still widely used. <a href="#scrypt">More</a> <a href="#fr-SCRYPT-1">↩</a></p>
+A memory-hard password-based key derivation function built to make large-scale hardware brute-force attacks expensive and inefficient. Older than Argon2 but still widely used. <a href="#scrypt">More</a> <a href="#fr-scrypt-1">↩</a></p>
 </li>
-<li id="footnote-HKDF">
+<li id="footnote-hkdf">
 <p>HKDF (HMAC-based Key Derivation Function) -
-A key derivation function for expanding an already strong secret into multiple independent cryptographic keys using hash functions. Used for key separation and key hygiene, not for protecting weak passwords. <a href="#hkdf">More</a> <a href="#fr-HKDF-1">↩</a></p>
+A key derivation function for expanding an already strong secret into multiple independent cryptographic keys using hash functions. Used for key separation and key hygiene, not for protecting weak passwords. <a href="#hkdf">More</a> <a href="#fr-hkdf-1">↩</a></p>
 </li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div>
@@ -1267,12 +1310,12 @@ One flipped bit &gt;&gt; Completely different output
 <blockquote>
 <p><img src="images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/sha2">sha2</a></p>
 </blockquote>
-<p>SHA-2<sup class="footnote-reference" id="fr-SHA2-1"><a href="#footnote-SHA2">1</a></sup> is a family of hash functions standardized by NIST<sup class="footnote-reference" id="fr-NIST-1"><a href="#footnote-NIST">2</a></sup>:</p>
+<p>SHA-2<sup class="footnote-reference" id="fr-sha2-1"><a href="#footnote-sha2">1</a></sup> is a family of hash functions standardized by NIST<sup class="footnote-reference" id="fr-nist-1"><a href="#footnote-nist">2</a></sup>:</p>
 <ul>
-<li>SHA-224<sup class="footnote-reference" id="fr-SHA224-1"><a href="#footnote-SHA224">3</a></sup></li>
-<li>SHA-256<sup class="footnote-reference" id="fr-SHA256-1"><a href="#footnote-SHA256">4</a></sup></li>
-<li>SHA-384<sup class="footnote-reference" id="fr-SHA384-1"><a href="#footnote-SHA384">5</a></sup></li>
-<li>SHA-512<sup class="footnote-reference" id="fr-SHA512-1"><a href="#footnote-SHA512">6</a></sup></li>
+<li>SHA-224<sup class="footnote-reference" id="fr-sha224-1"><a href="#footnote-sha224">3</a></sup></li>
+<li>SHA-256<sup class="footnote-reference" id="fr-sha256-1"><a href="#footnote-sha256">4</a></sup></li>
+<li>SHA-384<sup class="footnote-reference" id="fr-sha384-1"><a href="#footnote-sha384">5</a></sup></li>
+<li>SHA-512<sup class="footnote-reference" id="fr-sha512-1"><a href="#footnote-sha512">6</a></sup></li>
 </ul>
 <p>SHA-256 is the most common.
 It is slow enough to be secure, fast enough for general use and extremely well analyzed.
@@ -1306,7 +1349,7 @@ If you don’t know which hash to use, SHA-256 will almost never be the wrong an
 </span>hash(password)
 <span class="boring">}</span></code></pre>
 <p>because Hashes are fast, attackers can try billions per second, rainbow tables exist.</p>
-<p>We fix this with KDFs<sup class="footnote-reference" id="fr-KDF-1"><a href="#footnote-KDF">7</a></sup> (Argon2<sup class="footnote-reference" id="fr-ARGON2-1-1"><a href="#footnote-ARGON2-1">8</a></sup>, scrypt<sup class="footnote-reference" id="fr-SCRYPT-1-1"><a href="#footnote-SCRYPT-1">9</a></sup>). See <a href="#a-glimpse-at-key-derivation">Key Derivation section</a></p>
+<p>We fix this with KDFs<sup class="footnote-reference" id="fr-kdf-1"><a href="#footnote-kdf">7</a></sup> (Argon2<sup class="footnote-reference" id="fr-argon2-1-1"><a href="#footnote-argon2-1">8</a></sup>, scrypt<sup class="footnote-reference" id="fr-scrypt-1-1"><a href="#footnote-scrypt-1">9</a></sup>). See <a href="#a-glimpse-at-key-derivation">Key Derivation section</a></p>
 <blockquote>
 <p><strong>🚨 Fast hashes are dangerous for passwords.</strong></p>
 </blockquote>
@@ -1317,20 +1360,20 @@ If you don’t know which hash to use, SHA-256 will almost never be the wrong an
 <blockquote>
 <p><img src="images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/blake3">blake3</a></p>
 </blockquote>
-<p>BLAKE3[^BLAKE3] is the modern evolution of BLAKE2:</p>
+<p>BLAKE3<sup class="footnote-reference" id="fr-blake3-1"><a href="#footnote-blake3">10</a></sup> is the modern evolution of BLAKE2:</p>
 <ul>
 <li>Cryptographically secure</li>
 <li>Massively parallel</li>
 <li>Faster than SHA-2</li>
-<li>Designed for multicore CPUs and SIMD<sup class="footnote-reference" id="fr-SIMD-1"><a href="#footnote-SIMD">10</a></sup></li>
+<li>Designed for multicore CPUs and SIMD<sup class="footnote-reference" id="fr-simd-1"><a href="#footnote-simd">11</a></sup></li>
 <li>Unlike SHA-2, BLAKE3 was designed after modern hardware existed.</li>
 </ul>
 <p>It also supports:</p>
 <ul>
 <li>Streaming</li>
-<li>Incremental hashing<sup class="footnote-reference" id="fr-INC-1"><a href="#footnote-INC">11</a></sup></li>
-<li>Keyed hashing<sup class="footnote-reference" id="fr-KEY-1"><a href="#footnote-KEY">12</a></sup></li>
-<li>Extendable output (XOF)<sup class="footnote-reference" id="fr-EXT-1"><a href="#footnote-EXT">13</a></sup></li>
+<li>Incremental hashing<sup class="footnote-reference" id="fr-inc-1"><a href="#footnote-inc">12</a></sup></li>
+<li>Keyed hashing<sup class="footnote-reference" id="fr-key-1"><a href="#footnote-key">13</a></sup></li>
+<li>Extendable output (XOF)<sup class="footnote-reference" id="fr-ext-1"><a href="#footnote-ext">14</a></sup></li>
 </ul>
 <p>🧪 <strong>Code Example: BLAKE3 Hashing</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
@@ -1366,8 +1409,8 @@ If you don’t know which hash to use, SHA-256 will almost never be the wrong an
 <h3 id="collision-resistance--what-breaking-a-hash-really-means"><a class="header" href="#collision-resistance--what-breaking-a-hash-really-means">Collision Resistance — What “Breaking a Hash” Really Means</a></h3>
 <p>Breaking a hash means one of two things:</p>
 <ul>
-<li>Finding a collision<sup class="footnote-reference" id="fr-COLLISION-1"><a href="#footnote-COLLISION">14</a></sup> faster than brute force<sup class="footnote-reference" id="fr-BRUTEFORCE-1"><a href="#footnote-BRUTEFORCE">15</a></sup></li>
-<li>Finding a preimage<sup class="footnote-reference" id="fr-PREIMAGE-1"><a href="#footnote-PREIMAGE">16</a></sup> faster than brute force</li>
+<li>Finding a collision<sup class="footnote-reference" id="fr-collision-1"><a href="#footnote-collision">15</a></sup> faster than brute force<sup class="footnote-reference" id="fr-bruteforce-1"><a href="#footnote-bruteforce">16</a></sup></li>
+<li>Finding a preimage<sup class="footnote-reference" id="fr-preimage-1"><a href="#footnote-preimage">17</a></sup> faster than brute force</li>
 </ul>
 <p>For SHA-256:</p>
 <ul>
@@ -1386,7 +1429,7 @@ If you don’t know which hash to use, SHA-256 will almost never be the wrong an
 <li>HMAC — keyed hashing for authentication</li>
 <li>HKDF — key derivation</li>
 <li>Digital signatures — sign(hash(message))</li>
-<li>Merkle trees<sup class="footnote-reference" id="fr-MERKLE-1"><a href="#footnote-MERKLE">17</a></sup> — integrity structures</li>
+<li>Merkle trees<sup class="footnote-reference" id="fr-merkle-1"><a href="#footnote-merkle">18</a></sup> — integrity structures</li>
 <li>Password KDFs — slow hashing</li>
 </ul>
 <blockquote>
@@ -1404,58 +1447,59 @@ If encryption hides secrets, hashes define truth.</p>
 </blockquote>
 <hr>
 <ol class="footnote-definition">
-<li id="footnote-SHA2">
-<p>SHA-2 (Secure Hash Algorithm 2) — NIST-standardized family of cryptographic hash functions including SHA-224, SHA-256, SHA-384, and SHA-512. <a href="#sha-2-secure-hash-algorithm-2">More</a>
-]: BLAKE3 (named after the BLAKE hash family) — Modern cryptographic hash optimized for speed, parallelism, and  implicity on modern hardware. <a href="#blake3">More</a> <a href="#fr-SHA2-1">↩</a></p>
+<li id="footnote-sha2">
+<p>SHA-2 (Secure Hash Algorithm 2) — NIST-standardized family of cryptographic hash functions including SHA-224, SHA-256, SHA-384, and SHA-512. <a href="#sha-2-secure-hash-algorithm-2">More</a> <a href="#fr-sha2-1">↩</a></p>
 </li>
-<li id="footnote-NIST">
-<p>NIST (National Institute of Standards and Technology) — U.S. authority responsible for standardizing widely used cryptographic algorithms. <a href="#nist">More</a> <a href="#fr-NIST-1">↩</a></p>
+<li id="footnote-nist">
+<p>NIST (National Institute of Standards and Technology) — U.S. authority responsible for standardizing widely used cryptographic algorithms. <a href="#nist">More</a> <a href="#fr-nist-1">↩</a></p>
 </li>
-<li id="footnote-SHA224">
-<p>SHA-224 - SHA-2 variant producing a 224-bit digest, derived from SHA-256. <a href="#sha-224">More</a> <a href="#fr-SHA224-1">↩</a></p>
+<li id="footnote-sha224">
+<p>SHA-224 - SHA-2 variant producing a 224-bit digest, derived from SHA-256. <a href="#sha-224">More</a> <a href="#fr-sha224-1">↩</a></p>
 </li>
-<li id="footnote-SHA256">
-<p>SHA-256 — Most widely deployed SHA-2 hash function, offering strong collision and preimage resistance. <a href="#sha-256">More</a> <a href="#fr-SHA256-1">↩</a></p>
+<li id="footnote-sha256">
+<p>SHA-256 — Most widely deployed SHA-2 hash function, offering strong collision and preimage resistance. <a href="#sha-256">More</a> <a href="#fr-sha256-1">↩</a></p>
 </li>
-<li id="footnote-SHA384">
-<p>SHA-384 — SHA-2 variant optimized for 64-bit systems with higher security margin. <a href="#sha-384">More</a> <a href="#fr-SHA384-1">↩</a></p>
+<li id="footnote-sha384">
+<p>SHA-384 — SHA-2 variant optimized for 64-bit systems with higher security margin. <a href="#sha-384">More</a> <a href="#fr-sha384-1">↩</a></p>
 </li>
-<li id="footnote-SHA512">
-<p>SHA-512 — SHA-2 variant with the largest output size and best performance on 64-bit architectures. <a href="#sha-512">More</a> <a href="#fr-SHA512-1">↩</a></p>
+<li id="footnote-sha512">
+<p>SHA-512 — SHA-2 variant with the largest output size and best performance on 64-bit architectures. <a href="#sha-512">More</a> <a href="#fr-sha512-1">↩</a></p>
 </li>
-<li id="footnote-KDF">
-<p>KDF (Key Derivation Function) — Function that transforms a weak or strong secret into cryptographically secure keys for use with symmetric encryption. <a href="#kdf">More</a> <a href="#fr-KDF-1">↩</a></p>
+<li id="footnote-kdf">
+<p>KDF (Key Derivation Function) — Function that transforms a weak or strong secret into cryptographically secure keys for use with symmetric encryption. <a href="#kdf">More</a> <a href="#fr-kdf-1">↩</a></p>
 </li>
-<li id="footnote-ARGON2-1">
-<p>Argon2 (named after the mythological ship Argo and its crew, the Argonauts) - The modern standard for password hashing and key derivation, designed to resist GPU and ASIC attacks using memory-hard computation. <a href="#argon2">More</a> <a href="#fr-ARGON2-1-1">↩</a></p>
+<li id="footnote-argon2-1">
+<p>Argon2 (named after the mythological ship Argo and its crew, the Argonauts) - The modern standard for password hashing and key derivation, designed to resist GPU and ASIC attacks using memory-hard computation. <a href="#argon2">More</a> <a href="#fr-argon2-1-1">↩</a></p>
 </li>
-<li id="footnote-SCRYPT-1">
-<p>Scrypt -
-A memory-hard password-based key derivation function built to make large-scale hardware brute-force attacks expensive and inefficient. Older than Argon2 but still widely used. <a href="#scrypt">More</a> <a href="#fr-SCRYPT-1-1">↩</a></p>
+<li id="footnote-scrypt-1">
+<p>Scrypt - A memory-hard password-based key derivation function built to make large-scale hardware brute-force attacks expensive and inefficient. Older than Argon2 but still widely used. <a href="#scrypt">More</a> <a href="#fr-scrypt-1-1">↩</a></p>
 </li>
-<li id="footnote-SIMD">
-<p>SIMD (Single Instruction, Multiple Data) — CPU execution model that applies the same operation to multiple data elements in parallel for high performance. <a href="#simd">More</a> <a href="#fr-SIMD-1">↩</a></p>
+<li id="footnote-blake3">
+<p>BLAKE3 (named after the BLAKE hash family) — Modern cryptographic hash optimized for speed, parallelism, and  implicity on modern hardware. <a href="#blake3">More</a> <a href="#fr-blake3-1">↩</a></p>
 </li>
-<li id="footnote-INC">
-<p>Incremental hashing — Hashing method that processes input in chunks, allowing streaming and large data hashing without loading everything into memory. <a href="#incremental-hashing">More</a> <a href="#fr-INC-1">↩</a></p>
+<li id="footnote-simd">
+<p>SIMD (Single Instruction, Multiple Data) — CPU execution model that applies the same operation to multiple data elements in parallel for high performance. <a href="#simd">More</a> <a href="#fr-simd-1">↩</a></p>
 </li>
-<li id="footnote-KEY">
-<p>Keyed hashing — Hash function variant that incorporates a secret key to provide message authentication and integrity guarantees. <a href="#keyed-hashing">More</a> <a href="#fr-KEY-1">↩</a></p>
+<li id="footnote-inc">
+<p>Incremental hashing — Hashing method that processes input in chunks, allowing streaming and large data hashing without loading everything into memory. <a href="#incremental-hashing">More</a> <a href="#fr-inc-1">↩</a></p>
 </li>
-<li id="footnote-EXT">
-<p>Extendable output (XOF) — Hash construction that can generate an arbitrary-length output stream from a single input and key. <a href="#extendable-output-function">More</a> <a href="#fr-EXT-1">↩</a></p>
+<li id="footnote-key">
+<p>Keyed hashing — Hash function variant that incorporates a secret key to provide message authentication and integrity guarantees. <a href="#keyed-hashing">More</a> <a href="#fr-key-1">↩</a></p>
 </li>
-<li id="footnote-COLLISION">
-<p>Collision — Existence of two distinct inputs that produce the same hash output, undermining a hash function’s uniqueness guarantee. <a href="#collision">More</a> <a href="#fr-COLLISION-1">↩</a></p>
+<li id="footnote-ext">
+<p>Extendable output (XOF) — Hash construction that can generate an arbitrary-length output stream from a single input and key. <a href="#extendable-output-function">More</a> <a href="#fr-ext-1">↩</a></p>
 </li>
-<li id="footnote-BRUTEFORCE">
-<p>Brute force — Exhaustive attack that tries all possible inputs or keys until the correct one is found. <a href="#brute-force">More</a> <a href="#fr-BRUTEFORCE-1">↩</a></p>
+<li id="footnote-collision">
+<p>Collision — Existence of two distinct inputs that produce the same hash output, undermining a hash function’s uniqueness guarantee. <a href="#collision">More</a> <a href="#fr-collision-1">↩</a></p>
 </li>
-<li id="footnote-PREIMAGE">
-<p>Preimage — Original input corresponding to a given hash output; preimage resistance means it is infeasible to recover this input. <a href="#preimage">More</a> <a href="#fr-PREIMAGE-1">↩</a></p>
+<li id="footnote-bruteforce">
+<p>Brute force — Exhaustive attack that tries all possible inputs or keys until the correct one is found. <a href="#brute-force">More</a> <a href="#fr-bruteforce-1">↩</a></p>
 </li>
-<li id="footnote-MERKLE">
-<p>Merkle tree — Tree data structure where each node is a hash of its children, enabling efficient and secure data integrity verification. <a href="#merkle-tree">More</a> <a href="#fr-MERKLE-1">↩</a></p>
+<li id="footnote-preimage">
+<p>Preimage — Original input corresponding to a given hash output; preimage resistance means it is infeasible to recover this input. <a href="#preimage">More</a> <a href="#fr-preimage-1">↩</a></p>
+</li>
+<li id="footnote-merkle">
+<p>Merkle tree — Tree data structure where each node is a hash of its children, enabling efficient and secure data integrity verification. <a href="#merkle-tree">More</a> <a href="#fr-merkle-1">↩</a></p>
 </li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div>
@@ -1679,13 +1723,13 @@ but nonce management must be flawless.</p>
 </blockquote>
 <h2 id="chacha20-poly1305--the-safer-default"><a class="header" href="#chacha20-poly1305--the-safer-default">ChaCha20-Poly1305 — The Safer Default</a></h2>
 <blockquote>
-<p>💡 Used in WireGuard<sup class="footnote-reference" id="fr-wireguard-1"><a href="#footnote-wireguard">17</a></sup>, mobile apps, embedded systems, TLS fallback<sup class="footnote-reference" id="fr-tls-fallback-1"><a href="#footnote-tls-fallback">18</a></sup></p>
+<p>💡 Used in WireGuard<sup class="footnote-reference" id="fr-wireguard-1-1"><a href="#footnote-wireguard-1">17</a></sup>, mobile apps, embedded systems, TLS fallback<sup class="footnote-reference" id="fr-tls-fallback-1"><a href="#footnote-tls-fallback">18</a></sup></p>
 <p>Designed for misuse resistance<sup class="footnote-reference" id="fr-misuse-resistance-1"><a href="#footnote-misuse-resistance">19</a></sup></p>
 </blockquote>
 <p>ChaCha20-Poly1305<sup class="footnote-reference" id="fr-chacha20-poly1305-1"><a href="#footnote-chacha20-poly1305">20</a></sup> combines:</p>
 <ul>
 <li>ChaCha20<sup class="footnote-reference" id="fr-chacha20-1"><a href="#footnote-chacha20">21</a></sup> (encryption)</li>
-<li>Poly1305<sup class="footnote-reference" id="fr-poly1305-1"><a href="#footnote-poly1305">22</a></sup> (authentication)</li>
+<li>Poly1305<sup class="footnote-reference" id="fr-poly1305-1-1"><a href="#footnote-poly1305-1">22</a></sup> (authentication)</li>
 <li>A clean, unified AEAD API<sup class="footnote-reference" id="fr-aead-api-1"><a href="#footnote-aead-api">23</a></sup></li>
 </ul>
 <p>Advantages:</p>
@@ -1811,8 +1855,8 @@ Rolling your own MAC + encryption is a mistake.</dd>
 <li id="footnote-ghash">
 <p>GHASH — The polynomial-hash authenticator inside AES-GCM, computed over AAD and ciphertext to help produce the authentication tag. <a href="#ghash">More</a> <a href="#fr-ghash-1">↩</a></p>
 </li>
-<li id="footnote-wireguard">
-<p>WireGuard — Modern VPN protocol using a small, fixed set of strong primitives (notably ChaCha20-Poly1305) for high performance and simplicity. <a href="#wireguard">More</a> <a href="#fr-wireguard-1">↩</a></p>
+<li id="footnote-wireguard-1">
+<p>WireGuard — Modern VPN protocol using a small, fixed set of strong primitives (notably ChaCha20-Poly1305) for high performance and simplicity. <a href="#wireguard">More</a> <a href="#fr-wireguard-1-1">↩</a></p>
 </li>
 <li id="footnote-tls-fallback">
 <p>TLS Fallback — Choosing an alternative cipher suite during TLS negotiation (often ChaCha20-Poly1305 on non-AES hardware) without sacrificing authenticated encryption. <a href="#tls-fallback">More</a> <a href="#fr-tls-fallback-1">↩</a></p>
@@ -1826,8 +1870,8 @@ Rolling your own MAC + encryption is a mistake.</dd>
 <li id="footnote-chacha20">
 <p>ChaCha20 — Fast ARX-based stream cipher; encrypts by XORing a generated keystream with plaintext; nonce reuse under the same key breaks confidentiality. <a href="#chacha20">More</a> <a href="#fr-chacha20-1">↩</a></p>
 </li>
-<li id="footnote-poly1305">
-<p>Poly1305 — One-time MAC producing a 16-byte tag; secure only if the Poly1305 key is never reused, typically derived fresh per message. <a href="#poly1305">More</a> <a href="#fr-poly1305-1">↩</a></p>
+<li id="footnote-poly1305-1">
+<p>Poly1305 — One-time MAC producing a 16-byte tag; secure only if the Poly1305 key is never reused, typically derived fresh per message. <a href="#poly1305">More</a> <a href="#fr-poly1305-1-1">↩</a></p>
 </li>
 <li id="footnote-aead-api">
 <p>AEAD API — Standard encrypt/decrypt interface using (key, nonce, AAD, plaintext/ciphertext) and returning success or authentication failure; never release plaintext on failure. <a href="#aead-api">More</a> <a href="#fr-aead-api-1">↩</a></p>
@@ -1840,96 +1884,256 @@ Rolling your own MAC + encryption is a mistake.</dd>
 </li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div>
+<h1 id="randomness--entropy--nonces-ivs-csprngs-1"><a href="#randomness--entropy--nonces-ivs-csprngs-1" class="header">Randomness &amp; Entropy — Nonces, IVs, CSPRNGs</a></h1>
+<h2 id="randomness--entropy--nonces-ivs-csprngs"><a class="header" href="#randomness--entropy--nonces-ivs-csprngs">Randomness &amp; Entropy — Nonces, IVs, CSPRNGs</a></h2>
+<blockquote>
+<p>🔐 <strong>Used in:</strong> encryption schemes[^encryption-scheme], TLS, digital signatures<sup class="footnote-reference" id="fr-digital-signature-1"><a href="#footnote-digital-signature">1</a></sup>, key generation, session tokens</p>
+<p>✅ Unpredictability is security. If randomness fails, everything collapses.</p>
+</blockquote>
+<h3 id="why-randomness-is-a-security-primitive"><a class="header" href="#why-randomness-is-a-security-primitive">Why Randomness Is a Security Primitive</a></h3>
+<p>Modern cryptography does not just rely on strong mathematics.</p>
+<p>It relies on unpredictability.</p>
+<p>If an attacker can predict:</p>
+<ul>
+<li>Your encryption IV<sup class="footnote-reference" id="fr-encryption-iv-1"><a href="#footnote-encryption-iv">2</a></sup></li>
+<li>Your nonce<sup class="footnote-reference" id="fr-nonce-1"><a href="#footnote-nonce">3</a></sup></li>
+<li>Your session token</li>
+<li>Your key material</li>
+</ul>
+<p>Then your system is broken — even if you use perfect algorithms.</p>
+<p>Cryptography without randomness is just math.</p>
+<h2 id="what-is-entropy"><a class="header" href="#what-is-entropy">What Is Entropy?</a></h2>
+<p>Entropy is a measure of unpredictability.</p>
+<p>In cryptography, entropy answers one question:
+How hard is it to guess this value?</p>
+<p>Examples:</p>
+<ul>
+<li>A 4-digit PIN → ~13 bits of entropy (very weak)</li>
+<li>A 256-bit key → 256 bits of entropy (astronomically strong)</li>
+</ul>
+<p>True entropy comes from:</p>
+<ul>
+<li>OS randomness pools<sup class="footnote-reference" id="fr-os-randomness-pool-1"><a href="#footnote-os-randomness-pool">4</a></sup></li>
+<li>Hardware noise<sup class="footnote-reference" id="fr-hardware-noise-1"><a href="#footnote-hardware-noise">5</a></sup></li>
+<li>Interrupt timing<sup class="footnote-reference" id="fr-interrupt-timing-1"><a href="#footnote-interrupt-timing">6</a></sup></li>
+<li>Environmental noise<sup class="footnote-reference" id="fr-environmental-noise-1"><a href="#footnote-environmental-noise">7</a></sup></li>
+</ul>
+<p>It does not come from:</p>
+<ul>
+<li><code>rand()</code><sup class="footnote-reference" id="fr-rand-1"><a href="#footnote-rand">8</a></sup></li>
+<li>timestamps<sup class="footnote-reference" id="fr-timestamps-1"><a href="#footnote-timestamps">9</a></sup></li>
+<li>incremental counters</li>
+<li>predictable seeds<sup class="footnote-reference" id="fr-predicable-seed-1"><a href="#footnote-predicable-seed">10</a></sup></li>
+</ul>
+<h2 id="csprng--cryptographically-secure-pseudorandom-number-generator"><a class="header" href="#csprng--cryptographically-secure-pseudorandom-number-generator">CSPRNG — Cryptographically Secure Pseudorandom Number Generator</a></h2>
+<blockquote>
+<p><img src="images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/rand">rand</a></p>
+</blockquote>
+<p>A CSPRNG<sup class="footnote-reference" id="fr-csprng-1"><a href="#footnote-csprng">11</a></sup> is a deterministic algorithm that expands a small amount of true entropy into large amounts of secure random data.</p>
+<p>Properties:</p>
+<ul>
+<li>Unpredictable</li>
+<li>Resistant to state recovery</li>
+<li>Backtracking resistant</li>
+<li>Seeded from high-entropy OS sources</li>
+</ul>
+<p>Your OS already provides one:</p>
+<ul>
+<li>Linux → <code>/dev/urandom</code></li>
+<li>Windows → CryptGenRandom / BCryptGenRandom</li>
+<li>macOS → SecRandomCopyBytes</li>
+</ul>
+<p>Rust exposes this securely through the <a href="https://crates.io/crates/rand/"><code>rand</code> crate</a></p>
+<p>🧪 <strong>Code Example: Secure Random Bytes</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_csprng_example() {
+    use rand::RngCore;
+    use rand::rngs::OsRng;
+
+    let mut bytes = [0u8; 32];
+    OsRng.fill_bytes(&amp;mut bytes);
+
+    println!("32 random bytes: {}", hex::encode(bytes));
+    println!("random u64: {}", OsRng.next_u64());
+}
+<span class="boring">}</span></code></pre>
+<p>Output:</p>
+<pre><code class="language-text">32 random bytes: a7d6ba53f00fd0c7a90bb30312cd0b96ae22e1a5f438c91e4d93a62bff35f28d
+random u64: 15302970456105725428
+</code></pre>
+<p>What you’re seeing is the same OS CSPRNG used in two different ways:</p>
+<ul>
+<li><strong>32 random bytes</strong>: raw randomness you typically use directly for crypto inputs (keys, nonces, salts, IVs).</li>
+<li><strong>random u64</strong>: 8 random bytes returned as a convenient numeric type (handy for things like “pick a random index”).</li>
+</ul>
+<p>Not predictable. Not reproducible. Not reversible. That’s exactly what we want.</p>
+<p>It does not have to be secret.
+It must be unique.</p>
+<p>Nonces are used in:</p>
+<ul>
+<li>AES-GCM</li>
+<li>ChaCha20-Poly1305</li>
+<li>TLS record encryption<sup class="footnote-reference" id="fr-tls-record-encryption-1"><a href="#footnote-tls-record-encryption">12</a></sup></li>
+<li>Replay protection systems</li>
+</ul>
+<blockquote>
+<p>🚨 <strong>Critical rule:</strong>
+If you ever reuse a nonce with the same key:
+You can completely break the encryption.</p>
+</blockquote>
+<blockquote>
+<p><strong>🟢 Best Practice</strong></p>
+<p>Use 96-bit (12-byte) nonces for GCM</p>
+<p>Never reuse them.
+Prefer random nonces unless protocol specifies counters</p>
+</blockquote>
+<h2 id="what-happens-if-randomness-fails"><a class="header" href="#what-happens-if-randomness-fails">What Happens If Randomness Fails?</a></h2>
+<p>History is brutal here:</p>
+<ul>
+<li>Debian OpenSSL bug (2008) reduced entropy to 15 bits.</li>
+<li>Android Bitcoin wallet bug reused ECDSA nonces.</li>
+<li>PS3 signing failure reused ECDSA nonce → private key recovered.</li>
+</ul>
+<p>In all cases:</p>
+<ul>
+<li>The algorithm was correct.</li>
+<li>Randomness was broken.</li>
+<li>And everything collapsed.</li>
+</ul>
+<p><strong>Most catastrophic crypto failures are entropy failures.</strong></p>
+<h2 id="deterministic-vs-secure-random"><a class="header" href="#deterministic-vs-secure-random">Deterministic vs Secure Random</a></h2>
+<p><strong>Never use:</strong>
+use rand::thread_rng();</p>
+<p>For simulations? Fine.
+For cryptography? No.</p>
+<p><strong>Always prefer:</strong>
+use rand::rngs::OsRng;</p>
+<p>Or use crates that internally rely on secure randomness (like ring, aes-gcm, chacha20poly1305).</p>
+<h2 id="key-generation--the-most-important-use-case"><a class="header" href="#key-generation--the-most-important-use-case">Key Generation — The Most Important Use Case</a></h2>
+<p>All cryptographic keys must come from a secure, high-entropy source.</p>
+<p>No passwords.
+No manual seeds.
+No shortcuts.</p>
+<p><strong>Entropy Budget (Thinking Like an Attacker)</strong></p>
+<p>If a value has:</p>
+<ul>
+<li>32 bits entropy → brute-forceable</li>
+<li>64 bits entropy → expensive but possible</li>
+<li>128 bits entropy → practically infeasible</li>
+<li>256 bits entropy → overkill for most cases</li>
+</ul>
+<p><strong>Modern security baseline: Minimum 128 bits of entropy for long-term security.</strong></p>
+<h2 id="randomness-in-protocols"><a class="header" href="#randomness-in-protocols">Randomness in Protocols</a></h2>
+<p>Randomness appears everywhere:</p>
+<ul>
+<li>Session IDs</li>
+<li>TLS handshake<sup class="footnote-reference" id="fr-tls-handshake-1"><a href="#footnote-tls-handshake">13</a></sup></li>
+<li>ECDSA nonces<sup class="footnote-reference" id="fr-ecdsa-nonce-1"><a href="#footnote-ecdsa-nonce">14</a></sup></li>
+<li>Key exchange salts<sup class="footnote-reference" id="fr-key-exchange-salt-1"><a href="#footnote-key-exchange-salt">15</a></sup></li>
+<li>Password salts<sup class="footnote-reference" id="fr-password-salt-1"><a href="#footnote-password-salt">16</a></sup></li>
+<li>Token generation</li>
+<li>Secure cookies</li>
+</ul>
+<p>You may not see it.
+But it is there.</p>
+<h2 id="common-mistakes"><a class="header" href="#common-mistakes">Common Mistakes</a></h2>
+<ul>
+<li>
+<p>Seeding RNG manually</p>
+</li>
+<li>
+<p>Using timestamps</p>
+</li>
+<li>
+<p>Reusing nonces</p>
+</li>
+<li>
+<p>Storing IVs incorrectly</p>
+</li>
+<li>
+<p>Assuming randomness == secrecy</p>
+</li>
+<li>
+<p>Confusing UUID v4 with cryptographic token (context matters)</p>
+</li>
+<li>
+<p>Testing Randomness (What You Should NOT Do). Do not test randomness with: “It looks random.”Cryptographic randomness is not visual randomness.</p>
+</li>
+</ul>
+<p>You rely on:</p>
+<ul>
+<li>OS entropy pool</li>
+<li>Well-audited CSPRNG</li>
+<li>Mature cryptographic libraries</li>
+</ul>
+<p><strong>You do not roll your own RNG. Ever.</strong></p>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>Randomness is not optional.
+It is a foundational cryptographic primitive.</p>
+<p>Entropy defines unpredictability. CSPRNG expands secure entropy safely. Nonces must never repeat</p>
+<p>IVs must follow algorithm rules</p>
+<p>Reused randomness destroys security</p>
+<p>Without entropy, cryptography is an illusion.</p>
+</blockquote>
+<hr>
+<ol class="footnote-definition">
+<li id="footnote-digital-signature">
+<p>Digital signature: private-key proof of authenticity and integrity; anyone with the public key can verify; enables non-repudiation. <a href="#digital-signature">More</a> <a href="#fr-digital-signature-1">↩</a></p>
+</li>
+<li id="footnote-encryption-iv">
+<p>Initialization vector (IV): non-secret per-message value required by some cipher modes; must follow scheme rules; reuse can leak information. <a href="#iv-initialization-vector">More</a> <a href="#fr-encryption-iv-1">↩</a></p>
+</li>
+<li id="footnote-nonce">
+<p>Nonce (“number used once”): per-operation value that must not repeat for a given key; reuse can catastrophically break AEAD security. <a href="#nonce">More</a> <a href="#fr-nonce-1">↩</a></p>
+</li>
+<li id="footnote-os-randomness-pool">
+<p>OS entropy pool: kernel-managed entropy mixed from multiple sources; used to seed CSPRNGs and provide secure random bytes. <a href="#os-entropy-pool">More</a> <a href="#fr-os-randomness-pool-1">↩</a></p>
+</li>
+<li id="footnote-hardware-noise">
+<p>Hardware noise: physical randomness (thermal/electronic noise, oscillator jitter) used as an entropy source for true randomness. <a href="#hardware-noise">More</a> <a href="#fr-hardware-noise-1">↩</a></p>
+</li>
+<li id="footnote-interrupt-timing">
+<p>Interrupt timing: small unpredictable variations in interrupt arrival times used as entropy input; mixed by the OS for safety. <a href="#interrupt-timing">More</a> <a href="#fr-interrupt-timing-1">↩</a></p>
+</li>
+<li id="footnote-environmental-noise">
+<p>Environmental noise: entropy from external events (user input, device timings, sensors) collected and mixed into the OS pool. <a href="#environmental-noise">More</a> <a href="#fr-environmental-noise-1">↩</a></p>
+</li>
+<li id="footnote-rand">
+<p>rand: Rust crate for RNG traits and generators; for crypto randomness use OS-backed RNGs like OsRng/getrandom. <a href="#rand-rust-crate">More</a> <a href="#fr-rand-1">↩</a></p>
+</li>
+<li id="footnote-timestamps">
+<p>Timestamps: time-derived values are guessable and low-entropy; unsuitable as seeds, keys, nonces, or cryptographic randomness. <a href="#timestamps">More</a> <a href="#fr-timestamps-1">↩</a></p>
+</li>
+<li id="footnote-predicable-seed">
+<p>Predictable seed: RNG seed from guessable inputs (time, counters); makes outputs predictable and can reveal derived secrets. <a href="#predictable-seed">More</a> <a href="#fr-predicable-seed-1">↩</a></p>
+</li>
+<li id="footnote-csprng">
+<p>CSPRNG: deterministic generator seeded with high entropy; output is computationally indistinguishable from random; resists prediction. <a href="#csprng-cryptographically-secure-pseudorandom-number-generator">More</a> <a href="#fr-csprng-1">↩</a></p>
+</li>
+<li id="footnote-tls-record-encryption">
+<p>TLS record encryption: per-record symmetric AEAD that encrypts and authenticates application data using traffic keys/nonces. <a href="#tls-record-encryption">More</a> <a href="#fr-tls-record-encryption-1">↩</a></p>
+</li>
+<li id="footnote-tls-handshake">
+<p>TLS handshake: negotiates parameters, authenticates peers, and derives shared traffic keys/secrets used for record encryption. <a href="#tls-handshake">More</a> <a href="#fr-tls-handshake-1">↩</a></p>
+</li>
+<li id="footnote-ecdsa-nonce">
+<p>ECDSA nonce: secret per-signature scalar k; must be unpredictable and never reused; reuse can leak the private key. <a href="#ecdsa-nonce">More</a> <a href="#fr-ecdsa-nonce-1">↩</a></p>
+</li>
+<li id="footnote-key-exchange-salt">
+<p>Key exchange salt: non-secret random value fed into a KDF/HKDF to separate contexts and reduce key-reuse risks. <a href="#key-exchange-salt">More</a> <a href="#fr-key-exchange-salt-1">↩</a></p>
+</li>
+<li id="footnote-password-salt">
+<p>Password salt: unique random value stored with a password hash; prevents rainbow tables and makes identical passwords hash differently. <a href="#password-salt">More</a> <a href="#fr-password-salt-1">↩</a></p>
+</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="glossary-of-terms"><a class="header" href="#glossary-of-terms">Glossary of Terms</a></h1>
-<h2 id="aes-advanced-encryption-standard"><a class="header" href="#aes-advanced-encryption-standard">AES (Advanced Encryption Standard)</a></h2>
-<p>AES is a symmetric-key block cipher standardized by NIST in 2001, designed by Vincent Rijmen and Joan Daemen.
-It operates on 128-bit blocks with keys of 128, 192, or 256 bits, and is based on a Substitution–Permutation Network.
-AES is fast, secure, and widely implemented in both software and hardware (including CPU instructions).
-It remains the global standard for symmetric encryption, used in TLS, SSH, disk encryption, and countless applications.</p>
-<hr>
-<h2 id="ecb-electronic-code-book"><a class="header" href="#ecb-electronic-code-book">ECB (Electronic Code Book)</a></h2>
-<p>ECB is the simplest block cipher mode of operation: it encrypts each block independently with the same key.
-While easy to implement, it is insecure because identical plaintext blocks produce identical ciphertext blocks.
-This leaks patterns in the input (e.g., images encrypted with ECB visibly preserve outlines).
-Because of this, ECB is almost never used in practice and is considered unsafe.</p>
-<hr>
-<h2 id="rsa-rivestshamiradleman"><a class="header" href="#rsa-rivestshamiradleman">RSA (Rivest–Shamir–Adleman)</a></h2>
-<p>RSA is one of the first public-key cryptosystems, invented in 1977 by Ron Rivest, Adi Shamir, and Leonard Adleman.
-It allows secure key exchange, encryption, and digital signatures by relying on the mathematical difficulty of factoring large integers.
-RSA keys are typically 2048 or 3072 bits today. While still widely used, modern protocols increasingly migrate to elliptic-curve cryptography (ECC) for better performance and smaller key sizes.</p>
-<hr>
-<h2 id="padding-in-rsa"><a class="header" href="#padding-in-rsa">Padding in RSA</a></h2>
-<p>RSA encryption without padding is deterministic: encrypting the same message always produces the same ciphertext.
-This makes it insecure, as attackers can guess messages or exploit mathematical properties of RSA.
-Padding schemes (e.g., PKCS#1 v1.5 or OAEP) add randomness or structured bytes before encryption.
-This ensures different ciphertexts for the same plaintext and provides protection against chosen-plaintext or chosen-ciphertext attacks.
-Proper padding is essential for RSA’s security in practice.</p>
-<hr>
-<h2 id="des-data-encryption-standard"><a class="header" href="#des-data-encryption-standard">DES (Data Encryption Standard)</a></h2>
-<p>DES is a symmetric-key block cipher standardized in the 1970s by NIST.
-It uses a 56-bit key and operates on 64-bit blocks.
-Once a global standard, DES is now considered insecure due to its short key length, which makes it vulnerable to brute-force attacks.</p>
-<hr>
 <h2 id="3des-triple-des"><a class="header" href="#3des-triple-des">3DES (Triple DES)</a></h2>
 <p>Triple DES (3DES) is an extension of DES that applies the DES algorithm three times with either two or three different keys.
 This increases the effective key length to 112 or 168 bits.
 It offered better security than DES but is now deprecated due to its slow performance and known cryptographic weaknesses.</p>
-<hr>
-<h2 id="camellia"><a class="header" href="#camellia">Camellia</a></h2>
-<p>Camellia is a modern symmetric-key block cipher developed in Japan by Mitsubishi Electric and NTT.
-It offers security and performance comparable to AES, supporting key sizes of 128, 192, and 256 bits.
-Camellia is standardized by ISO/IEC and the NESSIE project.
-Though less widely used than AES, it is considered secure and suitable for both software and hardware implementations.</p>
-<hr>
-<h2 id="tls-transport-layer-security"><a class="header" href="#tls-transport-layer-security">TLS (Transport Layer Security)</a></h2>
-<p>TLS is a protocol defined by the IETF to secure data during transmission, most notably in HTTPS.
-It uses asymmetric encryption for the handshake and key exchange, then switches to symmetric encryption for efficient bulk data encryption.
-TLS provides confidentiality, integrity, and authentication for internet communications.</p>
-<hr>
-<h2 id="luks-linux-unified-key-setup"><a class="header" href="#luks-linux-unified-key-setup">LUKS (Linux Unified Key Setup)</a></h2>
-<p>LUKS is the standard format for full disk encryption on Linux, designed by Clemens Fruhwirth.
-It provides strong symmetric encryption for protecting data at rest and supports multiple key slots, allowing different passphrases or keys to unlock the same volume.</p>
-<hr>
-<h2 id="ssh-secure-shell"><a class="header" href="#ssh-secure-shell">SSH (Secure Shell)</a></h2>
-<p>SSH is a secure remote access protocol invented by Tatu Ylönen in 1995.
-It uses asymmetric encryption to authenticate users and symmetric encryption to secure the session once established.
-SSH replaced insecure protocols such as Telnet and rlogin and is now the standard for secure remote administration.</p>
-<hr>
-<h2 id="fips-federal-information-processing-standards"><a class="header" href="#fips-federal-information-processing-standards">FIPS (Federal Information Processing Standards)</a></h2>
-<p>FIPS are cryptographic standards defined by NIST for use in U.S. government systems.
-FIPS certification ensures that cryptographic algorithms and implementations meet strict security requirements.
-It is often required in government, healthcare, and financial sectors to guarantee compliance and trust.</p>
-<hr>
-<h2 id="isoiec"><a class="header" href="#isoiec">ISO/IEC</a></h2>
-<p>ISO (International Organization for Standardization) and IEC (International Electrotechnical Commission) jointly publish international standards for information technology, including cryptography.
-These standards ensure interoperability and security across implementations worldwide.</p>
-<hr>
-<h2 id="ipsec"><a class="header" href="#ipsec">IPSec</a></h2>
-<p>IPSec (Internet Protocol Security) is a suite of protocols designed to secure IP communications.
-It operates at the network layer, providing encryption, integrity, and authentication for IP packets.
-IPSec is widely used for VPNs and site-to-site secure tunnels.</p>
-<hr>
-<h2 id="cbc-cipher-block-chaining"><a class="header" href="#cbc-cipher-block-chaining">CBC (Cipher Block Chaining)</a></h2>
-<p>CBC is a block cipher mode of operation that chains blocks together for added security.
-Each plaintext block is XORed with the previous ciphertext block before encryption, preventing identical plaintexts from producing identical ciphertexts.
-An Initialization Vector (IV) is required for the first block to ensure uniqueness.
-While stronger than ECB, CBC has weaknesses and should be used with caution.</p>
-<hr>
-<h2 id="pkcs7"><a class="header" href="#pkcs7">PKCS7</a></h2>
-<p>PKCS7 is a padding scheme used in block cipher encryption.
-It fills up the last block of plaintext with bytes all set to the value of the number of padding bytes added.
-For example, if 4 bytes of padding are needed, the block is filled with <code>04 04 04 04</code>.
-PKCS7 ensures that plaintext lengths align with the cipher’s block size, but improper validation of padding can lead to padding oracle attacks.</p>
-<h2 id="wireguard"><a class="header" href="#wireguard">WireGuard</a></h2>
-<p>WireGuard is a modern VPN protocol and implementation designed by Jason A. Donenfeld.
-It focuses on simplicity, performance, and a small codebase, in contrast to traditional VPN stacks like IPsec and OpenVPN.
-WireGuard uses a fixed, opinionated set of strong primitives (e.g., Curve25519, ChaCha20-Poly1305, BLAKE2s, and HKDF) arranged in a Noise-based handshake pattern.
-It is now integrated into the Linux kernel and widely deployed for site-to-site VPNs, remote access, and privacy-focused applications.</p>
-<h2 id="non-aes-hardware"><a class="header" href="#non-aes-hardware">Non-AES Hardware</a></h2>
-<p>“Non-AES hardware” refers to CPUs and devices that do not provide hardware acceleration for AES (such as Intel’s AES-NI instructions).
-On these platforms, software-only AES can be relatively slow and sometimes harder to implement in a constant-time way.
-Stream ciphers like ChaCha20, which use simple add-rotate-xor operations, tend to be faster and easier to harden against timing attacks on such hardware.
-Modern protocols therefore often select ChaCha20-Poly1305 as a preferred or fallback cipher suite for clients without efficient AES support.</p>
 <h2 id="aead"><a class="header" href="#aead">AEAD</a></h2>
 <p>AEAD (Authenticated Encryption with Associated Data) is a class of symmetric encryption schemes that provide confidentiality and integrity together.
 An AEAD encrypts plaintext into ciphertext and simultaneously produces an authentication tag which is verified during decryption.
@@ -1940,54 +2144,65 @@ If tag verification fails, decryption must fail and no plaintext should be relea
 Decryption takes the same inputs and returns either the plaintext or an authentication failure, typically as an error result.
 Most APIs treat the nonce as public but unique, and require callers to enforce nonce rules; many also offer “in-place” variants for performance.
 Using the API correctly means never decrypting unauthenticated data and always handling verification errors as hard failures.</p>
-<h2 id="misuse-resistance"><a class="header" href="#misuse-resistance">Misuse Resistance</a></h2>
-<p>Misuse resistance is a property of cryptographic constructions that reduces the damage caused by common implementation mistakes.
-In AEADs, the most important misuse is nonce reuse: many schemes (like AES-GCM) fail catastrophically if a nonce is repeated under the same key.
-Misuse-resistant AEADs (such as AES-GCM-SIV) are designed so that accidental nonce reuse does not immediately enable forgeries or full plaintext recovery.
-Misuse resistance is not a license to be sloppy—reusing nonces can still leak information—but it provides a safety net for real systems.</p>
-<h2 id="tls-fallback"><a class="header" href="#tls-fallback">TLS Fallback</a></h2>
-<p>TLS fallback refers to selecting an alternative cipher suite or algorithm when the preferred choice is unavailable or performs poorly on a given client.
-In modern TLS, clients and servers negotiate a suite during the handshake; implementations may prefer AES-GCM on CPUs with AES acceleration and prefer ChaCha20-Poly1305 on devices without it.
-This is typically a performance and side-channel hardening decision, not a downgrade in security, as both suites are considered strong when used correctly.
-The key point is that TLS can adapt to heterogeneous hardware while maintaining authenticated encryption.</p>
+<h2 id="aes-advanced-encryption-standard"><a class="header" href="#aes-advanced-encryption-standard">AES (Advanced Encryption Standard)</a></h2>
+<p>AES is a symmetric-key block cipher standardized by NIST in 2001, designed by Vincent Rijmen and Joan Daemen.
+It operates on 128-bit blocks with keys of 128, 192, or 256 bits, and is based on a Substitution–Permutation Network.
+AES is fast, secure, and widely implemented in both software and hardware (including CPU instructions).
+It remains the global standard for symmetric encryption, used in TLS, SSH, disk encryption, and countless applications.</p>
 <h2 id="aes-block-cipher"><a class="header" href="#aes-block-cipher">AES Block Cipher</a></h2>
 <p>AES is a block cipher: it transforms fixed-size 128-bit blocks under a secret key.
 By itself, AES does not define how to encrypt messages longer than one block or how to authenticate data; those properties come from a “mode of operation” and/or an AEAD construction.
 Thinking “AES” vs “AES-GCM” is the difference between the raw primitive (block-by-block permutation) and a complete, safe encryption scheme.
 Most real-world systems use AES inside a mode such as CTR, CBC, or an AEAD like GCM, rather than using AES directly on blocks.</p>
-<h2 id="ctr-mode"><a class="header" href="#ctr-mode">CTR Mode</a></h2>
-<p>CTR (Counter) mode turns a block cipher like AES into a stream-cipher-like construction by encrypting a nonce/counter sequence to generate a keystream.
-That keystream is XORed with plaintext to produce ciphertext (and vice versa for decryption).
-CTR mode is fast and parallelizable, but it provides no integrity: it is malleable, and attackers can flip bits in the decrypted plaintext by flipping bits in ciphertext.
-Nonce/counter values must never repeat under the same key or the keystream repeats and confidentiality breaks.</p>
-<h2 id="ghash"><a class="header" href="#ghash">GHASH</a></h2>
-<p>GHASH is the authentication component used by AES-GCM.
-It is a polynomial hash over GF(2^128) computed on the associated data and ciphertext, producing a value that is combined with an AES-derived mask to form the final tag.
-GHASH is efficient and works well with hardware acceleration, but it inherits AES-GCM’s strict nonce-uniqueness requirement: repeating a nonce under the same key can reveal information and enable forgeries.
-In practice, you treat GHASH as an internal detail of GCM and focus on correct key and nonce management at the API boundary.</p>
 <h2 id="aes-gcm"><a class="header" href="#aes-gcm">AES-GCM</a></h2>
 <p>AES-GCM (Galois/Counter Mode) is a widely standardized AEAD which combines AES in CTR mode for encryption with GHASH for authentication.
 It is extremely fast on modern CPUs with AES acceleration and is common in TLS, HTTPS, storage systems, and many enterprise protocols.
 AES-GCM requires a unique nonce for every encryption under the same key; repeating a nonce can reveal relationships between plaintexts and may enable tag forgery.
 Because of that, AES-GCM is best used with reliable nonce generation (counters, sequence numbers, or carefully managed randomness) and strict error handling on authentication failure.</p>
+<h2 id="api"><a class="header" href="#api">API</a></h2>
+<p>An application programming interface defines how software components communicate through structured requests and responses.
+It specifies operations, data formats, authentication rules, error handling, and versioning conventions.
+APIs enable modular system design, interoperability, and automated integration between services.
+Security depends on proper identity verification, authorization enforcement, input validation, and transport protection.</p>
+<h2 id="argon2"><a class="header" href="#argon2">Argon2</a></h2>
+<p>Argon2 is the modern standard for password hashing and key derivation, designed to resist GPU, FPGA, and ASIC attacks through memory-hard computation. It won the Password Hashing Competition in 2015.
+It allows precise tuning of memory usage, execution time, and parallelism, making large-scale cracking physically expensive. The recommended variant today is Argon2id, which combines security against side-channels and brute-force attacks.</p>
+<h2 id="aws-request-signin-sigv4"><a class="header" href="#aws-request-signin-sigv4">AWS Request Signin (SigV4)</a></h2>
+<p>AWS request signing is a cryptographic mechanism used to authenticate and authorize API requests to AWS services.
+Requests are canonicalized, hashed, and signed using HMAC with secret credentials and request metadata.
+This protects against request tampering and limits replay attacks through timestamp validation.
+Correct canonicalization and key handling are critical for reliable and secure operation.</p>
+<h2 id="blake3"><a class="header" href="#blake3">BLAKE3</a></h2>
+<p>BLAKE3 is a modern cryptographic hash function derived from the BLAKE hash family, designed for high performance, parallelism, and simplicity.
+It builds on the cryptographic foundations of BLAKE2 while introducing a tree-based structure that enables efficient multicore and SIMD execution.
+BLAKE3 supports incremental hashing, keyed hashing, and extendable output (XOF) within a single unified API.
+It is well suited for content hashing, integrity verification, and high-throughput systems, though it is not standardized by NIST.
+BLAKE3 is considered secure and is increasingly adopted in modern software systems.</p>
+<h2 id="brute-force"><a class="header" href="#brute-force">Brute Force</a></h2>
+<p>A brute-force attack is an exhaustive search that tries all possible inputs or keys until the correct one is found.
+Its effectiveness depends entirely on the size of the search space and the speed of computation.
+Modern cryptography relies on making brute-force attacks computationally infeasible.
+KDFs and memory-hard functions are designed specifically to slow down brute-force attacks.</p>
+<h2 id="cache-timing"><a class="header" href="#cache-timing">Cache Timing</a></h2>
+<p>Cache timing is a side-channel risk where an attacker learns secrets by observing how long computations take due to CPU cache effects.
+If an algorithm’s memory access pattern depends on secret data (for example, table lookups indexed by key bytes), the CPU may fetch different cache lines and create measurable timing differences.
+These differences can be exploited locally (or sometimes remotely) to recover keys or other sensitive state.
+Mitigations include constant-time implementations, avoiding secret-dependent table lookups, using hardware-accelerated instructions (e.g., AES-NI), and careful microarchitectural hardening.</p>
+<h2 id="camellia"><a class="header" href="#camellia">Camellia</a></h2>
+<p>Camellia is a modern symmetric-key block cipher developed in Japan by Mitsubishi Electric and NTT.
+It offers security and performance comparable to AES, supporting key sizes of 128, 192, and 256 bits.
+Camellia is standardized by ISO/IEC and the NESSIE project.
+Though less widely used than AES, it is considered secure and suitable for both software and hardware implementations.</p>
+<h2 id="cbc-cipher-block-chaining"><a class="header" href="#cbc-cipher-block-chaining">CBC (Cipher Block Chaining)</a></h2>
+<p>CBC is a block cipher mode of operation that chains blocks together for added security.
+Each plaintext block is XORed with the previous ciphertext block before encryption, preventing identical plaintexts from producing identical ciphertexts.
+An Initialization Vector (IV) is required for the first block to ensure uniqueness.
+While stronger than ECB, CBC has weaknesses and should be used with caution.</p>
 <h2 id="chacha20"><a class="header" href="#chacha20">ChaCha20</a></h2>
 <p>ChaCha20 is a modern stream cipher designed by Daniel J. Bernstein as a refinement of Salsa20.
 It uses simple add-rotate-xor (ARX) operations, making it fast in software and relatively easy to implement in constant-time.
 ChaCha20 generates a pseudorandom keystream from a 256-bit key, a nonce, and a counter; encryption XORs this keystream with the plaintext.
 Nonce reuse under the same key causes keystream reuse and breaks confidentiality, so nonces must be unique.</p>
-<h2 id="poly1305"><a class="header" href="#poly1305">Poly1305</a></h2>
-<p>Poly1305 is a fast one-time message authentication code (MAC) designed by Daniel J. Bernstein.
-It computes a 16-byte authentication tag using arithmetic modulo a large prime, and it is designed to be implemented efficiently and in constant time.
-The crucial rule is that its key must be used only once; reusing a Poly1305 key can allow attackers to forge tags.
-In practice, Poly1305 is paired with a stream cipher (most commonly ChaCha20) which derives a fresh one-time key for each message.</p>
-<h2 id="salsa20"><a class="header" href="#salsa20">Salsa20</a></h2>
-<p>Salsa20 is a stream cipher designed by Daniel J. Bernstein as part of the eSTREAM project.
-It uses simple add-rotate-xor (ARX) operations to generate a pseudorandom keystream from a key, nonce, and counter, making it fast and easy to implement on a wide range of hardware.
-Salsa20 was extensively analyzed and gained a strong security reputation, and its design directly inspired ChaCha20, which refines the permutation for better diffusion and performance on modern CPUs.</p>
-<h2 id="pseudorandom-keystream"><a class="header" href="#pseudorandom-keystream">Pseudorandom Keystream</a></h2>
-<p>A pseudorandom keystream is a sequence of bits or bytes that appears random but is generated deterministically from a secret key (and often a nonce/counter).
-In a secure stream cipher, this keystream should be computationally indistinguishable from true randomness to anyone who does not know the key.
-When the keystream is XORed with plaintext (and never reused with the same key/nonce), it hides the original data while still allowing the receiver, who can regenerate the same keystream, to decrypt it.</p>
 <h2 id="chacha20-poly1305"><a class="header" href="#chacha20-poly1305">ChaCha20-Poly1305</a></h2>
 <p>ChaCha20-Poly1305 is an AEAD (Authenticated Encryption with Associated Data) construction that combines the ChaCha20 stream cipher with the Poly1305 message authentication code.
 ChaCha20 provides fast, software-friendly encryption using add-rotate-xor operations, while Poly1305 computes a strong one-time MAC over the ciphertext and associated data.
@@ -1995,49 +2210,219 @@ Together, they provide confidentiality, integrity, and authenticity in a single 
 ChaCha20-Poly1305 is particularly attractive on clients without fast AES hardware because it is performant in pure software and easier to harden against timing leakage than table-based AES implementations.
 Like other AEADs, it requires unique nonces per key; nonce reuse can reveal relationships between plaintexts and must be avoided.
 Many libraries expose it through a uniform AEAD API, making it a common “safe default” choice across servers, mobile devices, and embedded systems.</p>
-<h2 id="cache-timing"><a class="header" href="#cache-timing">Cache Timing</a></h2>
-<p>Cache timing is a side-channel risk where an attacker learns secrets by observing how long computations take due to CPU cache effects.
-If an algorithm’s memory access pattern depends on secret data (for example, table lookups indexed by key bytes), the CPU may fetch different cache lines and create measurable timing differences.
-These differences can be exploited locally (or sometimes remotely) to recover keys or other sensitive state.
-Mitigations include constant-time implementations, avoiding secret-dependent table lookups, using hardware-accelerated instructions (e.g., AES-NI), and careful microarchitectural hardening.</p>
-<h2 id="side-channel-attack"><a class="header" href="#side-channel-attack">Side-Channel Attack</a></h2>
-<p>A side-channel attack breaks security by exploiting information leaked by an implementation rather than weaknesses in the underlying math.
-Common side channels include timing, cache behavior, power consumption, electromagnetic emissions, and fault injection.
-For example, a timing difference in MAC verification or a secret-dependent memory access pattern can leak bits of a key over many observations.
-Defenses include constant-time code, uniform error handling, blinding techniques, hardened hardware, and minimizing attacker observability.</p>
-<h2 id="salt"><a class="header" href="#salt">Salt</a></h2>
-<p>A salt is a random value added to a password before hashing or key derivation to ensure that identical passwords never produce identical outputs. It completely defeats precomputed attacks such as rainbow tables by forcing attackers to recompute hashes for every individual target.
-Salts are not secret and are stored alongside the hash, but they must be unique and random per password. A salt does not slow down brute force by itself—it only prevents large-scale hash reuse and precomputation.</p>
-<h2 id="pbkdf2"><a class="header" href="#pbkdf2">PBKDF2</a></h2>
-<p>PBKDF2 is a standardized function used to derive cryptographic keys from passwords by applying a hash function (via HMAC) many times in succession to slow down brute-force attacks.
-It is widely supported, easy to implement, and still secure when configured with a high iteration count, but it is not memory-hard, making it vulnerable to modern GPU and ASIC attacks. Today, it is considered legacy-safe but no longer state-of-the-art.</p>
-<h2 id="argon2"><a class="header" href="#argon2">Argon2</a></h2>
-<p>Argon2 is the modern standard for password hashing and key derivation, designed to resist GPU, FPGA, and ASIC attacks through memory-hard computation. It won the Password Hashing Competition in 2015.
-It allows precise tuning of memory usage, execution time, and parallelism, making large-scale cracking physically expensive. The recommended variant today is Argon2id, which combines security against side-channels and brute-force attacks.</p>
-<h2 id="scrypt"><a class="header" href="#scrypt">scrypt</a></h2>
-<p>scrypt is an earlier memory-hard password-based key derivation function created to make hardware attacks costly by requiring large amounts of memory during computation.
-It remains cryptographically strong and widely used, especially in cryptocurrencies and disk encryption, but it is harder to tune correctly than Argon2 and is now generally considered second-choice for new systems.</p>
+<h2 id="collision"><a class="header" href="#collision">Collision</a></h2>
+<p>A collision occurs when two distinct inputs produce the same hash output.
+Collision resistance means it is computationally infeasible to find such pairs intentionally.
+While collisions must exist mathematically, a secure hash makes finding them impractical.
+Collision resistance is critical for digital signatures, certificates, and integrity systems.</p>
+<h2 id="constant-time-algorithm"><a class="header" href="#constant-time-algorithm">Constant-Time Algorithm</a></h2>
+<p>A constant-time algorithm executes independently of secret data to avoid leaking information through timing behavior.
+Branching, memory access patterns, and early exits must not depend on sensitive values.
+Timing side channels can otherwise reveal keys, authentication tags, or internal state.
+Constant-time techniques are essential for secure cryptographic implementations.</p>
+<h2 id="csprng-cryptographically-secure-pseudorandom-number-generator"><a class="header" href="#csprng-cryptographically-secure-pseudorandom-number-generator">CSPRNG (Cryptographically Secure Pseudorandom Number Generator)</a></h2>
+<p>A CSPRNG is a deterministic generator that expands a small amount of high entropy into large amounts of pseudorandom output.
+It is designed so outputs are computationally indistinguishable from random and resistant to state-recovery attacks.
+In practice, you rely on well-audited CSPRNGs seeded by the operating system.</p>
+<h2 id="ctr-mode"><a class="header" href="#ctr-mode">CTR Mode</a></h2>
+<p>CTR (Counter) mode turns a block cipher like AES into a stream-cipher-like construction by encrypting a nonce/counter sequence to generate a keystream.
+That keystream is XORed with plaintext to produce ciphertext (and vice versa for decryption).
+CTR mode is fast and parallelizable, but it provides no integrity: it is malleable, and attackers can flip bits in the decrypted plaintext by flipping bits in ciphertext.
+Nonce/counter values must never repeat under the same key or the keystream repeats and confidentiality breaks.</p>
+<h2 id="des-data-encryption-standard"><a class="header" href="#des-data-encryption-standard">DES (Data Encryption Standard)</a></h2>
+<p>DES is a symmetric-key block cipher standardized in the 1970s by NIST.
+It uses a 56-bit key and operates on 64-bit blocks.
+Once a global standard, DES is now considered insecure due to its short key length, which makes it vulnerable to brute-force attacks.</p>
+<h2 id="digital-signature"><a class="header" href="#digital-signature">Digital Signature</a></h2>
+<p>A digital signature is a public-key mechanism that proves authenticity and integrity of a message.
+The signer uses a private key to produce the signature; anyone with the corresponding public key can verify it.
+Signatures are used in certificates, software updates, authentication, and secure protocols to prevent tampering and impersonation.</p>
+<h2 id="ecb-electronic-code-book"><a class="header" href="#ecb-electronic-code-book">ECB (Electronic Code Book)</a></h2>
+<p>ECB is the simplest block cipher mode of operation: it encrypts each block independently with the same key.
+While easy to implement, it is insecure because identical plaintext blocks produce identical ciphertext blocks.
+This leaks patterns in the input (e.g., images encrypted with ECB visibly preserve outlines).
+Because of this, ECB is almost never used in practice and is considered unsafe.</p>
+<h2 id="ecdsa-nonce"><a class="header" href="#ecdsa-nonce">ECDSA Nonce</a></h2>
+<p>The ECDSA nonce is the per-signature secret scalar <code>k</code>.
+It must be unique and unpredictable for each signature; reuse (or bias) can leak the long-term private key.
+Many implementations use deterministic nonces (RFC 6979) to avoid relying on external randomness at signing time.</p>
+<h2 id="environmental-noise"><a class="header" href="#environmental-noise">Environmental Noise</a></h2>
+<p>Environmental noise refers to entropy gathered from external events (user input timing, device latencies, sensor readings).
+The OS mixes these sources into its entropy pool to help seed and reseed its CSPRNG.
+The key idea is unpredictability to an attacker, not “random-looking” values.</p>
+<h2 id="extendable-output-function"><a class="header" href="#extendable-output-function">Extendable Output Function</a></h2>
+<p>An Extendable Output Function (XOF) is a hash construction that can generate an arbitrary-length output from a single input.
+Instead of producing a fixed-size digest, an XOF acts like a pseudorandom stream derived from the input.
+XOFs are useful for key derivation, randomness expansion, and domain separation.
+Examples include SHAKE and the XOF mode of BLAKE3.</p>
+<h2 id="fips-federal-information-processing-standards"><a class="header" href="#fips-federal-information-processing-standards">FIPS (Federal Information Processing Standards)</a></h2>
+<p>FIPS are cryptographic standards defined by NIST for use in U.S. government systems.
+FIPS certification ensures that cryptographic algorithms and implementations meet strict security requirements.
+It is often required in government, healthcare, and financial sectors to guarantee compliance and trust.</p>
+<h2 id="forged-api-request"><a class="header" href="#forged-api-request">Forged API Request</a></h2>
+<p>A forged API request is a maliciously crafted or modified request designed to impersonate a legitimate client or bypass security controls.
+Attackers may manipulate headers, parameters, identifiers, signatures, or timestamps to gain unauthorized access or perform restricted actions.
+These attacks often exploit weak authentication, missing authorization checks, predictable identifiers, or insufficient request validation.
+Mitigations include strong authentication, strict authorization, request integrity verification, and anti-replay mechanisms.</p>
+<h2 id="ghash"><a class="header" href="#ghash">GHASH</a></h2>
+<p>GHASH is the authentication component used by AES-GCM.
+It is a polynomial hash over GF(2^128) computed on the associated data and ciphertext, producing a value that is combined with an AES-derived mask to form the final tag.
+GHASH is efficient and works well with hardware acceleration, but it inherits AES-GCM’s strict nonce-uniqueness requirement: repeating a nonce under the same key can reveal information and enable forgeries.
+In practice, you treat GHASH as an internal detail of GCM and focus on correct key and nonce management at the API boundary.</p>
+<h2 id="hardware-noise"><a class="header" href="#hardware-noise">Hardware Noise</a></h2>
+<p>Hardware noise is physical unpredictability (thermal noise, electronic noise, oscillator jitter) used as an entropy source.
+It may be provided by dedicated TRNG hardware or used to seed and refresh the OS entropy pool.
+Because raw noise can be biased, systems typically condition and mix it before use.</p>
 <h2 id="hkdf"><a class="header" href="#hkdf">HKDF</a></h2>
 <p>HKDF is a key derivation function used for expanding a strong secret into multiple independent cryptographic keys using HMAC. It is designed for key separation and protocol key management, not for passwords.
 It is heavily used in TLS, secure messaging, and operating systems. HKDF provides no brute-force protection and must never be used directly with human passwords.</p>
-<h2 id="sha-2-secure-hash-algorithm-2"><a class="header" href="#sha-2-secure-hash-algorithm-2">SHA-2 (Secure Hash Algorithm 2)</a></h2>
-<p>SHA-2 is a family of cryptographic hash functions standardized by NIST as successors to SHA-1.
-It includes SHA-224, SHA-256, SHA-384, and SHA-512, which differ mainly in output size and internal parameters.
-SHA-2 is designed to provide strong collision resistance, preimage resistance, and avalanche behavior.
-It is widely used in TLS, digital signatures, certificate authorities, blockchains, and secure software distribution.
-Despite its age, SHA-2 remains secure and is considered a conservative, well-understood choice.</p>
-<h2 id="blake3"><a class="header" href="#blake3">BLAKE3</a></h2>
-<p>BLAKE3 is a modern cryptographic hash function derived from the BLAKE hash family, designed for high performance, parallelism, and simplicity.
-It builds on the cryptographic foundations of BLAKE2 while introducing a tree-based structure that enables efficient multicore and SIMD execution.
-BLAKE3 supports incremental hashing, keyed hashing, and extendable output (XOF) within a single unified API.
-It is well suited for content hashing, integrity verification, and high-throughput systems, though it is not standardized by NIST.
-BLAKE3 is considered secure and is increasingly adopted in modern software systems.</p>
+<h2 id="incremental-hashing"><a class="header" href="#incremental-hashing">Incremental Hashing</a></h2>
+<p>Incremental hashing is the ability to compute a hash progressively by processing input data in chunks.
+This allows hashing of large or streaming data without loading it entirely into memory.
+Incremental hashing is essential for file hashing, network protocols, and real-time data processing.
+Most modern cryptographic hash functions support incremental hashing by design.</p>
+<h2 id="interrupt-timing"><a class="header" href="#interrupt-timing">Interrupt Timing</a></h2>
+<p>Interrupt timing entropy comes from tiny, hard-to-predict variations in when interrupts occur.
+On its own it is not a complete randomness source, but the OS can mix timing jitter with other inputs to improve robustness.
+Modern kernels treat this as one ingredient among many rather than a sole source of entropy.</p>
+<h2 id="ipsec"><a class="header" href="#ipsec">IPSec</a></h2>
+<p>IPSec (Internet Protocol Security) is a suite of protocols designed to secure IP communications.
+It operates at the network layer, providing encryption, integrity, and authentication for IP packets.
+IPSec is widely used for VPNs and site-to-site secure tunnels.</p>
+<h2 id="isoiec"><a class="header" href="#isoiec">ISO/IEC</a></h2>
+<p>ISO (International Organization for Standardization) and IEC (International Electrotechnical Commission) jointly publish international standards for information technology, including cryptography.
+These standards ensure interoperability and security across implementations worldwide.</p>
+<h2 id="iv-initialization-vector"><a class="header" href="#iv-initialization-vector">IV (Initialization Vector)</a></h2>
+<p>An initialization vector (IV) is a non-secret input used by some encryption modes (e.g., CBC, CTR) to ensure uniqueness across encryptions.
+It must follow the scheme’s rules (size, randomness/uniqueness requirements), and it is typically transmitted alongside the ciphertext.
+Reusing an IV when the mode requires uniqueness can leak information about plaintexts and sometimes enable attacks.</p>
+<h2 id="jwt"><a class="header" href="#jwt">JWT</a></h2>
+<p>A JSON Web Token is a compact, URL-safe token format used to transmit cryptographically protected claims between parties.
+It typically consists of a header, payload, and signature encoded using Base64URL.
+JWTs are widely used for stateless authentication and authorization in distributed systems and APIs.
+Secure usage requires strict signature verification, algorithm allow-lists, expiration checks, and issuer validation.</p>
+<h2 id="kdf"><a class="header" href="#kdf">KDF</a></h2>
+<p>A Key Derivation Function (KDF) is a cryptographic function that derives one or more cryptographically strong keys from an initial secret.
+The input may be a human password, a shared secret, or another cryptographic key.
+KDFs enforce key separation, prevent key reuse, and ensure derived keys have the correct length and distribution.
+Some KDFs (e.g., Argon2, scrypt) are designed to resist brute-force attacks, while others (e.g., HKDF) are used for safe key expansion.
+Choosing the correct KDF depends on whether the input secret is weak or already strong.</p>
+<h2 id="key-exchange-salt"><a class="header" href="#key-exchange-salt">Key Exchange Salt</a></h2>
+<p>A key exchange salt is a non-secret random value used as input to a KDF/HKDF during key derivation.
+It helps with domain separation and reduces risk from cross-protocol key reuse or subtle collisions.
+Salts should be unique per context/session and are usually sent in clear.</p>
+<h2 id="keyed-hashing"><a class="header" href="#keyed-hashing">Keyed Hashing</a></h2>
+<p>Keyed hashing is a hashing mode that incorporates a secret key into the hash computation.
+It is used to provide message authentication and integrity, ensuring that only parties with the key can generate or verify the hash.
+Keyed hashing prevents attackers from forging valid hashes for modified messages.
+HMAC is the most widely used standardized construction for keyed hashing.</p>
+<h2 id="length-extension-attack"><a class="header" href="#length-extension-attack">Length-Extension Attack</a></h2>
+<p>A length-extension attack exploits the internal structure of certain hash functions to append data to a hashed message.
+An attacker can compute a valid hash for an extended message without knowing the original secret.
+This vulnerability breaks naïve constructions such as hash-based authentication using secret-prefix hashing.
+Proper MAC constructions such as HMAC are specifically designed to prevent this attack.</p>
+<h2 id="luks-linux-unified-key-setup"><a class="header" href="#luks-linux-unified-key-setup">LUKS (Linux Unified Key Setup)</a></h2>
+<p>LUKS is the standard format for full disk encryption on Linux, designed by Clemens Fruhwirth.
+It provides strong symmetric encryption for protecting data at rest and supports multiple key slots, allowing different passphrases or keys to unlock the same volume.</p>
+<h2 id="merkle-tree"><a class="header" href="#merkle-tree">Merkle Tree</a></h2>
+<p>A Merkle tree is a hash-based tree data structure where each internal node is the hash of its child nodes.
+It allows efficient verification of large data sets by validating only a small subset of hashes.
+Merkle trees are used in blockchains, distributed systems, file systems, and secure databases.
+They provide tamper detection and integrity guarantees with logarithmic verification cost.</p>
+<h2 id="misuse-resistance"><a class="header" href="#misuse-resistance">Misuse Resistance</a></h2>
+<p>Misuse resistance is a property of cryptographic constructions that reduces the damage caused by common implementation mistakes.
+In AEADs, the most important misuse is nonce reuse: many schemes (like AES-GCM) fail catastrophically if a nonce is repeated under the same key.
+Misuse-resistant AEADs (such as AES-GCM-SIV) are designed so that accidental nonce reuse does not immediately enable forgeries or full plaintext recovery.
+Misuse resistance is not a license to be sloppy—reusing nonces can still leak information—but it provides a safety net for real systems.</p>
 <h2 id="nist"><a class="header" href="#nist">NIST</a></h2>
 <p>NIST is a U.S. federal agency responsible for developing and publishing technical standards, including cryptographic algorithms.
 It standardizes widely used primitives such as AES, SHA-2, RSA padding schemes, and digital signature algorithms.
 NIST standards are often required for government, defense, financial, and regulated industries.
 While NIST does not “invent” most algorithms, its approval process heavily influences global cryptographic adoption.
 Compliance with NIST standards is often referred to as “FIPS compliance.”</p>
+<h2 id="non-aes-hardware"><a class="header" href="#non-aes-hardware">Non-AES Hardware</a></h2>
+<p>“Non-AES hardware” refers to CPUs and devices that do not provide hardware acceleration for AES (such as Intel’s AES-NI instructions).
+On these platforms, software-only AES can be relatively slow and sometimes harder to implement in a constant-time way.
+Stream ciphers like ChaCha20, which use simple add-rotate-xor operations, tend to be faster and easier to harden against timing attacks on such hardware.
+Modern protocols therefore often select ChaCha20-Poly1305 as a preferred or fallback cipher suite for clients without efficient AES support.</p>
+<h2 id="nonce"><a class="header" href="#nonce">Nonce</a></h2>
+<p>A nonce (“number used once”) is a per-operation value that must not repeat for a given key.
+In AEAD schemes like AES-GCM and ChaCha20-Poly1305, nonce reuse can completely break confidentiality and/or integrity.
+Nonces are usually public, but they must be unique; they can be random or derived from counters/sequence numbers.</p>
+<h2 id="oauth-20"><a class="header" href="#oauth-20">OAuth 2.0</a></h2>
+<p>OAuth 2.0 is an authorization framework that enables delegated access to protected resources without sharing user credentials.
+It allows applications to obtain limited-scope access tokens issued by an authorization server.
+OAuth separates authentication from authorization and supports multiple standardized authorization flows.
+Secure deployments rely on PKCE, strict redirect validation, token verification, and safe client storage.</p>
+<h2 id="os-entropy-pool"><a class="header" href="#os-entropy-pool">OS Entropy Pool</a></h2>
+<p>The OS entropy pool is the operating system’s internal randomness state, continuously mixed from multiple entropy sources.
+It seeds OS CSPRNGs and backs APIs that provide secure random bytes for keys, nonces, salts, and protocol secrets.
+Applications should use OS-provided randomness rather than collecting their own entropy.</p>
+<h2 id="padding-in-rsa"><a class="header" href="#padding-in-rsa">Padding in RSA</a></h2>
+<p>RSA encryption without padding is deterministic: encrypting the same message always produces the same ciphertext.
+This makes it insecure, as attackers can guess messages or exploit mathematical properties of RSA.
+Padding schemes (e.g., PKCS#1 v1.5 or OAEP) add randomness or structured bytes before encryption.
+This ensures different ciphertexts for the same plaintext and provides protection against chosen-plaintext or chosen-ciphertext attacks.
+Proper padding is essential for RSA’s security in practice.</p>
+<h2 id="padding-oracle-attack"><a class="header" href="#padding-oracle-attack">Padding Oracle Attack</a></h2>
+<p>A padding oracle attack exploits observable differences in error messages or timing when a system validates decrypted padding.
+By sending many crafted ciphertexts, an attacker can progressively recover plaintext or forge valid encrypted messages.
+This attack commonly affects block cipher modes such as CBC when padding errors are distinguishable.
+Using authenticated encryption, uniform error handling, and constant-time validation prevents this class of attack.</p>
+<h2 id="password-salt"><a class="header" href="#password-salt">Password Salt</a></h2>
+<p>A password salt is a unique random value stored alongside a password hash.
+It prevents rainbow-table attacks and ensures identical passwords do not produce identical hashes across users.
+Salts do not need secrecy, but they must be unique and randomly generated per password.</p>
+<h2 id="pbkdf2"><a class="header" href="#pbkdf2">PBKDF2</a></h2>
+<p>PBKDF2 is a standardized function used to derive cryptographic keys from passwords by applying a hash function (via HMAC) many times in succession to slow down brute-force attacks.
+It is widely supported, easy to implement, and still secure when configured with a high iteration count, but it is not memory-hard, making it vulnerable to modern GPU and ASIC attacks. Today, it is considered legacy-safe but no longer state-of-the-art.</p>
+<h2 id="pkcs7"><a class="header" href="#pkcs7">PKCS7</a></h2>
+<p>PKCS7 is a padding scheme used in block cipher encryption.
+It fills up the last block of plaintext with bytes all set to the value of the number of padding bytes added.
+For example, if 4 bytes of padding are needed, the block is filled with <code>04 04 04 04</code>.
+PKCS7 ensures that plaintext lengths align with the cipher’s block size, but improper validation of padding can lead to padding oracle attacks.</p>
+<h2 id="poly1305"><a class="header" href="#poly1305">Poly1305</a></h2>
+<p>Poly1305 is a fast one-time message authentication code (MAC) designed by Daniel J. Bernstein.
+It computes a 16-byte authentication tag using arithmetic modulo a large prime, and it is designed to be implemented efficiently and in constant time.
+The crucial rule is that its key must be used only once; reusing a Poly1305 key can allow attackers to forge tags.
+In practice, Poly1305 is paired with a stream cipher (most commonly ChaCha20) which derives a fresh one-time key for each message.</p>
+<h2 id="predictable-seed"><a class="header" href="#predictable-seed">Predictable Seed</a></h2>
+<p>A predictable seed is an RNG seed derived from guessable inputs like time, counters, or process IDs.
+If an attacker can guess the seed, they can reproduce RNG outputs and recover secrets derived from them.
+Cryptographic RNGs must be seeded from high-entropy sources (typically the OS).</p>
+<h2 id="preimage"><a class="header" href="#preimage">Preimage</a></h2>
+<p>A preimage is an input that produces a specific hash output.
+Preimage resistance means it is computationally infeasible to recover the original input from its hash.
+This property ensures that hashes cannot be reversed to reveal sensitive data.
+Preimage resistance is fundamental for password hashing and data integrity.</p>
+<h2 id="pseudorandom-keystream"><a class="header" href="#pseudorandom-keystream">Pseudorandom Keystream</a></h2>
+<p>A pseudorandom keystream is a sequence of bits or bytes that appears random but is generated deterministically from a secret key (and often a nonce/counter).
+In a secure stream cipher, this keystream should be computationally indistinguishable from true randomness to anyone who does not know the key.
+When the keystream is XORed with plaintext (and never reused with the same key/nonce), it hides the original data while still allowing the receiver, who can regenerate the same keystream, to decrypt it.</p>
+<h2 id="rand-rust-crate"><a class="header" href="#rand-rust-crate">rand (Rust crate)</a></h2>
+<p><code>rand</code> is the standard Rust ecosystem crate for randomness traits (<code>RngCore</code>), generators, and distributions.
+For cryptography, prefer OS-backed randomness like <code>rand::rngs::OsRng</code> (via <code>getrandom</code>) rather than weak or seeded PRNGs.
+<code>rand</code> also provides sampling utilities, but cryptographic safety depends on choosing the right RNG.</p>
+<h2 id="rsa-rivestshamiradleman"><a class="header" href="#rsa-rivestshamiradleman">RSA (Rivest–Shamir–Adleman)</a></h2>
+<p>RSA is one of the first public-key cryptosystems, invented in 1977 by Ron Rivest, Adi Shamir, and Leonard Adleman.
+It allows secure key exchange, encryption, and digital signatures by relying on the mathematical difficulty of factoring large integers.
+RSA keys are typically 2048 or 3072 bits today. While still widely used, modern protocols increasingly migrate to elliptic-curve cryptography (ECC) for better performance and smaller key sizes.</p>
+<h2 id="salsa20"><a class="header" href="#salsa20">Salsa20</a></h2>
+<p>Salsa20 is a stream cipher designed by Daniel J. Bernstein as part of the eSTREAM project.
+It uses simple add-rotate-xor (ARX) operations to generate a pseudorandom keystream from a key, nonce, and counter, making it fast and easy to implement on a wide range of hardware.
+Salsa20 was extensively analyzed and gained a strong security reputation, and its design directly inspired ChaCha20, which refines the permutation for better diffusion and performance on modern CPUs.</p>
+<h2 id="salt"><a class="header" href="#salt">Salt</a></h2>
+<p>A salt is a random value added to a password before hashing or key derivation to ensure that identical passwords never produce identical outputs. It completely defeats precomputed attacks such as rainbow tables by forcing attackers to recompute hashes for every individual target.
+Salts are not secret and are stored alongside the hash, but they must be unique and random per password. A salt does not slow down brute force by itself—it only prevents large-scale hash reuse and precomputation.</p>
+<h2 id="scrypt"><a class="header" href="#scrypt">scrypt</a></h2>
+<p>scrypt is an earlier memory-hard password-based key derivation function created to make hardware attacks costly by requiring large amounts of memory during computation.
+It remains cryptographically strong and widely used, especially in cryptocurrencies and disk encryption, but it is harder to tune correctly than Argon2 and is now generally considered second-choice for new systems.</p>
+<h2 id="sha-2-secure-hash-algorithm-2"><a class="header" href="#sha-2-secure-hash-algorithm-2">SHA-2 (Secure Hash Algorithm 2)</a></h2>
+<p>SHA-2 is a family of cryptographic hash functions standardized by NIST as successors to SHA-1.
+It includes SHA-224, SHA-256, SHA-384, and SHA-512, which differ mainly in output size and internal parameters.
+SHA-2 is designed to provide strong collision resistance, preimage resistance, and avalanche behavior.
+It is widely used in TLS, digital signatures, certificate authorities, blockchains, and secure software distribution.
+Despite its age, SHA-2 remains secure and is considered a conservative, well-understood choice.</p>
 <h2 id="sha-224"><a class="header" href="#sha-224">SHA-224</a></h2>
 <p>SHA-224 is a cryptographic hash function belonging to the SHA-2 family.
 It produces a 224-bit digest and is derived from the same internal structure as SHA-256, with different initialization constants and truncation.
@@ -2058,112 +2443,67 @@ It is commonly paired with 64-bit platforms and high-assurance protocols.</p>
 It is optimized for 64-bit processors and often performs better than SHA-256 on such systems.
 SHA-512 provides an extremely large security margin against collision and preimage attacks.
 Variants such as SHA-512/256 reuse the SHA-512 core while producing shorter outputs.</p>
-<h2 id="kdf"><a class="header" href="#kdf">KDF</a></h2>
-<p>A Key Derivation Function (KDF) is a cryptographic function that derives one or more cryptographically strong keys from an initial secret.
-The input may be a human password, a shared secret, or another cryptographic key.
-KDFs enforce key separation, prevent key reuse, and ensure derived keys have the correct length and distribution.
-Some KDFs (e.g., Argon2, scrypt) are designed to resist brute-force attacks, while others (e.g., HKDF) are used for safe key expansion.
-Choosing the correct KDF depends on whether the input secret is weak or already strong.</p>
-<h2 id="simd"><a class="header" href="#simd">SIMD</a></h2>
-<p>SIMD is a CPU execution model where a single instruction operates simultaneously on multiple data elements.
-It enables data-parallel computation using vector registers, significantly improving performance for cryptographic and numeric workloads.
-Modern CPUs use SIMD extensively for hashing, encryption, and multimedia processing.
-Algorithms designed with SIMD in mind (such as BLAKE3) can achieve very high throughput on modern hardware.</p>
-<h2 id="incremental-hashing"><a class="header" href="#incremental-hashing">Incremental Hashing</a></h2>
-<p>Incremental hashing is the ability to compute a hash progressively by processing input data in chunks.
-This allows hashing of large or streaming data without loading it entirely into memory.
-Incremental hashing is essential for file hashing, network protocols, and real-time data processing.
-Most modern cryptographic hash functions support incremental hashing by design.</p>
-<h2 id="keyed-hashing"><a class="header" href="#keyed-hashing">Keyed Hashing</a></h2>
-<p>Keyed hashing is a hashing mode that incorporates a secret key into the hash computation.
-It is used to provide message authentication and integrity, ensuring that only parties with the key can generate or verify the hash.
-Keyed hashing prevents attackers from forging valid hashes for modified messages.
-HMAC is the most widely used standardized construction for keyed hashing.</p>
-<h2 id="extendable-output-function"><a class="header" href="#extendable-output-function">Extendable Output Function</a></h2>
-<p>An Extendable Output Function (XOF) is a hash construction that can generate an arbitrary-length output from a single input.
-Instead of producing a fixed-size digest, an XOF acts like a pseudorandom stream derived from the input.
-XOFs are useful for key derivation, randomness expansion, and domain separation.
-Examples include SHAKE and the XOF mode of BLAKE3.</p>
-<h2 id="collision"><a class="header" href="#collision">Collision</a></h2>
-<p>A collision occurs when two distinct inputs produce the same hash output.
-Collision resistance means it is computationally infeasible to find such pairs intentionally.
-While collisions must exist mathematically, a secure hash makes finding them impractical.
-Collision resistance is critical for digital signatures, certificates, and integrity systems.</p>
-<h2 id="brute-force"><a class="header" href="#brute-force">Brute Force</a></h2>
-<p>A brute-force attack is an exhaustive search that tries all possible inputs or keys until the correct one is found.
-Its effectiveness depends entirely on the size of the search space and the speed of computation.
-Modern cryptography relies on making brute-force attacks computationally infeasible.
-KDFs and memory-hard functions are designed specifically to slow down brute-force attacks.</p>
-<h2 id="preimage"><a class="header" href="#preimage">Preimage</a></h2>
-<p>A preimage is an input that produces a specific hash output.
-Preimage resistance means it is computationally infeasible to recover the original input from its hash.
-This property ensures that hashes cannot be reversed to reveal sensitive data.
-Preimage resistance is fundamental for password hashing and data integrity.</p>
-<h2 id="merkle-tree"><a class="header" href="#merkle-tree">Merkle Tree</a></h2>
-<p>A Merkle tree is a hash-based tree data structure where each internal node is the hash of its child nodes.
-It allows efficient verification of large data sets by validating only a small subset of hashes.
-Merkle trees are used in blockchains, distributed systems, file systems, and secure databases.
-They provide tamper detection and integrity guarantees with logarithmic verification cost.</p>
-<h2 id="forged-api-request"><a class="header" href="#forged-api-request">Forged API Request</a></h2>
-<p>A forged API request is a maliciously crafted or modified request designed to impersonate a legitimate client or bypass security controls.
-Attackers may manipulate headers, parameters, identifiers, signatures, or timestamps to gain unauthorized access or perform restricted actions.
-These attacks often exploit weak authentication, missing authorization checks, predictable identifiers, or insufficient request validation.
-Mitigations include strong authentication, strict authorization, request integrity verification, and anti-replay mechanisms.</p>
-<h2 id="token-manipulation"><a class="header" href="#token-manipulation">Token Manipulation</a></h2>
-<p>Token manipulation refers to tampering with authentication or session tokens to escalate privileges or impersonate another identity.
-Common targets include JWTs, cookies, and API keys where claims, signatures, or metadata may be altered or abused.
-Vulnerabilities often arise from weak verification, algorithm confusion, excessive token lifetime, or insecure storage.
-Defenses include strict signature validation, short expirations, audience checks, and secure token handling practices.</p>
-<h2 id="padding-oracle-attack"><a class="header" href="#padding-oracle-attack">Padding Oracle Attack</a></h2>
-<p>A padding oracle attack exploits observable differences in error messages or timing when a system validates decrypted padding.
-By sending many crafted ciphertexts, an attacker can progressively recover plaintext or forge valid encrypted messages.
-This attack commonly affects block cipher modes such as CBC when padding errors are distinguishable.
-Using authenticated encryption, uniform error handling, and constant-time validation prevents this class of attack.</p>
+<h2 id="side-channel-attack"><a class="header" href="#side-channel-attack">Side-Channel Attack</a></h2>
+<p>A side-channel attack breaks security by exploiting information leaked by an implementation rather than weaknesses in the underlying math.
+Common side channels include timing, cache behavior, power consumption, electromagnetic emissions, and fault injection.
+For example, a timing difference in MAC verification or a secret-dependent memory access pattern can leak bits of a key over many observations.
+Defenses include constant-time code, uniform error handling, blinding techniques, hardened hardware, and minimizing attacker observability.</p>
 <h2 id="silent-data-corruption"><a class="header" href="#silent-data-corruption">Silent Data Corruption</a></h2>
 <p>Silent data corruption occurs when data is modified without detection due to hardware faults, software bugs, or transmission errors.
 Because no immediate error is raised, corrupted data may propagate into backups, computations, or decision systems.
 This can silently compromise integrity, correctness, and long-term reliability of stored or processed information.
 End-to-end checksums, cryptographic integrity verification, and hardware redundancy reduce this risk.</p>
-<h2 id="jwt"><a class="header" href="#jwt">JWT</a></h2>
-<p>A JSON Web Token is a compact, URL-safe token format used to transmit cryptographically protected claims between parties.
-It typically consists of a header, payload, and signature encoded using Base64URL.
-JWTs are widely used for stateless authentication and authorization in distributed systems and APIs.
-Secure usage requires strict signature verification, algorithm allow-lists, expiration checks, and issuer validation.</p>
-<h2 id="api"><a class="header" href="#api">API</a></h2>
-<p>An application programming interface defines how software components communicate through structured requests and responses.
-It specifies operations, data formats, authentication rules, error handling, and versioning conventions.
-APIs enable modular system design, interoperability, and automated integration between services.
-Security depends on proper identity verification, authorization enforcement, input validation, and transport protection.</p>
-<h2 id="oauth-20"><a class="header" href="#oauth-20">OAuth 2.0</a></h2>
-<p>OAuth 2.0 is an authorization framework that enables delegated access to protected resources without sharing user credentials.
-It allows applications to obtain limited-scope access tokens issued by an authorization server.
-OAuth separates authentication from authorization and supports multiple standardized authorization flows.
-Secure deployments rely on PKCE, strict redirect validation, token verification, and safe client storage.</p>
-<h2 id="aws-request-signin-sigv4"><a class="header" href="#aws-request-signin-sigv4">AWS Request Signin (SigV4)</a></h2>
-<p>AWS request signing is a cryptographic mechanism used to authenticate and authorize API requests to AWS services.
-Requests are canonicalized, hashed, and signed using HMAC with secret credentials and request metadata.
-This protects against request tampering and limits replay attacks through timestamp validation.
-Correct canonicalization and key handling are critical for reliable and secure operation.</p>
-<h2 id="tls-internals"><a class="header" href="#tls-internals">TLS Internals</a></h2>
-<p>TLS internals describe the cryptographic protocols and handshake mechanisms that secure network communications.
-During the handshake, peers authenticate, negotiate algorithms, and derive shared symmetric session keys.
-Modern TLS provides confidentiality, integrity, authentication, and forward secrecy.
-It protects application data against eavesdropping, tampering, and active network attacks.</p>
-<h2 id="length-extension-attack"><a class="header" href="#length-extension-attack">Length-Extension Attack</a></h2>
-<p>A length-extension attack exploits the internal structure of certain hash functions to append data to a hashed message.
-An attacker can compute a valid hash for an extended message without knowing the original secret.
-This vulnerability breaks naïve constructions such as hash-based authentication using secret-prefix hashing.
-Proper MAC constructions such as HMAC are specifically designed to prevent this attack.</p>
-<h2 id="constant-time-algorithm"><a class="header" href="#constant-time-algorithm">Constant-Time Algorithm</a></h2>
-<p>A constant-time algorithm executes independently of secret data to avoid leaking information through timing behavior.
-Branching, memory access patterns, and early exits must not depend on sensitive values.
-Timing side channels can otherwise reveal keys, authentication tags, or internal state.
-Constant-time techniques are essential for secure cryptographic implementations.</p>
+<h2 id="simd"><a class="header" href="#simd">SIMD</a></h2>
+<p>SIMD is a CPU execution model where a single instruction operates simultaneously on multiple data elements.
+It enables data-parallel computation using vector registers, significantly improving performance for cryptographic and numeric workloads.
+Modern CPUs use SIMD extensively for hashing, encryption, and multimedia processing.
+Algorithms designed with SIMD in mind (such as BLAKE3) can achieve very high throughput on modern hardware.</p>
+<h2 id="ssh-secure-shell"><a class="header" href="#ssh-secure-shell">SSH (Secure Shell)</a></h2>
+<p>SSH is a secure remote access protocol invented by Tatu Ylönen in 1995.
+It uses asymmetric encryption to authenticate users and symmetric encryption to secure the session once established.
+SSH replaced insecure protocols such as Telnet and rlogin and is now the standard for secure remote administration.</p>
+<hr>
 <h2 id="stream-cipher"><a class="header" href="#stream-cipher">Stream Cipher</a></h2>
 <p>A stream cipher encrypts data by generating a pseudorandom keystream and XORing it with plaintext bytes.
 The same operation is used for encryption and decryption.
 Reusing the same keystream for multiple messages compromises confidentiality immediately.
 Modern stream ciphers are typically combined with authentication to provide full data integrity.</p>
+<h2 id="timestamps"><a class="header" href="#timestamps">Timestamps</a></h2>
+<p>Timestamps are time-derived values (seconds/milliseconds) that are often predictable to attackers.
+They have low entropy and should not be used as cryptographic seeds, keys, nonces, or “random” tokens.
+They are fine as metadata, but not as a security primitive.</p>
+<h2 id="tls-transport-layer-security"><a class="header" href="#tls-transport-layer-security">TLS (Transport Layer Security)</a></h2>
+<p>TLS is a protocol defined by the IETF to secure data during transmission, most notably in HTTPS.
+It uses asymmetric encryption for the handshake and key exchange, then switches to symmetric encryption for efficient bulk data encryption.
+TLS provides confidentiality, integrity, and authentication for internet communications.</p>
+<h2 id="tls-fallback"><a class="header" href="#tls-fallback">TLS Fallback</a></h2>
+<p>TLS fallback refers to selecting an alternative cipher suite or algorithm when the preferred choice is unavailable or performs poorly on a given client.
+In modern TLS, clients and servers negotiate a suite during the handshake; implementations may prefer AES-GCM on CPUs with AES acceleration and prefer ChaCha20-Poly1305 on devices without it.
+This is typically a performance and side-channel hardening decision, not a downgrade in security, as both suites are considered strong when used correctly.
+The key point is that TLS can adapt to heterogeneous hardware while maintaining authenticated encryption.</p>
+<h2 id="tls-handshake"><a class="header" href="#tls-handshake">TLS Handshake</a></h2>
+<p>The TLS handshake is the setup phase where client and server negotiate parameters and establish shared secrets.
+It may authenticate the server (and optionally the client) and typically uses (EC)DHE for forward secrecy.
+Handshake outputs are used to derive traffic keys for encrypting application data.</p>
+<h2 id="tls-internals"><a class="header" href="#tls-internals">TLS Internals</a></h2>
+<p>TLS internals describe the cryptographic protocols and handshake mechanisms that secure network communications.
+During the handshake, peers authenticate, negotiate algorithms, and derive shared symmetric session keys.
+Modern TLS provides confidentiality, integrity, authentication, and forward secrecy.
+It protects application data against eavesdropping, tampering, and active network attacks.</p>
+<h2 id="tls-record-encryption"><a class="header" href="#tls-record-encryption">TLS Record Encryption</a></h2>
+<p>TLS record encryption protects application data after the handshake, splitting it into records and applying symmetric AEAD per record.
+It provides confidentiality and integrity using traffic keys and per-record nonces/sequence numbers.
+Correct key/nonce management and strict authentication failure handling are essential for security.</p>
+<h2 id="token-manipulation"><a class="header" href="#token-manipulation">Token Manipulation</a></h2>
+<p>Token manipulation refers to tampering with authentication or session tokens to escalate privileges or impersonate another identity.
+Common targets include JWTs, cookies, and API keys where claims, signatures, or metadata may be altered or abused.
+Vulnerabilities often arise from weak verification, algorithm confusion, excessive token lifetime, or insecure storage.
+Defenses include strict signature validation, short expirations, audience checks, and secure token handling practices.</p>
+<h2 id="wireguard"><a class="header" href="#wireguard">WireGuard</a></h2>
+<p>WireGuard is a modern VPN protocol and implementation designed by Jason A. Donenfeld.
+It focuses on simplicity, performance, and a small codebase, in contrast to traditional VPN stacks like IPsec and OpenVPN.
+WireGuard uses a fixed, opinionated set of strong primitives (e.g., Curve25519, ChaCha20-Poly1305, BLAKE2s, and HKDF) arranged in a Noise-based handshake pattern.
+It is now integrated into the Linux kernel and widely deployed for site-to-site VPNs, remote access, and privacy-focused applications.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="cryptographic-concepts-cheatsheet"><a class="header" href="#cryptographic-concepts-cheatsheet">Cryptographic Concepts Cheatsheet</a></h1>
 <p><em>This cheatsheet is designed as a quick mental map. For detailed explanations and Rust code, see Part 2 and Part 3 of this book.</em></p>

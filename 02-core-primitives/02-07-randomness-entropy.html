@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>How to Use This Book - Sealed in Rust — Domain-Driven Edition</title>
+        <title>Randomness &amp; Entropy — Nonces, IVs, CSPRNGs - Sealed in Rust — Domain-Driven Edition</title>
 
 
         <!-- Custom HTML head -->
@@ -174,69 +174,259 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="how-to-use-this-book"><a class="header" href="#how-to-use-this-book">How to Use This Book</a></h1>
-<p>This book is designed to be practical, modular, and domain-focused.<br>You can read it front to back, or jump directly to the domains and primitives most relevant to your work.</p>
-<h2 id="structure"><a class="header" href="#structure">Structure</a></h2>
-<p>The book is organized into four major parts:</p>
-<p><strong>Foundations</strong> — Why Rust is uniquely suited for secure cryptographic engineering<br><strong>Primitives</strong> — The core building blocks of cryptography, with Rust-focused usage and implementation<br><strong>Applied Domains</strong> — Real-world systems and how they use cryptography in practice (blockchain, defense, aerospace, medical, infrastructure, etc.)<br><strong>Crate Building</strong> — How to architect, test, audit, and publish your own cryptographic crate in Rust</p>
-<h3 id=""><a class="header" href="#"></a></h3>
-<p>Each chapter includes:</p>
-<ul>
-<li>Plain-language explanations</li>
-<li>Rust code examples using community crates</li>
-<li>Security insights and common pitfalls</li>
-<li>Domain-specific applications</li>
-</ul>
-<h2 id="code--examples"><a class="header" href="#code--examples">Code &amp; Examples</a></h2>
-<p>This book includes real, runnable Rust code for nearly every chapter.</p>
-<ul>
-<li>All examples are written for <strong>Rust 2024</strong></li>
-<li>You’ll need a working Rust toolchain (<code>rustup</code>, <code>cargo</code>)</li>
-<li>Each chapter’s code is provided as a separate <strong>Cargo example</strong>.</li>
-<li>Examples live inside the companion repository: <a href="https://github.com/VinEckSie/sealed-in-rust/tree/main/rust_crypto_book_code">sealed-in-rust</a></li>
-</ul>
-<p>You can run them locally without touching production crates or complex setups:</p>
-<pre><code class="language-bash">git clone https://github.com/VinEckSie/sealed-in-rust.git
-cd sealed-in-rust/rust_crypto_book_code
-cargo run --example aes_cbc //Replace aes_cbc with any chapter example you want to try
-</code></pre>
+                        <h2 id="randomness--entropy--nonces-ivs-csprngs"><a class="header" href="#randomness--entropy--nonces-ivs-csprngs">Randomness &amp; Entropy — Nonces, IVs, CSPRNGs</a></h2>
 <blockquote>
-<p>⚠️ <strong>Note on Playground Limitations:</strong><br>Some examples in this book use no_run or ignore markers when rendered online, because external crates like aes, cbc, or rsa cannot be compiled in-browser.
-All examples work locally, and full source code is always included.</p>
+<p>🔐 <strong>Used in:</strong> encryption schemes[^encryption-scheme], TLS, digital signatures<sup class="footnote-reference" id="fr-digital-signature-1"><a href="#footnote-digital-signature">1</a></sup>, key generation, session tokens</p>
+<p>✅ Unpredictability is security. If randomness fails, everything collapses.</p>
+</blockquote>
+<h3 id="why-randomness-is-a-security-primitive"><a class="header" href="#why-randomness-is-a-security-primitive">Why Randomness Is a Security Primitive</a></h3>
+<p>Modern cryptography does not just rely on strong mathematics.</p>
+<p>It relies on unpredictability.</p>
+<p>If an attacker can predict:</p>
+<ul>
+<li>Your encryption IV<sup class="footnote-reference" id="fr-encryption-iv-1"><a href="#footnote-encryption-iv">2</a></sup></li>
+<li>Your nonce<sup class="footnote-reference" id="fr-nonce-1"><a href="#footnote-nonce">3</a></sup></li>
+<li>Your session token</li>
+<li>Your key material</li>
+</ul>
+<p>Then your system is broken — even if you use perfect algorithms.</p>
+<p>Cryptography without randomness is just math.</p>
+<h2 id="what-is-entropy"><a class="header" href="#what-is-entropy">What Is Entropy?</a></h2>
+<p>Entropy is a measure of unpredictability.</p>
+<p>In cryptography, entropy answers one question:
+How hard is it to guess this value?</p>
+<p>Examples:</p>
+<ul>
+<li>A 4-digit PIN → ~13 bits of entropy (very weak)</li>
+<li>A 256-bit key → 256 bits of entropy (astronomically strong)</li>
+</ul>
+<p>True entropy comes from:</p>
+<ul>
+<li>OS randomness pools<sup class="footnote-reference" id="fr-os-randomness-pool-1"><a href="#footnote-os-randomness-pool">4</a></sup></li>
+<li>Hardware noise<sup class="footnote-reference" id="fr-hardware-noise-1"><a href="#footnote-hardware-noise">5</a></sup></li>
+<li>Interrupt timing<sup class="footnote-reference" id="fr-interrupt-timing-1"><a href="#footnote-interrupt-timing">6</a></sup></li>
+<li>Environmental noise<sup class="footnote-reference" id="fr-environmental-noise-1"><a href="#footnote-environmental-noise">7</a></sup></li>
+</ul>
+<p>It does not come from:</p>
+<ul>
+<li><code>rand()</code><sup class="footnote-reference" id="fr-rand-1"><a href="#footnote-rand">8</a></sup></li>
+<li>timestamps<sup class="footnote-reference" id="fr-timestamps-1"><a href="#footnote-timestamps">9</a></sup></li>
+<li>incremental counters</li>
+<li>predictable seeds<sup class="footnote-reference" id="fr-predicable-seed-1"><a href="#footnote-predicable-seed">10</a></sup></li>
+</ul>
+<h2 id="csprng--cryptographically-secure-pseudorandom-number-generator"><a class="header" href="#csprng--cryptographically-secure-pseudorandom-number-generator">CSPRNG — Cryptographically Secure Pseudorandom Number Generator</a></h2>
+<blockquote>
+<p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/rand">rand</a></p>
+</blockquote>
+<p>A CSPRNG<sup class="footnote-reference" id="fr-csprng-1"><a href="#footnote-csprng">11</a></sup> is a deterministic algorithm that expands a small amount of true entropy into large amounts of secure random data.</p>
+<p>Properties:</p>
+<ul>
+<li>Unpredictable</li>
+<li>Resistant to state recovery</li>
+<li>Backtracking resistant</li>
+<li>Seeded from high-entropy OS sources</li>
+</ul>
+<p>Your OS already provides one:</p>
+<ul>
+<li>Linux → <code>/dev/urandom</code></li>
+<li>Windows → CryptGenRandom / BCryptGenRandom</li>
+<li>macOS → SecRandomCopyBytes</li>
+</ul>
+<p>Rust exposes this securely through the <a href="https://crates.io/crates/rand/"><code>rand</code> crate</a></p>
+<p>🧪 <strong>Code Example: Secure Random Bytes</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_csprng_example() {
+    use rand::RngCore;
+    use rand::rngs::OsRng;
+
+    let mut bytes = [0u8; 32];
+    OsRng.fill_bytes(&amp;mut bytes);
+
+    println!("32 random bytes: {}", hex::encode(bytes));
+    println!("random u64: {}", OsRng.next_u64());
+}
+<span class="boring">}</span></code></pre>
+<p>Output:</p>
+<pre><code class="language-text">32 random bytes: a7d6ba53f00fd0c7a90bb30312cd0b96ae22e1a5f438c91e4d93a62bff35f28d
+random u64: 15302970456105725428
+</code></pre>
+<p>What you’re seeing is the same OS CSPRNG used in two different ways:</p>
+<ul>
+<li><strong>32 random bytes</strong>: raw randomness you typically use directly for crypto inputs (keys, nonces, salts, IVs).</li>
+<li><strong>random u64</strong>: 8 random bytes returned as a convenient numeric type (handy for things like “pick a random index”).</li>
+</ul>
+<p>Not predictable. Not reproducible. Not reversible. That’s exactly what we want.</p>
+<p>It does not have to be secret.
+It must be unique.</p>
+<p>Nonces are used in:</p>
+<ul>
+<li>AES-GCM</li>
+<li>ChaCha20-Poly1305</li>
+<li>TLS record encryption<sup class="footnote-reference" id="fr-tls-record-encryption-1"><a href="#footnote-tls-record-encryption">12</a></sup></li>
+<li>Replay protection systems</li>
+</ul>
+<blockquote>
+<p>🚨 <strong>Critical rule:</strong>
+If you ever reuse a nonce with the same key:
+You can completely break the encryption.</p>
 </blockquote>
 <blockquote>
-<p>💡 These examples are didactic and minimal by design.
-They illustrate cryptographic concepts — not replace mature, production-ready libraries.</p>
+<p><strong>🟢 Best Practice</strong></p>
+<p>Use 96-bit (12-byte) nonces for GCM</p>
+<p>Never reuse them.
+Prefer random nonces unless protocol specifies counters</p>
+</blockquote>
+<h2 id="what-happens-if-randomness-fails"><a class="header" href="#what-happens-if-randomness-fails">What Happens If Randomness Fails?</a></h2>
+<p>History is brutal here:</p>
+<ul>
+<li>Debian OpenSSL bug (2008) reduced entropy to 15 bits.</li>
+<li>Android Bitcoin wallet bug reused ECDSA nonces.</li>
+<li>PS3 signing failure reused ECDSA nonce → private key recovered.</li>
+</ul>
+<p>In all cases:</p>
+<ul>
+<li>The algorithm was correct.</li>
+<li>Randomness was broken.</li>
+<li>And everything collapsed.</li>
+</ul>
+<p><strong>Most catastrophic crypto failures are entropy failures.</strong></p>
+<h2 id="deterministic-vs-secure-random"><a class="header" href="#deterministic-vs-secure-random">Deterministic vs Secure Random</a></h2>
+<p><strong>Never use:</strong>
+use rand::thread_rng();</p>
+<p>For simulations? Fine.
+For cryptography? No.</p>
+<p><strong>Always prefer:</strong>
+use rand::rngs::OsRng;</p>
+<p>Or use crates that internally rely on secure randomness (like ring, aes-gcm, chacha20poly1305).</p>
+<h2 id="key-generation--the-most-important-use-case"><a class="header" href="#key-generation--the-most-important-use-case">Key Generation — The Most Important Use Case</a></h2>
+<p>All cryptographic keys must come from a secure, high-entropy source.</p>
+<p>No passwords.
+No manual seeds.
+No shortcuts.</p>
+<p><strong>Entropy Budget (Thinking Like an Attacker)</strong></p>
+<p>If a value has:</p>
+<ul>
+<li>32 bits entropy → brute-forceable</li>
+<li>64 bits entropy → expensive but possible</li>
+<li>128 bits entropy → practically infeasible</li>
+<li>256 bits entropy → overkill for most cases</li>
+</ul>
+<p><strong>Modern security baseline: Minimum 128 bits of entropy for long-term security.</strong></p>
+<h2 id="randomness-in-protocols"><a class="header" href="#randomness-in-protocols">Randomness in Protocols</a></h2>
+<p>Randomness appears everywhere:</p>
+<ul>
+<li>Session IDs</li>
+<li>TLS handshake<sup class="footnote-reference" id="fr-tls-handshake-1"><a href="#footnote-tls-handshake">13</a></sup></li>
+<li>ECDSA nonces<sup class="footnote-reference" id="fr-ecdsa-nonce-1"><a href="#footnote-ecdsa-nonce">14</a></sup></li>
+<li>Key exchange salts<sup class="footnote-reference" id="fr-key-exchange-salt-1"><a href="#footnote-key-exchange-salt">15</a></sup></li>
+<li>Password salts<sup class="footnote-reference" id="fr-password-salt-1"><a href="#footnote-password-salt">16</a></sup></li>
+<li>Token generation</li>
+<li>Secure cookies</li>
+</ul>
+<p>You may not see it.
+But it is there.</p>
+<h2 id="common-mistakes"><a class="header" href="#common-mistakes">Common Mistakes</a></h2>
+<ul>
+<li>
+<p>Seeding RNG manually</p>
+</li>
+<li>
+<p>Using timestamps</p>
+</li>
+<li>
+<p>Reusing nonces</p>
+</li>
+<li>
+<p>Storing IVs incorrectly</p>
+</li>
+<li>
+<p>Assuming randomness == secrecy</p>
+</li>
+<li>
+<p>Confusing UUID v4 with cryptographic token (context matters)</p>
+</li>
+<li>
+<p>Testing Randomness (What You Should NOT Do). Do not test randomness with: “It looks random.”Cryptographic randomness is not visual randomness.</p>
+</li>
+</ul>
+<p>You rely on:</p>
+<ul>
+<li>OS entropy pool</li>
+<li>Well-audited CSPRNG</li>
+<li>Mature cryptographic libraries</li>
+</ul>
+<p><strong>You do not roll your own RNG. Ever.</strong></p>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>Randomness is not optional.
+It is a foundational cryptographic primitive.</p>
+<p>Entropy defines unpredictability. CSPRNG expands secure entropy safely. Nonces must never repeat</p>
+<p>IVs must follow algorithm rules</p>
+<p>Reused randomness destroys security</p>
+<p>Without entropy, cryptography is an illusion.</p>
 </blockquote>
 <hr>
-<h2 id="non-linear-reading"><a class="header" href="#non-linear-reading">Non-linear Reading</a></h2>
-<p>This book doesn’t assume linear progress.</p>
-<ul>
-<li>Want to build a secure file encryption tool? <strong>Symmetric Ciphers</strong> + <strong>Secure Infrastructure</strong></li>
-<li>Curious about smart contracts? Go directly to <strong>ECC</strong> and <strong>Blockchain &amp; Web3</strong></li>
-<li>Working on embedded firmware? Check out <strong>Ascon</strong>, <strong>PRESENT</strong>, and <strong>Defense &amp; Aerospace</strong></li>
-</ul>
-<p>Each domain chapter reminds you of the necessary primitives — like a map, not a locked path.</p>
-<h2 id="contributing-feedback--issues"><a class="header" href="#contributing-feedback--issues">Contributing, Feedback, &amp; Issues</a></h2>
-<p>This book is a living project.</p>
-<ul>
-<li>Errors? Open an issue or PR on the <a href="https://github.com/VinEckSie/sealed-in-rust">GitHub repo</a></li>
-<li>Suggestions? You’re welcome to share ideas for domains, examples, or improvements</li>
-<li>Contributions to the examples repo are also welcome</li>
-</ul>
-<h2 id="final-note"><a class="header" href="#final-note">Final Note</a></h2>
-<p>This is not a cryptography textbook — it’s a cryptographic engineering manual.<br>By the end, you’ll not only understand the primitives, you’ll know how to use them to secure real systems — in Rust, by design, not by accident.</p>
-<p>Let’s begin.</p>
+<ol class="footnote-definition">
+<li id="footnote-digital-signature">
+<p>Digital signature: private-key proof of authenticity and integrity; anyone with the public key can verify; enables non-repudiation. <a href="../99-appendices/99-01-glossary.html#digital-signature">More</a> <a href="#fr-digital-signature-1">↩</a></p>
+</li>
+<li id="footnote-encryption-iv">
+<p>Initialization vector (IV): non-secret per-message value required by some cipher modes; must follow scheme rules; reuse can leak information. <a href="../99-appendices/99-01-glossary.html#iv-initialization-vector">More</a> <a href="#fr-encryption-iv-1">↩</a></p>
+</li>
+<li id="footnote-nonce">
+<p>Nonce (“number used once”): per-operation value that must not repeat for a given key; reuse can catastrophically break AEAD security. <a href="../99-appendices/99-01-glossary.html#nonce">More</a> <a href="#fr-nonce-1">↩</a></p>
+</li>
+<li id="footnote-os-randomness-pool">
+<p>OS entropy pool: kernel-managed entropy mixed from multiple sources; used to seed CSPRNGs and provide secure random bytes. <a href="../99-appendices/99-01-glossary.html#os-entropy-pool">More</a> <a href="#fr-os-randomness-pool-1">↩</a></p>
+</li>
+<li id="footnote-hardware-noise">
+<p>Hardware noise: physical randomness (thermal/electronic noise, oscillator jitter) used as an entropy source for true randomness. <a href="../99-appendices/99-01-glossary.html#hardware-noise">More</a> <a href="#fr-hardware-noise-1">↩</a></p>
+</li>
+<li id="footnote-interrupt-timing">
+<p>Interrupt timing: small unpredictable variations in interrupt arrival times used as entropy input; mixed by the OS for safety. <a href="../99-appendices/99-01-glossary.html#interrupt-timing">More</a> <a href="#fr-interrupt-timing-1">↩</a></p>
+</li>
+<li id="footnote-environmental-noise">
+<p>Environmental noise: entropy from external events (user input, device timings, sensors) collected and mixed into the OS pool. <a href="../99-appendices/99-01-glossary.html#environmental-noise">More</a> <a href="#fr-environmental-noise-1">↩</a></p>
+</li>
+<li id="footnote-rand">
+<p>rand: Rust crate for RNG traits and generators; for crypto randomness use OS-backed RNGs like OsRng/getrandom. <a href="../99-appendices/99-01-glossary.html#rand-rust-crate">More</a> <a href="#fr-rand-1">↩</a></p>
+</li>
+<li id="footnote-timestamps">
+<p>Timestamps: time-derived values are guessable and low-entropy; unsuitable as seeds, keys, nonces, or cryptographic randomness. <a href="../99-appendices/99-01-glossary.html#timestamps">More</a> <a href="#fr-timestamps-1">↩</a></p>
+</li>
+<li id="footnote-predicable-seed">
+<p>Predictable seed: RNG seed from guessable inputs (time, counters); makes outputs predictable and can reveal derived secrets. <a href="../99-appendices/99-01-glossary.html#predictable-seed">More</a> <a href="#fr-predicable-seed-1">↩</a></p>
+</li>
+<li id="footnote-csprng">
+<p>CSPRNG: deterministic generator seeded with high entropy; output is computationally indistinguishable from random; resists prediction. <a href="../99-appendices/99-01-glossary.html#csprng-cryptographically-secure-pseudorandom-number-generator">More</a> <a href="#fr-csprng-1">↩</a></p>
+</li>
+<li id="footnote-tls-record-encryption">
+<p>TLS record encryption: per-record symmetric AEAD that encrypts and authenticates application data using traffic keys/nonces. <a href="../99-appendices/99-01-glossary.html#tls-record-encryption">More</a> <a href="#fr-tls-record-encryption-1">↩</a></p>
+</li>
+<li id="footnote-tls-handshake">
+<p>TLS handshake: negotiates parameters, authenticates peers, and derives shared traffic keys/secrets used for record encryption. <a href="../99-appendices/99-01-glossary.html#tls-handshake">More</a> <a href="#fr-tls-handshake-1">↩</a></p>
+</li>
+<li id="footnote-ecdsa-nonce">
+<p>ECDSA nonce: secret per-signature scalar k; must be unpredictable and never reused; reuse can leak the private key. <a href="../99-appendices/99-01-glossary.html#ecdsa-nonce">More</a> <a href="#fr-ecdsa-nonce-1">↩</a></p>
+</li>
+<li id="footnote-key-exchange-salt">
+<p>Key exchange salt: non-secret random value fed into a KDF/HKDF to separate contexts and reduce key-reuse risks. <a href="../99-appendices/99-01-glossary.html#key-exchange-salt">More</a> <a href="#fr-key-exchange-salt-1">↩</a></p>
+</li>
+<li id="footnote-password-salt">
+<p>Password salt: unique random value stored with a password hash; prevents rainbow tables and makes identical passwords hash differently. <a href="../99-appendices/99-01-glossary.html#password-salt">More</a> <a href="#fr-password-salt-1">↩</a></p>
+</li>
+</ol>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../00-Intro/introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../02-core-primitives/02-03-mac-aead.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../01-foundations/01-01-cryptography.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../99-appendices/99-01-glossary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -246,11 +436,11 @@ They illustrate cryptographic concepts — not replace mature, production-ready 
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../00-Intro/introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../02-core-primitives/02-03-mac-aead.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../01-foundations/01-01-cryptography.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../99-appendices/99-01-glossary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
