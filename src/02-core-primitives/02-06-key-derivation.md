@@ -2,7 +2,7 @@
 
 > 🔐 **Used in:** password storage, login systems, encrypted vaults, disk encryption, backup tools
 >
-> ✅ Essential anytime a **password** becomes a **key**.
+> ✅ Essential anytime a password becomes a key.
 
 A password is not a cryptographic key.
 It’s short, predictable, and attacker-friendly.
