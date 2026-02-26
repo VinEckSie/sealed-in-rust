@@ -1,5 +1,5 @@
 
-## MACs & AEAD — HMAC, Poly1305, AES-GCM
+## MACs & AEAD: HMAC, Poly1305, AES-GCM
 
 > 🔐 **Used in:** TLS, APIs, cookies, tokens, VPNs, messaging apps
 >
@@ -13,7 +13,7 @@ Modern cryptography requires two guarantees:
 - **Confidentiality** → Nobody can read the data
 - **Integrity & Authenticity** → Nobody can tamper with it unnoticed
 
-This chapter is about the second half — the part beginners forget, and attackers exploit.
+This chapter is about the second half: the part beginners forget, and attackers exploit.
 
 ## Why Encryption Alone Is Not Enough
 
@@ -40,7 +40,7 @@ A MAC is a cryptographic checksum computed using a secret key.
 
 It answers one critical question:
 
-> “Was this message produced by someone who knows the secret key — and was it modified?”
+> “Was this message produced by someone who knows the secret key and was it modified?”
 
 MACs provide:
 - Integrity (detect modification)
@@ -60,7 +60,7 @@ message + secret key → recomputed MAC → compare
 
 If even one bit changes, verification fails.
 
-## HMAC (Hash-based Message Authentication Code) — The Standard MAC Construction
+## HMAC (Hash-based Message Authentication Code): the standard MAC construction
 
 > 💡 Used in JWT[^jwt], APIs[^api], OAuth[^oauth], AWS signing[^aws-signin], TLS internals[^tls-internals]
 >
@@ -77,7 +77,7 @@ HMAC combines:
 
 Unlike naïve `hash(key || message)`, HMAC is safe.
 
-🧪 **Code Example: HMAC-SHA256** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))
+🧪 **Code Example: HMAC-SHA256** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L142))
 
 ```rust,no_run
 {{#include ../../rust_crypto_book_code/src/lib.rs:hmac}}
@@ -93,10 +93,10 @@ If the message or tag is altered, verification fails immediately.
 >
 > HMAC is conservative, widely deployed, and extremely hard to misuse.
 >
-> If you need integrity without encryption — HMAC is the right tool.
+> If you need integrity without encryption, HMAC is the right tool.
 
 
-## Poly1305 — One-Time MAC for Modern Crypto
+## Poly1305: one-time MAC for modern crypto
 
 > 💡 Used in ChaCha20-Poly1305, TLS 1.3, WireGuard
 >
@@ -116,7 +116,7 @@ Key properties:
 Poly1305 is almost never used alone.
 It is generated from a cipher keystream, usually ChaCha20.
 
-🧪 **Code Example: Poly1305** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))
+🧪 **Code Example: Poly1305** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L165))
 
 ```rust,no_run
 {{#include ../../rust_crypto_book_code/src/lib.rs:poly1305}}
@@ -131,7 +131,7 @@ It is generated from a cipher keystream, usually ChaCha20.
 > Poly1305 is fast, elegant, and extremely secure when used correctly,
 > but it must be paired with a cipher that guarantees fresh keys.
 
-## AEAD — Authenticated Encryption (The Right Way)
+## AEAD: authenticated encryption (the right way)
 
 Modern cryptography does not ask: “Should I encrypt or authenticate?”.
 
@@ -146,7 +146,7 @@ AEAD guarantees:
 
 If authentication fails → decryption must not happen.
 
-## AES-GCM — The Enterprise Standard AEAD
+## AES-GCM: the enterprise standard AEAD
 
 > 💡 Used in TLS, HTTPS, databases, cloud storage, hardware security modules, hardware-accelerated and widely standardized
 
@@ -158,7 +158,7 @@ AES-GCM[^aes-gcm] combines:
 * CTR mode[^ctr-mode] (for encryption)
 * GHASH[^ghash]  (for authentication)
 
-🧪 **Code Example: AES-256-GCM** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))
+🧪 **Code Example: AES-256-GCM** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L183))
 
 
 ```rust,no_run
@@ -192,7 +192,7 @@ AES256-GCM: [
 > but nonce management must be flawless.
 
 
-## ChaCha20-Poly1305 — The Safer Default
+## ChaCha20-Poly1305: the safer default
 
 > 💡 Used in WireGuard[^wireguard], mobile apps, embedded systems, TLS fallback[^tls-fallback]
 >
@@ -212,7 +212,7 @@ Advantages:
 * Fewer catastrophic mistakes
 
 
-🧪 **Code Example: ChaCha20-Poly1305** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))
+🧪 **Code Example: ChaCha20-Poly1305** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L199))
 
 
 ```rust,no_run
@@ -241,7 +241,7 @@ Chacha20-Poly1305: [
 > ChaCha20-Poly1305 is often the best default choice: safer APIs, portable performance, and strong resistance to side-channel attacks[^side-channel-attack].
 
 
-## MAC vs AEAD — What Should You Use?
+## MAC vs AEAD: what should you use?
 
 | Situation          | Use                      |
 | ------------------ | ------------------------ |
@@ -257,7 +257,7 @@ Chacha20-Poly1305: [
 
 > **🟢 Conclusion**
 >
-> Encryption alone only hides data — it doesn’t stop attackers from changing it.
+> Encryption alone only hides data, it doesn’t stop attackers from changing it.
 >
 > A MAC teaches the integrity lesson: “was this message modified, and did it come from someone with the key?”
 >
@@ -268,29 +268,29 @@ Chacha20-Poly1305: [
 > Practical rule: if you encrypt data in real systems, **use AEAD by default** and treat nonce/key management as a first-class security requirement.
 
 
-[^forged-api]: Forged API Request — Attack where an adversary crafts or alters API requests to impersonate a legitimate client or bypass authentication and authorization controls. [More](../99-appendices/99-01-glossary.md#forged-api-request)
-[^token-manip]: Token Manipulation — Tampering with authentication or session tokens (JWT, cookies, API keys) to escalate privileges, extend validity, or impersonate another user. [More](../99-appendices/99-01-glossary.md#token-manipulation)
-[^padding-oracle]: Padding Oracle Attack — Cryptographic attack exploiting padding validation errors in block ciphers to progressively recover plaintext or forge valid ciphertexts. [More](../99-appendices/99-01-glossary.md#padding-oracle-attack)
-[^silent-data]: Silent Data Corruption — Undetected modification of data caused by hardware faults, software bugs, or transmission errors, leading to integrity loss without immediate failure signals. [More](../99-appendices/99-01-glossary.md#silent-data-corruption)
-[^jwt]: JWT (JSON Web Token) — Compact, URL-safe token format used to securely transmit signed or encrypted claims for authentication and authorization in distributed systems. [More](../99-appendices/99-01-glossary.md#jwt)
-[^api]: API (Application Programming Interface) — Contract defining how software components communicate via structured requests, responses, authentication, and versioned endpoints. [More](../99-appendices/99-01-glossary.md#api)
-[^oauth]: OAuth 2.0 — Industry-standard authorization framework enabling delegated access to protected resources without sharing user credentials with third-party applications. [More](../99-appendices/99-01-glossary.md#oauth-20)
-[^aws-signin]: AWS Request Signin — Cryptographic mechanism (SigV4) that authenticates and authorizes AWS API requests using HMAC-based signatures derived from secret credentials. [More](../99-appendices/99-01-glossary.md#aws-request-signin-sigv4)
-[^tls-internals]: TLS Internals — Cryptographic protocols and handshake mechanisms that provide authentication, key exchange, confidentiality, and integrity for secure network communications. [More](../99-appendices/99-01-glossary.md#tls-internals)
-[^length-attack]: Length-Extension Attack — Hash function vulnerability allowing attackers to append data to a hashed message and compute a valid hash without knowing the secret. [More](../99-appendices/99-01-glossary.md#length-extension-attack)
-[^constant-time]: Constant-Time Algorithm — Implementation strategy where execution time is independent of secret data, preventing timing side-channel information leakage. [More](../99-appendices/99-01-glossary.md#constant-time-algorithm)
-[^stream-cipher]: Stream Cipher — Symmetric encryption primitive that generates a pseudorandom keystream and encrypts data by XORing it with plaintext bytes. [More](../99-appendices/99-01-glossary.md#stream-cipher)
-[^aead]: AEAD — Encryption that also authenticates ciphertext and optional associated data (AAD), producing a tag; decryption fails if verification fails. [More](../99-appendices/99-01-glossary.md#aead)
-[^aes-gcm]: AES-GCM — Standard AEAD using AES-CTR for encryption plus GHASH for authentication; fast but requires unique nonces per key. [More](../99-appendices/99-01-glossary.md#aes-gcm)
-[^aes-block-cipher]: AES Block Cipher — AES is a 128-bit block cipher primitive; you still need a mode/AEAD (CTR, GCM, etc.) to encrypt messages safely. [More](../99-appendices/99-01-glossary.md#aes-block-cipher)
-[^ctr-mode]: CTR Mode — Counter mode turns a block cipher into a keystream generator; it’s fast but malleable and must be paired with authentication. [More](../99-appendices/99-01-glossary.md#ctr-mode)
-[^ghash]: GHASH — The polynomial-hash authenticator inside AES-GCM, computed over AAD and ciphertext to help produce the authentication tag. [More](../99-appendices/99-01-glossary.md#ghash)
-[^wireguard]: WireGuard — Modern VPN protocol using a small, fixed set of strong primitives (notably ChaCha20-Poly1305) for high performance and simplicity. [More](../99-appendices/99-01-glossary.md#wireguard)
-[^tls-fallback]: TLS Fallback — Choosing an alternative cipher suite during TLS negotiation (often ChaCha20-Poly1305 on non-AES hardware) without sacrificing authenticated encryption. [More](../99-appendices/99-01-glossary.md#tls-fallback)
-[^misuse-resistance]: Misuse Resistance — Design goal where common mistakes (especially nonce reuse) cause less catastrophic failure; still not “safe to misuse,” just safer. [More](../99-appendices/99-01-glossary.md#misuse-resistance)
-[^chacha20]: ChaCha20 — Fast ARX-based stream cipher; encrypts by XORing a generated keystream with plaintext; nonce reuse under the same key breaks confidentiality. [More](../99-appendices/99-01-glossary.md#chacha20)
-[^poly1305]: Poly1305 — One-time MAC producing a 16-byte tag; secure only if the Poly1305 key is never reused, typically derived fresh per message. [More](../99-appendices/99-01-glossary.md#poly1305)
-[^chacha20-poly1305]: ChaCha20-Poly1305 — Widely deployed AEAD combining ChaCha20 encryption with Poly1305 authentication; strong, fast in software, and common in TLS and WireGuard. [More](../99-appendices/99-01-glossary.md#chacha20-poly1305)
-[^aead-api]: AEAD API — Standard encrypt/decrypt interface using (key, nonce, AAD, plaintext/ciphertext) and returning success or authentication failure; never release plaintext on failure. [More](../99-appendices/99-01-glossary.md#aead-api)
-[^cache-timing]: Cache Timing — Timing leakage caused by secret-dependent CPU cache accesses (e.g., lookup tables), which can reveal keys; mitigated by constant-time code and AES-NI. [More](../99-appendices/99-01-glossary.md#cache-timing)
-[^side-channel-attack]: Side-Channel Attack — Attack that exploits leaked information from an implementation (timing, cache, power, EM, faults) rather than breaking the underlying cryptography. [More](../99-appendices/99-01-glossary.md#side-channel-attack)
+[^forged-api]: Forged API Request: Attack where an adversary crafts or alters API requests to impersonate a legitimate client or bypass authentication and authorization controls. [More](../99-appendices/99-01-glossary.md#forged-api-request)
+[^token-manip]: Token Manipulation: Tampering with authentication or session tokens (JWT, cookies, API keys) to escalate privileges, extend validity, or impersonate another user. [More](../99-appendices/99-01-glossary.md#token-manipulation)
+[^padding-oracle]: Padding Oracle Attack: Cryptographic attack exploiting padding validation errors in block ciphers to progressively recover plaintext or forge valid ciphertexts. [More](../99-appendices/99-01-glossary.md#padding-oracle-attack)
+[^silent-data]: Silent Data Corruption: Undetected modification of data caused by hardware faults, software bugs, or transmission errors, leading to integrity loss without immediate failure signals. [More](../99-appendices/99-01-glossary.md#silent-data-corruption)
+[^jwt]: JWT (JSON Web Token): Compact, URL-safe token format used to securely transmit signed or encrypted claims for authentication and authorization in distributed systems. [More](../99-appendices/99-01-glossary.md#jwt)
+[^api]: API (Application Programming Interface): Contract defining how software components communicate via structured requests, responses, authentication, and versioned endpoints. [More](../99-appendices/99-01-glossary.md#api)
+[^oauth]: OAuth 2.0: Industry-standard authorization framework enabling delegated access to protected resources without sharing user credentials with third-party applications. [More](../99-appendices/99-01-glossary.md#oauth-20)
+[^aws-signin]: AWS Request Signin: Cryptographic mechanism (SigV4) that authenticates and authorizes AWS API requests using HMAC-based signatures derived from secret credentials. [More](../99-appendices/99-01-glossary.md#aws-request-signin-sigv4)
+[^tls-internals]: TLS Internals: Cryptographic protocols and handshake mechanisms that provide authentication, key exchange, confidentiality, and integrity for secure network communications. [More](../99-appendices/99-01-glossary.md#tls-internals)
+[^length-attack]: Length-Extension Attack: Hash function vulnerability allowing attackers to append data to a hashed message and compute a valid hash without knowing the secret. [More](../99-appendices/99-01-glossary.md#length-extension-attack)
+[^constant-time]: Constant-Time Algorithm: Implementation strategy where execution time is independent of secret data, preventing timing side-channel information leakage. [More](../99-appendices/99-01-glossary.md#constant-time-algorithm)
+[^stream-cipher]: Stream Cipher: Symmetric encryption primitive that generates a pseudorandom keystream and encrypts data by XORing it with plaintext bytes. [More](../99-appendices/99-01-glossary.md#stream-cipher)
+[^aead]: AEAD: Encryption that also authenticates ciphertext and optional associated data (AAD), producing a tag; decryption fails if verification fails. [More](../99-appendices/99-01-glossary.md#aead)
+[^aes-gcm]: AES-GCM: Standard AEAD using AES-CTR for encryption plus GHASH for authentication; fast but requires unique nonces per key. [More](../99-appendices/99-01-glossary.md#aes-gcm)
+[^aes-block-cipher]: AES Block Cipher: AES is a 128-bit block cipher primitive; you still need a mode/AEAD (CTR, GCM, etc.) to encrypt messages safely. [More](../99-appendices/99-01-glossary.md#aes-block-cipher)
+[^ctr-mode]: CTR Mode: Counter mode turns a block cipher into a keystream generator; it’s fast but malleable and must be paired with authentication. [More](../99-appendices/99-01-glossary.md#ctr-mode)
+[^ghash]: GHASH: The polynomial-hash authenticator inside AES-GCM, computed over AAD and ciphertext to help produce the authentication tag. [More](../99-appendices/99-01-glossary.md#ghash)
+[^wireguard]: WireGuard: Modern VPN protocol using a small, fixed set of strong primitives (notably ChaCha20-Poly1305) for high performance and simplicity. [More](../99-appendices/99-01-glossary.md#wireguard)
+[^tls-fallback]: TLS Fallback: Choosing an alternative cipher suite during TLS negotiation (often ChaCha20-Poly1305 on non-AES hardware) without sacrificing authenticated encryption. [More](../99-appendices/99-01-glossary.md#tls-fallback)
+[^misuse-resistance]: Misuse Resistance: Design goal where common mistakes (especially nonce reuse) cause less catastrophic failure; still not “safe to misuse,” just safer. [More](../99-appendices/99-01-glossary.md#misuse-resistance)
+[^chacha20]: ChaCha20: Fast ARX-based stream cipher; encrypts by XORing a generated keystream with plaintext; nonce reuse under the same key breaks confidentiality. [More](../99-appendices/99-01-glossary.md#chacha20)
+[^poly1305]: Poly1305: One-time MAC producing a 16-byte tag; secure only if the Poly1305 key is never reused, typically derived fresh per message. [More](../99-appendices/99-01-glossary.md#poly1305)
+[^chacha20-poly1305]: ChaCha20-Poly1305: Widely deployed AEAD combining ChaCha20 encryption with Poly1305 authentication; strong, fast in software, and common in TLS and WireGuard. [More](../99-appendices/99-01-glossary.md#chacha20-poly1305)
+[^aead-api]: AEAD API: Standard encrypt/decrypt interface using (key, nonce, AAD, plaintext/ciphertext) and returning success or authentication failure; never release plaintext on failure. [More](../99-appendices/99-01-glossary.md#aead-api)
+[^cache-timing]: Cache Timing: Timing leakage caused by secret-dependent CPU cache accesses (e.g., lookup tables), which can reveal keys; mitigated by constant-time code and AES-NI. [More](../99-appendices/99-01-glossary.md#cache-timing)
+[^side-channel-attack]: Side-Channel Attack: Attack that exploits leaked information from an implementation (timing, cache, power, EM, faults) rather than breaking the underlying cryptography. [More](../99-appendices/99-01-glossary.md#side-channel-attack)

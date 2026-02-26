@@ -43,8 +43,9 @@ APIs enable modular system design, interoperability, and automated integration b
 Security depends on proper identity verification, authorization enforcement, input validation, and transport protection.
 
 ## Argon2
-Argon2 is the modern standard for password hashing and key derivation, designed to resist GPU, FPGA, and ASIC attacks through memory-hard computation. It won the Password Hashing Competition in 2015.
-It allows precise tuning of memory usage, execution time, and parallelism, making large-scale cracking physically expensive. The recommended variant today is Argon2id, which combines security against side-channels and brute-force attacks.
+Argon2 is a memory-hard password hashing and key-derivation function (recommended variant: Argon2id).
+
+It was the winner of the Password Hashing Competition (PHC) in 2015 and is designed to make large-scale cracking expensive on GPUs/FPGAs/ASICs by requiring significant memory per guess. Argon2 exposes tunable parameters for memory, time (iterations), and parallelism so you can set costs appropriate for your environment and increase them over time.
 
 ## AWS Request Signin (SigV4)
 AWS request signing is a cryptographic mechanism used to authenticate and authorize API requests to AWS services.
@@ -170,14 +171,21 @@ It is a polynomial hash over GF(2^128) computed on the associated data and ciphe
 GHASH is efficient and works well with hardware acceleration, but it inherits AES-GCM’s strict nonce-uniqueness requirement: repeating a nonce under the same key can reveal information and enable forgeries.
 In practice, you treat GHASH as an internal detail of GCM and focus on correct key and nonce management at the API boundary.
 
+<a id="gpu-asics"></a>
+## GPU/ASICs
+GPUs and ASICs are specialized hardware commonly used to accelerate brute-force password cracking.
+
+Compared to general-purpose CPUs, GPUs can run many guesses in parallel, and ASICs can be even faster per watt for specific computations. Memory-hard password KDFs (like Argon2 and scrypt) try to reduce this advantage by forcing each guess to allocate and touch a large amount of memory, making attacks more bandwidth/DRAM-limited and less cost-effective to scale.
+
 ## Hardware Noise
 Hardware noise is physical unpredictability (thermal noise, electronic noise, oscillator jitter) used as an entropy source.
 It may be provided by dedicated TRNG hardware or used to seed and refresh the OS entropy pool.
 Because raw noise can be biased, systems typically condition and mix it before use.
 
 ## HKDF
-HKDF is a key derivation function used for expanding a strong secret into multiple independent cryptographic keys using HMAC. It is designed for key separation and protocol key management, not for passwords.
-It is heavily used in TLS, secure messaging, and operating systems. HKDF provides no brute-force protection and must never be used directly with human passwords.
+HKDF is an HMAC-based KDF used to expand a strong secret into multiple independent keys.
+
+It is designed for key separation and protocol key management (e.g., TLS and secure messaging), not for password hashing. HKDF provides no brute-force resistance: if the input secret is guessable (like a human password), attackers can still test guesses quickly, so you must use a password KDF (Argon2/scrypt/PBKDF2) instead.
 
 ## Incremental Hashing
 Incremental hashing is the ability to compute a hash progressively by processing input data in chunks.
@@ -211,11 +219,9 @@ JWTs are widely used for stateless authentication and authorization in distribut
 Secure usage requires strict signature verification, algorithm allow-lists, expiration checks, and issuer validation.
 
 ## KDF
-A Key Derivation Function (KDF) is a cryptographic function that derives one or more cryptographically strong keys from an initial secret.
-The input may be a human password, a shared secret, or another cryptographic key.
-KDFs enforce key separation, prevent key reuse, and ensure derived keys have the correct length and distribution.
-Some KDFs (e.g., Argon2, scrypt) are designed to resist brute-force attacks, while others (e.g., HKDF) are used for safe key expansion.
-Choosing the correct KDF depends on whether the input secret is weak or already strong.
+A Key Derivation Function (KDF) derives one or more cryptographic keys from an input secret plus optional context.
+
+The input secret might be a human password (weak and guessable), a shared secret from a key exchange, or an existing cryptographic key. KDFs are used for key separation (derive independent keys for different purposes), key expansion (turn a short secret into multiple keys), and producing keys of the right size and distribution. Some KDFs are password-focused and deliberately expensive to compute (Argon2, scrypt, PBKDF2), while others are for strong secrets and prioritize clean key separation (HKDF).
 
 ## Key Exchange Salt
 A key exchange salt is a non-secret random value used as input to a KDF/HKDF during key derivation.
@@ -249,7 +255,7 @@ They provide tamper detection and integrity guarantees with logarithmic verifica
 Misuse resistance is a property of cryptographic constructions that reduces the damage caused by common implementation mistakes.
 In AEADs, the most important misuse is nonce reuse: many schemes (like AES-GCM) fail catastrophically if a nonce is repeated under the same key.
 Misuse-resistant AEADs (such as AES-GCM-SIV) are designed so that accidental nonce reuse does not immediately enable forgeries or full plaintext recovery.
-Misuse resistance is not a license to be sloppy—reusing nonces can still leak information—but it provides a safety net for real systems.
+Misuse resistance is not a license to be sloppy, reusing nonces can still leak information, but it provides a safety net for real systems.
 
 ## NIST
 NIST is a U.S. federal agency responsible for developing and publishing technical standards, including cryptographic algorithms.
@@ -298,9 +304,16 @@ Using authenticated encryption, uniform error handling, and constant-time valida
 A password salt is a unique random value stored alongside a password hash.
 It prevents rainbow-table attacks and ensures identical passwords do not produce identical hashes across users.
 Salts do not need secrecy, but they must be unique and randomly generated per password.
+
 ## PBKDF2
-PBKDF2 is a standardized function used to derive cryptographic keys from passwords by applying a hash function (via HMAC) many times in succession to slow down brute-force attacks.
-It is widely supported, easy to implement, and still secure when configured with a high iteration count, but it is not memory-hard, making it vulnerable to modern GPU and ASIC attacks. Today, it is considered legacy-safe but no longer state-of-the-art.
+PBKDF2 is a standardized, iteration-based password KDF built on HMAC.
+
+It slows down brute-force guessing by performing many repeated HMAC computations. PBKDF2 is widely supported and still acceptable when configured with a sufficiently high iteration count, but it is not memory-hard, so GPUs/ASICs can often test guesses efficiently. Today it’s commonly treated as a “legacy-safe” baseline when Argon2id or scrypt are not available.
+
+## PHC
+PHC is commonly used to refer to the PHC (Password Hashing Competition) string format for password hashes and password-derived keys.
+
+In practice, libraries often serialize “everything you need to verify later” into a single string: the algorithm identifier (e.g., `argon2id`), version, tunable parameters, salt, and the resulting hash/key material. Storing the library-produced encoded string (instead of inventing your own format) helps ensure correct parsing and future upgrades.
 
 ## PKCS7
 PKCS7 is a padding scheme used in block cipher encryption.
@@ -347,12 +360,14 @@ It uses simple add-rotate-xor (ARX) operations to generate a pseudorandom keystr
 Salsa20 was extensively analyzed and gained a strong security reputation, and its design directly inspired ChaCha20, which refines the permutation for better diffusion and performance on modern CPUs.
 
 ## Salt
-A salt is a random value added to a password before hashing or key derivation to ensure that identical passwords never produce identical outputs. It completely defeats precomputed attacks such as rainbow tables by forcing attackers to recompute hashes for every individual target.
-Salts are not secret and are stored alongside the hash, but they must be unique and random per password. A salt does not slow down brute force by itself—it only prevents large-scale hash reuse and precomputation.
+A salt is a non-secret random value used to make each password hash / derived key unique.
+
+By ensuring that identical passwords do not produce identical outputs, salts defeat precomputed attacks (like rainbow tables) and prevent attackers from reusing work across many victims. Salts are stored alongside the hash/ciphertext and must be unique and randomly generated per user or per encrypted file; they do not “add secrecy” and do not slow brute force by themselves.
 
 ## scrypt
-scrypt is an earlier memory-hard password-based key derivation function created to make hardware attacks costly by requiring large amounts of memory during computation.
-It remains cryptographically strong and widely used, especially in cryptocurrencies and disk encryption, but it is harder to tune correctly than Argon2 and is now generally considered second-choice for new systems.
+scrypt is a memory-hard password-based KDF designed to make large-scale cracking expensive.
+
+It forces each guess to use significant memory, reducing the advantage of specialized hardware. scrypt remains widely deployed (e.g., some disk encryption formats and cryptocurrencies) and is still a strong choice when interoperability matters, but newer guidance typically prefers Argon2id for new designs because it’s more modern and easier to tune.
 
 ## SHA-2 (Secure Hash Algorithm 2)
 SHA-2 is a family of cryptographic hash functions standardized by NIST as successors to SHA-1.

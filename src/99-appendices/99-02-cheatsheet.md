@@ -10,7 +10,7 @@
 | Concept              | Summary                                                                 |
 |----------------------|-------------------------------------------------------------------------|
 | **Kerckhoffs’ Principle** | A cryptosystem must be secure even if everything except the key is known |
-| **Shannon’s Maxim**  | The enemy knows the system — don’t rely on obscurity                    |
+| **Shannon’s Maxim**  | The enemy knows the system, don’t rely on obscurity                    |
 | **Perfect Secrecy**  | Ciphertext reveals no information without the key (e.g., OTP)           |
 | **Semantic Security**| An attacker can’t learn anything new from ciphertext                    |
 
@@ -48,7 +48,7 @@
 | **Confusion**             | Makes the relationship between key and ciphertext complex               |
 | **Diffusion**             | Spreads the influence of each input bit across the ciphertext           |
 | **Avalanche Effect**      | Small change in input → large change in output                         |
-| **Deterministic Encryption** | Same ciphertext for same input+key — *not semantically secure*        |
+| **Deterministic Encryption** | Same ciphertext for same input+key *not semantically secure*        |
 | **Non-deterministic Encryption** | Includes randomness (like IVs) to ensure unique ciphertexts       |
 
 ---
@@ -83,7 +83,7 @@
 | **Forward Secrecy**       | Compromise of one key doesn’t expose past sessions                     |
 | **Replay Attack**         | Re-sending valid data to trick the system again                        |
 | **Man-in-the-Middle**     | Attacker intercepts communication between two parties                  |
-| **Nonce**                 | A number used once — prevents replay attacks and ensures uniqueness    |
+| **Nonce**                 | A number used once prevents replay attacks and ensures uniqueness    |
 | **Initialization Vector (IV)** | Random value to ensure unique ciphertexts in block cipher modes   |
 
 ---

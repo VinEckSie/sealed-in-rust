@@ -1,17 +1,17 @@
 ## First Code: A Naive XOR Encryptor
 
-Let’s write our first cryptographic algorithm — or at least something that *looks* like one.
+Let’s write our first cryptographic algorithm or at least something that *looks* like one.
 
-We’ll implement a simple **XOR cipher**. This method is *insecure* and should never be used in real applications — but it's the perfect teaching tool.
+We’ll implement a simple **XOR cipher**. This method is *insecure* and should never be used in real applications, but it's the perfect teaching tool.
 
 
 ### What’s a Cipher?
 
-A **cipher** is just a method to **transform readable data (plaintext)** into **unreadable data (ciphertext)** using a **key** — and vice versa.
+A **cipher** is just a method to **transform readable data (plaintext)** into **unreadable data (ciphertext)** using a **key** and vice versa.
 
-> 🧭 Word Origin — “Cipher”
+> 🧭 Word Origin: “Cipher”
 The word comes from the Arabic "ṣifr" (صفر), meaning "zero" or "empty". It passed through Latin (cifra), then into French and English as cipher.<br><br>
-> What started as a symbol for “nothing” evolved into a word for secret writing — and eventually, encryption algorithms.
+> What started as a symbol for “nothing” evolved into a word for secret writing and eventually, encryption algorithms.
 
 ### What is XOR?
 
@@ -40,9 +40,9 @@ cipher = plaintext ^ key
 plaintext = cipher ^ key
 ```
 
-That’s why XOR can be used to encrypt and decrypt data — if you XOR something twice with the same key, you get the original back.
+That’s why XOR can be used to encrypt and decrypt data. If you XOR something twice with the same key, you get the original back.
 
-> ✅ Simple, reversible, fast — but also dangerously weak when misused.
+> ✅ Simple, reversible, fast but also dangerously weak when misused.
 
 ### XOR, Bit by Bit
 To truly understand XOR in cryptography, it helps to look at bit-level behavior.
@@ -115,11 +115,11 @@ The output will show the encrypted bytes (in hex) and the original decrypted mes
 ### What’s Wrong With This Cipher?
 
 - Key reuse makes patterns obvious
-- No randomness or initialization vector (IV)  
+- No randomness or initialization vector (IV)
 - Susceptible to frequency analysis attacks
 
 <br>
-This cipher is insecure — but it demonstrates important cryptographic concepts:
+This cipher is insecure but it demonstrates important cryptographic concepts:
 
 - Reversibility
 - Byte-wise transformations

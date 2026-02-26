@@ -1,4 +1,4 @@
-## Randomness & Entropy — Nonces, IVs, CSPRNGs
+## Randomness & Entropy: nonces, IVs, CSPRNGs
 
 > 🔐 **Used in:** encryption schemes, TLS, digital signatures[^digital-signature], key generation, session tokens
 >
@@ -16,7 +16,7 @@ If an attacker can predict:
 - Your session token
 - Your key material
 
-Then your system is broken — even if you use perfect algorithms.
+Then your system is broken, even if you use perfect algorithms.
 
 Cryptography without randomness is just math.
 
@@ -46,7 +46,7 @@ It does not come from:
 - predictable seeds[^predicable-seed]
 
 
-## CSPRNG — Cryptographically Secure Pseudorandom Number Generator
+## CSPRNG (Cryptographically Secure Pseudorandom Number Generator)
 
 > <img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: [rand](https://crates.io/crates/rand)
 
@@ -66,7 +66,7 @@ Your OS already provides one:
 
 Rust exposes this securely through the [`rand` crate](https://crates.io/crates/rand/)
 
-🧪 **Code Example: Secure Random Bytes** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs))
+🧪 **Code Example: Secure Random Bytes** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L215))
 
 
 ```rust,no_run
@@ -139,7 +139,7 @@ use rand::rngs::OsRng;
 
 Or use crates that internally rely on secure randomness (like ring, aes-gcm, chacha20poly1305).
 
-## Key Generation — The Most Important Use Case
+## Key Generation: the most important use case
 All cryptographic keys must come from a secure, high-entropy source.
 
 No passwords.

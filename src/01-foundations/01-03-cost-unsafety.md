@@ -1,6 +1,6 @@
 ## The Cost of Unsafety in Crypto: Famous Failures
 
-Cryptography doesn’t fail because math is broken — it fails because **systems leak**, **code panics**, or **side-channels whisper secrets**.<br><br>
+Cryptography doesn’t fail because math is broken, but because **systems leak**, **code panics**, or **side-channels whisper secrets**.<br><br>
 And most of these failures? They stem from unsafety.
 <br><br><br>
 Here are just a few real-world examples of cryptographic disasters caused by unsafe programming, undefined behavior, or lack of control:
