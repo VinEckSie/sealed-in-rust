@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-f77e3f72.js";
+            window.path_to_searchindex_js = "../searchindex-f1bbb6a2.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-8b53bd40.js"></script>
+        <script src="../toc-8443953b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -176,14 +176,14 @@
                     <main>
                         <h2 id="cryptography-is-a-systems-problem"><a class="header" href="#cryptography-is-a-systems-problem">Cryptography is a Systems Problem</a></h2>
 <p>Cryptography isn’t just about math.</p>
-<p>Yes, it starts with elegant algebra and deep number theory — but where it breaks is almost always <em>in the system</em>. Real-world failures come from poor implementations, leaky abstractions, memory bugs, side channels, or simply misunderstanding what problem crypto is supposed to solve.</p>
-<p>It’s easy to misuse even “secure” primitives. AES<sup class="footnote-reference" id="fr-aes-1"><a href="#footnote-aes">1</a></sup> in ECB mode<sup class="footnote-reference" id="fr-ecb-1"><a href="#footnote-ecb">2</a></sup> is fast — and useless. RSA<sup class="footnote-reference" id="fr-rsa-1"><a href="#footnote-rsa">3</a></sup> without padding<sup class="footnote-reference" id="fr-padding-1"><a href="#footnote-padding">4</a></sup> is a gift to attackers. And a perfectly strong key means nothing if it’s printed to your logs.</p>
+<p>Yes, it starts with elegant algebra and deep number theory,  but where it breaks is almost always <em>in the system</em>. Real-world failures come from poor implementations, leaky abstractions, memory bugs, side channels, or simply misunderstanding what problem crypto is supposed to solve.</p>
+<p>It’s easy to misuse even “secure” primitives. AES<sup class="footnote-reference" id="fr-aes-1"><a href="#footnote-aes">1</a></sup> in ECB mode<sup class="footnote-reference" id="fr-ecb-1"><a href="#footnote-ecb">2</a></sup> is fast and useless. RSA<sup class="footnote-reference" id="fr-rsa-1"><a href="#footnote-rsa">3</a></sup> without padding<sup class="footnote-reference" id="fr-padding-1"><a href="#footnote-padding">4</a></sup> is a gift to attackers. And a perfectly strong key means nothing if it’s printed to your logs.</p>
 <p>This is why cryptography is a <strong>systems engineering problem</strong> first.</p>
 <p>And it’s why Rust matters.</p>
-<p>Rust doesn’t make crypto correct by default — nothing does — but it gives you tools to <strong>avoid entire classes of catastrophic bugs</strong>.</p>
-<p>Memory safety, explicit ownership, fearless concurrency, and tight control over the machine — these aren’t “nice to have.” They’re security features.</p>
+<p>Rust doesn’t make crypto correct by default, nothing does, but it gives you tools to <strong>avoid entire classes of catastrophic bugs</strong>.</p>
+<p>Memory safety, explicit ownership, fearless concurrency, and tight control over the machine, these aren’t “nice to have.” They’re security features.</p>
 <h3 id=""><a class="header" href="#"></a></h3>
-<p>In this book, we’ll treat crypto not as a black box, but as a series of concrete systems problems — and show how Rust lets us solve them with clarity and precision.</p>
+<p>In this book, we’ll treat crypto not as a black box, but as a series of concrete systems problems, and show how Rust lets us solve them with clarity and precision.</p>
 <hr>
 <hr>
 <ol class="footnote-definition">

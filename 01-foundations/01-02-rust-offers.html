@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-f77e3f72.js";
+            window.path_to_searchindex_js = "../searchindex-f1bbb6a2.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-8b53bd40.js"></script>
+        <script src="../toc-8443953b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,7 +175,7 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h2 id="safety-performance-predictability"><a class="header" href="#safety-performance-predictability">Safety, Performance, Predictability</a></h2>
-<p>Rust is often praised for its speed and memory safety, but in the world of cryptographic engineering, these traits aren’t just nice-to-haves — they’re critical.</p>
+<p>Rust is often praised for its speed and memory safety, but in the world of cryptographic engineering, these traits aren’t just nice-to-haves, they’re critical.</p>
 <h3 id="safety"><a class="header" href="#safety">Safety</a></h3>
 <p>Bugs in cryptographic code can be catastrophic. Memory corruption, undefined behavior, or uninitialized values can leak secrets or open attack vectors. Rust eliminates entire classes of these bugs at compile time:</p>
 <ul>
@@ -191,17 +191,17 @@
 <li>Performance-critical code paths (e.g. TLS handshakes, file encryption)</li>
 <li>Embedded systems where CPU cycles and memory are limited</li>
 </ul>
-<p>Rust lets you stay close to the metal while writing high-level abstractions — it’s a rare balance.</p>
+<p>Rust lets you stay close to the metal while writing high-level abstractions, it’s a rare balance.</p>
 <h3 id="predictability"><a class="header" href="#predictability">Predictability</a></h3>
 <p>In cryptography, <strong>predictable behavior</strong> is essential. You need fine-grained control over:</p>
 <ul>
-<li><strong>Timing</strong> — Avoid accidental leaks via early-exit comparisons or branching on secrets</li>
-<li><strong>Memory</strong> — Prevent unexpected reallocations or optimization side effects</li>
-<li><strong>Execution</strong> — Ensure constant-time logic without interference from JITs or hidden runtime behavior</li>
+<li><strong>Timing</strong>:  avoid accidental leaks via early-exit comparisons or branching on secrets</li>
+<li><strong>Memory</strong>: prevent unexpected reallocations or optimization side effects</li>
+<li><strong>Execution</strong>: ensure constant-time logic without interference from JITs or hidden runtime behavior</li>
 </ul>
 <p>Rust gives you this control by default, making it a strong ally in defending against side-channel attacks.</p>
 <blockquote>
-<p>In short: Rust brings the low-level control of C, the safety of functional languages, and the clarity of modern syntax — all in a single toolchain. That’s why cryptographers and security engineers are increasingly turning to it.</p>
+<p>In short: Rust brings the low-level control of C, the safety of functional languages, and the clarity of modern syntax, all in a single toolchain. That’s why cryptographers and security engineers are increasingly turning to it.</p>
 </blockquote>
 
                     </main>

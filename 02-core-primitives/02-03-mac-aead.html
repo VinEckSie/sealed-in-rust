@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-f77e3f72.js";
+            window.path_to_searchindex_js = "../searchindex-f1bbb6a2.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-8b53bd40.js"></script>
+        <script src="../toc-8443953b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -174,7 +174,7 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="macs--aead--hmac-poly1305-aes-gcm"><a class="header" href="#macs--aead--hmac-poly1305-aes-gcm">MACs &amp; AEAD — HMAC, Poly1305, AES-GCM</a></h2>
+                        <h2 id="macs--aead-hmac-poly1305-aes-gcm"><a class="header" href="#macs--aead-hmac-poly1305-aes-gcm">MACs &amp; AEAD: HMAC, Poly1305, AES-GCM</a></h2>
 <blockquote>
 <p>🔐 <strong>Used in:</strong> TLS, APIs, cookies, tokens, VPNs, messaging apps</p>
 <p>✅ Essential for integrity and authenticity, not optional.</p>
@@ -186,7 +186,7 @@ But encryption alone does not stop attackers from modifying it.</p>
 <li><strong>Confidentiality</strong> → Nobody can read the data</li>
 <li><strong>Integrity &amp; Authenticity</strong> → Nobody can tamper with it unnoticed</li>
 </ul>
-<p>This chapter is about the second half — the part beginners forget, and attackers exploit.</p>
+<p>This chapter is about the second half: the part beginners forget, and attackers exploit.</p>
 <h2 id="why-encryption-alone-is-not-enough"><a class="header" href="#why-encryption-alone-is-not-enough">Why Encryption Alone Is Not Enough</a></h2>
 <p>A common beginner mistake:
 “My data is encrypted, so it’s secure.”
@@ -206,7 +206,7 @@ That’s false.</p>
 <p>A MAC is a cryptographic checksum computed using a secret key.</p>
 <p>It answers one critical question:</p>
 <blockquote>
-<p>“Was this message produced by someone who knows the secret key — and was it modified?”</p>
+<p>“Was this message produced by someone who knows the secret key and was it modified?”</p>
 </blockquote>
 <p>MACs provide:</p>
 <ul>
@@ -221,7 +221,7 @@ That’s false.</p>
 <pre><code class="language-text">message + secret key → recomputed MAC → compare
 </code></pre>
 <p>If even one bit changes, verification fails.</p>
-<h2 id="hmac-hash-based-message-authentication-code--the-standard-mac-construction"><a class="header" href="#hmac-hash-based-message-authentication-code--the-standard-mac-construction">HMAC (Hash-based Message Authentication Code) — The Standard MAC Construction</a></h2>
+<h2 id="hmac-hash-based-message-authentication-code-the-standard-mac-construction"><a class="header" href="#hmac-hash-based-message-authentication-code-the-standard-mac-construction">HMAC (Hash-based Message Authentication Code): the standard MAC construction</a></h2>
 <blockquote>
 <p>💡 Used in JWT<sup class="footnote-reference" id="fr-jwt-1"><a href="#footnote-jwt">5</a></sup>, APIs<sup class="footnote-reference" id="fr-api-1"><a href="#footnote-api">6</a></sup>, OAuth<sup class="footnote-reference" id="fr-oauth-1"><a href="#footnote-oauth">7</a></sup>, AWS signing<sup class="footnote-reference" id="fr-aws-signin-1"><a href="#footnote-aws-signin">8</a></sup>, TLS internals<sup class="footnote-reference" id="fr-tls-internals-1"><a href="#footnote-tls-internals">9</a></sup></p>
 <p>Stable, conservative, battle-tested</p>
@@ -237,7 +237,7 @@ That’s false.</p>
 <li>a hardened construction resistant to length-extension attacks<sup class="footnote-reference" id="fr-length-attack-1"><a href="#footnote-length-attack">10</a></sup></li>
 </ul>
 <p>Unlike naïve <code>hash(key || message)</code>, HMAC is safe.</p>
-<p>🧪 <strong>Code Example: HMAC-SHA256</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<p>🧪 <strong>Code Example: HMAC-SHA256</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L142">source code</a>)</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn run_hmac_example() {
@@ -272,9 +272,9 @@ Always use constant-time verification APIs.</dd>
 <blockquote>
 <p><strong>🟢 Conclusion</strong></p>
 <p>HMAC is conservative, widely deployed, and extremely hard to misuse.</p>
-<p>If you need integrity without encryption — HMAC is the right tool.</p>
+<p>If you need integrity without encryption, HMAC is the right tool.</p>
 </blockquote>
-<h2 id="poly1305--one-time-mac-for-modern-crypto"><a class="header" href="#poly1305--one-time-mac-for-modern-crypto">Poly1305 — One-Time MAC for Modern Crypto</a></h2>
+<h2 id="poly1305-one-time-mac-for-modern-crypto"><a class="header" href="#poly1305-one-time-mac-for-modern-crypto">Poly1305: one-time MAC for modern crypto</a></h2>
 <blockquote>
 <p>💡 Used in ChaCha20-Poly1305, TLS 1.3, WireGuard</p>
 <p>Extremely fast, simple, and timing-safe</p>
@@ -292,7 +292,7 @@ Always use constant-time verification APIs.</dd>
 </ul>
 <p>Poly1305 is almost never used alone.
 It is generated from a cipher keystream, usually ChaCha20.</p>
-<p>🧪 <strong>Code Example: Poly1305</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<p>🧪 <strong>Code Example: Poly1305</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L165">source code</a>)</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn run_poly1305_example() {
@@ -323,7 +323,7 @@ Reuse = forgery.</dd>
 <p>Poly1305 is fast, elegant, and extremely secure when used correctly,
 but it must be paired with a cipher that guarantees fresh keys.</p>
 </blockquote>
-<h2 id="aead--authenticated-encryption-the-right-way"><a class="header" href="#aead--authenticated-encryption-the-right-way">AEAD — Authenticated Encryption (The Right Way)</a></h2>
+<h2 id="aead-authenticated-encryption-the-right-way"><a class="header" href="#aead-authenticated-encryption-the-right-way">AEAD: authenticated encryption (the right way)</a></h2>
 <p>Modern cryptography does not ask: “Should I encrypt or authenticate?”.</p>
 <p>The answer is: <strong>Both. Together. Always.</strong></p>
 <p>AEAD guarantees:</p>
@@ -334,7 +334,7 @@ but it must be paired with a cipher that guarantees fresh keys.</p>
 <li>Optional authentication of unencrypted metadata</li>
 </ul>
 <p>If authentication fails → decryption must not happen.</p>
-<h2 id="aes-gcm--the-enterprise-standard-aead"><a class="header" href="#aes-gcm--the-enterprise-standard-aead">AES-GCM — The Enterprise Standard AEAD</a></h2>
+<h2 id="aes-gcm-the-enterprise-standard-aead"><a class="header" href="#aes-gcm-the-enterprise-standard-aead">AES-GCM: the enterprise standard AEAD</a></h2>
 <blockquote>
 <p>💡 Used in TLS, HTTPS, databases, cloud storage, hardware security modules, hardware-accelerated and widely standardized</p>
 </blockquote>
@@ -347,7 +347,7 @@ but it must be paired with a cipher that guarantees fresh keys.</p>
 <li>CTR mode<sup class="footnote-reference" id="fr-ctr-mode-1"><a href="#footnote-ctr-mode">15</a></sup> (for encryption)</li>
 <li>GHASH<sup class="footnote-reference" id="fr-ghash-1"><a href="#footnote-ghash">16</a></sup>  (for authentication)</li>
 </ul>
-<p>🧪 <strong>Code Example: AES-256-GCM</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<p>🧪 <strong>Code Example: AES-256-GCM</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L183">source code</a>)</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn run_aes256gcm_example() {
@@ -391,7 +391,7 @@ GCM nonce reuse = total compromise.</dd>
 <p>AES-GCM is extremely fast on modern CPUs and ideal for servers,
 but nonce management must be flawless.</p>
 </blockquote>
-<h2 id="chacha20-poly1305--the-safer-default"><a class="header" href="#chacha20-poly1305--the-safer-default">ChaCha20-Poly1305 — The Safer Default</a></h2>
+<h2 id="chacha20-poly1305-the-safer-default"><a class="header" href="#chacha20-poly1305-the-safer-default">ChaCha20-Poly1305: the safer default</a></h2>
 <blockquote>
 <p>💡 Used in WireGuard<sup class="footnote-reference" id="fr-wireguard-1"><a href="#footnote-wireguard">17</a></sup>, mobile apps, embedded systems, TLS fallback<sup class="footnote-reference" id="fr-tls-fallback-1"><a href="#footnote-tls-fallback">18</a></sup></p>
 <p>Designed for misuse resistance<sup class="footnote-reference" id="fr-misuse-resistance-1"><a href="#footnote-misuse-resistance">19</a></sup></p>
@@ -409,7 +409,7 @@ but nonce management must be flawless.</p>
 <li>Excellent performance everywhere</li>
 <li>Fewer catastrophic mistakes</li>
 </ul>
-<p>🧪 <strong>Code Example: ChaCha20-Poly1305</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<p>🧪 <strong>Code Example: ChaCha20-Poly1305</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L199">source code</a>)</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn run_chacha20poly1305_example() {
@@ -445,7 +445,7 @@ but nonce management must be flawless.</p>
 <p><strong>🟢 Conclusion</strong></p>
 <p>ChaCha20-Poly1305 is often the best default choice: safer APIs, portable performance, and strong resistance to side-channel attacks<sup class="footnote-reference" id="fr-side-channel-attack-1"><a href="#footnote-side-channel-attack">25</a></sup>.</p>
 </blockquote>
-<h2 id="mac-vs-aead--what-should-you-use"><a class="header" href="#mac-vs-aead--what-should-you-use">MAC vs AEAD — What Should You Use?</a></h2>
+<h2 id="mac-vs-aead-what-should-you-use"><a class="header" href="#mac-vs-aead-what-should-you-use">MAC vs AEAD: what should you use?</a></h2>
 <div class="table-wrapper">
 <table>
 <thead>
@@ -469,7 +469,7 @@ Rolling your own MAC + encryption is a mistake.</dd>
 </blockquote>
 <blockquote>
 <p><strong>🟢 Conclusion</strong></p>
-<p>Encryption alone only hides data — it doesn’t stop attackers from changing it.</p>
+<p>Encryption alone only hides data, it doesn’t stop attackers from changing it.</p>
 <p>A MAC teaches the integrity lesson: “was this message modified, and did it come from someone with the key?”</p>
 <p>Poly1305 shows modern MAC design: fast and safe when used correctly (one-time keys).</p>
 <p>AEAD (AES-GCM, ChaCha20-Poly1305) combines encryption + authentication so tampering is detected and decryption is refused.</p>
@@ -478,79 +478,79 @@ Rolling your own MAC + encryption is a mistake.</dd>
 <hr>
 <ol class="footnote-definition">
 <li id="footnote-forged-api">
-<p>Forged API Request — Attack where an adversary crafts or alters API requests to impersonate a legitimate client or bypass authentication and authorization controls. <a href="../99-appendices/99-01-glossary.html#forged-api-request">More</a> <a href="#fr-forged-api-1">↩</a></p>
+<p>Forged API Request: Attack where an adversary crafts or alters API requests to impersonate a legitimate client or bypass authentication and authorization controls. <a href="../99-appendices/99-01-glossary.html#forged-api-request">More</a> <a href="#fr-forged-api-1">↩</a></p>
 </li>
 <li id="footnote-token-manip">
-<p>Token Manipulation — Tampering with authentication or session tokens (JWT, cookies, API keys) to escalate privileges, extend validity, or impersonate another user. <a href="../99-appendices/99-01-glossary.html#token-manipulation">More</a> <a href="#fr-token-manip-1">↩</a></p>
+<p>Token Manipulation: Tampering with authentication or session tokens (JWT, cookies, API keys) to escalate privileges, extend validity, or impersonate another user. <a href="../99-appendices/99-01-glossary.html#token-manipulation">More</a> <a href="#fr-token-manip-1">↩</a></p>
 </li>
 <li id="footnote-padding-oracle">
-<p>Padding Oracle Attack — Cryptographic attack exploiting padding validation errors in block ciphers to progressively recover plaintext or forge valid ciphertexts. <a href="../99-appendices/99-01-glossary.html#padding-oracle-attack">More</a> <a href="#fr-padding-oracle-1">↩</a></p>
+<p>Padding Oracle Attack: Cryptographic attack exploiting padding validation errors in block ciphers to progressively recover plaintext or forge valid ciphertexts. <a href="../99-appendices/99-01-glossary.html#padding-oracle-attack">More</a> <a href="#fr-padding-oracle-1">↩</a></p>
 </li>
 <li id="footnote-silent-data">
-<p>Silent Data Corruption — Undetected modification of data caused by hardware faults, software bugs, or transmission errors, leading to integrity loss without immediate failure signals. <a href="../99-appendices/99-01-glossary.html#silent-data-corruption">More</a> <a href="#fr-silent-data-1">↩</a></p>
+<p>Silent Data Corruption: Undetected modification of data caused by hardware faults, software bugs, or transmission errors, leading to integrity loss without immediate failure signals. <a href="../99-appendices/99-01-glossary.html#silent-data-corruption">More</a> <a href="#fr-silent-data-1">↩</a></p>
 </li>
 <li id="footnote-jwt">
-<p>JWT (JSON Web Token) — Compact, URL-safe token format used to securely transmit signed or encrypted claims for authentication and authorization in distributed systems. <a href="../99-appendices/99-01-glossary.html#jwt">More</a> <a href="#fr-jwt-1">↩</a></p>
+<p>JWT (JSON Web Token): Compact, URL-safe token format used to securely transmit signed or encrypted claims for authentication and authorization in distributed systems. <a href="../99-appendices/99-01-glossary.html#jwt">More</a> <a href="#fr-jwt-1">↩</a></p>
 </li>
 <li id="footnote-api">
-<p>API (Application Programming Interface) — Contract defining how software components communicate via structured requests, responses, authentication, and versioned endpoints. <a href="../99-appendices/99-01-glossary.html#api">More</a> <a href="#fr-api-1">↩</a></p>
+<p>API (Application Programming Interface): Contract defining how software components communicate via structured requests, responses, authentication, and versioned endpoints. <a href="../99-appendices/99-01-glossary.html#api">More</a> <a href="#fr-api-1">↩</a></p>
 </li>
 <li id="footnote-oauth">
-<p>OAuth 2.0 — Industry-standard authorization framework enabling delegated access to protected resources without sharing user credentials with third-party applications. <a href="../99-appendices/99-01-glossary.html#oauth-20">More</a> <a href="#fr-oauth-1">↩</a></p>
+<p>OAuth 2.0: Industry-standard authorization framework enabling delegated access to protected resources without sharing user credentials with third-party applications. <a href="../99-appendices/99-01-glossary.html#oauth-20">More</a> <a href="#fr-oauth-1">↩</a></p>
 </li>
 <li id="footnote-aws-signin">
-<p>AWS Request Signin — Cryptographic mechanism (SigV4) that authenticates and authorizes AWS API requests using HMAC-based signatures derived from secret credentials. <a href="../99-appendices/99-01-glossary.html#aws-request-signin-sigv4">More</a> <a href="#fr-aws-signin-1">↩</a></p>
+<p>AWS Request Signin: Cryptographic mechanism (SigV4) that authenticates and authorizes AWS API requests using HMAC-based signatures derived from secret credentials. <a href="../99-appendices/99-01-glossary.html#aws-request-signin-sigv4">More</a> <a href="#fr-aws-signin-1">↩</a></p>
 </li>
 <li id="footnote-tls-internals">
-<p>TLS Internals — Cryptographic protocols and handshake mechanisms that provide authentication, key exchange, confidentiality, and integrity for secure network communications. <a href="../99-appendices/99-01-glossary.html#tls-internals">More</a> <a href="#fr-tls-internals-1">↩</a></p>
+<p>TLS Internals: Cryptographic protocols and handshake mechanisms that provide authentication, key exchange, confidentiality, and integrity for secure network communications. <a href="../99-appendices/99-01-glossary.html#tls-internals">More</a> <a href="#fr-tls-internals-1">↩</a></p>
 </li>
 <li id="footnote-length-attack">
-<p>Length-Extension Attack — Hash function vulnerability allowing attackers to append data to a hashed message and compute a valid hash without knowing the secret. <a href="../99-appendices/99-01-glossary.html#length-extension-attack">More</a> <a href="#fr-length-attack-1">↩</a></p>
+<p>Length-Extension Attack: Hash function vulnerability allowing attackers to append data to a hashed message and compute a valid hash without knowing the secret. <a href="../99-appendices/99-01-glossary.html#length-extension-attack">More</a> <a href="#fr-length-attack-1">↩</a></p>
 </li>
 <li id="footnote-constant-time">
-<p>Constant-Time Algorithm — Implementation strategy where execution time is independent of secret data, preventing timing side-channel information leakage. <a href="../99-appendices/99-01-glossary.html#constant-time-algorithm">More</a> <a href="#fr-constant-time-1">↩</a> <a href="#fr-constant-time-2">↩2</a></p>
+<p>Constant-Time Algorithm: Implementation strategy where execution time is independent of secret data, preventing timing side-channel information leakage. <a href="../99-appendices/99-01-glossary.html#constant-time-algorithm">More</a> <a href="#fr-constant-time-1">↩</a> <a href="#fr-constant-time-2">↩2</a></p>
 </li>
 <li id="footnote-stream-cipher">
-<p>Stream Cipher — Symmetric encryption primitive that generates a pseudorandom keystream and encrypts data by XORing it with plaintext bytes. <a href="../99-appendices/99-01-glossary.html#stream-cipher">More</a> <a href="#fr-stream-cipher-1">↩</a></p>
+<p>Stream Cipher: Symmetric encryption primitive that generates a pseudorandom keystream and encrypts data by XORing it with plaintext bytes. <a href="../99-appendices/99-01-glossary.html#stream-cipher">More</a> <a href="#fr-stream-cipher-1">↩</a></p>
 </li>
 <li id="footnote-aes-gcm">
-<p>AES-GCM — Standard AEAD using AES-CTR for encryption plus GHASH for authentication; fast but requires unique nonces per key. <a href="../99-appendices/99-01-glossary.html#aes-gcm">More</a> <a href="#fr-aes-gcm-1">↩</a></p>
+<p>AES-GCM: Standard AEAD using AES-CTR for encryption plus GHASH for authentication; fast but requires unique nonces per key. <a href="../99-appendices/99-01-glossary.html#aes-gcm">More</a> <a href="#fr-aes-gcm-1">↩</a></p>
 </li>
 <li id="footnote-aes-block-cipher">
-<p>AES Block Cipher — AES is a 128-bit block cipher primitive; you still need a mode/AEAD (CTR, GCM, etc.) to encrypt messages safely. <a href="../99-appendices/99-01-glossary.html#aes-block-cipher">More</a> <a href="#fr-aes-block-cipher-1">↩</a></p>
+<p>AES Block Cipher: AES is a 128-bit block cipher primitive; you still need a mode/AEAD (CTR, GCM, etc.) to encrypt messages safely. <a href="../99-appendices/99-01-glossary.html#aes-block-cipher">More</a> <a href="#fr-aes-block-cipher-1">↩</a></p>
 </li>
 <li id="footnote-ctr-mode">
-<p>CTR Mode — Counter mode turns a block cipher into a keystream generator; it’s fast but malleable and must be paired with authentication. <a href="../99-appendices/99-01-glossary.html#ctr-mode">More</a> <a href="#fr-ctr-mode-1">↩</a></p>
+<p>CTR Mode: Counter mode turns a block cipher into a keystream generator; it’s fast but malleable and must be paired with authentication. <a href="../99-appendices/99-01-glossary.html#ctr-mode">More</a> <a href="#fr-ctr-mode-1">↩</a></p>
 </li>
 <li id="footnote-ghash">
-<p>GHASH — The polynomial-hash authenticator inside AES-GCM, computed over AAD and ciphertext to help produce the authentication tag. <a href="../99-appendices/99-01-glossary.html#ghash">More</a> <a href="#fr-ghash-1">↩</a></p>
+<p>GHASH: The polynomial-hash authenticator inside AES-GCM, computed over AAD and ciphertext to help produce the authentication tag. <a href="../99-appendices/99-01-glossary.html#ghash">More</a> <a href="#fr-ghash-1">↩</a></p>
 </li>
 <li id="footnote-wireguard">
-<p>WireGuard — Modern VPN protocol using a small, fixed set of strong primitives (notably ChaCha20-Poly1305) for high performance and simplicity. <a href="../99-appendices/99-01-glossary.html#wireguard">More</a> <a href="#fr-wireguard-1">↩</a></p>
+<p>WireGuard: Modern VPN protocol using a small, fixed set of strong primitives (notably ChaCha20-Poly1305) for high performance and simplicity. <a href="../99-appendices/99-01-glossary.html#wireguard">More</a> <a href="#fr-wireguard-1">↩</a></p>
 </li>
 <li id="footnote-tls-fallback">
-<p>TLS Fallback — Choosing an alternative cipher suite during TLS negotiation (often ChaCha20-Poly1305 on non-AES hardware) without sacrificing authenticated encryption. <a href="../99-appendices/99-01-glossary.html#tls-fallback">More</a> <a href="#fr-tls-fallback-1">↩</a></p>
+<p>TLS Fallback: Choosing an alternative cipher suite during TLS negotiation (often ChaCha20-Poly1305 on non-AES hardware) without sacrificing authenticated encryption. <a href="../99-appendices/99-01-glossary.html#tls-fallback">More</a> <a href="#fr-tls-fallback-1">↩</a></p>
 </li>
 <li id="footnote-misuse-resistance">
-<p>Misuse Resistance — Design goal where common mistakes (especially nonce reuse) cause less catastrophic failure; still not “safe to misuse,” just safer. <a href="../99-appendices/99-01-glossary.html#misuse-resistance">More</a> <a href="#fr-misuse-resistance-1">↩</a></p>
+<p>Misuse Resistance: Design goal where common mistakes (especially nonce reuse) cause less catastrophic failure; still not “safe to misuse,” just safer. <a href="../99-appendices/99-01-glossary.html#misuse-resistance">More</a> <a href="#fr-misuse-resistance-1">↩</a></p>
 </li>
 <li id="footnote-chacha20-poly1305">
-<p>ChaCha20-Poly1305 — Widely deployed AEAD combining ChaCha20 encryption with Poly1305 authentication; strong, fast in software, and common in TLS and WireGuard. <a href="../99-appendices/99-01-glossary.html#chacha20-poly1305">More</a> <a href="#fr-chacha20-poly1305-1">↩</a></p>
+<p>ChaCha20-Poly1305: Widely deployed AEAD combining ChaCha20 encryption with Poly1305 authentication; strong, fast in software, and common in TLS and WireGuard. <a href="../99-appendices/99-01-glossary.html#chacha20-poly1305">More</a> <a href="#fr-chacha20-poly1305-1">↩</a></p>
 </li>
 <li id="footnote-chacha20">
-<p>ChaCha20 — Fast ARX-based stream cipher; encrypts by XORing a generated keystream with plaintext; nonce reuse under the same key breaks confidentiality. <a href="../99-appendices/99-01-glossary.html#chacha20">More</a> <a href="#fr-chacha20-1">↩</a></p>
+<p>ChaCha20: Fast ARX-based stream cipher; encrypts by XORing a generated keystream with plaintext; nonce reuse under the same key breaks confidentiality. <a href="../99-appendices/99-01-glossary.html#chacha20">More</a> <a href="#fr-chacha20-1">↩</a></p>
 </li>
 <li id="footnote-poly1305">
-<p>Poly1305 — One-time MAC producing a 16-byte tag; secure only if the Poly1305 key is never reused, typically derived fresh per message. <a href="../99-appendices/99-01-glossary.html#poly1305">More</a> <a href="#fr-poly1305-1">↩</a></p>
+<p>Poly1305: One-time MAC producing a 16-byte tag; secure only if the Poly1305 key is never reused, typically derived fresh per message. <a href="../99-appendices/99-01-glossary.html#poly1305">More</a> <a href="#fr-poly1305-1">↩</a></p>
 </li>
 <li id="footnote-aead-api">
-<p>AEAD API — Standard encrypt/decrypt interface using (key, nonce, AAD, plaintext/ciphertext) and returning success or authentication failure; never release plaintext on failure. <a href="../99-appendices/99-01-glossary.html#aead-api">More</a> <a href="#fr-aead-api-1">↩</a></p>
+<p>AEAD API: Standard encrypt/decrypt interface using (key, nonce, AAD, plaintext/ciphertext) and returning success or authentication failure; never release plaintext on failure. <a href="../99-appendices/99-01-glossary.html#aead-api">More</a> <a href="#fr-aead-api-1">↩</a></p>
 </li>
 <li id="footnote-cache-timing">
-<p>Cache Timing — Timing leakage caused by secret-dependent CPU cache accesses (e.g., lookup tables), which can reveal keys; mitigated by constant-time code and AES-NI. <a href="../99-appendices/99-01-glossary.html#cache-timing">More</a> <a href="#fr-cache-timing-1">↩</a></p>
+<p>Cache Timing: Timing leakage caused by secret-dependent CPU cache accesses (e.g., lookup tables), which can reveal keys; mitigated by constant-time code and AES-NI. <a href="../99-appendices/99-01-glossary.html#cache-timing">More</a> <a href="#fr-cache-timing-1">↩</a></p>
 </li>
 <li id="footnote-side-channel-attack">
-<p>Side-Channel Attack — Attack that exploits leaked information from an implementation (timing, cache, power, EM, faults) rather than breaking the underlying cryptography. <a href="../99-appendices/99-01-glossary.html#side-channel-attack">More</a> <a href="#fr-side-channel-attack-1">↩</a></p>
+<p>Side-Channel Attack: Attack that exploits leaked information from an implementation (timing, cache, power, EM, faults) rather than breaking the underlying cryptography. <a href="../99-appendices/99-01-glossary.html#side-channel-attack">More</a> <a href="#fr-side-channel-attack-1">↩</a></p>
 </li>
 </ol>
 
@@ -562,7 +562,7 @@ Rolling your own MAC + encryption is a mistake.</dd>
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../02-core-primitives/02-07-randomness-entropy.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../02-core-primitives/02-06-key-derivation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -576,7 +576,7 @@ Rolling your own MAC + encryption is a mistake.</dd>
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../02-core-primitives/02-07-randomness-entropy.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../02-core-primitives/02-06-key-derivation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

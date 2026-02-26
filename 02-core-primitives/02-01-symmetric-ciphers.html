@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-f77e3f72.js";
+            window.path_to_searchindex_js = "../searchindex-f1bbb6a2.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-8b53bd40.js"></script>
+        <script src="../toc-8443953b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -180,19 +180,19 @@
 <p>✅ Still foundational in modern cryptography.</p>
 </blockquote>
 <h3 id="what-are-symmetric-ciphers"><a class="header" href="#what-are-symmetric-ciphers">What Are Symmetric Ciphers?</a></h3>
-<p>Symmetric ciphers use the same key for both encryption and decryption. Unlike public-key cryptography, they don’t offer key exchange—but they are much faster, making them ideal for bulk data encryption.</p>
+<p>Symmetric ciphers use the same key for both encryption and decryption. Unlike public-key cryptography, they don’t offer key exchange but they are much faster, making them ideal for bulk data encryption.</p>
 <p>They are used everywhere: encrypted file systems, secure communications, and even inside protocols like TLS (after the handshake).</p>
-<h3 id="xor-cipher--simplicity-that-teaches"><a class="header" href="#xor-cipher--simplicity-that-teaches">XOR Cipher — Simplicity That Teaches</a></h3>
+<h3 id="xor-cipher-simplicity-that-teaches"><a class="header" href="#xor-cipher-simplicity-that-teaches">XOR Cipher: simplicity that teaches</a></h3>
 <blockquote>
 <p>⚠️ Insecure. Demonstration-only (used in educational demos, malware obfuscation )</p>
 </blockquote>
-<p>Watch it on my <em>Fearless in Rust</em> channel: <a href="https://www.youtube.com/watch?v=wA-p_c19ZFw&amp;t=326s">XOR Cipher in Rust - Step by Step</a></p>
+<p>Watch it on my <em>Fearless in Rust</em> channel: <a href="https://www.youtube.com/watch?v=wA-p_c19ZFw&amp;t=326s">XOR Cipher in Rust: step by step</a></p>
 <!--
 >⚠️ Annotate if a Rust crate exists + maturity level
 -->
-<p>We first explored XOR encryption in <a href="../01-foundations/01-04-first-code.html">Section 1.4: First Code — A Naive XOR Encryptor</a>, where we built a full working example from scratch.</p>
+<p>We first explored XOR encryption in <a href="../01-foundations/01-04-first-code.html">Section 1.4: First Code: a naive XOR encryptor</a>, where we built a full working example from scratch.</p>
 <p>XOR is the simplest symmetric cipher: each byte of the message is XORed with a repeating key.
-Reversibility is built-in — XORing twice with the same key restores the original.</p>
+Reversibility is built-in, XORing twice with the same key restores the original.</p>
 <pre class="playground"><code class="language-rust">fn main() {
     let message = b"Hi, Rust!";
     let key = b"key";
@@ -213,16 +213,16 @@ pub fn xor_encrypt(input: &amp;[u8], key: &amp;[u8]) -&gt; Vec&lt;u8&gt; {
 }</code></pre>
 <blockquote>
 <p><strong>🟢 Conclusion</strong>
-XOR encryption is reversible and stateless, which makes it simple and fast. But it lacks confusion and diffusion, so patterns in the input remain visible — offering no real resistance to cryptanalysis.</p>
+XOR encryption is reversible and stateless, which makes it simple and fast. But it lacks confusion and diffusion, so patterns in the input remain visible, offering no real resistance to cryptanalysis.</p>
 </blockquote>
-<h3 id="feistel-networks--foundation-of-classic-block-ciphers"><a class="header" href="#feistel-networks--foundation-of-classic-block-ciphers">Feistel Networks — Foundation of Classic Block Ciphers</a></h3>
+<h3 id="feistel-networks-foundation-of-classic-block-ciphers"><a class="header" href="#feistel-networks-foundation-of-classic-block-ciphers">Feistel Networks: foundation of classic block ciphers</a></h3>
 <blockquote>
 <p>⚠️ Cryptographically obsolete, but conceptually important (used in DES<sup class="footnote-reference" id="fr-des-1"><a href="#footnote-des">1</a></sup>, 3DES<sup class="footnote-reference" id="fr-3des-1"><a href="#footnote-3des">2</a></sup>)</p>
 </blockquote>
 <!--
 > ⚠️️ Annotate if a Rust crate exists + maturity level
 -->
-<p>Feistel networks are a clever way to build reversible encryption using any basic function—even if that function itself can’t be reversed. That’s the key idea.</p>
+<p>Feistel networks are a clever way to build reversible encryption using any basic function, even if that function itself can’t be reversed. That’s the key idea.</p>
 <p>Each round applies a transformation to the data. Multiple rounds are chained to strengthen security.</p>
 <p>Each round does the following:</p>
 <ol>
@@ -334,9 +334,9 @@ Still dominant in current cipher architectures</p>
 <p>Decryption reverses these steps in reverse order.</p>
 <blockquote>
 <p>💡 An S-box (substitution box) is a predefined table that maps each input byte to a new output byte.
-Its goal is to introduce non-linearity — meaning the output doesn’t follow any simple, predictable rule based on the input.
+Its goal is to introduce non-linearity, meaning the output doesn’t follow any simple, predictable rule based on the input.
 <br><br>
-This non-linear mapping ensures that small changes in the input produce unpredictable changes in the output, making it impossible to reverse or model with linear equations — a key requirement for secure encryption.</p>
+This non-linear mapping ensures that small changes in the input produce unpredictable changes in the output, making it impossible to reverse or model with linear equations, a key requirement for secure encryption.</p>
 </blockquote>
 <br>
 Let’s walk through a simple encryption of a 4-byte block.
@@ -451,7 +451,7 @@ println!("Decrypted   | {:02X}     | {:02X}     | {:02X}     | {:02X}", decrypte
 <p><strong>🟢 Conclusion</strong>
 Substitution-Permutation Networks provide a simple yet powerful structure for building symmetric ciphers. They deliver the critical properties of confusion and diffusion, as first formalized by Claude Shannon in his foundational work on cryptographic security.</p>
 </blockquote>
-<h3 id="aes-advanced-encryption-standard---the-global-symmetric-standard"><a class="header" href="#aes-advanced-encryption-standard---the-global-symmetric-standard">AES (Advanced Encryption Standard)  — The Global Symmetric Standard</a></h3>
+<h3 id="aes-advanced-encryption-standard-the-global-symmetric-standard"><a class="header" href="#aes-advanced-encryption-standard-the-global-symmetric-standard">AES (Advanced Encryption Standard): the global symmetric standard</a></h3>
 <blockquote>
 <p>💡 Used in TLS<sup class="footnote-reference" id="fr-tls-1"><a href="#footnote-tls">5</a></sup>, LUKS<sup class="footnote-reference" id="fr-luks-1"><a href="#footnote-luks">6</a></sup>, SSH<sup class="footnote-reference" id="fr-ssh-1"><a href="#footnote-ssh">7</a></sup>, mobile apps, and FIPS-certified systems<sup class="footnote-reference" id="fr-fips-1"><a href="#footnote-fips">8</a></sup>.
 Secure, fast, and hardware-accelerated</p>
@@ -463,8 +463,8 @@ Secure, fast, and hardware-accelerated</p>
 <p>AES operates on 128-bit blocks and supports key sizes of 128, 192, or 256 bits. It is based on a Substitution–Permutation Network (SPN) and runs 10, 12, or 14 rounds depending on the key length.</p>
 <p>It is standardized by FIPS-197, ISO/IEC[^isoiec], and widely adopted in security protocols such as TLS, SSH, and IPsec<sup class="footnote-reference" id="fr-ipsec-1"><a href="#footnote-ipsec">9</a></sup>. AES is available in hardware on most modern CPUs, making it both fast and energy-efficient.</p>
 <br>
-<p>🧪 <strong>Code Example: AES-128-CBC Encryption &amp; Decryption</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)
-We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-cbc-1"><a href="#footnote-cbc">10</a></sup> with PKCS7<sup class="footnote-reference" id="fr-pkcs7-1"><a href="#footnote-pkcs7">11</a></sup> padding.</p>
+<p>🧪 <strong>Code Example: AES-128-CBC Encryption &amp; Decryption</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L2">source code</a>)</p>
+<p>We’ll use the aes and block-modes crates to encrypt and decrypt a message using AES-128 in CBC mode<sup class="footnote-reference" id="fr-cbc-1"><a href="#footnote-cbc">10</a></sup> with PKCS7<sup class="footnote-reference" id="fr-pkcs7-1"><a href="#footnote-pkcs7">11</a></sup> padding.</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn run_aes_example() {
@@ -509,10 +509,10 @@ Decrypted text: Attack at dawn!
 <blockquote>
 <p><strong>🟢 Conclusion</strong></p>
 <p>AES is the modern standard for symmetric encryption.</p>
-<p>It is fast, secure, and hardware-accelerated — making it ideal for both embedded systems and high-throughput servers.</p>
+<p>It is fast, secure, and hardware-accelerated ; making it ideal for both embedded systems and high-throughput servers.</p>
 <p>When used correctly with a secure mode like CBC or GCM and proper key/IV management, AES provides strong resistance against all known practical attacks.</p>
 </blockquote>
-<h3 id="chacha20--modern-stream-cipher"><a class="header" href="#chacha20--modern-stream-cipher">ChaCha20 — Modern Stream Cipher</a></h3>
+<h3 id="chacha20-modern-stream-cipher"><a class="header" href="#chacha20-modern-stream-cipher">ChaCha20: modern stream cipher</a></h3>
 <blockquote>
 <p>💡 A stream cipher encrypts data one bit or byte at a time by XORing it with a pseudorandom keystream, instead of encrypting fixed-size blocks like a block cipher.</p>
 </blockquote>
@@ -524,15 +524,13 @@ Fast, simple, and naturally resistant to timing attacks.</p>
 <p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/chacha20">chacha20</a></p>
 </blockquote>
 <p>ChaCha20 is a modern stream cipher designed by Daniel J. Bernstein.</p>
-<p>It is the streamlined successor to Salsa20<sup class="footnote-reference" id="fr-salsa20-1"><a href="#footnote-salsa20">14</a></sup>, offering improved diffusion and exceptional performance on all platforms — especially devices without AES hardware.</p>
+<p>It is the streamlined successor to Salsa20<sup class="footnote-reference" id="fr-salsa20-1"><a href="#footnote-salsa20">14</a></sup>, offering improved diffusion and exceptional performance on all platforms, especially devices without AES hardware.</p>
 <p>Unlike block ciphers, ChaCha20 does not process data in fixed-size blocks. Instead, it transforms a key + nonce + counter into a pseudorandom keystream<sup class="footnote-reference" id="fr-pseudokey-1"><a href="#footnote-pseudokey">15</a></sup>.</p>
 <p>Encryption is simply: ciphertext = plaintext XOR keystream</p>
 <p>No padding. No block alignment. Just pure stream encryption.</p>
 <p>ChaCha20 is now a fundamental primitive across modern cryptography:
 WireGuard, OpenSSH (for session keys), TLS 1.3 fallback ciphers, mobile operating systems, and many authenticated encryption schemes like ChaCha20-Poly1305<sup class="footnote-reference" id="fr-poly1305-1"><a href="#footnote-poly1305">16</a></sup>.</p>
-<p>🧪 <strong>Code Example: ChaCha20 Encryption &amp; Decryption</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
-<p>We’ll generate a ChaCha20 keystream and XOR it with a plaintext message.
-The API is extremely simple — you create a cipher and stream through it.</p>
+<p>🧪 <strong>Code Example: ChaCha20 Encryption &amp; Decryption</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L36">source code</a>)</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn run_chacha20_example() {
@@ -574,12 +572,12 @@ Decrypted text: Secret meeting at midnight
 <p>ChaCha20 is the modern workhorse of stream ciphers: fast, extremely simple to implement correctly, and designed to avoid timing leaks by construction.</p>
 <p>It performs brilliantly on laptops, phones, microcontrollers, and any platform lacking AES acceleration.</p>
 <p>Use a fresh nonce for every encryption, treat keystreams as one-time pads, and avoid reuse. When authenticated encryption is needed, pair ChaCha20 with Poly1305 (ChaCha20-Poly1305).</p>
-<p>ChaCha20 combines security, clarity, and performance — a perfect fit for modern Rust systems, network protocols, and embedded environments.</p>
+<p>ChaCha20 combines security, clarity, and performance, a perfect fit for modern Rust systems, network protocols, and embedded environments.</p>
 </blockquote>
 <h3 id="modes-of-operation"><a class="header" href="#modes-of-operation">Modes of Operation</a></h3>
 <p>Modern cryptography doesn’t encrypt “messages.” It encrypts <em>blocks</em>.
 AES, for example, works on 128-bit chunks and nothing else.
-So to handle real-world data—files, network packets, logs, telemetry—we need a strategy to link those fixed-size blocks together safely.</p>
+So to handle real-world data—files, network packets, logs, telemetry, we need a strategy to link those fixed-size blocks together safely.</p>
 <p>That strategy is a mode of operation.</p>
 <p>Modes are not decorative. They don’t sit on top of AES; they <em>define</em> its security. Pick the wrong one and your encryption leaks patterns. Pick the right one and you get confidentiality at scale.</p>
 <p><strong>Why Modes Exist</strong></p>
@@ -587,10 +585,10 @@ So to handle real-world data—files, network packets, logs, telemetry—we need
 That predictability is deadly when encrypting long messages.</p>
 <p>Modes solve four problems:</p>
 <ol>
-<li>Randomness — injecting unpredictability so repeated blocks don’t look the same.</li>
-<li>Chaining — connecting blocks so tampering affects more than one piece.</li>
-<li>Streaming — letting you encrypt arbitrary sizes efficiently.</li>
-<li>State — defining how to start, continue, and finish encryption safely.</li>
+<li>Randomness: injecting unpredictability so repeated blocks don’t look the same.</li>
+<li>Chaining: connecting blocks so tampering affects more than one piece.</li>
+<li>Streaming: letting you encrypt arbitrary sizes efficiently.</li>
+<li>State: defining how to start, continue, and finish encryption safely.</li>
 </ol>
 <p><strong>Overview of Common Modes</strong></p>
 <div class="table-wrapper">
@@ -606,18 +604,18 @@ That predictability is deadly when encrypting long messages.</p>
 </tbody>
 </table>
 </div>
-<p><strong>ECB (Electronic Codebook) — The Anti-Example</strong></p>
+<p><strong>ECB (Electronic Codebook): the anti-example</strong></p>
 <p>ECB encrypts each block independently.
 Patterns in the plaintext appear in the ciphertext.
 Famous example: encrypting the Tux penguin still looks like a penguin.</p>
 <p>If you see ECB in a system, assume the designer didn’t understand cryptography.</p>
-<p><strong>CBC (Cipher Bloc Chaining) — The Old Workhorse</strong></p>
+<p><strong>CBC (Cipher Bloc Chaining): the old workhorse</strong></p>
 <p>CBC chains each block with the previous one using XOR.
 If the IV is truly random and padding is handled correctly, it’s fine.
 But historically, padding-oracle attacks destroyed its safety in many protocols.</p>
 <p>Today, CBC mostly survives in legacy stacks and old file formats.
 New designs avoid it.</p>
-<p><strong>CTR (Counter Mode) — The Modern Default</strong></p>
+<p><strong>CTR (Counter Mode): the modern default</strong></p>
 <p>CTR mode transforms AES into a stream cipher.
 Instead of encrypting the plaintext blocks directly, it encrypts a counter and XORs the result with the message.</p>
 <p>This gives:</p>
@@ -642,7 +640,7 @@ let mut cipher = ctr::Ctr128BE::&lt;Aes128&gt;::new(key.into(), nonce.into());
 cipher.apply_keystream(&amp;mut buffer); // encrypt or decrypt
 <span class="boring">}</span></code></pre>
 <p>CTR is simple, fast, and well-suited to network protocols, telemetry pipelines, and embedded systems.</p>
-<p><strong>XTS (XEX-based (XOR-Encrypt-XOR-based) Tweaked CodeBook with Ciphertext Stealing) — Built for Storage</strong></p>
+<p><strong>XTS (XEX-based (XOR-Encrypt-XOR-based) Tweaked CodeBook with Ciphertext Stealing): built for storage</strong></p>
 <p>XTS is AES-CTR + a “tweak” system tailored to disk sectors.
 It prevents block relocation attacks and keeps each sector isolated.</p>
 <p>XTS shines for full-disk encryption because it resists sector-copy tampering and is purpose-built for storage. It isn’t suitable for general messages or network data, and it requires two independent AES keys.</p>
@@ -666,9 +664,9 @@ They decide whether your encryption is safe or broken.</p>
 </ul>
 
 <p>If you understand modes, you understand how real-world encryption actually works.</p>
-<h3 id="aes-vs-chacha20--which-one-should-you-choose"><a class="header" href="#aes-vs-chacha20--which-one-should-you-choose">AES vs. ChaCha20 — Which One Should You Choose?</a></h3>
+<h3 id="aes-vs-chacha20-which-one-should-you-choose"><a class="header" href="#aes-vs-chacha20-which-one-should-you-choose">AES vs. ChaCha20: which one should you choose?</a></h3>
 <p>Both AES and ChaCha20 are modern, secure, and widely deployed symmetric encryption algorithms. You will encounter them everywhere: in HTTPS, VPNs, mobile apps, cloud storage, and embedded systems.</p>
-<p>Yet, choosing between them is not a matter of “which is stronger” — both are cryptographically secure. The real difference lies in performance, implementation safety, and hardware availability.</p>
+<p>Yet, choosing between them is not a matter of “which is stronger”, both are cryptographically secure. The real difference lies in performance, implementation safety, and hardware availability.</p>
 <p><strong>AES (Advanced Encryption Standard)</strong></p>
 <ul>
 <li>Type: Block cipher</li>
@@ -729,7 +727,7 @@ ChaCha20 is often preferred today when simplicity and portability matter more th
 <li>The password has low entropy</li>
 <li>It exists in wordlists</li>
 <li>It can be tested at billions of attempts per second</li>
-<li>The attacker does not break AES — they simply break the password</li>
+<li>The attacker does not break AES, they simply break the password</li>
 </ul>
 <p>This is the single biggest real-world cryptographic failure.</p>
 <p>✅ <strong>A Key Derivation Function (KDF) converts a weak human secret into a strong cryptographic key suitable for AES or ChaCha20.</strong>
@@ -757,7 +755,7 @@ ChaCha20 is often preferred today when simplicity and portability matter more th
 <p>🚨
 <strong>They solve different security problems and must never be confused.</strong></p>
 </blockquote>
-<p>🧪 <strong>Code Example: HKDF</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<p>🧪 <strong>Code Example: HKDF</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L61">source code</a>)</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn run_hkdf_example() {
@@ -805,69 +803,69 @@ ChaCha20 is often preferred today when simplicity and portability matter more th
 <hr>
 <ol class="footnote-definition">
 <li id="footnote-des">
-<p>DES — early symmetric cipher (56-bit), now insecure. <a href="../99-appendices/99-01-glossary.html#des-data-encryption-standard">More</a> <a href="#fr-des-1">↩</a></p>
+<p>DES: early symmetric cipher (56-bit), now insecure. <a href="../99-appendices/99-01-glossary.html#des-data-encryption-standard">More</a> <a href="#fr-des-1">↩</a></p>
 </li>
 <li id="footnote-3des">
-<p>3DES — DES applied three times, better than DES but now deprecated. <a href="../99-appendices/99-01-glossary.html#3des-triple-des">More</a> <a href="#fr-3des-1">↩</a></p>
+<p>3DES: DES applied three times, better than DES but now deprecated. <a href="../99-appendices/99-01-glossary.html#3des-triple-des">More</a> <a href="#fr-3des-1">↩</a></p>
 </li>
 <li id="footnote-aes">
-<p>AES — The modern global standard, fast, secure, and hardware-accelerated. <a href="../99-appendices/99-01-glossary.html#aes-advanced-encryption-standard">More</a> <a href="#fr-aes-1">↩</a></p>
+<p>AES: The modern global standard, fast, secure, and hardware-accelerated. <a href="../99-appendices/99-01-glossary.html#aes-advanced-encryption-standard">More</a> <a href="#fr-aes-1">↩</a></p>
 </li>
 <li id="footnote-camellia">
-<p>Camellia — Japanese block cipher, secure &amp; AES-comparable. <a href="../99-appendices/99-01-glossary.html#camellia">More</a> <a href="#fr-camellia-1">↩</a></p>
+<p>Camellia: Japanese block cipher, secure &amp; AES-comparable. <a href="../99-appendices/99-01-glossary.html#camellia">More</a> <a href="#fr-camellia-1">↩</a></p>
 </li>
 <li id="footnote-tls">
-<p>TLS — protocol securing data in transit (HTTPS, etc.). <a href="../99-appendices/99-01-glossary.html#tls-transport-layer-security">More</a> <a href="#fr-tls-1">↩</a></p>
+<p>TLS: protocol securing data in transit (HTTPS, etc.). <a href="../99-appendices/99-01-glossary.html#tls-transport-layer-security">More</a> <a href="#fr-tls-1">↩</a></p>
 </li>
 <li id="footnote-luks">
-<p>LUKS — Linux standard for full disk encryption. <a href="../99-appendices/99-01-glossary.html#luks-linux-unified-key-setup">More</a> <a href="#fr-luks-1">↩</a></p>
+<p>LUKS: Linux standard for full disk encryption. <a href="../99-appendices/99-01-glossary.html#luks-linux-unified-key-setup">More</a> <a href="#fr-luks-1">↩</a></p>
 </li>
 <li id="footnote-ssh">
-<p>SSH — secure remote access protocol. <a href="../99-appendices/99-01-glossary.html#ssh-secure-shell">More</a> <a href="#fr-ssh-1">↩</a></p>
+<p>SSH: secure remote access protocol. <a href="../99-appendices/99-01-glossary.html#ssh-secure-shell">More</a> <a href="#fr-ssh-1">↩</a></p>
 </li>
 <li id="footnote-fips">
-<p>FIPS — U.S. cryptographic standards for government/finance. <a href="../99-appendices/99-01-glossary.html#fips-federal-information-processing-standards">More</a> <a href="#fr-fips-1">↩</a></p>
+<p>FIPS: U.S. cryptographic standards for government/finance. <a href="../99-appendices/99-01-glossary.html#fips-federal-information-processing-standards">More</a> <a href="#fr-fips-1">↩</a></p>
 </li>
 <li id="footnote-ipsec">
-<p>IPSec — protocol suite for securing IP communications. <a href="../99-appendices/99-01-glossary.html#ipsec">More</a> <a href="#fr-ipsec-1">↩</a></p>
+<p>IPSec: protocol suite for securing IP communications. <a href="../99-appendices/99-01-glossary.html#ipsec">More</a> <a href="#fr-ipsec-1">↩</a></p>
 </li>
 <li id="footnote-cbc">
-<p>CBC — block cipher mode, chains blocks for security. <a href="../99-appendices/99-01-glossary.html#cbc-cipher-block-chaining">More</a> <a href="#fr-cbc-1">↩</a></p>
+<p>CBC: block cipher mode, chains blocks for security. <a href="../99-appendices/99-01-glossary.html#cbc-cipher-block-chaining">More</a> <a href="#fr-cbc-1">↩</a></p>
 </li>
 <li id="footnote-pkcs7">
-<p>PKCS7 — padding scheme for block ciphers. <a href="../99-appendices/99-01-glossary.html#pkcs7">More</a> <a href="#fr-pkcs7-1">↩</a></p>
+<p>PKCS7: padding scheme for block ciphers. <a href="../99-appendices/99-01-glossary.html#pkcs7">More</a> <a href="#fr-pkcs7-1">↩</a></p>
 </li>
 <li id="footnote-wireguard">
-<p>WireGuard — modern VPN protocol using ChaCha20-Poly1305 to secure IP traffic. <a href="../99-appendices/99-01-glossary.html#wireguard">More</a> <a href="#fr-wireguard-1">↩</a></p>
+<p>WireGuard: modern VPN protocol using ChaCha20-Poly1305 to secure IP traffic. <a href="../99-appendices/99-01-glossary.html#wireguard">More</a> <a href="#fr-wireguard-1">↩</a></p>
 </li>
 <li id="footnote-non-aes">
-<p>Non-AES hardware — CPUs without AES instructions, where ChaCha20 is often faster than AES. <a href="../99-appendices/99-01-glossary.html#non-aes-hardware">More</a> <a href="#fr-non-aes-1">↩</a></p>
+<p>Non-AES hardware: CPUs without AES instructions, where ChaCha20 is often faster than AES. <a href="../99-appendices/99-01-glossary.html#non-aes-hardware">More</a> <a href="#fr-non-aes-1">↩</a></p>
 </li>
 <li id="footnote-salsa20">
-<p>Salsa20 — stream cipher by Daniel J. Bernstein; predecessor of ChaCha20, fast and well-studied. <a href="../99-appendices/99-01-glossary.html#salsa20">More</a> <a href="#fr-salsa20-1">↩</a></p>
+<p>Salsa20: stream cipher by Daniel J. Bernstein; predecessor of ChaCha20, fast and well-studied. <a href="../99-appendices/99-01-glossary.html#salsa20">More</a> <a href="#fr-salsa20-1">↩</a></p>
 </li>
 <li id="footnote-pseudokey">
-<p>Pseudorandom keystream - sequence of bits/bytes that looks random but is deterministically generated from a secret key (and usually a nonce). <a href="../99-appendices/99-01-glossary.html#pseudorandom-keystream">More</a> <a href="#fr-pseudokey-1">↩</a></p>
+<p>Pseudorandom keystream: sequence of bits/bytes that looks random but is deterministically generated from a secret key (and usually a nonce). <a href="../99-appendices/99-01-glossary.html#pseudorandom-keystream">More</a> <a href="#fr-pseudokey-1">↩</a></p>
 </li>
 <li id="footnote-poly1305">
-<p>ChaCha20-Poly1305 -
+<p>ChaCha20-Poly1305:
 AEAD scheme that combines the ChaCha20 stream cipher with the Poly1305 MAC to provide authenticated encryption (confidentiality + integrity). <a href="../99-appendices/99-01-glossary.html#chacha20-poly1305">More</a> <a href="#fr-poly1305-1">↩</a></p>
 </li>
 <li id="footnote-salt">
-<p>Salt - A random value added to a password before key derivation to prevent identical passwords from producing identical keys and to defeat precomputed attacks such as rainbow tables.. <a href="../99-appendices/99-01-glossary.html#salt">More</a> <a href="#fr-salt-1">↩</a></p>
+<p>Salt: A random value added to a password before key derivation to prevent identical passwords from producing identical keys and to defeat precomputed attacks such as rainbow tables.. <a href="../99-appendices/99-01-glossary.html#salt">More</a> <a href="#fr-salt-1">↩</a></p>
 </li>
 <li id="footnote-pbkdf2">
-<p>PBKDF2 (Password-Based Key Derivation Function) - The standardized successor to PBKDF1 for deriving cryptographic keys from passwords.. <a href="../99-appendices/99-01-glossary.html#pbkdf2">More</a> <a href="#fr-pbkdf2-1">↩</a></p>
+<p>PBKDF2 (Password-Based Key Derivation Function): The standardized successor to PBKDF1 for deriving cryptographic keys from passwords.. <a href="../99-appendices/99-01-glossary.html#pbkdf2">More</a> <a href="#fr-pbkdf2-1">↩</a></p>
 </li>
 <li id="footnote-argon2">
-<p>Argon2 (named after the mythological ship Argo and its crew, the Argonauts) - The modern standard for password hashing and key derivation, designed to resist GPU and ASIC attacks using memory-hard computation. <a href="../99-appendices/99-01-glossary.html#argon2">More</a> <a href="#fr-argon2-1">↩</a></p>
+<p>Argon2 (named after the mythological ship Argo and its crew, the Argonauts): The modern standard for password hashing and key derivation, designed to resist GPU and ASIC attacks using memory-hard computation. <a href="../99-appendices/99-01-glossary.html#argon2">More</a> <a href="#fr-argon2-1">↩</a></p>
 </li>
 <li id="footnote-scrypt">
-<p>Scrypt -
+<p>Scrypt:
 A memory-hard password-based key derivation function built to make large-scale hardware brute-force attacks expensive and inefficient. Older than Argon2 but still widely used. <a href="../99-appendices/99-01-glossary.html#scrypt">More</a> <a href="#fr-scrypt-1">↩</a></p>
 </li>
 <li id="footnote-hkdf">
-<p>HKDF (HMAC-based Key Derivation Function) -
+<p>HKDF (HMAC-based Key Derivation Function):
 A key derivation function for expanding an already strong secret into multiple independent cryptographic keys using hash functions. Used for key separation and key hygiene, not for protecting weak passwords. <a href="../99-appendices/99-01-glossary.html#hkdf">More</a> <a href="#fr-hkdf-1">↩</a></p>
 </li>
 </ol>

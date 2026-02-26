@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-f77e3f72.js";
+            window.path_to_searchindex_js = "../searchindex-f1bbb6a2.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-8b53bd40.js"></script>
+        <script src="../toc-8443953b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,40 +175,42 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h2 id="tooling-up"><a class="header" href="#tooling-up">Tooling Up</a></h2>
-<p>Before we dive into cryptographic primitives, here’s a quick look at tools that can support your Rust development journey — especially if you plan to write your own crypto libraries.</p>
+<p>Before we dive into cryptographic primitives, here’s a quick look at tools that can support your Rust development journey especially if you plan to write your own crypto libraries.</p>
 <blockquote>
-<p>None of these tools are required to read or complete the following chapters.<br>If you already have <code>cargo</code> installed, you’re good to go!</p>
+<p>None of these tools are required to read or complete the following chapters.
+If you already have <code>cargo</code> installed, you’re good to go!</p>
 </blockquote>
 <p>That said, for readers who want to build clean, secure, and testable codebases, these tools are worth bookmarking:</p>
 <h3 id="code-quality"><a class="header" href="#code-quality">Code Quality</a></h3>
 <ul>
-<li><strong><a href="https://github.com/rust-lang/rustfmt">rustfmt</a></strong> — auto-formats code to keep it idiomatic</li>
-<li><strong><a href="https://github.com/rust-lang/rust-clippy">clippy</a></strong> — catches common pitfalls and non-idiomatic patterns</li>
+<li><strong><a href="https://github.com/rust-lang/rustfmt">rustfmt</a></strong>: auto-formats code to keep it idiomatic</li>
+<li><strong><a href="https://github.com/rust-lang/rust-clippy">clippy</a></strong>: catches common pitfalls and non-idiomatic patterns</li>
 </ul>
 <h3 id="testing--fuzzing"><a class="header" href="#testing--fuzzing">Testing &amp; Fuzzing</a></h3>
 <ul>
-<li><strong><a href="https://docs.rs/proptest">proptest</a></strong> — property-based testing for edge case discovery</li>
-<li><strong><a href="https://rust-fuzz.github.io/book/">cargo-fuzz</a></strong> — fuzz testing to uncover panics and vulnerabilities</li>
+<li><strong><a href="https://docs.rs/proptest">proptest</a></strong>: property-based testing for edge case discovery</li>
+<li><strong><a href="https://rust-fuzz.github.io/book/">cargo-fuzz</a></strong>: fuzz testing to uncover panics and vulnerabilities</li>
 </ul>
 <h3 id="security--auditing"><a class="header" href="#security--auditing">Security &amp; Auditing</a></h3>
 <ul>
-<li><strong><a href="https://github.com/RustSec/rustsec/tree/main/cargo-audit">cargo-audit</a></strong> — alerts you to vulnerable crates</li>
-<li><strong><a href="https://github.com/rust-secure-code/cargo-geiger">cargo-geiger</a></strong> — scans for <code>unsafe</code> code</li>
+<li><strong><a href="https://github.com/RustSec/rustsec/tree/main/cargo-audit">cargo-audit</a></strong>: alerts you to vulnerable crates</li>
+<li><strong><a href="https://github.com/rust-secure-code/cargo-geiger">cargo-geiger</a></strong>: scans for <code>unsafe</code> code</li>
 </ul>
 <h3 id="benchmarking--debugging"><a class="header" href="#benchmarking--debugging">Benchmarking &amp; Debugging</a></h3>
 <ul>
-<li><strong><a href="https://bheisler.github.io/criterion.rs/book/">Criterion.rs</a></strong> — precise performance benchmarks</li>
-<li><strong><a href="https://github.com/dtolnay/cargo-expand">cargo-expand</a></strong> — view macro-expanded code (useful when using <code>#[derive(...)]</code>)</li>
+<li><strong><a href="https://bheisler.github.io/criterion.rs/book/">Criterion.rs</a></strong>: precise performance benchmarks</li>
+<li><strong><a href="https://github.com/dtolnay/cargo-expand">cargo-expand</a></strong>: view macro-expanded code (useful when using <code>#[derive(...)]</code>)</li>
 </ul>
-<p>As you gain experience, integrating these tools will help ensure your cryptographic code is not only correct — but robust, maintainable, and audit-friendly.</p>
+<p>As you gain experience, integrating these tools will help ensure your cryptographic code is not only correct but robust, maintainable, and audit-friendly.</p>
 <h3 id="try-it-yourself"><a class="header" href="#try-it-yourself">Try It Yourself</a></h3>
 <p>Want to skip the setup and jump right into coding?</p>
-<p>👉 Use the <a href="https://github.com/vinecksie/sealed-starter">Sealed in Rust Starter Template</a> — a minimal Rust project preconfigured with the tools mentioned above.</p>
+<p>👉 Use the <a href="https://github.com/vinecksie/sealed-starter">Sealed in Rust Starter Template</a>, a minimal Rust project preconfigured with the tools mentioned above.</p>
 <pre><code class="language-bash">git clone https://github.com/vinecksie/sealed-starter.git
 cd sealed-starter
 cargo test
 </code></pre>
 <!--This project will evolve with the book and include examples, tests, and benchmarking code as you progress.-->
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

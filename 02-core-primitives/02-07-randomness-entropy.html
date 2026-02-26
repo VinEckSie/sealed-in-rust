@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-f77e3f72.js";
+            window.path_to_searchindex_js = "../searchindex-f1bbb6a2.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-8b53bd40.js"></script>
+        <script src="../toc-8443953b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -174,7 +174,7 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="randomness--entropy--nonces-ivs-csprngs"><a class="header" href="#randomness--entropy--nonces-ivs-csprngs">Randomness &amp; Entropy — Nonces, IVs, CSPRNGs</a></h2>
+                        <h2 id="randomness--entropy-nonces-ivs-csprngs"><a class="header" href="#randomness--entropy-nonces-ivs-csprngs">Randomness &amp; Entropy: nonces, IVs, CSPRNGs</a></h2>
 <blockquote>
 <p>🔐 <strong>Used in:</strong> encryption schemes, TLS, digital signatures<sup class="footnote-reference" id="fr-digital-signature-1"><a href="#footnote-digital-signature">1</a></sup>, key generation, session tokens</p>
 <p>✅ Unpredictability is security. If randomness fails, everything collapses.</p>
@@ -189,7 +189,7 @@
 <li>Your session token</li>
 <li>Your key material</li>
 </ul>
-<p>Then your system is broken — even if you use perfect algorithms.</p>
+<p>Then your system is broken, even if you use perfect algorithms.</p>
 <p>Cryptography without randomness is just math.</p>
 <h2 id="what-is-entropy"><a class="header" href="#what-is-entropy">What Is Entropy?</a></h2>
 <p>Entropy is a measure of unpredictability.</p>
@@ -214,7 +214,7 @@ How hard is it to guess this value?</p>
 <li>incremental counters</li>
 <li>predictable seeds<sup class="footnote-reference" id="fr-predicable-seed-1"><a href="#footnote-predicable-seed">10</a></sup></li>
 </ul>
-<h2 id="csprng--cryptographically-secure-pseudorandom-number-generator"><a class="header" href="#csprng--cryptographically-secure-pseudorandom-number-generator">CSPRNG — Cryptographically Secure Pseudorandom Number Generator</a></h2>
+<h2 id="csprng-cryptographically-secure-pseudorandom-number-generator"><a class="header" href="#csprng-cryptographically-secure-pseudorandom-number-generator">CSPRNG (Cryptographically Secure Pseudorandom Number Generator)</a></h2>
 <blockquote>
 <p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/rand">rand</a></p>
 </blockquote>
@@ -233,7 +233,7 @@ How hard is it to guess this value?</p>
 <li>macOS → SecRandomCopyBytes</li>
 </ul>
 <p>Rust exposes this securely through the <a href="https://crates.io/crates/rand/"><code>rand</code> crate</a></p>
-<p>🧪 <strong>Code Example: Secure Random Bytes</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs">source code</a>)</p>
+<p>🧪 <strong>Code Example: Secure Random Bytes</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L215">source code</a>)</p>
 <pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn run_csprng_example() {
@@ -299,7 +299,7 @@ For cryptography? No.</p>
 <p><strong>Always prefer:</strong>
 use rand::rngs::OsRng;</p>
 <p>Or use crates that internally rely on secure randomness (like ring, aes-gcm, chacha20poly1305).</p>
-<h2 id="key-generation--the-most-important-use-case"><a class="header" href="#key-generation--the-most-important-use-case">Key Generation — The Most Important Use Case</a></h2>
+<h2 id="key-generation-the-most-important-use-case"><a class="header" href="#key-generation-the-most-important-use-case">Key Generation: the most important use case</a></h2>
 <p>All cryptographic keys must come from a secure, high-entropy source.</p>
 <p>No passwords.
 No manual seeds.
@@ -422,7 +422,7 @@ It is a foundational cryptographic primitive.</p>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../02-core-primitives/02-03-mac-aead.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../02-core-primitives/02-06-key-derivation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
@@ -436,7 +436,7 @@ It is a foundational cryptographic primitive.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../02-core-primitives/02-03-mac-aead.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../02-core-primitives/02-06-key-derivation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 

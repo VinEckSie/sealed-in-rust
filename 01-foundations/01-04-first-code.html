@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-f77e3f72.js";
+            window.path_to_searchindex_js = "../searchindex-f1bbb6a2.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-8b53bd40.js"></script>
+        <script src="../toc-8443953b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,14 +175,14 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h2 id="first-code-a-naive-xor-encryptor"><a class="header" href="#first-code-a-naive-xor-encryptor">First Code: A Naive XOR Encryptor</a></h2>
-<p>Let’s write our first cryptographic algorithm — or at least something that <em>looks</em> like one.</p>
-<p>We’ll implement a simple <strong>XOR cipher</strong>. This method is <em>insecure</em> and should never be used in real applications — but it’s the perfect teaching tool.</p>
+<p>Let’s write our first cryptographic algorithm or at least something that <em>looks</em> like one.</p>
+<p>We’ll implement a simple <strong>XOR cipher</strong>. This method is <em>insecure</em> and should never be used in real applications, but it’s the perfect teaching tool.</p>
 <h3 id="whats-a-cipher"><a class="header" href="#whats-a-cipher">What’s a Cipher?</a></h3>
-<p>A <strong>cipher</strong> is just a method to <strong>transform readable data (plaintext)</strong> into <strong>unreadable data (ciphertext)</strong> using a <strong>key</strong> — and vice versa.</p>
+<p>A <strong>cipher</strong> is just a method to <strong>transform readable data (plaintext)</strong> into <strong>unreadable data (ciphertext)</strong> using a <strong>key</strong> and vice versa.</p>
 <blockquote>
-<p>🧭 Word Origin — “Cipher”
+<p>🧭 Word Origin: “Cipher”
 The word comes from the Arabic “ṣifr” (صفر), meaning “zero” or “empty”. It passed through Latin (cifra), then into French and English as cipher.<br><br>
-What started as a symbol for “nothing” evolved into a word for secret writing — and eventually, encryption algorithms.</p>
+What started as a symbol for “nothing” evolved into a word for secret writing and eventually, encryption algorithms.</p>
 </blockquote>
 <h3 id="what-is-xor"><a class="header" href="#what-is-xor">What is XOR?</a></h3>
 <p>XOR stands for <strong>“exclusive or”</strong>, a bitwise operation:</p>
@@ -209,9 +209,9 @@ What started as a symbol for “nothing” evolved into a word for secret writin
 <pre><code class="language-text">cipher = plaintext ^ key
 plaintext = cipher ^ key
 </code></pre>
-<p>That’s why XOR can be used to encrypt and decrypt data — if you XOR something twice with the same key, you get the original back.</p>
+<p>That’s why XOR can be used to encrypt and decrypt data. If you XOR something twice with the same key, you get the original back.</p>
 <blockquote>
-<p>✅ Simple, reversible, fast — but also dangerously weak when misused.</p>
+<p>✅ Simple, reversible, fast but also dangerously weak when misused.</p>
 </blockquote>
 <h3 id="xor-bit-by-bit"><a class="header" href="#xor-bit-by-bit">XOR, Bit by Bit</a></h3>
 <p>To truly understand XOR in cryptography, it helps to look at bit-level behavior.</p>
@@ -267,7 +267,7 @@ pub fn xor_encrypt(input: &amp;[u8], key: &amp;[u8]) -&gt; Vec&lt;u8&gt; {
 <li>Susceptible to frequency analysis attacks</li>
 </ul>
 <br>
-This cipher is insecure — but it demonstrates important cryptographic concepts:
+This cipher is insecure but it demonstrates important cryptographic concepts:
 <ul>
 <li>Reversibility</li>
 <li>Byte-wise transformations</li>
