@@ -223,3 +223,60 @@ pub fn run_csprng_example() {
     println!("random u64: {}", OsRng.next_u64());
 }
 // ANCHOR_END: csprng
+
+// ANCHOR: ed25519
+pub fn run_ed25519_example() {
+    use ed25519_dalek::{Signer, SigningKey, Verifier};
+    use rand::rngs::OsRng;
+
+    let signing_key = SigningKey::generate(&mut OsRng);
+    let verifying_key = signing_key.verifying_key();
+
+    let message = b"sealed-in-rust: ed25519 signature demo";
+    let signature = signing_key.sign(message);
+
+    verifying_key.verify(message, &signature).unwrap();
+    println!("Ed25519 signature verified.");
+}
+// ANCHOR_END: ed25519
+
+// ANCHOR: ecdsa
+pub fn run_ecdsa_example() {
+    use p256::ecdsa::Signature;
+    use p256::ecdsa::SigningKey;
+    use p256::ecdsa::signature::{Signer, Verifier};
+    use rand::rngs::OsRng;
+
+    let signing_key = SigningKey::random(&mut OsRng);
+    let verifying_key = signing_key.verifying_key();
+
+    let message = b"sealed-in-rust: ecdsa(p-256) signature demo";
+    let signature: Signature = signing_key.sign(message);
+
+    verifying_key.verify(message, &signature).unwrap();
+    println!("ECDSA P-256 signature verified.");
+}
+// ANCHOR_END: ecdsa
+
+// ANCHOR: rsa
+pub fn run_rsa_example() {
+    use rand::rngs::OsRng;
+    use rsa::RsaPrivateKey;
+    use rsa::pss::{BlindedSigningKey, VerifyingKey};
+    use rsa::signature::{RandomizedSigner, Verifier};
+    use sha2::Sha256;
+
+    let mut rng = OsRng;
+    let private_key = RsaPrivateKey::new(&mut rng, 2048).unwrap();
+    let public_key = private_key.to_public_key();
+
+    let signing_key = BlindedSigningKey::<Sha256>::new(private_key);
+    let verifying_key = VerifyingKey::<Sha256>::new(public_key);
+
+    let message = b"sealed-in-rust: rsa-pss signature demo";
+    let signature = signing_key.sign_with_rng(&mut rng, message);
+
+    verifying_key.verify(message, &signature).unwrap();
+    println!("RSA-PSS signature verified.");
+}
+// ANCHOR_END: rsa

@@ -19,6 +19,7 @@
     - [Symmetric Ciphers — XOR, AES, ChaCha20](02-core-primitives/02-01-symmetric-ciphers.md)
     - [Cryptographic Hashes — SHA-2, BLAKE3](02-core-primitives/02-02-crypto-hashes.md)
     - [MACs & AEAD — HMAC, Poly1305, AES-GCM](02-core-primitives/02-03-mac-aead.md)
+    - [Digital Signatures — RSA, Ed25519, ECDSA](02-core-primitives/02-05-digital-signature.md)
     - [Key Derivation Functions — Argon2, scrypt](02-core-primitives/02-06-key-derivation.md)
     - [Randomness & Entropy — Nonces, IVs, CSPRNGs](02-core-primitives/02-07-randomness-entropy.md)
 

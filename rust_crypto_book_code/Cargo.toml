@@ -6,6 +6,7 @@ edition = "2024"
 [dependencies]
 aes = "0.8"
 cbc = "0.1"
+ed25519-dalek = { version = "2", features = ["rand_core"] }
 hex = "0.4"
 chacha20 = "0.9"
 hkdf = "0.12.4"
@@ -14,6 +15,8 @@ blake3 = "1.8.2"
 poly1305 = "0.8.0"
 aes-gcm = "0.10.3"
 chacha20poly1305 = "0.10"
+p256 = { version = "0.13", features = ["ecdsa"] }
 rand = "0.8"
+rsa = "0.9"
 argon2 = "0.5"
 scrypt = "0.11"

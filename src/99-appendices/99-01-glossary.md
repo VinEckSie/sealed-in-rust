@@ -47,6 +47,12 @@ Argon2 is a memory-hard password hashing and key-derivation function (recommende
 
 It was the winner of the Password Hashing Competition (PHC) in 2015 and is designed to make large-scale cracking expensive on GPUs/FPGAs/ASICs by requiring significant memory per guess. Argon2 exposes tunable parameters for memory, time (iterations), and parallelism so you can set costs appropriate for your environment and increase them over time.
 
+## Authenticated Key Exchange (AKE)
+An authenticated key exchange (AKE) is a protocol that establishes a shared secret *and* authenticates the peer you’re talking to.
+Plain Diffie–Hellman without authentication is vulnerable to active man-in-the-middle (MITM) attacks: an attacker can run separate handshakes with each side and sit in the middle.
+AKE prevents this by binding the handshake to an identity using a signature (public-key authentication), a certificate chain, or a pre-shared key (PSK).
+TLS is a common real-world example: the handshake negotiates keys and authenticates (at least) the server, typically via a certificate and signature over handshake transcripts.
+
 ## AWS Request Signin (SigV4)
 AWS request signing is a cryptographic mechanism used to authenticate and authorize API requests to AWS services.
 Requests are canonicalized, hashed, and signed using HMAC with secret credentials and request metadata.
@@ -59,6 +65,11 @@ It builds on the cryptographic foundations of BLAKE2 while introducing a tree-ba
 BLAKE3 supports incremental hashing, keyed hashing, and extendable output (XOF) within a single unified API.
 It is well suited for content hashing, integrity verification, and high-throughput systems, though it is not standardized by NIST.
 BLAKE3 is considered secure and is increasingly adopted in modern software systems.
+
+## Broad TLS Compatibility
+Broad TLS compatibility means choosing algorithms and parameters that work across a wide range of TLS clients, servers, libraries, and devices.
+In practice, this often means sticking to widely supported curves and signature algorithms (and sometimes accepting legacy constraints), because you do not control what old devices or enterprise middleboxes can negotiate.
+Compatibility is a deployment constraint, not a security goal by itself: you still want to choose the strongest option that is *supported by your actual client population* and plan for algorithm agility over time.
 
 ## Brute Force
 A brute-force attack is an exhaustive search that tries all possible inputs or keys until the correct one is found.
@@ -116,6 +127,24 @@ A CSPRNG is a deterministic generator that expands a small amount of high entrop
 It is designed so outputs are computationally indistinguishable from random and resistant to state-recovery attacks.
 In practice, you rely on well-audited CSPRNGs seeded by the operating system.
 
+## Certificate Chain
+A certificate chain is an ordered set of certificates used to justify trust in a leaf (end-entity) certificate.
+Typically it is: leaf certificate → one or more intermediate CA certificates → a root CA certificate that is trusted via a local trust store (not via the network).
+Validating the chain means checking each signature, validity period, name constraints, key usage/extended key usage, policy rules, and (when applicable) revocation status (CRLs/OCSP).
+In TLS, certificate chains bind a public key to a server identity (e.g., a DNS name) so clients can authenticate who they are connecting to.
+
+## Constant-Time Comparison
+A constant-time comparison checks whether two values are equal without leaking where they differ via timing.
+The key rule is “no early exits”: the runtime should not depend on the first mismatching byte, which would allow attackers to learn information by measuring response time.
+This is especially important when comparing MAC tags, authentication tokens, password hashes, and other verifier-side secrets.
+Use library-provided constant-time equality helpers rather than writing your own comparisons.
+
+## Correct Checks (Signature Verification)
+“Correct checks” in signature verification means enforcing *all* the protocol and encoding rules around verification, not just calling a math primitive.
+Examples include: allow-listing acceptable algorithms, verifying you are checking the exact bytes that were signed (canonical encoding), rejecting malformed inputs, and validating parameters (e.g., public keys are on the curve and in the correct subgroup).
+Some schemes have extra malleability rules (e.g., “low-s” normalization in ECDSA) that must be enforced to prevent multiple signatures from verifying the same message.
+Most of these checks are easy to get subtly wrong, which is why you should rely on well-audited, high-level verification APIs.
+
 ## CTR Mode
 CTR (Counter) mode turns a block cipher like AES into a stream-cipher-like construction by encrypting a nonce/counter sequence to generate a keystream.
 That keystream is XORed with plaintext to produce ciphertext (and vice versa for decryption).
@@ -126,6 +155,11 @@ Nonce/counter values must never repeat under the same key or the keystream repea
 DES is a symmetric-key block cipher standardized in the 1970s by NIST.
 It uses a 56-bit key and operates on 64-bit blocks.
 Once a global standard, DES is now considered insecure due to its short key length, which makes it vulnerable to brute-force attacks.
+
+## Deterministic Nonce (RFC 6979)
+A deterministic nonce is a per-signature “random-looking” value that is derived deterministically from the private key and the message (and a hash function), rather than coming from an external RNG.
+RFC 6979 standardizes this approach for DSA/ECDSA-style signatures to reduce catastrophic failures caused by broken randomness at signing time.
+Deterministic nonces are not a free pass: side-channel leaks, repeated messages under the same key, or incorrect hashing/domain separation can still cause problems, and implementations must still be constant-time.
 
 ## Digital Signature
 A digital signature is a public-key mechanism that proves authenticity and integrity of a message.
@@ -142,6 +176,17 @@ Because of this, ECB is almost never used in practice and is considered unsafe.
 The ECDSA nonce is the per-signature secret scalar `k`.
 It must be unique and unpredictable for each signature; reuse (or bias) can leak the long-term private key.
 Many implementations use deterministic nonces (RFC 6979) to avoid relying on external randomness at signing time.
+
+## ECC (Elliptic-Curve Cryptography)
+Elliptic-curve cryptography (ECC) is a family of public-key systems built on groups derived from elliptic curves over finite fields.
+At a high level, ECC offers similar security to RSA with much smaller keys and often better performance (especially for signatures and key exchange).
+Common ECC building blocks include ECDH for key exchange and ECDSA/Ed25519 for signatures, using curves such as P-256 or Curve25519/Edwards25519.
+ECC security relies on the hardness of the elliptic-curve discrete logarithm problem for properly chosen curves and correctly implemented arithmetic.
+
+## Elliptic Curve
+In cryptography, an elliptic curve is a mathematical structure (an algebraic curve over a finite field) whose points form a group with a defined addition operation.
+ECC uses that group for public-key operations: a private key is a scalar, and a public key is the result of “multiplying” a base point by that scalar.
+Different standardized curves (e.g., NIST P-256, Curve25519, Edwards25519) come with different performance and implementation tradeoffs, but they all provide the same basic ingredient: a hard discrete-log problem in the chosen group.
 
 ## Environmental Noise
 Environmental noise refers to entropy gathered from external events (user input timing, device latencies, sensor readings).
@@ -315,6 +360,11 @@ PHC is commonly used to refer to the PHC (Password Hashing Competition) string f
 
 In practice, libraries often serialize “everything you need to verify later” into a single string: the algorithm identifier (e.g., `argon2id`), version, tunable parameters, salt, and the resulting hash/key material. Storing the library-produced encoded string (instead of inventing your own format) helps ensure correct parsing and future upgrades.
 
+## PKI Deployment
+PKI deployment refers to the operational reality of using certificates and certificate authorities (CAs) in production systems.
+It includes how certificates are issued and rotated, which roots/intermediates are trusted by clients, how revocation is handled (CRLs/OCSP), and what policies and lifetimes are enforced.
+These constraints can strongly influence algorithm choices: a theoretically “better” algorithm may be impractical if legacy clients, hardware, or enterprise environments don’t support it.
+
 ## PKCS7
 PKCS7 is a padding scheme used in block cipher encryption.
 It fills up the last block of plaintext with bytes all set to the value of the number of padding bytes added.
@@ -348,10 +398,26 @@ When the keystream is XORed with plaintext (and never reused with the same key/n
 For cryptography, prefer OS-backed randomness like `rand::rngs::OsRng` (via `getrandom`) rather than weak or seeded PRNGs.
 `rand` also provides sampling utilities, but cryptographic safety depends on choosing the right RNG.
 
+## RNG Foot-Gun
+An RNG foot-gun is a common mistake around randomness that accidentally breaks cryptography.
+Typical examples include: seeding a PRNG with time, using non-cryptographic PRNGs for secrets, reusing nonces, or generating “random” values from low-entropy inputs.
+These bugs are often silent and catastrophic (for example, ECDSA with a reused or biased nonce can leak the private key).
+The safe baseline is to rely on OS-provided CSPRNG APIs and well-audited libraries rather than rolling your own randomness.
+
 ## RSA (Rivest–Shamir–Adleman)
 RSA is one of the first public-key cryptosystems, invented in 1977 by Ron Rivest, Adi Shamir, and Leonard Adleman.
 It allows secure key exchange, encryption, and digital signatures by relying on the mathematical difficulty of factoring large integers.
 RSA keys are typically 2048 or 3072 bits today. While still widely used, modern protocols increasingly migrate to elliptic-curve cryptography (ECC) for better performance and smaller key sizes.
+
+## RSA-PSS
+RSA-PSS (Probabilistic Signature Scheme) is the modern, recommended padding/encoding method for RSA signatures (standardized in PKCS#1 v2).
+It hashes the message and uses a randomized “salt” plus a mask generation function (MGF1) to create a signature encoding designed to resist practical forgery attacks.
+When implemented correctly, RSA-PSS has strong security properties and is the baseline RSA signature mode for new designs.
+
+## Textbook RSA
+Textbook RSA is “raw” RSA applied directly to message integers with no standardized padding/encoding.
+It is deterministic and malleable, and it lacks the security properties required for real-world encryption or signatures.
+For encryption, use RSA-OAEP (or better: hybrid encryption with modern KEMs); for signatures, use RSA-PSS (or a modern ECC signature scheme).
 
 
 ## Salsa20
@@ -468,6 +534,11 @@ Token manipulation refers to tampering with authentication or session tokens to 
 Common targets include JWTs, cookies, and API keys where claims, signatures, or metadata may be altered or abused.
 Vulnerabilities often arise from weak verification, algorithm confusion, excessive token lifetime, or insecure storage.
 Defenses include strict signature validation, short expirations, audience checks, and secure token handling practices.
+
+## Verify-Before-Run Security
+Verify-before-run security is the practice of verifying cryptographic signatures on code and artifacts before you install or execute them.
+Examples include signed OS updates, signed packages in language ecosystems, container image signing, secure boot chains, and signed release binaries.
+The security goal is supply-chain integrity: even if an attacker can tamper with distribution channels, clients reject modified artifacts unless the attacker also has the signing key.
 
 ## WireGuard
 WireGuard is a modern VPN protocol and implementation designed by Jason A. Donenfeld.
