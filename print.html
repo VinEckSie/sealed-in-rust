@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-f1bbb6a2.js";
+            window.path_to_searchindex_js = "searchindex-e8df71e7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-8443953b.js"></script>
+        <script src="toc-c4ddee17.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -1884,6 +1884,231 @@ Rolling your own MAC + encryption is a mistake.</dd>
 </li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div>
+<h1 id="digital-signatures--rsa-ed25519-ecdsa"><a href="#digital-signatures--rsa-ed25519-ecdsa" class="header">Digital Signatures — RSA, Ed25519, ECDSA</a></h1>
+<h2 id="digital-signatures-ed25519-ecdsa-rsa"><a class="header" href="#digital-signatures-ed25519-ecdsa-rsa">Digital Signatures: Ed25519, ECDSA, RSA</a></h2>
+<blockquote>
+<p>🔐 <strong>Used in:</strong> TLS certificates, SSH, software updates, package signing, blockchains, identity systems</p>
+<p>✅ A digital signature is public proof that <em>this exact message</em> came from the holder of a private key.</p>
+</blockquote>
+<p>Digital signatures solve a problem encryption does not:</p>
+<ul>
+<li>Encryption answers: “Who can read this?”</li>
+<li>Signatures answer: “Who wrote this, and was it changed?”</li>
+</ul>
+<p>If you can verify a signature, you can trust:</p>
+<ul>
+<li>Authenticity: the signer had the private key</li>
+<li>Integrity: the message was not modified</li>
+</ul>
+<p>That is why signatures are the backbone of:</p>
+<ul>
+<li>certificate chains<sup class="footnote-reference" id="fr-certificate-chain-1"><a href="#footnote-certificate-chain">1</a></sup></li>
+<li>secure updates</li>
+<li>authenticated key exchange<sup class="footnote-reference" id="fr-authenticated-key-exchange-1"><a href="#footnote-authenticated-key-exchange">2</a></sup> (e.g., TLS handshake signatures)</li>
+<li>“verify before you run” security<sup class="footnote-reference" id="fr-verify-before-run-security-1"><a href="#footnote-verify-before-run-security">3</a></sup></li>
+</ul>
+<h2 id="the-basic-model-sign--verify"><a class="header" href="#the-basic-model-sign--verify">The Basic Model: sign → verify</a></h2>
+<p>In almost every signature scheme, you can think like this:</p>
+<pre><code class="language-text">signature = Sign(private_key, message)
+ok = Verify(public_key, message, signature)
+</code></pre>
+<p>Anyone can verify.
+Only the private-key holder can sign.</p>
+<h2 id="hash-then-sign-why-hashes-show-up-everywhere"><a class="header" href="#hash-then-sign-why-hashes-show-up-everywhere">Hash-Then-Sign (why hashes show up everywhere)</a></h2>
+<p>Signatures are almost never computed over “big messages” directly.</p>
+<p>Instead, protocols use:</p>
+<pre><code class="language-text">digest = Hash(message)
+signature = Sign(private_key, digest)
+</code></pre>
+<p>Why?</p>
+<ul>
+<li>Hashes are fixed-size (fast to sign, easy to transport)</li>
+<li>Hashes bind the <em>entire</em> message (one-bit change → totally different digest)</li>
+<li>Collision resistance<sup class="footnote-reference" id="fr-collision-1-1"><a href="#footnote-collision-1">4</a></sup> matters: signatures inherit the security of the hash</li>
+</ul>
+<p>This is why you’ll constantly see “SHA-256 + ECDSA” or “SHA-256 + RSA-PSS”.</p>
+<h2 id="ed25519-modern-default-for-new-systems"><a class="header" href="#ed25519-modern-default-for-new-systems">Ed25519: modern default for new systems</a></h2>
+<blockquote>
+<p><img src="images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/ed25519-dalek">ed25519-dalek</a></p>
+</blockquote>
+<p>Ed25519 is an elliptic-curve<sup class="footnote-reference" id="fr-elliptic-curve-1"><a href="#footnote-elliptic-curve">5</a></sup> signature scheme designed to be:</p>
+<ul>
+<li>fast</li>
+<li>hard to misuse</li>
+<li>deterministic (no fragile per-signature randomness like classic ECDSA)</li>
+</ul>
+<p>The name “Ed25519” refers to an Edwards-curve signature scheme using the Curve25519 family with a 255-bit prime field.</p>
+<p>It’s an excellent default when you control both ends of a system (new protocol, internal services, new products).</p>
+<p>🧪 <strong>Code Example: Ed25519</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L227">source code</a>)</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_ed25519_example() {
+    use ed25519_dalek::{Signer, SigningKey, Verifier};
+    use rand::rngs::OsRng;
+
+    let signing_key = SigningKey::generate(&amp;mut OsRng);
+    let verifying_key = signing_key.verifying_key();
+
+    let message = b"sealed-in-rust: ed25519 signature demo";
+    let signature = signing_key.sign(message);
+
+    verifying_key.verify(message, &amp;signature).unwrap();
+    println!("Ed25519 signature verified.");
+}
+<span class="boring">}</span></code></pre>
+<p>Output:</p>
+<pre><code class="language-text">Ed25519 signature verified.
+</code></pre>
+<blockquote>
+<p>🚨 <strong>Critical rule:</strong>
+Always verify signatures with the library’s verification API (constant-time comparisons<sup class="footnote-reference" id="fr-constant-time-comparison-1"><a href="#footnote-constant-time-comparison">6</a></sup> and correct checks<sup class="footnote-reference" id="fr-correct-check-1"><a href="#footnote-correct-check">7</a></sup>).
+Never compare signatures manually.</p>
+</blockquote>
+<h2 id="ecdsa-widely-deployed-easy-to-get-wrong"><a class="header" href="#ecdsa-widely-deployed-easy-to-get-wrong">ECDSA: widely deployed, easy to get wrong</a></h2>
+<blockquote>
+<p><img src="images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/p256">p256</a></p>
+</blockquote>
+<p>ECDSA is the “classic” elliptic-curve signature family used everywhere (TLS, hardware tokens, many enterprise systems).
+ECDSA stands for Elliptic Curve Digital Signature Algorithm (DSA adapted to elliptic curves).</p>
+<p>The danger in ECDSA is the per-signature secret nonce <code>k</code>:</p>
+<ul>
+<li>If <code>k</code> is ever reused → the private key can be recovered</li>
+<li>If <code>k</code> is biased/predictable → the private key can leak</li>
+</ul>
+<p>Many libraries use deterministic nonces<sup class="footnote-reference" id="fr-deterministic-nonce-1"><a href="#footnote-deterministic-nonce">8</a></sup> (RFC 6979) to reduce RNG foot-guns<sup class="footnote-reference" id="fr-rng-foot-gun-1"><a href="#footnote-rng-foot-gun">9</a></sup>, but the easiest safe rule is: use well-audited libraries and don’t customize nonce generation.</p>
+<p>🧪 <strong>Code Example: ECDSA</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L243">source code</a>)</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_ecdsa_example() {
+    use p256::ecdsa::Signature;
+    use p256::ecdsa::SigningKey;
+    use p256::ecdsa::signature::{Signer, Verifier};
+    use rand::rngs::OsRng;
+
+    let signing_key = SigningKey::random(&amp;mut OsRng);
+    let verifying_key = signing_key.verifying_key();
+
+    let message = b"sealed-in-rust: ecdsa(p-256) signature demo";
+    let signature: Signature = signing_key.sign(message);
+
+    verifying_key.verify(message, &amp;signature).unwrap();
+    println!("ECDSA P-256 signature verified.");
+}
+<span class="boring">}</span></code></pre>
+<p>Output:</p>
+<pre><code class="language-text">ECDSA P-256 signature verified.
+</code></pre>
+<h2 id="rsa-signatures-compatibility-workhorse-use-rsa-pss"><a class="header" href="#rsa-signatures-compatibility-workhorse-use-rsa-pss">RSA signatures: compatibility workhorse (use RSA-PSS)</a></h2>
+<blockquote>
+<p><img src="images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/rsa">rsa</a></p>
+</blockquote>
+<p>RSA is older than ECC<sup class="footnote-reference" id="fr-ECC-1"><a href="#footnote-ECC">10</a></sup>, but it’s still deeply embedded in the world (certificate ecosystems, legacy devices, enterprise).</p>
+<p>Important RSA signature reality:</p>
+<ul>
+<li>Raw RSA is not a signature scheme</li>
+<li>You must use a padding scheme designed for signatures</li>
+</ul>
+<p>Today, that means:</p>
+<ul>
+<li>Prefer RSA-PSS<sup class="footnote-reference" id="fr-rsa-pss-1"><a href="#footnote-rsa-pss">11</a></sup> (modern, safer)</li>
+<li>Avoid “textbook RSA”<sup class="footnote-reference" id="fr-textbook-rsa-1"><a href="#footnote-textbook-rsa">12</a></sup> entirely</li>
+</ul>
+<p>🧪 <strong>Code Example: RSA</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L261">source code</a>)</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_rsa_example() {
+    use rand::rngs::OsRng;
+    use rsa::RsaPrivateKey;
+    use rsa::pss::{BlindedSigningKey, VerifyingKey};
+    use rsa::signature::{RandomizedSigner, Verifier};
+    use sha2::Sha256;
+
+    let mut rng = OsRng;
+    let private_key = RsaPrivateKey::new(&amp;mut rng, 2048).unwrap();
+    let public_key = private_key.to_public_key();
+
+    let signing_key = BlindedSigningKey::&lt;Sha256&gt;::new(private_key);
+    let verifying_key = VerifyingKey::&lt;Sha256&gt;::new(public_key);
+
+    let message = b"sealed-in-rust: rsa-pss signature demo";
+    let signature = signing_key.sign_with_rng(&amp;mut rng, message);
+
+    verifying_key.verify(message, &amp;signature).unwrap();
+    println!("RSA-PSS signature verified.");
+}
+<span class="boring">}</span></code></pre>
+<p>Output:</p>
+<pre><code class="language-text">RSA-PSS signature verified.
+</code></pre>
+<h2 id="which-one-should-you-choose"><a class="header" href="#which-one-should-you-choose">Which one should you choose?</a></h2>
+<p>If you’re designing something new: Ed25519 is usually the best default</p>
+<p>If you need broad TLS<sup class="footnote-reference" id="fr-broad-tls-1"><a href="#footnote-broad-tls">13</a></sup> / enterprise / hardware ecosystem compatibility: ECDSA (P-256) is common</p>
+<p>If you must support legacy systems or existing PKI deployments<sup class="footnote-reference" id="fr-pki-deployment-1"><a href="#footnote-pki-deployment">14</a></sup>: RSA (prefer PSS) still shows up everywhere</p>
+<h2 id="common-mistakes-how-signatures-fail-in-real-life"><a class="header" href="#common-mistakes-how-signatures-fail-in-real-life">Common Mistakes (how signatures fail in real life)</a></h2>
+<ul>
+<li><strong>Confusing signatures with encryption</strong>: signing does not hide data; it proves origin and integrity.</li>
+<li><strong>Verifying the wrong thing</strong>: always verify the exact bytes that were signed (canonical encoding matters).</li>
+<li><strong>Algorithm confusion</strong>: never accept “any algorithm”; allow-list what you expect (JWT-style mistakes<sup class="footnote-reference" id="fr-jwt-1-1"><a href="#footnote-jwt-1">15</a></sup> are common)</li>
+<li><strong>Bad randomness (ECDSA)</strong>: nonces are a single-point-of-failure</li>
+<li><strong>Using outdated RSA modes</strong>: “RSA without padding” is broken; “RSA-PSS” is the modern baseline</li>
+</ul>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>Digital signatures are the public-key primitive for authenticity.
+Hash-then-sign binds <em>meaning</em>, not just bytes.</p>
+<p>Ed25519 is the modern default.</p>
+<p>ECDSA is everywhere but fragile around nonces.</p>
+<p>RSA is still common, but only with the right padding (prefer PSS).</p>
+</blockquote>
+<hr>
+<ol class="footnote-definition">
+<li id="footnote-certificate-chain">
+<p>Certificate chain: ordered set of certificates where each certificate is signed by the next/higher authority up to a trusted root, used to bind a public key to an identity. <a href="#certificate-chain">More</a> <a href="#fr-certificate-chain-1">↩</a></p>
+</li>
+<li id="footnote-authenticated-key-exchange">
+<p>Authenticated key exchange (AKE): key exchange that also authenticates the peer (via signatures, certificates, or PSKs), preventing active man-in-the-middle attacks. <a href="#authenticated-key-exchange-ake">More</a> <a href="#fr-authenticated-key-exchange-1">↩</a></p>
+</li>
+<li id="footnote-verify-before-run-security">
+<p>Verify-before-run security: practice of verifying a signature on code or artifacts (updates, packages, binaries) before installing or executing them. <a href="#verify-before-run-security">More</a> <a href="#fr-verify-before-run-security-1">↩</a></p>
+</li>
+<li id="footnote-collision-1">
+<p>Collision: two different inputs producing the same hash; collision resistance is critical for signature security. <a href="#collision">More</a> <a href="#fr-collision-1-1">↩</a></p>
+</li>
+<li id="footnote-elliptic-curve">
+<p>Elliptic curve: the mathematical structure used by ECC; curves over finite fields provide the group operations behind ECDSA and Ed25519. <a href="#elliptic-curve">More</a> <a href="#fr-elliptic-curve-1">↩</a></p>
+</li>
+<li id="footnote-constant-time-comparison">
+<p>Constant-time comparison: comparing values (MACs, signatures, hashes) without early exits so timing does not leak information about secret-dependent equality. <a href="#constant-time-comparison">More</a> <a href="#fr-constant-time-comparison-1">↩</a></p>
+</li>
+<li id="footnote-correct-check">
+<p>Correct checks (verification hygiene): strict signature verification rules like algorithm allow-lists, parameter validation, and rejecting malformed/malleable signatures. <a href="#correct-checks-signature-verification">More</a> <a href="#fr-correct-check-1">↩</a></p>
+</li>
+<li id="footnote-deterministic-nonce">
+<p>Deterministic nonce: deriving the per-signature nonce from the private key and message (e.g., RFC 6979) to reduce dependence on external randomness at signing time. <a href="#deterministic-nonce-rfc-6979">More</a> <a href="#fr-deterministic-nonce-1">↩</a></p>
+</li>
+<li id="footnote-rng-foot-gun">
+<p>RNG foot-gun: common randomness mistake (weak seeding, predictability, reuse) that silently breaks cryptography, especially nonce-based signatures like ECDSA. <a href="#rng-foot-gun">More</a> <a href="#fr-rng-foot-gun-1">↩</a></p>
+</li>
+<li id="footnote-ECC">
+<p>ECC (elliptic-curve cryptography): public-key cryptography built on elliptic-curve groups, typically giving smaller keys and faster operations than RSA at comparable security. <a href="#ecc-elliptic-curve-cryptography">More</a> <a href="#fr-ECC-1">↩</a></p>
+</li>
+<li id="footnote-rsa-pss">
+<p>RSA-PSS: the modern RSA signature padding scheme (“Probabilistic Signature Scheme”), designed to be robust against signature forgeries and recommended over older RSA signature modes. <a href="#rsa-pss">More</a> <a href="#fr-rsa-pss-1">↩</a></p>
+</li>
+<li id="footnote-textbook-rsa">
+<p>Textbook RSA: raw RSA without a padding scheme; deterministic and malleable, and therefore insecure for both encryption and signatures. <a href="#textbook-rsa">More</a> <a href="#fr-textbook-rsa-1">↩</a></p>
+</li>
+<li id="footnote-broad-tls">
+<p>Broad TLS compatibility: choosing signature algorithms/parameters that work across a wide range of TLS clients, servers, libraries, and devices (often constrained by legacy support). <a href="#broad-tls-compatibility">More</a> <a href="#fr-broad-tls-1">↩</a></p>
+</li>
+<li id="footnote-pki-deployment">
+<p>PKI deployment: the real-world operational certificate ecosystem (CAs, issuance policies, revocation, client trust stores) that shapes which algorithms can be used in practice. <a href="#pki-deployment">More</a> <a href="#fr-pki-deployment-1">↩</a></p>
+</li>
+<li id="footnote-jwt-1">
+<p>JWT (JSON Web Token): signed token format; secure usage requires strict algorithm allow-lists and proper signature verification. <a href="#jwt">More</a> <a href="#fr-jwt-1-1">↩</a></p>
+</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="key-derivation-functions--argon2-scrypt"><a href="#key-derivation-functions--argon2-scrypt" class="header">Key Derivation Functions — Argon2, scrypt</a></h1>
 <h2 id="key-derivation-functions-argon2-scrypt"><a class="header" href="#key-derivation-functions-argon2-scrypt">Key Derivation Functions: Argon2, scrypt</a></h2>
 <blockquote>
@@ -2373,6 +2598,11 @@ Security depends on proper identity verification, authorization enforcement, inp
 <h2 id="argon2"><a class="header" href="#argon2">Argon2</a></h2>
 <p>Argon2 is a memory-hard password hashing and key-derivation function (recommended variant: Argon2id).</p>
 <p>It was the winner of the Password Hashing Competition (PHC) in 2015 and is designed to make large-scale cracking expensive on GPUs/FPGAs/ASICs by requiring significant memory per guess. Argon2 exposes tunable parameters for memory, time (iterations), and parallelism so you can set costs appropriate for your environment and increase them over time.</p>
+<h2 id="authenticated-key-exchange-ake"><a class="header" href="#authenticated-key-exchange-ake">Authenticated Key Exchange (AKE)</a></h2>
+<p>An authenticated key exchange (AKE) is a protocol that establishes a shared secret <em>and</em> authenticates the peer you’re talking to.
+Plain Diffie–Hellman without authentication is vulnerable to active man-in-the-middle (MITM) attacks: an attacker can run separate handshakes with each side and sit in the middle.
+AKE prevents this by binding the handshake to an identity using a signature (public-key authentication), a certificate chain, or a pre-shared key (PSK).
+TLS is a common real-world example: the handshake negotiates keys and authenticates (at least) the server, typically via a certificate and signature over handshake transcripts.</p>
 <h2 id="aws-request-signin-sigv4"><a class="header" href="#aws-request-signin-sigv4">AWS Request Signin (SigV4)</a></h2>
 <p>AWS request signing is a cryptographic mechanism used to authenticate and authorize API requests to AWS services.
 Requests are canonicalized, hashed, and signed using HMAC with secret credentials and request metadata.
@@ -2384,6 +2614,10 @@ It builds on the cryptographic foundations of BLAKE2 while introducing a tree-ba
 BLAKE3 supports incremental hashing, keyed hashing, and extendable output (XOF) within a single unified API.
 It is well suited for content hashing, integrity verification, and high-throughput systems, though it is not standardized by NIST.
 BLAKE3 is considered secure and is increasingly adopted in modern software systems.</p>
+<h2 id="broad-tls-compatibility"><a class="header" href="#broad-tls-compatibility">Broad TLS Compatibility</a></h2>
+<p>Broad TLS compatibility means choosing algorithms and parameters that work across a wide range of TLS clients, servers, libraries, and devices.
+In practice, this often means sticking to widely supported curves and signature algorithms (and sometimes accepting legacy constraints), because you do not control what old devices or enterprise middleboxes can negotiate.
+Compatibility is a deployment constraint, not a security goal by itself: you still want to choose the strongest option that is <em>supported by your actual client population</em> and plan for algorithm agility over time.</p>
 <h2 id="brute-force"><a class="header" href="#brute-force">Brute Force</a></h2>
 <p>A brute-force attack is an exhaustive search that tries all possible inputs or keys until the correct one is found.
 Its effectiveness depends entirely on the size of the search space and the speed of computation.
@@ -2430,6 +2664,21 @@ Constant-time techniques are essential for secure cryptographic implementations.
 <p>A CSPRNG is a deterministic generator that expands a small amount of high entropy into large amounts of pseudorandom output.
 It is designed so outputs are computationally indistinguishable from random and resistant to state-recovery attacks.
 In practice, you rely on well-audited CSPRNGs seeded by the operating system.</p>
+<h2 id="certificate-chain"><a class="header" href="#certificate-chain">Certificate Chain</a></h2>
+<p>A certificate chain is an ordered set of certificates used to justify trust in a leaf (end-entity) certificate.
+Typically it is: leaf certificate → one or more intermediate CA certificates → a root CA certificate that is trusted via a local trust store (not via the network).
+Validating the chain means checking each signature, validity period, name constraints, key usage/extended key usage, policy rules, and (when applicable) revocation status (CRLs/OCSP).
+In TLS, certificate chains bind a public key to a server identity (e.g., a DNS name) so clients can authenticate who they are connecting to.</p>
+<h2 id="constant-time-comparison"><a class="header" href="#constant-time-comparison">Constant-Time Comparison</a></h2>
+<p>A constant-time comparison checks whether two values are equal without leaking where they differ via timing.
+The key rule is “no early exits”: the runtime should not depend on the first mismatching byte, which would allow attackers to learn information by measuring response time.
+This is especially important when comparing MAC tags, authentication tokens, password hashes, and other verifier-side secrets.
+Use library-provided constant-time equality helpers rather than writing your own comparisons.</p>
+<h2 id="correct-checks-signature-verification"><a class="header" href="#correct-checks-signature-verification">Correct Checks (Signature Verification)</a></h2>
+<p>“Correct checks” in signature verification means enforcing <em>all</em> the protocol and encoding rules around verification, not just calling a math primitive.
+Examples include: allow-listing acceptable algorithms, verifying you are checking the exact bytes that were signed (canonical encoding), rejecting malformed inputs, and validating parameters (e.g., public keys are on the curve and in the correct subgroup).
+Some schemes have extra malleability rules (e.g., “low-s” normalization in ECDSA) that must be enforced to prevent multiple signatures from verifying the same message.
+Most of these checks are easy to get subtly wrong, which is why you should rely on well-audited, high-level verification APIs.</p>
 <h2 id="ctr-mode"><a class="header" href="#ctr-mode">CTR Mode</a></h2>
 <p>CTR (Counter) mode turns a block cipher like AES into a stream-cipher-like construction by encrypting a nonce/counter sequence to generate a keystream.
 That keystream is XORed with plaintext to produce ciphertext (and vice versa for decryption).
@@ -2439,6 +2688,10 @@ Nonce/counter values must never repeat under the same key or the keystream repea
 <p>DES is a symmetric-key block cipher standardized in the 1970s by NIST.
 It uses a 56-bit key and operates on 64-bit blocks.
 Once a global standard, DES is now considered insecure due to its short key length, which makes it vulnerable to brute-force attacks.</p>
+<h2 id="deterministic-nonce-rfc-6979"><a class="header" href="#deterministic-nonce-rfc-6979">Deterministic Nonce (RFC 6979)</a></h2>
+<p>A deterministic nonce is a per-signature “random-looking” value that is derived deterministically from the private key and the message (and a hash function), rather than coming from an external RNG.
+RFC 6979 standardizes this approach for DSA/ECDSA-style signatures to reduce catastrophic failures caused by broken randomness at signing time.
+Deterministic nonces are not a free pass: side-channel leaks, repeated messages under the same key, or incorrect hashing/domain separation can still cause problems, and implementations must still be constant-time.</p>
 <h2 id="digital-signature"><a class="header" href="#digital-signature">Digital Signature</a></h2>
 <p>A digital signature is a public-key mechanism that proves authenticity and integrity of a message.
 The signer uses a private key to produce the signature; anyone with the corresponding public key can verify it.
@@ -2452,6 +2705,15 @@ Because of this, ECB is almost never used in practice and is considered unsafe.<
 <p>The ECDSA nonce is the per-signature secret scalar <code>k</code>.
 It must be unique and unpredictable for each signature; reuse (or bias) can leak the long-term private key.
 Many implementations use deterministic nonces (RFC 6979) to avoid relying on external randomness at signing time.</p>
+<h2 id="ecc-elliptic-curve-cryptography"><a class="header" href="#ecc-elliptic-curve-cryptography">ECC (Elliptic-Curve Cryptography)</a></h2>
+<p>Elliptic-curve cryptography (ECC) is a family of public-key systems built on groups derived from elliptic curves over finite fields.
+At a high level, ECC offers similar security to RSA with much smaller keys and often better performance (especially for signatures and key exchange).
+Common ECC building blocks include ECDH for key exchange and ECDSA/Ed25519 for signatures, using curves such as P-256 or Curve25519/Edwards25519.
+ECC security relies on the hardness of the elliptic-curve discrete logarithm problem for properly chosen curves and correctly implemented arithmetic.</p>
+<h2 id="elliptic-curve"><a class="header" href="#elliptic-curve">Elliptic Curve</a></h2>
+<p>In cryptography, an elliptic curve is a mathematical structure (an algebraic curve over a finite field) whose points form a group with a defined addition operation.
+ECC uses that group for public-key operations: a private key is a scalar, and a public key is the result of “multiplying” a base point by that scalar.
+Different standardized curves (e.g., NIST P-256, Curve25519, Edwards25519) come with different performance and implementation tradeoffs, but they all provide the same basic ingredient: a hard discrete-log problem in the chosen group.</p>
 <h2 id="environmental-noise"><a class="header" href="#environmental-noise">Environmental Noise</a></h2>
 <p>Environmental noise refers to entropy gathered from external events (user input timing, device latencies, sensor readings).
 The OS mixes these sources into its entropy pool to help seed and reseed its CSPRNG.
@@ -2586,6 +2848,10 @@ Salts do not need secrecy, but they must be unique and randomly generated per pa
 <h2 id="phc"><a class="header" href="#phc">PHC</a></h2>
 <p>PHC is commonly used to refer to the PHC (Password Hashing Competition) string format for password hashes and password-derived keys.</p>
 <p>In practice, libraries often serialize “everything you need to verify later” into a single string: the algorithm identifier (e.g., <code>argon2id</code>), version, tunable parameters, salt, and the resulting hash/key material. Storing the library-produced encoded string (instead of inventing your own format) helps ensure correct parsing and future upgrades.</p>
+<h2 id="pki-deployment"><a class="header" href="#pki-deployment">PKI Deployment</a></h2>
+<p>PKI deployment refers to the operational reality of using certificates and certificate authorities (CAs) in production systems.
+It includes how certificates are issued and rotated, which roots/intermediates are trusted by clients, how revocation is handled (CRLs/OCSP), and what policies and lifetimes are enforced.
+These constraints can strongly influence algorithm choices: a theoretically “better” algorithm may be impractical if legacy clients, hardware, or enterprise environments don’t support it.</p>
 <h2 id="pkcs7"><a class="header" href="#pkcs7">PKCS7</a></h2>
 <p>PKCS7 is a padding scheme used in block cipher encryption.
 It fills up the last block of plaintext with bytes all set to the value of the number of padding bytes added.
@@ -2613,10 +2879,23 @@ When the keystream is XORed with plaintext (and never reused with the same key/n
 <p><code>rand</code> is the standard Rust ecosystem crate for randomness traits (<code>RngCore</code>), generators, and distributions.
 For cryptography, prefer OS-backed randomness like <code>rand::rngs::OsRng</code> (via <code>getrandom</code>) rather than weak or seeded PRNGs.
 <code>rand</code> also provides sampling utilities, but cryptographic safety depends on choosing the right RNG.</p>
+<h2 id="rng-foot-gun"><a class="header" href="#rng-foot-gun">RNG Foot-Gun</a></h2>
+<p>An RNG foot-gun is a common mistake around randomness that accidentally breaks cryptography.
+Typical examples include: seeding a PRNG with time, using non-cryptographic PRNGs for secrets, reusing nonces, or generating “random” values from low-entropy inputs.
+These bugs are often silent and catastrophic (for example, ECDSA with a reused or biased nonce can leak the private key).
+The safe baseline is to rely on OS-provided CSPRNG APIs and well-audited libraries rather than rolling your own randomness.</p>
 <h2 id="rsa-rivestshamiradleman"><a class="header" href="#rsa-rivestshamiradleman">RSA (Rivest–Shamir–Adleman)</a></h2>
 <p>RSA is one of the first public-key cryptosystems, invented in 1977 by Ron Rivest, Adi Shamir, and Leonard Adleman.
 It allows secure key exchange, encryption, and digital signatures by relying on the mathematical difficulty of factoring large integers.
 RSA keys are typically 2048 or 3072 bits today. While still widely used, modern protocols increasingly migrate to elliptic-curve cryptography (ECC) for better performance and smaller key sizes.</p>
+<h2 id="rsa-pss"><a class="header" href="#rsa-pss">RSA-PSS</a></h2>
+<p>RSA-PSS (Probabilistic Signature Scheme) is the modern, recommended padding/encoding method for RSA signatures (standardized in PKCS#1 v2).
+It hashes the message and uses a randomized “salt” plus a mask generation function (MGF1) to create a signature encoding designed to resist practical forgery attacks.
+When implemented correctly, RSA-PSS has strong security properties and is the baseline RSA signature mode for new designs.</p>
+<h2 id="textbook-rsa"><a class="header" href="#textbook-rsa">Textbook RSA</a></h2>
+<p>Textbook RSA is “raw” RSA applied directly to message integers with no standardized padding/encoding.
+It is deterministic and malleable, and it lacks the security properties required for real-world encryption or signatures.
+For encryption, use RSA-OAEP (or better: hybrid encryption with modern KEMs); for signatures, use RSA-PSS (or a modern ECC signature scheme).</p>
 <h2 id="salsa20"><a class="header" href="#salsa20">Salsa20</a></h2>
 <p>Salsa20 is a stream cipher designed by Daniel J. Bernstein as part of the eSTREAM project.
 It uses simple add-rotate-xor (ARX) operations to generate a pseudorandom keystream from a key, nonce, and counter, making it fast and easy to implement on a wide range of hardware.
@@ -2709,6 +2988,10 @@ Correct key/nonce management and strict authentication failure handling are esse
 Common targets include JWTs, cookies, and API keys where claims, signatures, or metadata may be altered or abused.
 Vulnerabilities often arise from weak verification, algorithm confusion, excessive token lifetime, or insecure storage.
 Defenses include strict signature validation, short expirations, audience checks, and secure token handling practices.</p>
+<h2 id="verify-before-run-security"><a class="header" href="#verify-before-run-security">Verify-Before-Run Security</a></h2>
+<p>Verify-before-run security is the practice of verifying cryptographic signatures on code and artifacts before you install or execute them.
+Examples include signed OS updates, signed packages in language ecosystems, container image signing, secure boot chains, and signed release binaries.
+The security goal is supply-chain integrity: even if an attacker can tamper with distribution channels, clients reject modified artifacts unless the attacker also has the signing key.</p>
 <h2 id="wireguard"><a class="header" href="#wireguard">WireGuard</a></h2>
 <p>WireGuard is a modern VPN protocol and implementation designed by Jason A. Donenfeld.
 It focuses on simplicity, performance, and a small codebase, in contrast to traditional VPN stacks like IPsec and OpenVPN.

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>How to Use This Book - Sealed in Rust — Domain-Driven Edition</title>
+        <title>Digital Signatures — RSA, Ed25519, ECDSA - Sealed in Rust — Domain-Driven Edition</title>
 
 
         <!-- Custom HTML head -->
@@ -174,69 +174,239 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="how-to-use-this-book"><a class="header" href="#how-to-use-this-book">How to Use This Book</a></h1>
-<p>This book is designed to be practical, modular, and domain-focused.<br>You can read it front to back, or jump directly to the domains and primitives most relevant to your work.</p>
-<h2 id="structure"><a class="header" href="#structure">Structure</a></h2>
-<p>The book is organized into four major parts:</p>
-<p><strong>Foundations</strong> — Why Rust is uniquely suited for secure cryptographic engineering<br><strong>Primitives</strong> — The core building blocks of cryptography, with Rust-focused usage and implementation<br><strong>Applied Domains</strong> — Real-world systems and how they use cryptography in practice (blockchain, defense, aerospace, medical, infrastructure, etc.)<br><strong>Crate Building</strong> — How to architect, test, audit, and publish your own cryptographic crate in Rust</p>
-<h3 id=""><a class="header" href="#"></a></h3>
-<p>Each chapter includes:</p>
+                        <h2 id="digital-signatures-ed25519-ecdsa-rsa"><a class="header" href="#digital-signatures-ed25519-ecdsa-rsa">Digital Signatures: Ed25519, ECDSA, RSA</a></h2>
+<blockquote>
+<p>🔐 <strong>Used in:</strong> TLS certificates, SSH, software updates, package signing, blockchains, identity systems</p>
+<p>✅ A digital signature is public proof that <em>this exact message</em> came from the holder of a private key.</p>
+</blockquote>
+<p>Digital signatures solve a problem encryption does not:</p>
 <ul>
-<li>Plain-language explanations</li>
-<li>Rust code examples using community crates</li>
-<li>Security insights and common pitfalls</li>
-<li>Domain-specific applications</li>
+<li>Encryption answers: “Who can read this?”</li>
+<li>Signatures answer: “Who wrote this, and was it changed?”</li>
 </ul>
-<h2 id="code--examples"><a class="header" href="#code--examples">Code &amp; Examples</a></h2>
-<p>This book includes real, runnable Rust code for nearly every chapter.</p>
+<p>If you can verify a signature, you can trust:</p>
 <ul>
-<li>All examples are written for <strong>Rust 2024</strong></li>
-<li>You’ll need a working Rust toolchain (<code>rustup</code>, <code>cargo</code>)</li>
-<li>Each chapter’s code is provided as a separate <strong>Cargo example</strong>.</li>
-<li>Examples live inside the companion repository: <a href="https://github.com/VinEckSie/sealed-in-rust/tree/main/rust_crypto_book_code">sealed-in-rust</a></li>
+<li>Authenticity: the signer had the private key</li>
+<li>Integrity: the message was not modified</li>
 </ul>
-<p>You can run them locally without touching production crates or complex setups:</p>
-<pre><code class="language-bash">git clone https://github.com/VinEckSie/sealed-in-rust.git
-cd sealed-in-rust/rust_crypto_book_code
-cargo run --example aes_cbc //Replace aes_cbc with any chapter example you want to try
+<p>That is why signatures are the backbone of:</p>
+<ul>
+<li>certificate chains<sup class="footnote-reference" id="fr-certificate-chain-1"><a href="#footnote-certificate-chain">1</a></sup></li>
+<li>secure updates</li>
+<li>authenticated key exchange<sup class="footnote-reference" id="fr-authenticated-key-exchange-1"><a href="#footnote-authenticated-key-exchange">2</a></sup> (e.g., TLS handshake signatures)</li>
+<li>“verify before you run” security<sup class="footnote-reference" id="fr-verify-before-run-security-1"><a href="#footnote-verify-before-run-security">3</a></sup></li>
+</ul>
+<h2 id="the-basic-model-sign--verify"><a class="header" href="#the-basic-model-sign--verify">The Basic Model: sign → verify</a></h2>
+<p>In almost every signature scheme, you can think like this:</p>
+<pre><code class="language-text">signature = Sign(private_key, message)
+ok = Verify(public_key, message, signature)
+</code></pre>
+<p>Anyone can verify.
+Only the private-key holder can sign.</p>
+<h2 id="hash-then-sign-why-hashes-show-up-everywhere"><a class="header" href="#hash-then-sign-why-hashes-show-up-everywhere">Hash-Then-Sign (why hashes show up everywhere)</a></h2>
+<p>Signatures are almost never computed over “big messages” directly.</p>
+<p>Instead, protocols use:</p>
+<pre><code class="language-text">digest = Hash(message)
+signature = Sign(private_key, digest)
+</code></pre>
+<p>Why?</p>
+<ul>
+<li>Hashes are fixed-size (fast to sign, easy to transport)</li>
+<li>Hashes bind the <em>entire</em> message (one-bit change → totally different digest)</li>
+<li>Collision resistance<sup class="footnote-reference" id="fr-collision-1"><a href="#footnote-collision">4</a></sup> matters: signatures inherit the security of the hash</li>
+</ul>
+<p>This is why you’ll constantly see “SHA-256 + ECDSA” or “SHA-256 + RSA-PSS”.</p>
+<h2 id="ed25519-modern-default-for-new-systems"><a class="header" href="#ed25519-modern-default-for-new-systems">Ed25519: modern default for new systems</a></h2>
+<blockquote>
+<p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/ed25519-dalek">ed25519-dalek</a></p>
+</blockquote>
+<p>Ed25519 is an elliptic-curve<sup class="footnote-reference" id="fr-elliptic-curve-1"><a href="#footnote-elliptic-curve">5</a></sup> signature scheme designed to be:</p>
+<ul>
+<li>fast</li>
+<li>hard to misuse</li>
+<li>deterministic (no fragile per-signature randomness like classic ECDSA)</li>
+</ul>
+<p>The name “Ed25519” refers to an Edwards-curve signature scheme using the Curve25519 family with a 255-bit prime field.</p>
+<p>It’s an excellent default when you control both ends of a system (new protocol, internal services, new products).</p>
+<p>🧪 <strong>Code Example: Ed25519</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L227">source code</a>)</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_ed25519_example() {
+    use ed25519_dalek::{Signer, SigningKey, Verifier};
+    use rand::rngs::OsRng;
+
+    let signing_key = SigningKey::generate(&amp;mut OsRng);
+    let verifying_key = signing_key.verifying_key();
+
+    let message = b"sealed-in-rust: ed25519 signature demo";
+    let signature = signing_key.sign(message);
+
+    verifying_key.verify(message, &amp;signature).unwrap();
+    println!("Ed25519 signature verified.");
+}
+<span class="boring">}</span></code></pre>
+<p>Output:</p>
+<pre><code class="language-text">Ed25519 signature verified.
 </code></pre>
 <blockquote>
-<p>⚠️ <strong>Note on Playground Limitations:</strong><br>Some examples in this book use no_run or ignore markers when rendered online, because external crates like aes, cbc, or rsa cannot be compiled in-browser.
-All examples work locally, and full source code is always included.</p>
+<p>🚨 <strong>Critical rule:</strong>
+Always verify signatures with the library’s verification API (constant-time comparisons<sup class="footnote-reference" id="fr-constant-time-comparison-1"><a href="#footnote-constant-time-comparison">6</a></sup> and correct checks<sup class="footnote-reference" id="fr-correct-check-1"><a href="#footnote-correct-check">7</a></sup>).
+Never compare signatures manually.</p>
 </blockquote>
+<h2 id="ecdsa-widely-deployed-easy-to-get-wrong"><a class="header" href="#ecdsa-widely-deployed-easy-to-get-wrong">ECDSA: widely deployed, easy to get wrong</a></h2>
 <blockquote>
-<p>💡 These examples are didactic and minimal by design.
-They illustrate cryptographic concepts — not replace mature, production-ready libraries.</p>
+<p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/p256">p256</a></p>
+</blockquote>
+<p>ECDSA is the “classic” elliptic-curve signature family used everywhere (TLS, hardware tokens, many enterprise systems).
+ECDSA stands for Elliptic Curve Digital Signature Algorithm (DSA adapted to elliptic curves).</p>
+<p>The danger in ECDSA is the per-signature secret nonce <code>k</code>:</p>
+<ul>
+<li>If <code>k</code> is ever reused → the private key can be recovered</li>
+<li>If <code>k</code> is biased/predictable → the private key can leak</li>
+</ul>
+<p>Many libraries use deterministic nonces<sup class="footnote-reference" id="fr-deterministic-nonce-1"><a href="#footnote-deterministic-nonce">8</a></sup> (RFC 6979) to reduce RNG foot-guns<sup class="footnote-reference" id="fr-rng-foot-gun-1"><a href="#footnote-rng-foot-gun">9</a></sup>, but the easiest safe rule is: use well-audited libraries and don’t customize nonce generation.</p>
+<p>🧪 <strong>Code Example: ECDSA</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L243">source code</a>)</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_ecdsa_example() {
+    use p256::ecdsa::Signature;
+    use p256::ecdsa::SigningKey;
+    use p256::ecdsa::signature::{Signer, Verifier};
+    use rand::rngs::OsRng;
+
+    let signing_key = SigningKey::random(&amp;mut OsRng);
+    let verifying_key = signing_key.verifying_key();
+
+    let message = b"sealed-in-rust: ecdsa(p-256) signature demo";
+    let signature: Signature = signing_key.sign(message);
+
+    verifying_key.verify(message, &amp;signature).unwrap();
+    println!("ECDSA P-256 signature verified.");
+}
+<span class="boring">}</span></code></pre>
+<p>Output:</p>
+<pre><code class="language-text">ECDSA P-256 signature verified.
+</code></pre>
+<h2 id="rsa-signatures-compatibility-workhorse-use-rsa-pss"><a class="header" href="#rsa-signatures-compatibility-workhorse-use-rsa-pss">RSA signatures: compatibility workhorse (use RSA-PSS)</a></h2>
+<blockquote>
+<p><img src="../images/cargo.png" alt="My Crate Logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crate used: <a href="https://crates.io/crates/rsa">rsa</a></p>
+</blockquote>
+<p>RSA is older than ECC<sup class="footnote-reference" id="fr-ECC-1"><a href="#footnote-ECC">10</a></sup>, but it’s still deeply embedded in the world (certificate ecosystems, legacy devices, enterprise).</p>
+<p>Important RSA signature reality:</p>
+<ul>
+<li>Raw RSA is not a signature scheme</li>
+<li>You must use a padding scheme designed for signatures</li>
+</ul>
+<p>Today, that means:</p>
+<ul>
+<li>Prefer RSA-PSS<sup class="footnote-reference" id="fr-rsa-pss-1"><a href="#footnote-rsa-pss">11</a></sup> (modern, safer)</li>
+<li>Avoid “textbook RSA”<sup class="footnote-reference" id="fr-textbook-rsa-1"><a href="#footnote-textbook-rsa">12</a></sup> entirely</li>
+</ul>
+<p>🧪 <strong>Code Example: RSA</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/src/lib.rs#L261">source code</a>)</p>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_rsa_example() {
+    use rand::rngs::OsRng;
+    use rsa::RsaPrivateKey;
+    use rsa::pss::{BlindedSigningKey, VerifyingKey};
+    use rsa::signature::{RandomizedSigner, Verifier};
+    use sha2::Sha256;
+
+    let mut rng = OsRng;
+    let private_key = RsaPrivateKey::new(&amp;mut rng, 2048).unwrap();
+    let public_key = private_key.to_public_key();
+
+    let signing_key = BlindedSigningKey::&lt;Sha256&gt;::new(private_key);
+    let verifying_key = VerifyingKey::&lt;Sha256&gt;::new(public_key);
+
+    let message = b"sealed-in-rust: rsa-pss signature demo";
+    let signature = signing_key.sign_with_rng(&amp;mut rng, message);
+
+    verifying_key.verify(message, &amp;signature).unwrap();
+    println!("RSA-PSS signature verified.");
+}
+<span class="boring">}</span></code></pre>
+<p>Output:</p>
+<pre><code class="language-text">RSA-PSS signature verified.
+</code></pre>
+<h2 id="which-one-should-you-choose"><a class="header" href="#which-one-should-you-choose">Which one should you choose?</a></h2>
+<p>If you’re designing something new: Ed25519 is usually the best default</p>
+<p>If you need broad TLS<sup class="footnote-reference" id="fr-broad-tls-1"><a href="#footnote-broad-tls">13</a></sup> / enterprise / hardware ecosystem compatibility: ECDSA (P-256) is common</p>
+<p>If you must support legacy systems or existing PKI deployments<sup class="footnote-reference" id="fr-pki-deployment-1"><a href="#footnote-pki-deployment">14</a></sup>: RSA (prefer PSS) still shows up everywhere</p>
+<h2 id="common-mistakes-how-signatures-fail-in-real-life"><a class="header" href="#common-mistakes-how-signatures-fail-in-real-life">Common Mistakes (how signatures fail in real life)</a></h2>
+<ul>
+<li><strong>Confusing signatures with encryption</strong>: signing does not hide data; it proves origin and integrity.</li>
+<li><strong>Verifying the wrong thing</strong>: always verify the exact bytes that were signed (canonical encoding matters).</li>
+<li><strong>Algorithm confusion</strong>: never accept “any algorithm”; allow-list what you expect (JWT-style mistakes<sup class="footnote-reference" id="fr-jwt-1"><a href="#footnote-jwt">15</a></sup> are common)</li>
+<li><strong>Bad randomness (ECDSA)</strong>: nonces are a single-point-of-failure</li>
+<li><strong>Using outdated RSA modes</strong>: “RSA without padding” is broken; “RSA-PSS” is the modern baseline</li>
+</ul>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>Digital signatures are the public-key primitive for authenticity.
+Hash-then-sign binds <em>meaning</em>, not just bytes.</p>
+<p>Ed25519 is the modern default.</p>
+<p>ECDSA is everywhere but fragile around nonces.</p>
+<p>RSA is still common, but only with the right padding (prefer PSS).</p>
 </blockquote>
 <hr>
-<h2 id="non-linear-reading"><a class="header" href="#non-linear-reading">Non-linear Reading</a></h2>
-<p>This book doesn’t assume linear progress.</p>
-<ul>
-<li>Want to build a secure file encryption tool? <strong>Symmetric Ciphers</strong> + <strong>Secure Infrastructure</strong></li>
-<li>Curious about smart contracts? Go directly to <strong>ECC</strong> and <strong>Blockchain &amp; Web3</strong></li>
-<li>Working on embedded firmware? Check out <strong>Ascon</strong>, <strong>PRESENT</strong>, and <strong>Defense &amp; Aerospace</strong></li>
-</ul>
-<p>Each domain chapter reminds you of the necessary primitives — like a map, not a locked path.</p>
-<h2 id="contributing-feedback--issues"><a class="header" href="#contributing-feedback--issues">Contributing, Feedback, &amp; Issues</a></h2>
-<p>This book is a living project.</p>
-<ul>
-<li>Errors? Open an issue or PR on the <a href="https://github.com/VinEckSie/sealed-in-rust">GitHub repo</a></li>
-<li>Suggestions? You’re welcome to share ideas for domains, examples, or improvements</li>
-<li>Contributions to the examples repo are also welcome</li>
-</ul>
-<h2 id="final-note"><a class="header" href="#final-note">Final Note</a></h2>
-<p>This is not a cryptography textbook — it’s a cryptographic engineering manual.<br>By the end, you’ll not only understand the primitives, you’ll know how to use them to secure real systems — in Rust, by design, not by accident.</p>
-<p>Let’s begin.</p>
+<ol class="footnote-definition">
+<li id="footnote-certificate-chain">
+<p>Certificate chain: ordered set of certificates where each certificate is signed by the next/higher authority up to a trusted root, used to bind a public key to an identity. <a href="../99-appendices/99-01-glossary.html#certificate-chain">More</a> <a href="#fr-certificate-chain-1">↩</a></p>
+</li>
+<li id="footnote-authenticated-key-exchange">
+<p>Authenticated key exchange (AKE): key exchange that also authenticates the peer (via signatures, certificates, or PSKs), preventing active man-in-the-middle attacks. <a href="../99-appendices/99-01-glossary.html#authenticated-key-exchange-ake">More</a> <a href="#fr-authenticated-key-exchange-1">↩</a></p>
+</li>
+<li id="footnote-verify-before-run-security">
+<p>Verify-before-run security: practice of verifying a signature on code or artifacts (updates, packages, binaries) before installing or executing them. <a href="../99-appendices/99-01-glossary.html#verify-before-run-security">More</a> <a href="#fr-verify-before-run-security-1">↩</a></p>
+</li>
+<li id="footnote-collision">
+<p>Collision: two different inputs producing the same hash; collision resistance is critical for signature security. <a href="../99-appendices/99-01-glossary.html#collision">More</a> <a href="#fr-collision-1">↩</a></p>
+</li>
+<li id="footnote-elliptic-curve">
+<p>Elliptic curve: the mathematical structure used by ECC; curves over finite fields provide the group operations behind ECDSA and Ed25519. <a href="../99-appendices/99-01-glossary.html#elliptic-curve">More</a> <a href="#fr-elliptic-curve-1">↩</a></p>
+</li>
+<li id="footnote-constant-time-comparison">
+<p>Constant-time comparison: comparing values (MACs, signatures, hashes) without early exits so timing does not leak information about secret-dependent equality. <a href="../99-appendices/99-01-glossary.html#constant-time-comparison">More</a> <a href="#fr-constant-time-comparison-1">↩</a></p>
+</li>
+<li id="footnote-correct-check">
+<p>Correct checks (verification hygiene): strict signature verification rules like algorithm allow-lists, parameter validation, and rejecting malformed/malleable signatures. <a href="../99-appendices/99-01-glossary.html#correct-checks-signature-verification">More</a> <a href="#fr-correct-check-1">↩</a></p>
+</li>
+<li id="footnote-deterministic-nonce">
+<p>Deterministic nonce: deriving the per-signature nonce from the private key and message (e.g., RFC 6979) to reduce dependence on external randomness at signing time. <a href="../99-appendices/99-01-glossary.html#deterministic-nonce-rfc-6979">More</a> <a href="#fr-deterministic-nonce-1">↩</a></p>
+</li>
+<li id="footnote-rng-foot-gun">
+<p>RNG foot-gun: common randomness mistake (weak seeding, predictability, reuse) that silently breaks cryptography, especially nonce-based signatures like ECDSA. <a href="../99-appendices/99-01-glossary.html#rng-foot-gun">More</a> <a href="#fr-rng-foot-gun-1">↩</a></p>
+</li>
+<li id="footnote-ECC">
+<p>ECC (elliptic-curve cryptography): public-key cryptography built on elliptic-curve groups, typically giving smaller keys and faster operations than RSA at comparable security. <a href="../99-appendices/99-01-glossary.html#ecc-elliptic-curve-cryptography">More</a> <a href="#fr-ECC-1">↩</a></p>
+</li>
+<li id="footnote-rsa-pss">
+<p>RSA-PSS: the modern RSA signature padding scheme (“Probabilistic Signature Scheme”), designed to be robust against signature forgeries and recommended over older RSA signature modes. <a href="../99-appendices/99-01-glossary.html#rsa-pss">More</a> <a href="#fr-rsa-pss-1">↩</a></p>
+</li>
+<li id="footnote-textbook-rsa">
+<p>Textbook RSA: raw RSA without a padding scheme; deterministic and malleable, and therefore insecure for both encryption and signatures. <a href="../99-appendices/99-01-glossary.html#textbook-rsa">More</a> <a href="#fr-textbook-rsa-1">↩</a></p>
+</li>
+<li id="footnote-broad-tls">
+<p>Broad TLS compatibility: choosing signature algorithms/parameters that work across a wide range of TLS clients, servers, libraries, and devices (often constrained by legacy support). <a href="../99-appendices/99-01-glossary.html#broad-tls-compatibility">More</a> <a href="#fr-broad-tls-1">↩</a></p>
+</li>
+<li id="footnote-pki-deployment">
+<p>PKI deployment: the real-world operational certificate ecosystem (CAs, issuance policies, revocation, client trust stores) that shapes which algorithms can be used in practice. <a href="../99-appendices/99-01-glossary.html#pki-deployment">More</a> <a href="#fr-pki-deployment-1">↩</a></p>
+</li>
+<li id="footnote-jwt">
+<p>JWT (JSON Web Token): signed token format; secure usage requires strict algorithm allow-lists and proper signature verification. <a href="../99-appendices/99-01-glossary.html#jwt">More</a> <a href="#fr-jwt-1">↩</a></p>
+</li>
+</ol>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../00-Intro/introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../02-core-primitives/02-03-mac-aead.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../01-foundations/01-01-cryptography.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../02-core-primitives/02-06-key-derivation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -246,11 +416,11 @@ They illustrate cryptographic concepts — not replace mature, production-ready 
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../00-Intro/introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../02-core-primitives/02-03-mac-aead.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../01-foundations/01-01-cryptography.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../02-core-primitives/02-06-key-derivation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
