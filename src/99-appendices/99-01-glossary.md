@@ -66,6 +66,11 @@ BLAKE3 supports incremental hashing, keyed hashing, and extendable output (XOF) 
 It is well suited for content hashing, integrity verification, and high-throughput systems, though it is not standardized by NIST.
 BLAKE3 is considered secure and is increasingly adopted in modern software systems.
 
+## BREACH Attack
+BREACH (Browser Reconnaissance and Exfiltration via Adaptive Compression of Hypertext) is a compression side-channel attack against HTTPS.
+It exploits HTTP response compression: if an attacker can cause a victim to make requests with attacker-chosen inputs near a secret (like a CSRF token) and can observe response sizes, they can often recover the secret via adaptive guessing.
+Mitigations include disabling compression for secret-bearing responses, separating secrets from attacker-controlled input, and adding padding or randomization to reduce size leakage.
+
 ## Broad TLS Compatibility
 Broad TLS compatibility means choosing algorithms and parameters that work across a wide range of TLS clients, servers, libraries, and devices.
 In practice, this often means sticking to widely supported curves and signature algorithms (and sometimes accepting legacy constraints), because you do not control what old devices or enterprise middleboxes can negotiate.
@@ -144,6 +149,11 @@ Use library-provided constant-time equality helpers rather than writing your own
 Examples include: allow-listing acceptable algorithms, verifying you are checking the exact bytes that were signed (canonical encoding), rejecting malformed inputs, and validating parameters (e.g., public keys are on the curve and in the correct subgroup).
 Some schemes have extra malleability rules (e.g., “low-s” normalization in ECDSA) that must be enforced to prevent multiple signatures from verifying the same message.
 Most of these checks are easy to get subtly wrong, which is why you should rely on well-audited, high-level verification APIs.
+
+## CRIME Attack
+CRIME (Compression Ratio Info-leak Made Easy) is a compression side-channel attack that exploited TLS-level compression to recover secrets (notably cookies) by observing ciphertext sizes.
+The attack works when secret data is compressed in the same context as attacker-controlled input, letting the attacker adaptively guess secrets based on size changes.
+Modern TLS stacks and browsers mitigate CRIME by disabling TLS compression and avoiding compressing secrets alongside attacker-controlled data.
 
 ## CTR Mode
 CTR (Counter) mode turns a block cipher like AES into a stream-cipher-like construction by encrypting a nonce/counter sequence to generate a keystream.
@@ -320,6 +330,11 @@ A nonce (“number used once”) is a per-operation value that must not repeat f
 In AEAD schemes like AES-GCM and ChaCha20-Poly1305, nonce reuse can completely break confidentiality and/or integrity.
 Nonces are usually public, but they must be unique; they can be random or derived from counters/sequence numbers.
 
+## Noise Protocol Framework
+The Noise Protocol Framework is a framework for building secure handshakes from a small set of cryptographic primitives (typically Diffie–Hellman, hashing, and AEAD).
+It defines standardized “handshake patterns” (such as `IK`, `XX`, and `NN`) that specify what each side sends and authenticates, and how session keys are derived.
+Noise is widely used in modern protocols (notably WireGuard) because it promotes safe composition, key separation, and clear security reasoning for handshake designs.
+
 ## OAuth 2.0
 OAuth 2.0 is an authorization framework that enables delegated access to protected resources without sharing user credentials.
 It allows applications to obtain limited-scope access tokens issued by an authorization server.
@@ -392,6 +407,11 @@ Preimage resistance is fundamental for password hashing and data integrity.
 A pseudorandom keystream is a sequence of bits or bytes that appears random but is generated deterministically from a secret key (and often a nonce/counter).
 In a secure stream cipher, this keystream should be computationally indistinguishable from true randomness to anyone who does not know the key.
 When the keystream is XORed with plaintext (and never reused with the same key/nonce), it hides the original data while still allowing the receiver, who can regenerate the same keystream, to decrypt it.
+
+## QUIC
+QUIC is a modern, UDP-based transport protocol standardized by the IETF that integrates TLS 1.3 for encryption and authentication.
+It supports multiplexed streams (avoiding some head-of-line blocking issues), low-latency connection establishment (including 0-RTT), and connection migration when network paths change.
+HTTP/3 runs over QUIC, and many deployments use QUIC to improve performance and reliability compared to TCP+TLS in challenging network conditions.
 
 ## rand (Rust crate)
 `rand` is the standard Rust ecosystem crate for randomness traits (`RngCore`), generators, and distributions.
