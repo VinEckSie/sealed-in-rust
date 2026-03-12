@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Cryptography is a Systems Problem - Sealed in Rust — Domain-Driven Edition</title>
+        <title>Secure Protocol Design &amp; Composition - Sealed in Rust — Domain-Driven Edition</title>
 
 
         <!-- Custom HTML head -->
@@ -174,30 +174,219 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="cryptography-is-a-systems-problem"><a class="header" href="#cryptography-is-a-systems-problem">Cryptography is a Systems Problem</a></h2>
-<p>Cryptography isn’t just about math.</p>
-<p>Yes, it starts with elegant algebra and deep number theory,  but where it breaks is almost always <em>in the system</em>. Real-world failures come from poor implementations, leaky abstractions, memory bugs, side channels, or simply misunderstanding what problem crypto is supposed to solve.</p>
-<p>It’s easy to misuse even “secure” primitives. AES<sup class="footnote-reference" id="fr-aes-1"><a href="#footnote-aes">1</a></sup> in ECB mode<sup class="footnote-reference" id="fr-ecb-1"><a href="#footnote-ecb">2</a></sup> is fast and useless. RSA<sup class="footnote-reference" id="fr-rsa-1"><a href="#footnote-rsa">3</a></sup> without padding<sup class="footnote-reference" id="fr-padding-1"><a href="#footnote-padding">4</a></sup> is a gift to attackers. And a perfectly strong key means nothing if it’s printed to your logs.</p>
-<p>This is why cryptography is a <strong>systems engineering problem</strong> first.</p>
-<p>And it’s why Rust matters.</p>
-<p>Rust doesn’t make crypto correct by default, nothing does, but it gives you tools to <strong>avoid entire classes of catastrophic bugs</strong>.</p>
-<p>Memory safety, explicit ownership, fearless concurrency, and tight control over the machine, these aren’t “nice to have.” They’re security features.</p>
-<h3 id=""><a class="header" href="#"></a></h3>
-<p>In this book, we’ll treat crypto not as a black box, but as a series of concrete systems problems, and show how Rust lets us solve them with clarity and precision.</p>
-<hr>
+                        <h2 id="secure-protocol-design--composition"><a class="header" href="#secure-protocol-design--composition">Secure Protocol Design &amp; Composition</a></h2>
+<blockquote>
+<p>🔐 <strong>Used in:</strong> TLS, QUIC<sup class="footnote-reference" id="fr-quic-1"><a href="#footnote-quic">1</a></sup>, WireGuard, Noise protocol framework<sup class="footnote-reference" id="fr-noise-protocol-framework-1"><a href="#footnote-noise-protocol-framework">2</a></sup>, secure messaging, distributed systems</p>
+<p>✅ A secure protocol ensures that cryptographic primitives are composed safely, not just implemented correctly.</p>
+</blockquote>
+<p>Cryptography rarely fails because AES, SHA-256, or Ed25519 are broken.</p>
+<p>It fails because protocols compose them incorrectly.</p>
+<p>Examples of protocol failures include:</p>
+<ul>
+<li>replayable authentication messages</li>
+<li>nonce reuse in encryption</li>
+<li>downgrade attacks forcing weaker algorithms</li>
+<li>missing state validation</li>
+<li>mixing keys across different purposes</li>
+</ul>
+<p>Designing secure protocols means answering:</p>
+<ul>
+<li>Who is the attacker?</li>
+<li>What messages can they observe, modify, or replay?</li>
+<li>Which keys protect which operations?</li>
+<li>What states are valid or invalid in the protocol flow?</li>
+</ul>
+<p>Secure protocols are about structure, not just math.</p>
+<h2 id="the-basic-model-primitives--protocol"><a class="header" href="#the-basic-model-primitives--protocol">The Basic Model: primitives → protocol</a></h2>
+<p>Cryptographic primitives provide building blocks.
+Protocols define how those blocks are used together.</p>
+<pre><code class="language-text">ciphertext = Encrypt(key, plaintext)
+tag = MAC(key, message)
+signature = Sign(private_key, message)
+</code></pre>
+<p>A secure protocol defines:</p>
+<ul>
+<li>who generates keys</li>
+<li>which keys protect which messages</li>
+<li>when keys rotate</li>
+<li>which messages are allowed in which order</li>
+</ul>
+<p>If the protocol logic is wrong, perfect cryptography cannot save it.</p>
+<h2 id="threat-models-define-the-attacker-first"><a class="header" href="#threat-models-define-the-attacker-first">Threat Models (define the attacker first)</a></h2>
+<p>Before designing any secure protocol, you must define the threat model.</p>
+<p>Typical attackers include:</p>
+<ul>
+<li>Passive attacker: can observe traffic but not modify it</li>
+<li>Active attacker: can intercept, modify, or inject messages</li>
+<li>Replay attacker: can resend previously valid messages</li>
+<li>Downgrade attacker: tries to force weaker algorithms</li>
+</ul>
+<p>Most real-world protocols assume active network attackers.</p>
+<p>This means the attacker can:</p>
+<ul>
+<li>read</li>
+<li>drop</li>
+<li>modify</li>
+<li>reorder</li>
+<li>replay</li>
+<li>inject</li>
+</ul>
+<p>If your protocol survives this model, it is usually robust.</p>
+<h2 id="key-separation-one-key-one-purpose"><a class="header" href="#key-separation-one-key-one-purpose">Key Separation (one key, one purpose)</a></h2>
+<p>A fundamental cryptographic design rule is key separation.</p>
+<p>One key → one purpose.</p>
+<p>Bad design is a same key used for:</p>
+<ul>
+<li>encryption</li>
+<li>authentication</li>
+<li>key derivation</li>
+</ul>
+<p>Good design:</p>
+<ul>
+<li>enc_key = HKDF(master_key, “encryption”)</li>
+<li>mac_key = HKDF(master_key, “authentication”)</li>
+</ul>
+<p>Why this matters:</p>
+<ul>
+<li>reduces cross-protocol attacks</li>
+<li>prevents subtle cryptographic interactions</li>
+<li>isolates failures if one primitive breaks</li>
+</ul>
+<p>Modern protocols like TLS 1.3 and Noise aggressively separate keys.</p>
+<h2 id="nonce-reuse-disasters"><a class="header" href="#nonce-reuse-disasters">Nonce Reuse Disasters</a></h2>
+<p>A nonce is a number used once. Many encryption modes require nonce uniqueness like AES-GCM.</p>
+<p>If a nonce is reused with the same key: ciphertext1 XOR ciphertext2 = plaintext1 XOR plaintext2.</p>
+<p>This can reveal plaintexts or even recover keys in some constructions.</p>
+<p>Real-world examples include:</p>
+<ul>
+<li>wireless encryption failures like WEP</li>
+<li>TLS implementation bugs</li>
+<li>application-level nonce reuse</li>
+</ul>
+<blockquote>
+<p>✅ Correct rule: nonce must NEVER repeat for the same key</p>
+</blockquote>
+<p>Typical strategies include:</p>
+<ul>
+<li>monotonic counters</li>
+<li>random nonces with large space</li>
+<li>deterministic nonce derivation</li>
+</ul>
+<h2 id="replay-attacks"><a class="header" href="#replay-attacks">Replay Attacks</a></h2>
+<p>A replay attack occurs when an attacker resends a previously valid message.</p>
+<p>Example: client → server “transfer 100 coins”</p>
+<p>Even if the message is authenticated, replaying it may repeat the action.</p>
+<p>Protocols defend against this using:</p>
+<ul>
+<li>sequence numbers</li>
+<li>nonces</li>
+<li>timestamps</li>
+<li>session identifiers</li>
+</ul>
+<p>Example defensive pattern:</p>
+<ul>
+<li>message = {sequence_number, payload}</li>
+<li>MAC(key, message)</li>
+</ul>
+<p>If the sequence number repeats, the message is rejected.</p>
+<h2 id="downgrade-attacks"><a class="header" href="#downgrade-attacks">Downgrade Attacks</a></h2>
+<p>A downgrade attack forces a protocol to use weaker algorithms.</p>
+<p>Example negotiation:</p>
+<ul>
+<li>Client: supports AES-256, AES-128</li>
+<li>Attacker modifies → Server sees only AES-128</li>
+</ul>
+<p>The attacker may now exploit weaker cryptography. Modern protocols bind negotiation results into the handshake.</p>
+<p>Example principle: handshake_signature = Sign(server_key, transcript_hash)</p>
+<p>This ensures the final cryptographic choices cannot be altered.</p>
+<h2 id="protocol-layering"><a class="header" href="#protocol-layering">Protocol Layering</a></h2>
+<p>Secure protocols are often structured in layers.</p>
+<p>Example TLS model:
+Transport &gt; Handshake protocol &gt; Key exchange &gt; Authenticated encryption</p>
+<p>Layering improves:</p>
+<ul>
+<li>maintainability</li>
+<li>security reasoning</li>
+<li>replaceability of components</li>
+</ul>
+<p>However, layering mistakes can introduce vulnerabilities.</p>
+<p>Example historical mistake: compress &gt; then encrypt</p>
+<p>Compression-based side channels enabled the CRIME<sup class="footnote-reference" id="fr-crime-1"><a href="#footnote-crime">3</a></sup> and BREACH<sup class="footnote-reference" id="fr-breach-1"><a href="#footnote-breach">4</a></sup> attacks in TLS.</p>
+<h2 id="protocol-state-machines"><a class="header" href="#protocol-state-machines">Protocol State Machines</a></h2>
+<p>Protocols are not just message formats. They are state machines.</p>
+<p>Example simplified handshake:
+START &gt; CLIENT_HELLO &gt; SERVER_HELLO &gt; KEY_EXCHANGE &gt; AUTHENTICATED</p>
+<p>Each message is only valid in specific states.
+Bad implementations often accept messages in invalid states, enabling attacks.</p>
+<p>Common vulnerability classes include:</p>
+<ul>
+<li>state confusion</li>
+<li>unexpected message acceptance</li>
+<li>skipped authentication phases</li>
+</ul>
+<p>Robust protocol implementations explicitly enforce state transitions.</p>
+<h2 id="authenticated-encryption-patterns"><a class="header" href="#authenticated-encryption-patterns">Authenticated Encryption Patterns</a></h2>
+<p>Modern secure protocols rely heavily on AEAD.</p>
+<p>AEAD provides:</p>
+<ul>
+<li>confidentiality</li>
+<li>integrity</li>
+<li>authentication</li>
+</ul>
+<p>Example encryption pattern: ciphertext, tag = AEAD_Encrypt(key, nonce, plaintext, associated_data)</p>
+<p>Associated data (AAD) allows binding metadata to encrypted messages.</p>
+<p>Example: AAD = message_header</p>
+<p>Even though the header is not encrypted, it is authenticated.</p>
+<p>This prevents attackers from modifying routing or protocol metadata.</p>
+<h2 id="common-protocol-design-mistakes"><a class="header" href="#common-protocol-design-mistakes">Common Protocol Design Mistakes</a></h2>
+<p>Real-world systems often fail due to protocol composition mistakes:</p>
+<ul>
+<li>Missing replay protection</li>
+<li>Nonce reuse in AEAD</li>
+<li>Algorithm negotiation without authentication</li>
+<li>Key reuse across different purposes</li>
+<li>Improper state validation</li>
+<li>Mixing compression and encryption</li>
+</ul>
+<p>Almost all major protocol failures come from composition errors, not primitive failures.</p>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>Secure protocols require more than strong cryptographic primitives:</p>
+<ul>
+<li>
+<p>They require correct composition.</p>
+</li>
+<li>
+<p>Threat models define the attacker.</p>
+</li>
+<li>
+<p>Key separation isolates cryptographic roles.</p>
+</li>
+<li>
+<p>Nonce uniqueness protects encryption.</p>
+</li>
+<li>
+<p>Replay protection defends against message reuse.</p>
+</li>
+<li>
+<p>State machines enforce valid protocol flows.</p>
+</li>
+</ul>
+<p>Modern protocols combine these ideas to build systems like TLS, QUIC, and WireGuard.</p>
+</blockquote>
 <hr>
 <ol class="footnote-definition">
-<li id="footnote-aes">
-<p>AES. Modern symmetric cipher, fast &amp; secure. <a href="../99-appendices/99-01-glossary.html#aes-advanced-encryption-standard">More</a> <a href="#fr-aes-1">↩</a></p>
+<li id="footnote-quic">
+<p>QUIC: UDP-based transport protocol that integrates TLS 1.3 for security and supports multiplexed streams (used by HTTP/3). <a href="../99-appendices/99-01-glossary.html#quic">More</a> <a href="#fr-quic-1">↩</a></p>
 </li>
-<li id="footnote-ecb">
-<p>ECB Mode. Simple block mode, insecure due to patterns. <a href="../99-appendices/99-01-glossary.html#ecb-electronic-code-book">More</a> <a href="#fr-ecb-1">↩</a></p>
+<li id="footnote-noise-protocol-framework">
+<p>Noise Protocol Framework: framework of handshake patterns for building secure AKE protocols from DH + hashing + AEAD; used by WireGuard. <a href="../99-appendices/99-01-glossary.html#noise-protocol-framework">More</a> <a href="#fr-noise-protocol-framework-1">↩</a></p>
 </li>
-<li id="footnote-rsa">
-<p>RSA. Public-key system for encryption &amp; signatures. <a href="../99-appendices/99-01-glossary.html#rsa-rivestshamiradleman">More</a> <a href="#fr-rsa-1">↩</a></p>
+<li id="footnote-crime">
+<p>CRIME attack: TLS compression side-channel attack that leaks secrets by observing compressed sizes. <a href="../99-appendices/99-01-glossary.html#crime-attack">More</a> <a href="#fr-crime-1">↩</a></p>
 </li>
-<li id="footnote-padding">
-<p>Padding. Adds randomness/structure to secure RSA encryption. <a href="../99-appendices/99-01-glossary.html#padding-in-rsa">More</a> <a href="#fr-padding-1">↩</a></p>
+<li id="footnote-breach">
+<p>BREACH attack: HTTP response compression side-channel attack that leaks secrets by observing HTTPS response sizes. <a href="../99-appendices/99-01-glossary.html#breach-attack">More</a> <a href="#fr-breach-1">↩</a></p>
 </li>
 </ol>
 
@@ -205,11 +394,11 @@
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../00-Intro/how-to-use.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../02-core-primitives/02-07-randomness-entropy.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../01-foundations/01-02-rust-offers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../99-appendices/99-01-glossary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -219,11 +408,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../00-Intro/how-to-use.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../02-core-primitives/02-07-randomness-entropy.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../01-foundations/01-02-rust-offers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../99-appendices/99-01-glossary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-e8df71e7.js";
+            window.path_to_searchindex_js = "../searchindex-a92367fa.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-c4ddee17.js"></script>
+        <script src="../toc-d087d9e4.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -228,6 +228,10 @@ It builds on the cryptographic foundations of BLAKE2 while introducing a tree-ba
 BLAKE3 supports incremental hashing, keyed hashing, and extendable output (XOF) within a single unified API.
 It is well suited for content hashing, integrity verification, and high-throughput systems, though it is not standardized by NIST.
 BLAKE3 is considered secure and is increasingly adopted in modern software systems.</p>
+<h2 id="breach-attack"><a class="header" href="#breach-attack">BREACH Attack</a></h2>
+<p>BREACH (Browser Reconnaissance and Exfiltration via Adaptive Compression of Hypertext) is a compression side-channel attack against HTTPS.
+It exploits HTTP response compression: if an attacker can cause a victim to make requests with attacker-chosen inputs near a secret (like a CSRF token) and can observe response sizes, they can often recover the secret via adaptive guessing.
+Mitigations include disabling compression for secret-bearing responses, separating secrets from attacker-controlled input, and adding padding or randomization to reduce size leakage.</p>
 <h2 id="broad-tls-compatibility"><a class="header" href="#broad-tls-compatibility">Broad TLS Compatibility</a></h2>
 <p>Broad TLS compatibility means choosing algorithms and parameters that work across a wide range of TLS clients, servers, libraries, and devices.
 In practice, this often means sticking to widely supported curves and signature algorithms (and sometimes accepting legacy constraints), because you do not control what old devices or enterprise middleboxes can negotiate.
@@ -293,6 +297,10 @@ Use library-provided constant-time equality helpers rather than writing your own
 Examples include: allow-listing acceptable algorithms, verifying you are checking the exact bytes that were signed (canonical encoding), rejecting malformed inputs, and validating parameters (e.g., public keys are on the curve and in the correct subgroup).
 Some schemes have extra malleability rules (e.g., “low-s” normalization in ECDSA) that must be enforced to prevent multiple signatures from verifying the same message.
 Most of these checks are easy to get subtly wrong, which is why you should rely on well-audited, high-level verification APIs.</p>
+<h2 id="crime-attack"><a class="header" href="#crime-attack">CRIME Attack</a></h2>
+<p>CRIME (Compression Ratio Info-leak Made Easy) is a compression side-channel attack that exploited TLS-level compression to recover secrets (notably cookies) by observing ciphertext sizes.
+The attack works when secret data is compressed in the same context as attacker-controlled input, letting the attacker adaptively guess secrets based on size changes.
+Modern TLS stacks and browsers mitigate CRIME by disabling TLS compression and avoiding compressing secrets alongside attacker-controlled data.</p>
 <h2 id="ctr-mode"><a class="header" href="#ctr-mode">CTR Mode</a></h2>
 <p>CTR (Counter) mode turns a block cipher like AES into a stream-cipher-like construction by encrypting a nonce/counter sequence to generate a keystream.
 That keystream is XORed with plaintext to produce ciphertext (and vice versa for decryption).
@@ -432,6 +440,10 @@ Modern protocols therefore often select ChaCha20-Poly1305 as a preferred or fall
 <p>A nonce (“number used once”) is a per-operation value that must not repeat for a given key.
 In AEAD schemes like AES-GCM and ChaCha20-Poly1305, nonce reuse can completely break confidentiality and/or integrity.
 Nonces are usually public, but they must be unique; they can be random or derived from counters/sequence numbers.</p>
+<h2 id="noise-protocol-framework"><a class="header" href="#noise-protocol-framework">Noise Protocol Framework</a></h2>
+<p>The Noise Protocol Framework is a framework for building secure handshakes from a small set of cryptographic primitives (typically Diffie–Hellman, hashing, and AEAD).
+It defines standardized “handshake patterns” (such as <code>IK</code>, <code>XX</code>, and <code>NN</code>) that specify what each side sends and authenticates, and how session keys are derived.
+Noise is widely used in modern protocols (notably WireGuard) because it promotes safe composition, key separation, and clear security reasoning for handshake designs.</p>
 <h2 id="oauth-20"><a class="header" href="#oauth-20">OAuth 2.0</a></h2>
 <p>OAuth 2.0 is an authorization framework that enables delegated access to protected resources without sharing user credentials.
 It allows applications to obtain limited-scope access tokens issued by an authorization server.
@@ -489,6 +501,10 @@ Preimage resistance is fundamental for password hashing and data integrity.</p>
 <p>A pseudorandom keystream is a sequence of bits or bytes that appears random but is generated deterministically from a secret key (and often a nonce/counter).
 In a secure stream cipher, this keystream should be computationally indistinguishable from true randomness to anyone who does not know the key.
 When the keystream is XORed with plaintext (and never reused with the same key/nonce), it hides the original data while still allowing the receiver, who can regenerate the same keystream, to decrypt it.</p>
+<h2 id="quic"><a class="header" href="#quic">QUIC</a></h2>
+<p>QUIC is a modern, UDP-based transport protocol standardized by the IETF that integrates TLS 1.3 for encryption and authentication.
+It supports multiplexed streams (avoiding some head-of-line blocking issues), low-latency connection establishment (including 0-RTT), and connection migration when network paths change.
+HTTP/3 runs over QUIC, and many deployments use QUIC to improve performance and reliability compared to TCP+TLS in challenging network conditions.</p>
 <h2 id="rand-rust-crate"><a class="header" href="#rand-rust-crate">rand (Rust crate)</a></h2>
 <p><code>rand</code> is the standard Rust ecosystem crate for randomness traits (<code>RngCore</code>), generators, and distributions.
 For cryptography, prefer OS-backed randomness like <code>rand::rngs::OsRng</code> (via <code>getrandom</code>) rather than weak or seeded PRNGs.
@@ -616,7 +632,7 @@ It is now integrated into the Linux kernel and widely deployed for site-to-site 
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../02-core-primitives/02-07-randomness-entropy.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../02-core-primitives/02-08-secure-protocol.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
@@ -630,7 +646,7 @@ It is now integrated into the Linux kernel and widely deployed for site-to-site 
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../02-core-primitives/02-07-randomness-entropy.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../02-core-primitives/02-08-secure-protocol.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
