@@ -23,6 +23,7 @@
     - [Key Derivation Functions: Argon2, scrypt](02-core-primitives/02-06-key-derivation.md)
     - [Randomness & Entropy: Nonces, IVs, CSPRNGs](02-core-primitives/02-07-randomness-entropy.md)
     - [Secure Protocol Design & Composition](02-core-primitives/02-08-secure-protocol.md)
+    - [Formal Security Notions & Proof Intuition](02-core-primitives/02-09-sec-notions.md)
 
 - [Appendices]()
     - [Glossary of Terms](99-appendices/99-01-glossary.md)
