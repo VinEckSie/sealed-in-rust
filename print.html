@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a92367fa.js";
+            window.path_to_searchindex_js = "searchindex-81afb487.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-d087d9e4.js"></script>
+        <script src="toc-b0477bdd.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -2776,6 +2776,179 @@ Bad implementations often accept messages in invalid states, enabling attacks.</
 <p>BREACH attack: HTTP response compression side-channel attack that leaks secrets by observing HTTPS response sizes. <a href="#breach-attack">More</a> <a href="#fr-breach-1">↩</a></p>
 </li>
 </ol>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="formal-security-notions--proof-intuition-1"><a href="#formal-security-notions--proof-intuition-1" class="header">Formal Security Notions &amp; Proof Intuition</a></h1>
+<h2 id="formal-security-notions--proof-intuition"><a class="header" href="#formal-security-notions--proof-intuition">Formal Security Notions &amp; Proof Intuition</a></h2>
+<blockquote>
+<p>🔐 <strong>Used in:</strong> TLS, Signal protocol, Noise protocol framework, modern AEAD schemes, authenticated key exchange protocols, academic cryptography</p>
+</blockquote>
+<blockquote>
+<p>✅ Formal security notions define <em>what it means for a cryptographic system to be secure</em> and allow researchers to prove that protocols resist well-defined classes of attacks.</p>
+</blockquote>
+<p>Cryptography is not only about algorithms.</p>
+<p>It is about provable security guarantees.</p>
+<p>Modern cryptographic systems are designed with formal definitions of security, allowing researchers to demonstrate that breaking a protocol would require solving a mathematically hard problem.</p>
+<p>Instead of saying <em>“this seems secure”</em>, formal cryptography asks:</p>
+<ul>
+<li>What exactly does “secure” mean?</li>
+<li>What capabilities does the attacker have?</li>
+<li>What advantage must the attacker gain to break the system?</li>
+</ul>
+<p>Security proofs do not guarantee absolute safety.</p>
+<p>They guarantee that if the underlying assumptions hold, then the system resists a defined class of attacks.</p>
+<h2 id="the-core-idea-security-games"><a class="header" href="#the-core-idea-security-games">The Core Idea: Security Games</a></h2>
+<p>Most modern cryptographic definitions are expressed using security games.</p>
+<p>A security game defines an interaction between:</p>
+<ul>
+<li>a challenger (the system)</li>
+<li>an adversary (the attacker)</li>
+</ul>
+<p>The attacker attempts to win the game by breaking some property.</p>
+<p>Example intuition for encryption security:</p>
+<ol>
+<li>The attacker submits two messages.</li>
+<li>The challenger encrypts one of them randomly.</li>
+<li>The attacker must guess which one was encrypted.</li>
+</ol>
+<p>If the attacker cannot guess better than random chance, the scheme is considered secure under that definition.</p>
+<p>Security is therefore defined as: the attacker has only negligible advantage over random guessing.</p>
+<h2 id="indistinguishability-ind"><a class="header" href="#indistinguishability-ind">Indistinguishability (IND)</a></h2>
+<p>One of the most important security notions is indistinguishability.</p>
+<p>The idea is simple:</p>
+<blockquote>
+<p>An attacker should not be able to distinguish the encryption of one message from another.</p>
+</blockquote>
+<p>This property is formalized as IND security.</p>
+<p>Common variants include:</p>
+<ul>
+<li>IND-CPA — secure against chosen plaintext attacks</li>
+<li>IND-CCA — secure against chosen ciphertext attacks</li>
+</ul>
+<p>These definitions model increasingly powerful attackers.</p>
+<h3 id="ind-cpa-chosen-plaintext-attacks"><a class="header" href="#ind-cpa-chosen-plaintext-attacks">IND-CPA (Chosen Plaintext Attacks)</a></h3>
+<p>Here, we assumes the attacker can:</p>
+<ul>
+<li>request encryptions of messages of their choice</li>
+<li>observe ciphertexts</li>
+<li>attempt to distinguish encrypted messages</li>
+</ul>
+<p>A scheme that passes this test prevents attackers from learning information about plaintexts from ciphertexts.</p>
+<p>Most modern symmetric encryption schemes aim for IND-CPA security.</p>
+<p>However, IND-CPA alone is not sufficient in many real-world protocols.</p>
+<h3 id="ind-cca-chosen-ciphertext-attacks"><a class="header" href="#ind-cca-chosen-ciphertext-attacks">IND-CCA (Chosen Ciphertext Attacks)</a></h3>
+<p>It models stronger attackers.</p>
+<p>In this game, the attacker can:</p>
+<ul>
+<li>request encryptions</li>
+<li>request decryptions of arbitrary ciphertexts</li>
+<li>attempt to distinguish the challenge ciphertext</li>
+</ul>
+<p>The only restriction is that the attacker cannot request the decryption of the challenge ciphertext itself.</p>
+<p>This models realistic scenarios where attackers can trick systems into decrypting messages.</p>
+<p>Modern authenticated encryption schemes aim for IND-CCA security.</p>
+<p>AEAD constructions such as AES-GCM and ChaCha20-Poly1305 are designed to resist these attacks.</p>
+<h2 id="message-authentication-security-euf-cma"><a class="header" href="#message-authentication-security-euf-cma">Message Authentication Security (EUF-CMA)</a></h2>
+<p>For digital signatures and MACs, the typical security notion is existential unforgeability under chosen message attack (EUF-CMA).</p>
+<p>In this model:</p>
+<ol>
+<li>The attacker can request signatures on arbitrary messages.</li>
+<li>The attacker wins if they produce a valid signature for a <em>new</em> message.</li>
+</ol>
+<p>This ensures attackers cannot forge signatures even if they observe many valid ones.</p>
+<p>Most modern signature schemes such as Ed25519 are designed to satisfy EUF-CMA security.</p>
+<h2 id="negligible-probability"><a class="header" href="#negligible-probability">Negligible Probability</a></h2>
+<p>Formal cryptography frequently uses the concept of negligible probability.</p>
+<p>A negligible function decreases faster than the inverse of any polynomial.</p>
+<p>In practical terms this means:</p>
+<ul>
+<li>an attack success probability so small that it becomes infeasible</li>
+<li>even for extremely large computational resources</li>
+</ul>
+<p>Example intuition:</p>
+<p>If a scheme has 128-bit security, brute force attacks require roughly:</p>
+<p>2¹²⁸ operations.</p>
+<p>This is considered infeasible with any realistic computing capability.</p>
+<p>Security proofs often show that an attacker’s advantage is bounded by a negligible probability.</p>
+<h2 id="reduction-proofs"><a class="header" href="#reduction-proofs">Reduction Proofs</a></h2>
+<p>Most cryptographic proofs are reduction proofs.</p>
+<p>The idea is:</p>
+<blockquote>
+<p>If an attacker can break the protocol, then we can use that attacker to break a known hard problem.</p>
+</blockquote>
+<p>For example, breaking a scheme implies solving:</p>
+<ul>
+<li>discrete logarithm</li>
+<li>factoring</li>
+<li>elliptic curve discrete logarithm</li>
+</ul>
+<p>Since those problems are believed to be computationally hard, the scheme is considered secure.</p>
+<p>Reduction proofs therefore connect protocol security to underlying mathematical assumptions.</p>
+<h2 id="proof-models"><a class="header" href="#proof-models">Proof Models</a></h2>
+<p>Formal security proofs are performed in specific models.</p>
+<p>Two major approaches dominate modern cryptography.</p>
+<h3 id="the-standard-model"><a class="header" href="#the-standard-model">The Standard Model</a></h3>
+<p>The <strong>standard model</strong> assumes only well-defined mathematical hardness assumptions.</p>
+<p>Examples include:</p>
+<ul>
+<li>discrete logarithm hardness</li>
+<li>factoring hardness</li>
+<li>elliptic curve discrete logarithm</li>
+</ul>
+<p>Proofs in the standard model are considered the strongest form of security guarantees.</p>
+<p>However, they can be difficult to achieve.</p>
+<h3 id="the-random-oracle-model"><a class="header" href="#the-random-oracle-model">The Random Oracle Model</a></h3>
+<p>Many practical cryptographic schemes rely on the random oracle model.</p>
+<p>In this model:</p>
+<ul>
+<li>hash functions are treated as ideal random functions</li>
+<li>attackers interact with this oracle during the security game</li>
+</ul>
+<p>This abstraction simplifies proofs and enables efficient constructions.</p>
+<p>Many widely deployed protocols rely on proofs in the random oracle model.</p>
+<p>Examples include:</p>
+<ul>
+<li>RSA-OAEP</li>
+<li>many signature schemes</li>
+<li>parts of TLS</li>
+</ul>
+<p>While slightly weaker than the standard model, the random oracle model is widely accepted in practice.</p>
+<h2 id="why-formal-proofs-matter"><a class="header" href="#why-formal-proofs-matter">Why Formal Proofs Matter</a></h2>
+<p>Formal security definitions provide several benefits.</p>
+<p>They:</p>
+<ul>
+<li>eliminate vague security claims</li>
+<li>define attacker capabilities precisely</li>
+<li>enable rigorous analysis</li>
+<li>allow comparison between schemes</li>
+</ul>
+<p>Many historical cryptographic failures occurred before formal analysis became common.</p>
+<p>Modern protocol design increasingly relies on provable security frameworks.</p>
+<p>However, proofs only apply to the model, not necessarily to the implementation.</p>
+<p>Side-channel attacks, bugs, or misuse can still break secure constructions.</p>
+<h2 id="proofs-vs-reality"><a class="header" href="#proofs-vs-reality">Proofs vs Reality</a></h2>
+<p>Even perfectly proven cryptographic constructions can fail in practice.</p>
+<p>Reasons include:</p>
+<ul>
+<li>implementation bugs</li>
+<li>side-channel leakage</li>
+<li>incorrect randomness generation</li>
+<li>protocol misuse</li>
+<li>key management failures</li>
+</ul>
+<p>Formal proofs ensure that the <em>design</em> is secure.</p>
+<p>Secure systems still require careful engineering.</p>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>Formal security notions provide the foundation for modern cryptography:</p>
+<ul>
+<li>Security games define attacker capabilities.</li>
+<li>Indistinguishability formalizes encryption security.</li>
+<li>EUF-CMA defines signature security.</li>
+<li>Reduction proofs connect attacks to hard mathematical problems.</li>
+<li>Security models like the standard model and random oracle model structure formal analysis.</li>
+</ul>
+<p>These tools allow cryptographers to reason rigorously about security, ensuring that protocols are not only intuitive but mathematically sound.</p>
+</blockquote>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="glossary-of-terms"><a class="header" href="#glossary-of-terms">Glossary of Terms</a></h1>
 <h2 id="3des-triple-des"><a class="header" href="#3des-triple-des">3DES (Triple DES)</a></h2>
