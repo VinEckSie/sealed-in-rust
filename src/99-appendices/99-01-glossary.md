@@ -66,6 +66,20 @@ BLAKE3 supports incremental hashing, keyed hashing, and extendable output (XOF) 
 It is well suited for content hashing, integrity verification, and high-throughput systems, though it is not standardized by NIST.
 BLAKE3 is considered secure and is increasingly adopted in modern software systems.
 
+## Blast-Radius
+Blast radius is a concept borrowed from explosives and widely used in software engineering, security, DevOps, distributed systems, and SRE.
+It refers to how far the consequences of a failure can spread across a system.
+When a component breaks (bug, crash, misconfiguration, bad release, compromised credential), the blast radius measures:
+- how many services are affected
+- how many users are impacted
+- how much data can be corrupted or leaked
+- how long recovery takes
+- whether the failure propagates to other components
+
+A large blast radius means a single issue can cascade into a major outage or incident.
+
+A small blast radius means the issue is isolated and the rest of the system continues to function normally.
+
 ## BREACH Attack
 BREACH (Browser Reconnaissance and Exfiltration via Adaptive Compression of Hypertext) is a compression side-channel attack against HTTPS.
 It exploits HTTP response compression: if an attacker can cause a victim to make requests with attacker-chosen inputs near a secret (like a CSRF token) and can observe response sizes, they can often recover the secret via adaptive guessing.

@@ -25,6 +25,9 @@
     - [Secure Protocol Design & Composition](02-core-primitives/02-08-secure-protocol.md)
     - [Formal Security Notions & Proof Intuition](02-core-primitives/02-09-sec-notions.md)
 
+- [Applied Domains for Secure Systems]()
+  - [Identity & Access Systems](03-domains/03-00-identity-systems.md)
+
 - [Appendices]()
     - [Glossary of Terms](99-appendices/99-01-glossary.md)
     - [Cryptographic Concepts Cheatsheet](99-appendices/99-02-cheatsheet.md)
