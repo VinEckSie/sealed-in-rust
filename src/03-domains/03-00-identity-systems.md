@@ -77,7 +77,7 @@ This protects users even when the database is stolen.
 The server stores only the derived hash, never the password itself.
 
 
-🧪 **Minimal Rust Example: password hashing and verification** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/examples/domain-identity-00-argon2.rs))
+🧪 **Minimal Rust Example: password hashing and verification** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/examples/01-domain-identity-00-argon2.rs))
 
 
 > <img src="../images/cargo.png" alt="crate logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: argon2
