@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-81afb487.js";
+            window.path_to_searchindex_js = "searchindex-c4d21d10.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-b0477bdd.js"></script>
+        <script src="toc-413b79ba.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -2950,6 +2950,96 @@ Bad implementations often accept messages in invalid states, enabling attacks.</
 <p>These tools allow cryptographers to reason rigorously about security, ensuring that protocols are not only intuitive but mathematically sound.</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div>
+<h1 id="identity--access-systems"><a href="#identity--access-systems" class="header">Identity &amp; Access Systems</a></h1>
+<h2 id="domain-identity--access-systems"><a class="header" href="#domain-identity--access-systems">Domain: Identity &amp; Access Systems</a></h2>
+<blockquote>
+<p>🔐 Used in: APIs, SaaS platforms, fintech, internal tools, developer platforms, enterprise SSO, mobile backends</p>
+<p>✅ One of the most practical cryptography domains: combines password hashing, token signing, authenticated sessions, randomness, and secure protocol design.</p>
+</blockquote>
+<p>Identity systems answer two fundamental questions:</p>
+<ul>
+<li><strong>Who are you?</strong> → authentication</li>
+<li><strong>What are you allowed to do?</strong> → authorization</li>
+</ul>
+<p>Modern identity systems are not built from a single primitive.</p>
+<p>They are built from a composition of primitives:</p>
+<ul>
+<li><strong>Argon2</strong> protects passwords at rest</li>
+<li><strong>HMAC</strong> protects tokens against tampering</li>
+<li><strong>Ed25519</strong> enables public verification</li>
+<li><strong>AEAD</strong> protects confidential session state</li>
+<li><strong>Randomness</strong> prevents replay and prediction</li>
+<li><strong>Hashing</strong> enables safe logging and correlation</li>
+</ul>
+<p>This chapter shows how those primitives are applied in a real domain.</p>
+<p>Not as isolated theory. As a working security architecture.</p>
+<h2 id="threat-model"><a class="header" href="#threat-model">Threat Model</a></h2>
+<p>Identity systems are constantly attacked.</p>
+<p>Attackers try to:</p>
+<ul>
+<li>steal password databases</li>
+<li>brute-force leaked hashes</li>
+<li>forge tokens</li>
+<li>escalate privileges</li>
+<li>replay login challenges</li>
+<li>tamper with session state</li>
+<li>abuse weak randomness</li>
+<li>exploit overexposed long-term secrets</li>
+</ul>
+<h2 id="identity-systems-as-composition-of-primitives"><a class="header" href="#identity-systems-as-composition-of-primitives">Identity Systems as Composition of Primitives</a></h2>
+<p>Cryptography is not used once. It appears at every layer of the identity system.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Component</th><th>Primitive</th><th>Security Property</th><th>Why it matters</th></tr>
+</thead>
+<tbody>
+<tr><td>password storage</td><td>Argon2</td><td>brute-force resistance</td><td>database leaks happen</td></tr>
+<tr><td>internal stateless token</td><td>HMAC</td><td>integrity + authenticity</td><td>prevents privilege escalation</td></tr>
+<tr><td>distributed token verification</td><td>Ed25519</td><td>public verifiability</td><td>proves identity</td></tr>
+<tr><td>session protection</td><td>AEAD</td><td>confidentiality + integrity</td><td>protects sensitive state</td></tr>
+<tr><td>login challenges</td><td>CSPRNG</td><td>unpredictability</td><td>prevents reuse of captured messages</td></tr>
+<tr><td>safe observability</td><td>BLAKE3</td><td>non-reversible fingerprinting</td><td>limits blast radius<sup class="footnote-reference" id="fr-blast-radius-1"><a href="#footnote-blast-radius">1</a></sup></td></tr>
+<tr><td>session lifecycle control</td><td>expiration policy</td><td>expiration enforcement</td><td>prevents long-lived compromise</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="password-storage--argon2"><a class="header" href="#password-storage--argon2">Password Storage → Argon2</a></h2>
+<p>Passwords must never be stored directly.</p>
+<p>If a database leaks and the server stored plaintext passwords, every account is immediately compromised. Even plain hashing is not enough.</p>
+<p>General-purpose hashes are designed to be fast. Password hashing must be deliberately expensive.</p>
+<p>Argon2 is designed for this exact purpose.</p>
+<pre><code class="language-text">password + salt → Argon2 → password hash
+</code></pre>
+<p>This protects users even when the database is stolen.</p>
+<p>The server stores only the derived hash, never the password itself.</p>
+<p>🧪 <strong>Minimal Rust Example: password hashing and verification</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/examples/01-domain-identity-00-argon2.rs">source code</a>)</p>
+<blockquote>
+<p><img src="images/cargo.png" alt="crate logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: argon2
+, rand_core</p>
+</blockquote>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#include ../../rust_crypto_book_code/examples/domain-identity-00-argon2.rs}}
+<span class="boring">}</span></code></pre>
+<p>Output:</p>
+<pre><code class="language-text">Stored hash:
+$argon2id$v=19$m=19456,t=2,p=1$G1/J1ZCmovy3XioeKSPC1Q$RRoz1mRaShxHqnvpq3JiGR0xuScwdoO6MOcWkUw0cIU
+
+Valid password: true
+Wrong password accepted: false
+</code></pre>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>Password hashing solves one specific problem: if the database leaks, raw passwords are not immediately exposed.</p>
+</blockquote>
+<hr>
+<ol class="footnote-definition">
+<li id="footnote-blast-radius">
+<p>Blast radius: the scope of impact when something fails in a system. It describes how much of the system is affected by a bug, outage, security breach, or bad deployment. Goal in engineering: keep the blast radius as small as possible so failures stay contained. <a href="#blast-radius">More</a> <a href="#fr-blast-radius-1">↩</a></p>
+</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="glossary-of-terms"><a class="header" href="#glossary-of-terms">Glossary of Terms</a></h1>
 <h2 id="3des-triple-des"><a class="header" href="#3des-triple-des">3DES (Triple DES)</a></h2>
 <p>Triple DES (3DES) is an extension of DES that applies the DES algorithm three times with either two or three different keys.
@@ -3004,6 +3094,19 @@ It builds on the cryptographic foundations of BLAKE2 while introducing a tree-ba
 BLAKE3 supports incremental hashing, keyed hashing, and extendable output (XOF) within a single unified API.
 It is well suited for content hashing, integrity verification, and high-throughput systems, though it is not standardized by NIST.
 BLAKE3 is considered secure and is increasingly adopted in modern software systems.</p>
+<h2 id="blast-radius"><a class="header" href="#blast-radius">Blast-Radius</a></h2>
+<p>Blast radius is a concept borrowed from explosives and widely used in software engineering, security, DevOps, distributed systems, and SRE.
+It refers to how far the consequences of a failure can spread across a system.
+When a component breaks (bug, crash, misconfiguration, bad release, compromised credential), the blast radius measures:</p>
+<ul>
+<li>how many services are affected</li>
+<li>how many users are impacted</li>
+<li>how much data can be corrupted or leaked</li>
+<li>how long recovery takes</li>
+<li>whether the failure propagates to other components</li>
+</ul>
+<p>A large blast radius means a single issue can cascade into a major outage or incident.</p>
+<p>A small blast radius means the issue is isolated and the rest of the system continues to function normally.</p>
 <h2 id="breach-attack"><a class="header" href="#breach-attack">BREACH Attack</a></h2>
 <p>BREACH (Browser Reconnaissance and Exfiltration via Adaptive Compression of Hypertext) is a compression side-channel attack against HTTPS.
 It exploits HTTP response compression: if an attacker can cause a victim to make requests with attacker-chosen inputs near a secret (like a CSRF token) and can observe response sizes, they can often recover the secret via adaptive guessing.

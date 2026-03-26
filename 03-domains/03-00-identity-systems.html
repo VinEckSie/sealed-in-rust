@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - Sealed in Rust — Domain-Driven Edition</title>
+        <title>Identity &amp; Access Systems - Sealed in Rust — Domain-Driven Edition</title>
 
 
         <!-- Custom HTML head -->
@@ -12,33 +12,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon-de23e50b.svg">
-        <link rel="shortcut icon" href="favicon-8114d1fc.png">
-        <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-2459343d.css">
-        <link rel="stylesheet" href="css/chrome-ae938929.css">
-        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
-        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
-        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "";
+            const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-c4d21d10.js";
+            window.path_to_searchindex_js = "../searchindex-c4d21d10.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-413b79ba.js"></script>
+        <script src="../toc-413b79ba.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -105,7 +105,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
             <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -140,7 +140,7 @@
                     <h1 class="menu-title">Sealed in Rust — Domain-Driven Edition</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
 
@@ -174,66 +174,104 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p><strong>Cryptography is everywhere — and yet most of us treat it like magic.</strong></p>
-<p>From encrypted chats and online banking to firmware updates on satellites, the systems we rely on daily are secured (or compromised) by cryptography. And too often, it fails — not because the math was wrong, but because the implementation was.</p>
-<p><strong>This book exists to change that.</strong></p>
-<p>You’re not here to memorize equations. You’re here to understand, implement, and apply cryptographic primitives to real-world systems using a language designed to prevent mistakes before they happen: <strong>Rust</strong>.</p>
-<p>Whether you’re building infrastructure, smart contracts, embedded firmware, or secure APIs, this book gives you the tools to use cryptography safely, idiomatically, and fearlessly — one primitive, one project, one domain at a time.</p>
-<h2 id="-important-note-on-scope"><a class="header" href="#-important-note-on-scope">⚠️ Important Note on Scope</a></h2>
-<p>This book takes a two-layered approach:</p>
-<p><strong>Learning the Primitives</strong></p>
+                        <h2 id="domain-identity--access-systems"><a class="header" href="#domain-identity--access-systems">Domain: Identity &amp; Access Systems</a></h2>
+<blockquote>
+<p>🔐 Used in: APIs, SaaS platforms, fintech, internal tools, developer platforms, enterprise SSO, mobile backends</p>
+<p>✅ One of the most practical cryptography domains: combines password hashing, token signing, authenticated sessions, randomness, and secure protocol design.</p>
+</blockquote>
+<p>Identity systems answer two fundamental questions:</p>
 <ul>
-<li>We begin with fundamental building blocks (XOR, AES, ChaCha20, Feistel, SPN) to teach how cryptography works under the hood.</li>
-<li>These examples are simplified, sometimes insecure by design, and are provided for educational clarity.</li>
+<li><strong>Who are you?</strong> → authentication</li>
+<li><strong>What are you allowed to do?</strong> → authorization</li>
 </ul>
-<p><strong>Applying Secure Constructions</strong></p>
+<p>Modern identity systems are not built from a single primitive.</p>
+<p>They are built from a composition of primitives:</p>
 <ul>
-<li>For every primitive introduced, we also demonstrate how it is used safely in practice — with production-ready Rust code and well-reviewed crates.</li>
-<li>In modern systems, raw primitives are never used alone. Instead, we rely on AEAD (Authenticated Encryption with Associated Data) modes such as AES-GCM or ChaCha20-Poly1305, which provide both confidentiality and integrity/authentication.</li>
-<li>Each chapter connects the primitive to its real-world domains (e.g., AES-GCM in TLS, ChaCha20-Poly1305 in VPNs and mobile messaging, AES-XTS in disk encryption).</li>
+<li><strong>Argon2</strong> protects passwords at rest</li>
+<li><strong>HMAC</strong> protects tokens against tampering</li>
+<li><strong>Ed25519</strong> enables public verification</li>
+<li><strong>AEAD</strong> protects confidential session state</li>
+<li><strong>Randomness</strong> prevents replay and prediction</li>
+<li><strong>Hashing</strong> enables safe logging and correlation</li>
 </ul>
-<p><strong>💡 Bottom line:</strong>
-You’ll gain an understanding of the core mechanics of symmetric ciphers, and also learn how to apply them correctly with Rust in production scenarios. By the end, you’ll not only know what’s inside the black box, but also how to choose and use the right construction for your specific domain.</p>
-<h2 id="who-this-book-is-for"><a class="header" href="#who-this-book-is-for">Who This Book Is For</a></h2>
+<p>This chapter shows how those primitives are applied in a real domain.</p>
+<p>Not as isolated theory. As a working security architecture.</p>
+<h2 id="threat-model"><a class="header" href="#threat-model">Threat Model</a></h2>
+<p>Identity systems are constantly attacked.</p>
+<p>Attackers try to:</p>
 <ul>
-<li>Rust developers who want to understand and apply cryptography</li>
-<li>Security engineers transitioning to Rust</li>
-<li>Curious hackers tired of black-box crypto</li>
-<li>Systems developers who care about safety, correctness, and resilience</li>
+<li>steal password databases</li>
+<li>brute-force leaked hashes</li>
+<li>forge tokens</li>
+<li>escalate privileges</li>
+<li>replay login challenges</li>
+<li>tamper with session state</li>
+<li>abuse weak randomness</li>
+<li>exploit overexposed long-term secrets</li>
 </ul>
-<h2 id="what-youll-learn"><a class="header" href="#what-youll-learn">What You’ll Learn</a></h2>
-<ul>
-<li>The foundations and mental models behind symmetric and asymmetric cryptography</li>
-<li>How to use modern cryptographic crates in Rust safely and idiomatically</li>
-<li>Where cryptographic primitives show up in real-world domains (blockchain, embedded, medical, etc.)</li>
-<li>How to design, test, and publish your own secure Rust crypto crate</li>
-</ul>
-<h2 id="what-this-book-is-not"><a class="header" href="#what-this-book-is-not">What This Book Is Not</a></h2>
-<ul>
-<li>❌ A math-heavy cryptography textbook</li>
-<li>❌ A copy-paste cookbook</li>
-<li>❌ A blockchain hype manual</li>
-</ul>
-<p>We won’t drown you in proofs, but we’ll explain just enough math to build intuition. We’ll write real code — not just use libraries. And we’ll focus on systems-level crypto, not speculative tokens.</p>
-<h2 id="what-youll-need"><a class="header" href="#what-youll-need">What You’ll Need</a></h2>
-<ul>
-<li>✅ Basic experience with Rust (enough to build a CLI or follow <code>cargo run</code>)</li>
-<li>✅ Comfort with reading code, refactoring, and using crates</li>
-<li>✅ Curiosity, and a bias toward safe, practical, applied learning</li>
-</ul>
-<h2 id="lets-begin"><a class="header" href="#lets-begin">Let’s begin</a></h2>
-<p>This book won’t make you a cryptographer in the academic sense — but it will make you something just as rare and valuable:
-A Rust engineer who understands, wields, and applies cryptography with precision, context, and confidence.</p>
-<p>You won’t just read — you’ll build.<br>
-<a href="https://github.com/VinEckSie/sealed-in-rust-book-code">Focused implementations and applied examples</a> are available here and updated weekly.</p>
+<h2 id="identity-systems-as-composition-of-primitives"><a class="header" href="#identity-systems-as-composition-of-primitives">Identity Systems as Composition of Primitives</a></h2>
+<p>Cryptography is not used once. It appears at every layer of the identity system.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Component</th><th>Primitive</th><th>Security Property</th><th>Why it matters</th></tr>
+</thead>
+<tbody>
+<tr><td>password storage</td><td>Argon2</td><td>brute-force resistance</td><td>database leaks happen</td></tr>
+<tr><td>internal stateless token</td><td>HMAC</td><td>integrity + authenticity</td><td>prevents privilege escalation</td></tr>
+<tr><td>distributed token verification</td><td>Ed25519</td><td>public verifiability</td><td>proves identity</td></tr>
+<tr><td>session protection</td><td>AEAD</td><td>confidentiality + integrity</td><td>protects sensitive state</td></tr>
+<tr><td>login challenges</td><td>CSPRNG</td><td>unpredictability</td><td>prevents reuse of captured messages</td></tr>
+<tr><td>safe observability</td><td>BLAKE3</td><td>non-reversible fingerprinting</td><td>limits blast radius<sup class="footnote-reference" id="fr-blast-radius-1"><a href="#footnote-blast-radius">1</a></sup></td></tr>
+<tr><td>session lifecycle control</td><td>expiration policy</td><td>expiration enforcement</td><td>prevents long-lived compromise</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="password-storage--argon2"><a class="header" href="#password-storage--argon2">Password Storage → Argon2</a></h2>
+<p>Passwords must never be stored directly.</p>
+<p>If a database leaks and the server stored plaintext passwords, every account is immediately compromised. Even plain hashing is not enough.</p>
+<p>General-purpose hashes are designed to be fast. Password hashing must be deliberately expensive.</p>
+<p>Argon2 is designed for this exact purpose.</p>
+<pre><code class="language-text">password + salt → Argon2 → password hash
+</code></pre>
+<p>This protects users even when the database is stolen.</p>
+<p>The server stores only the derived hash, never the password itself.</p>
+<p>🧪 <strong>Minimal Rust Example: password hashing and verification</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/examples/01-domain-identity-00-argon2.rs">source code</a>)</p>
+<blockquote>
+<p><img src="../images/cargo.png" alt="crate logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: argon2
+, rand_core</p>
+</blockquote>
+<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#include ../../rust_crypto_book_code/examples/domain-identity-00-argon2.rs}}
+<span class="boring">}</span></code></pre>
+<p>Output:</p>
+<pre><code class="language-text">Stored hash:
+$argon2id$v=19$m=19456,t=2,p=1$G1/J1ZCmovy3XioeKSPC1Q$RRoz1mRaShxHqnvpq3JiGR0xuScwdoO6MOcWkUw0cIU
+
+Valid password: true
+Wrong password accepted: false
+</code></pre>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>Password hashing solves one specific problem: if the database leaks, raw passwords are not immediately exposed.</p>
+</blockquote>
+<hr>
+<ol class="footnote-definition">
+<li id="footnote-blast-radius">
+<p>Blast radius: the scope of impact when something fails in a system. It describes how much of the system is affected by a bug, outage, security breach, or bad deployment. Goal in engineering: keep the blast radius as small as possible so failures stay contained. <a href="../99-appendices/99-01-glossary.html#blast-radius">More</a> <a href="#fr-blast-radius-1">↩</a></p>
+</li>
+</ol>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../02-core-primitives/02-09-sec-notions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
-                            <a rel="next prefetch" href="00-Intro/how-to-use.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../99-appendices/99-01-glossary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -243,8 +281,11 @@ A Rust engineer who understands, wields, and applies cryptography with precision
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../02-core-primitives/02-09-sec-notions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
-                    <a rel="next prefetch" href="00-Intro/how-to-use.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../99-appendices/99-01-glossary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
@@ -264,13 +305,13 @@ A Rust engineer who understands, wields, and applies cryptography with precision
         </script>
 
 
-        <script src="elasticlunr-ef4e11c1.min.js"></script>
-        <script src="mark-09e88c2c.min.js"></script>
-        <script src="searcher-c2a407aa.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
 
-        <script src="clipboard-1626706a.min.js"></script>
-        <script src="highlight-abc7f01d.js"></script>
-        <script src="book-a0b12cfe.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
 
