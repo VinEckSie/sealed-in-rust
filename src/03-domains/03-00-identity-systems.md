@@ -84,7 +84,7 @@ The server stores only the derived hash, never the password itself.
 , rand_core
 
 ```rust,no_run
-{{#include ../../rust_crypto_book_code/examples/domain-identity-00-argon2.rs}}
+{{#include ../../rust_crypto_book_code/examples/01-domain-identity-00-argon2.rs}}
 ```
 
 Output:
