@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-c4d21d10.js";
+            window.path_to_searchindex_js = "searchindex-69594d0c.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-413b79ba.js"></script>
@@ -3018,10 +3018,47 @@ Bad implementations often accept messages in invalid states, enabling attacks.</
 <p><img src="images/cargo.png" alt="crate logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: argon2
 , rand_core</p>
 </blockquote>
-<pre class="playground"><code class="language-rust no_run"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>{{#include ../../rust_crypto_book_code/examples/domain-identity-00-argon2.rs}}
-<span class="boring">}</span></code></pre>
+<pre class="playground"><code class="language-rust no_run">use argon2::{
+    Argon2,
+    password_hash::{PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
+};
+use rand_core::OsRng;
+use rsa::rand_core;
+
+fn hash_password(password: &amp;str) -&gt; Result&lt;String, Box&lt;dyn std::error::Error&gt;&gt; {
+    let salt = SaltString::generate(&amp;mut OsRng);
+    let argon2 = Argon2::default();
+
+    let password_hash = argon2
+        .hash_password(password.as_bytes(), &amp;salt)?
+        .to_string();
+
+    Ok(password_hash)
+}
+
+fn verify_password(password: &amp;str, stored_hash: &amp;str) -&gt; Result&lt;bool, Box&lt;dyn std::error::Error&gt;&gt; {
+    let parsed_hash = PasswordHash::new(stored_hash)?;
+    let argon2 = Argon2::default();
+
+    Ok(argon2
+        .verify_password(password.as_bytes(), &amp;parsed_hash)
+        .is_ok())
+}
+
+fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let password = "correct horse battery staple";
+
+    let stored_hash = hash_password(password)?;
+    println!("Stored hash:\n{stored_hash}\n");
+
+    let valid = verify_password(password, &amp;stored_hash)?;
+    println!("Valid password: {valid}");
+
+    let invalid = verify_password("wrong password", &amp;stored_hash)?;
+    println!("Wrong password accepted: {invalid}");
+
+    Ok(())
+}</code></pre>
 <p>Output:</p>
 <pre><code class="language-text">Stored hash:
 $argon2id$v=19$m=19456,t=2,p=1$G1/J1ZCmovy3XioeKSPC1Q$RRoz1mRaShxHqnvpq3JiGR0xuScwdoO6MOcWkUw0cIU
