@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-917d7ac8.js";
+            window.path_to_searchindex_js = "searchindex-a56d7b6c.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-413b79ba.js"></script>
@@ -3216,10 +3216,95 @@ Tampered claims accepted: false
 <p><strong>🟢 Conclusion</strong></p>
 <p>Signatures are the right primitive when many parties need to verify identity assertions without sharing signing power.</p>
 </blockquote>
+<h2 id="confidential-sessions--aead"><a class="header" href="#confidential-sessions--aead">Confidential Sessions → AEAD</a></h2>
+<p>Some identity-related data must not only be authenticated.</p>
+<p>It must also remain secret.</p>
+<p>Examples:</p>
+<ul>
+<li>encrypted cookies</li>
+<li>delegated session state</li>
+<li>recovery flow metadata</li>
+<li>internal authentication context</li>
+<li>CSRF-related blobs<sup class="footnote-reference" id="fr-csrf-1"><a href="#footnote-csrf">2</a></sup></li>
+</ul>
+<p>This is where AEAD is the right tool.</p>
+<p>AEAD provides, in one construction:</p>
+<ul>
+<li>confidentiality</li>
+<li>integrity</li>
+<li>authenticity</li>
+</ul>
+<p>🧪 <strong>Minimal Rust Example: encrypting session state</strong> (<a href="https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/examples/01-domain-identity-03-session.rs">source code</a>)</p>
+<blockquote>
+<p><img src="images/cargo.png" alt="crate logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: chacha20poly1305, rand</p>
+</blockquote>
+<pre class="playground"><code class="language-rust no_run">use chacha20poly1305::{
+    aead::{Aead, KeyInit},
+    ChaCha20Poly1305, Key, Nonce,
+};
+use rand::RngCore;
+
+fn encrypt_session(
+    plaintext: &amp;[u8],
+    key_bytes: [u8; 32],
+) -&gt; Result&lt;(Vec&lt;u8&gt;, [u8; 12]), Box&lt;dyn std::error::Error&gt;&gt; {
+    let cipher = ChaCha20Poly1305::new(Key::from_slice(&amp;key_bytes));
+
+    let mut nonce_bytes = [0u8; 12];
+    rand::thread_rng().fill_bytes(&amp;mut nonce_bytes);
+
+    let nonce = Nonce::from_slice(&amp;nonce_bytes);
+    let ciphertext = cipher
+        .encrypt(nonce, plaintext)
+        .map_err(|_| chacha20poly1305::Error)
+        .unwrap();
+
+    Ok((ciphertext, nonce_bytes))
+}
+
+fn decrypt_session(
+    ciphertext: &amp;[u8],
+    nonce_bytes: [u8; 12],
+    key_bytes: [u8; 32],
+) -&gt; Result&lt;Vec&lt;u8&gt;, Box&lt;dyn std::error::Error&gt;&gt; {
+    let cipher = ChaCha20Poly1305::new(Key::from_slice(&amp;key_bytes));
+    let nonce = Nonce::from_slice(&amp;nonce_bytes);
+
+    let plaintext = cipher
+        .decrypt(nonce, ciphertext)
+        .map_err(|_| chacha20poly1305::Error)
+        .unwrap();
+
+    Ok(plaintext)
+}
+
+fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let key = [7u8; 32];
+    let session_data = br#"{"sub":"alice","csrf":"abc123","mfa":"pending"}"#;
+
+    let (ciphertext, nonce) = encrypt_session(session_data, key)?;
+    println!("Ciphertext length: {}", ciphertext.len());
+
+    let plaintext = decrypt_session(&amp;ciphertext, nonce, key)?;
+    println!("Decrypted session: {}", String::from_utf8(plaintext)?);
+
+    Ok(())
+}</code></pre>
+<p>Output:</p>
+<pre><code class="language-text">Ciphertext length: 63
+Decrypted session: {"sub":"alice","csrf":"abc123","mfa":"pending"}
+</code></pre>
+<blockquote>
+<p><strong>🟢 Conclusion</strong></p>
+<p>AEAD protects session state that must remain hidden and tamper-proof.</p>
+</blockquote>
 <hr>
 <ol class="footnote-definition">
 <li id="footnote-blast-radius">
 <p>Blast radius: the scope of impact when something fails in a system. It describes how much of the system is affected by a bug, outage, security breach, or bad deployment. Goal in engineering: keep the blast radius as small as possible so failures stay contained. <a href="#blast-radius">More</a> <a href="#fr-blast-radius-1">↩</a></p>
+</li>
+<li id="footnote-csrf">
+<p>CSRF (Cross-Site Request Forgery):  an attack where a malicious website tricks a user’s browser into sending an unwanted request to another site where the user is already authenticated. <a href="#csrf">More</a> <a href="#fr-csrf-1">↩</a></p>
 </li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div>
@@ -3340,6 +3425,10 @@ Collision resistance is critical for digital signatures, certificates, and integ
 Branching, memory access patterns, and early exits must not depend on sensitive values.
 Timing side channels can otherwise reveal keys, authentication tags, or internal state.
 Constant-time techniques are essential for secure cryptographic implementations.</p>
+<h2 id="csrf"><a class="header" href="#csrf">CSRF</a></h2>
+<p>CSRF (Cross-Site Request Forgery) is a web security vulnerability that exploits the trust a website has in a user’s browser.</p>
+<p>When a user is logged into a site (like a banking app), their browser automatically includes authentication data (cookies, session tokens) in every request. An attacker can abuse this by crafting a malicious request (e.g., transferring money) and tricking the user into triggering it (via a link, image, or hidden form).</p>
+<p>Because the request comes from the user’s browser with valid credentials, the target server believes it’s legitimate, even though the user never intended it.</p>
 <h2 id="csprng-cryptographically-secure-pseudorandom-number-generator-1"><a class="header" href="#csprng-cryptographically-secure-pseudorandom-number-generator-1">CSPRNG (Cryptographically Secure Pseudorandom Number Generator)</a></h2>
 <p>A CSPRNG is a deterministic generator that expands a small amount of high entropy into large amounts of pseudorandom output.
 It is designed so outputs are computationally indistinguishable from random and resistant to state-recovery attacks.
