@@ -141,6 +141,13 @@ Branching, memory access patterns, and early exits must not depend on sensitive 
 Timing side channels can otherwise reveal keys, authentication tags, or internal state.
 Constant-time techniques are essential for secure cryptographic implementations.
 
+## CSRF
+CSRF (Cross-Site Request Forgery) is a web security vulnerability that exploits the trust a website has in a user’s browser.
+
+When a user is logged into a site (like a banking app), their browser automatically includes authentication data (cookies, session tokens) in every request. An attacker can abuse this by crafting a malicious request (e.g., transferring money) and tricking the user into triggering it (via a link, image, or hidden form).
+
+Because the request comes from the user’s browser with valid credentials, the target server believes it’s legitimate, even though the user never intended it.
+
 ## CSPRNG (Cryptographically Secure Pseudorandom Number Generator)
 A CSPRNG is a deterministic generator that expands a small amount of high entropy into large amounts of pseudorandom output.
 It is designed so outputs are computationally indistinguishable from random and resistant to state-recovery attacks.

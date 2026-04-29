@@ -274,4 +274,97 @@ Tampered claims accepted: false
 > Signatures are the right primitive when many parties need to verify identity assertions without sharing signing power.
 
 
+## Confidential Sessions → AEAD
+
+Some identity-related data must not only be authenticated.
+
+It must also remain secret.
+
+Examples:
+- encrypted cookies
+- delegated session state
+- recovery flow metadata
+- internal authentication context
+- CSRF-related blobs[^csrf]
+
+This is where AEAD is the right tool.
+
+AEAD provides, in one construction:
+- confidentiality
+- integrity
+- authenticity
+
+
+🧪 **Minimal Rust Example: encrypting session state** ([source code](https://github.com/VinEckSie/sealed-in-rust/blob/main/rust_crypto_book_code/examples/01-domain-identity-03-session.rs))
+
+
+> <img src="../images/cargo.png" alt="crate logo" width="22" style="vertical-align: middle; margin-right: 6px;"> Crates used: chacha20poly1305, rand
+
+```rust, no_run
+use chacha20poly1305::{
+    aead::{Aead, KeyInit},
+    ChaCha20Poly1305, Key, Nonce,
+};
+use rand::RngCore;
+
+fn encrypt_session(
+    plaintext: &[u8],
+    key_bytes: [u8; 32],
+) -> Result<(Vec<u8>, [u8; 12]), Box<dyn std::error::Error>> {
+    let cipher = ChaCha20Poly1305::new(Key::from_slice(&key_bytes));
+
+    let mut nonce_bytes = [0u8; 12];
+    rand::thread_rng().fill_bytes(&mut nonce_bytes);
+
+    let nonce = Nonce::from_slice(&nonce_bytes);
+    let ciphertext = cipher
+        .encrypt(nonce, plaintext)
+        .map_err(|_| chacha20poly1305::Error)
+        .unwrap();
+
+    Ok((ciphertext, nonce_bytes))
+}
+
+fn decrypt_session(
+    ciphertext: &[u8],
+    nonce_bytes: [u8; 12],
+    key_bytes: [u8; 32],
+) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
+    let cipher = ChaCha20Poly1305::new(Key::from_slice(&key_bytes));
+    let nonce = Nonce::from_slice(&nonce_bytes);
+
+    let plaintext = cipher
+        .decrypt(nonce, ciphertext)
+        .map_err(|_| chacha20poly1305::Error)
+        .unwrap();
+
+    Ok(plaintext)
+}
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let key = [7u8; 32];
+    let session_data = br#"{"sub":"alice","csrf":"abc123","mfa":"pending"}"#;
+
+    let (ciphertext, nonce) = encrypt_session(session_data, key)?;
+    println!("Ciphertext length: {}", ciphertext.len());
+
+    let plaintext = decrypt_session(&ciphertext, nonce, key)?;
+    println!("Decrypted session: {}", String::from_utf8(plaintext)?);
+
+    Ok(())
+}
+```
+
+Output:
+```text
+Ciphertext length: 63
+Decrypted session: {"sub":"alice","csrf":"abc123","mfa":"pending"}
+```
+
+> **🟢 Conclusion**
+>
+>AEAD protects session state that must remain hidden and tamper-proof.
+
+
 [^blast-radius]: Blast radius: the scope of impact when something fails in a system. It describes how much of the system is affected by a bug, outage, security breach, or bad deployment. Goal in engineering: keep the blast radius as small as possible so failures stay contained. [More](../99-appendices/99-01-glossary.md#blast-radius)
+[^csrf]: CSRF (Cross-Site Request Forgery):  an attack where a malicious website tricks a user’s browser into sending an unwanted request to another site where the user is already authenticated. [More](../99-appendices/99-01-glossary.md#csrf)
